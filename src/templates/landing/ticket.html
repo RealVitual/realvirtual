@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="{{domain}}/static/web/css/styles.css?v=1"/>
+</head>
+<body class="">
+    <div class="contentWrapper">
+        <div class="wrapper">
+            <section class="b15">
+                <div class="grilla ">
+                    <div class="b15Wrap f aic jcsb">
+                        <div class="b15Right f aic jcsb" style="backbround: #f2f2f2;">
+                            <figure>
+                                <img src="{{domain}}{{ticket.qr.url}}" alt="" width="20">
+                            </figure>
+                            <div class="b15Info ">
+                                <div class="b15WrapInfo column2 column1-480" style="grid-gap: 25px;">
+                                    <div class="b15Item">
+                                        <h3><img src="{{domain}}/static/web/img/person-ticket.svg" alt="" width="20">Nombre</h3>
+                                        <h4>{{user.full_name}}</h4>
+                                    </div>
+                                    <div class="b15Item">
+                                        <h3><img src="{{domain}}/static/web/img/star-ticket.svg" alt="" width="20">Evento</h3>
+                                        <h4>{{settings.event_name}}</h4>
+                                    </div>
+                                    <div class="b15Item">
+                                        <h3><img src="{{domain}}/static/web/img/calendar-ticket.svg" alt="" width="20">Fecha y hora</h3>
+                                        <h4>{{settings.event_date}}</h4>
+                                        <h4>{{settings.event_time}}</h4>
+                                    </div>
+                                    <div class="b15Item">
+                                        <h3><img src="{{domain}}/static/web/img/marker-ticket.svg" alt="" width="20">Lugar</h3>
+                                        <h4>{{settings.event_address}}</h4>
+                                    </div>
+                                </div>
+                                <div class="b15InfoBottom">
+                                    <div class="b15Item">
+                                        <h3><img src="{{domain}}/static/web/img/person-ticket.svg" alt="" width="20">Información adicional:</h3>
+                                        <h4>{{settings.additional_information}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

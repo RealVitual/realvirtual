@@ -1,0 +1,172 @@
+<!--
+    1: sessionOn
+    2: sessionOff
+-->
+<header class="header {% if user %}sessionOn{% else %}sessionOff{% endif %}">
+    <div class="grilla f aic jcsb">
+        <div class="headerLeft">
+            <a href="{% url 'landing:home' %}">
+                <figure>
+                    <img src="{{request.company.logo.url}}" alt="">
+                </figure>
+            </a>
+        </div>
+        <div class="headerAnclas f aic jcc">
+            <!-- la clase "lineActive" es la barra qeu se activa cuando se da click , 
+                el color deberìa ser administrable segun el color de la web 
+            -->
+            {% if header %}
+                <a href="#acerca" class="headerAnclaBlock">Acerca de <span class="lineActive" style="background:#008ac9;"></span></a>
+                <a href="#agenda" class="headerAnclaBlock">Agenda <span class="lineActive" style="background:#008ac9;"></span></a>
+                <a href="#galeria" class="headerAnclaBlock">Galería <span class="lineActive" style="background:#008ac9;"></span></a>
+                <a href="#auspiciador" class="headerAnclaBlock">Auspiciadores <span class="lineActive" style="background:#008ac9;"></span></a>
+                <a href="#networking" class="headerAnclaBlock">Networking <span class="lineActive" style="background:#008ac9;"></span></a>
+                <a href="#encuesta" class="headerAnclaBlock">Encuesta <span class="lineActive" style="background:#008ac9;"></span></a>
+                <a href="#" class=" headerEnVivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+            {% endif %}
+        </div>
+        <div class="headerRight f aic jcfe">
+            <div class="headerOptionsSessions">
+                <!-- OPCIÒN CUANDO NO ESTA LOGEADO -->
+                <div class="headerOptionLogout f aic jcfe">
+                    <a href="" class="headerButtonLogin login">Iniciar Sesión</a>
+                    <a href="" class="headerButtonRegistrate">Regístrate</a>
+                </div>
+                <!-- OPCIÒN CUANDO ESTA LOGEADO -->
+                <div class="headerOptionLogin f aic jcfe">
+                    <h3 class="headerNameUser">Hola {{user.names}}</h3>
+                    <div class="headerMenu pr f aic jcc" style="display: flex;">
+                        <a class="headerIconMenu icon-menu"></a>
+                        <div class="headerMenuList pa t100">
+                            <ul>
+                                {% if user.in_person %}
+                                    <li><a href="{{user_url}}">Mi Ticket</a></li>
+                                {% else %}
+                                    <li><a href="{{user_url}}">Mi credencial</a></li>
+                                {% endif %}
+                            </ul>
+                            <a href="{% url 'landing:logout' %}" class="logout">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- POPUP LOGIN -->
+<div class="g8PopupForm formLogin pr">
+    <a href="#" class="g8ClosePopup icon-close pa"></a>
+    <h3>Iniciar Sesión</h3>
+    <div class="g8Form">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="g8GroupInput one">
+                <div class="g8Input">
+                    <span>Email</span>
+                    <input type="text" id="email" class="g8Box validate[required,custom[email]]" name="{{form_login.email.html_name}}">
+                </div>
+                <div class="g8Input">
+                    <span>Contraseña *</span>
+                    <input type="password" id="passwowrd" class="g8Box validate[required]" name="{{form_login.password.html_name}}">
+                </div>
+            </div>
+            <button class="g8SumitLogin">Ingresar</button>
+        </form>
+    </div>
+    <div class="g8Bottom tac">
+        <a href="">Olvidé mi contraseña</a>
+        <h4>No tengo una cuenta <a href="#">Registrarme</a></h4>
+    </div>
+</div>
+
+<!-- POPUP REGISTRO -->
+<div class="g8PopupForm formRegistro pr">
+    <a href="#" class="g8ClosePopup icon-close pa close-register"></a>
+    <h3>Crear cuenta</h3>
+    <div class="g8Form warning-form" style="display:none;">
+        <div class="gParrafo message-warning">
+        </div>
+        <div class="g8Confirm fdc aifs confirm-div" style="display:none;">
+            <button class="g8SumitRegistro confirm-button">Continuar con el Registro</button>
+        </div>
+        <h4><a href="#" class="return-register-form"><- Regresar</a></h4>
+    </div>
+    <div class="gParrafo parrafo-register">
+        <p>Completa el siguiente formulario para poder registrar tus datos.</p>
+    </div>
+    <div class="g8Form register-form">
+        <form action="" method="POST" class="form-register">
+            {% csrf_token %}
+            <div class="g8GroupInput two">
+                <div class="g8Input">
+                    <span>Nombres *</span>
+                    <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]" name="{{form_register.names.html_name}}">
+                </div>
+                <div class="g8Input">
+                    <span>Apellidos *</span>
+                    <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]" name="{{form_register.last_name.html_name}}">
+                </div>
+            </div>
+            <div class="g8GroupInput two">
+                <div class="g8Input">
+                    <span>Empresa *</span>
+                    <input type="text" class="g8Box validate[required]" name="{{form_register.jon_company.html_name}}">
+                </div>
+                <div class="g8Input">
+                    <span>Cargo *</span>
+                    <input type="text" class="g8Box validate[required]" name="{{form_register.company_position.html_name}}">
+                </div>
+            </div>
+            <div class="g8GroupInput two">
+                <div class="g8Input select">
+                    <span>Pais *</span>
+                    <select name="{{form_register.country.html_name}}" id="" class="g8Box validate[required]">
+                        <!-- <option value="">Selecciona un tipo</option> -->
+                        <option value=""></option>
+                        {% for country in countries %}
+                            <option value="{{country.id}}">{{country.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="g8Input">
+                    <span>Profesión *</span>
+                    <input type="text" class="g8Box validate[required]" name="{{form_register.occupation.html_name}}">
+                </div>
+            </div>
+            <div class="g8GroupInput two">
+                <div class="g8Input">
+                    <span>Email *</span>
+                    <input type="text" id="email" class="g8Box validate[required,custom[email]]" name="{{form_register.email.html_name}}">
+                </div>
+                <div class="g8Input">
+                    <span>Confirmar Email *</span>
+                    <input type="text" id="emailconfirm"  class="g8Box validate[required,custom[email],equals[email]]" name="confirm_email">
+                </div>
+            </div>
+            <div class="g8GroupInput two">
+                <div class="g8Input">
+                    <span>Contraseña *</span>
+                    <input type="password" id="passwowrd" class="g8Box validate[required]" name="{{form_register.password.html_name}}">
+                </div>
+                <div class="g8Input">
+                    <span>Confirmar Contraseña *</span>
+                    <input type="password" id="passwordconfirm"  class="g8Box validate[required,equals[passwowrd]]" name="{{form_register.confirm_password.html_name}}">
+                </div>
+            </div>
+            <div class="g8Confirm fdc aifs">
+                <p>(*) Campos obligatorios</p>
+				<div class="g8Checkbox">
+					<input id="check1" type="checkbox" checked class="validate[required]" name="checkbox1" value="checkbox1">
+					<label for="check1">Acepto las <a href="#">Políticas de Privacidad</a> y <a href="#">Protección de Datos Personales.</a></label>
+				</div>
+				<div class="g8Checkbox">
+					<input id="check2" type="checkbox" checked class="validate[required]" name="checkbox2" value="checkbox2">
+					<label for="check2">Acepto los <a href="#">Términos y Condiciones.</a></a></label>
+				</div>
+				<button class="g8SumitRegistro save-register">Enviar</button>
+                <h4>Ya tengo una cuenta <a href="#">Inicial sesión</a></h4>
+			</div>
+        </form>
+    </div>
+</div>

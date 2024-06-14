@@ -1,0 +1,141 @@
+{% extends "common/_base.html" %}
+
+{% block cssadicional %}
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b14">
+    <div class="grilla">
+        <a href="#" class="gReturn">Regresar</a>
+        <div class="b14Top">
+            <div class="b14TopLeft">
+                <h1>El Poder de la Data</h1>
+                <h2>Estrategias innovadoras 2024</h2>
+            </div>
+            <div class="b14TopRight">
+                <h3><img src="{{STATIC_URL}}img/calendar-chat.svg" alt="" width="20">19 de marzo de 2024</h3>
+                <h3>08:30 a 12:30m</h3>
+            </div>
+        </div>
+        <div class="b14Wrap">
+            <div class="b14Left">
+                <!-- CONDICIONAR SI ES IMAGEN O VIDEO -->
+                <!-- OPCIÒN CAMPO IMAGEN -->
+                <picture class="imgCover">
+                    <!-- imagen mobile -->
+                    <source srcset="{{STATIC_URL}}img/img-banner-chat.png" media="(max-width: 767px)">
+                    <!-- imagen desktop -->
+                    <source srcset="{{STATIC_URL}}img/img-banner-chat.png" media="(max-width: 768px)">
+                    <!-- imagen desktop -->
+                    <img src="{{STATIC_URL}}img/img-banner-chat.png" width="1920" height="713"  alt="Myimage">
+                </picture>
+                <!-- OPCIÒN CAMPO VIDEO -->
+                <iframe src="https://player.vimeo.com/video/385145267?autoplay=1&muted=1" frameborder="0"></iframe>
+            </div>
+            <div class="b14Right">
+                <h3>Chat</h3>
+                <div class="b14ContentChat">
+                    <div class="b14ListChat">
+                        <ul id="listmessages">
+                            <!-- posRight: es para el emisor -->
+                            <!-- posLeft: es para el remitente -->
+                            <li class="posRight">
+                                <h4 class="textMessage">Hello, how are you doing?</h4>
+                                <span class="timeMessage">08:15 AM</span>
+                            </li>
+                            <li class="posLeft">
+                                <h5 class="otherPersonMessage">Asistant</h5>
+                                <h4 class="textMessage">I'm doing wellI help you today?</h4>
+                                <span class="timeMessage">09:14 AM</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <form action="">
+                        <textarea name="" id="boxMessage" placeholder="Escribir"></textarea>
+                        <button id="sendMessage"><img src="{{STATIC_URL}}img/icon-arrow-button.svg" alt="" width="24"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+
+    var video = document.getElementById("videoTransmision");
+    document.addEventListener('touchstart', function() {
+        video.play();
+    });
+
+    let elsendMessage = document.getElementById("sendMessage");
+    let elboxMessage = document.getElementById("boxMessage");
+
+    const createLi = (text,time) => {
+        let li = document.createElement("li");
+        // posLeft --> receptor
+        // posRight --> emisor
+        li.className = "posRight";
+        let ellistmessages = document.getElementById("listmessages");
+        
+        var htmlString = `
+                    <h5>julio</h5>
+                    <h4 class="textMessage" style="background:blue;color:yellow">${text}</h4>
+                    <span class="timeMessage">${time}</span>
+                `;
+        li.innerHTML = htmlString
+        ellistmessages.appendChild(li);
+    }
+
+    var horaFormateada
+    const cretateTime = () => {
+        var date = new Date();
+        var horas = date.getHours();
+        var minutos = date.getMinutes();
+        var ampm = horas >= 12 ? 'PM' : 'AM';
+        horas = horas % 12;
+        horas = horas ? horas : 12;
+        minutos = minutos < 10 ? '0' + minutos : minutos;
+        horaFormateada = horas + ':' + minutos + ' ' + ampm;
+    }
+
+    function scrollChatToBottom() {
+        var chatContainer = document.getElementById("listmessages");
+        var ultimoMensaje = chatContainer.lastElementChild;
+        var ultimoMensajeOffsetTop = ultimoMensaje.offsetTop;
+        chatContainer.scrollTo({
+            top: ultimoMensajeOffsetTop,
+            behavior: "smooth"
+        });
+    }
+
+    elsendMessage.addEventListener('click', function(e){
+        e.preventDefault();
+        let getMessage = elboxMessage.value;
+        cretateTime();
+        createLi(getMessage,horaFormateada)
+        elboxMessage.value = ""
+        elboxMessage.focus();
+        scrollChatToBottom()
+    });
+
+    elboxMessage.addEventListener("keydown", function(event) {
+        let getMessage = this.value;
+        if (event.keyCode === 13) { 
+            cretateTime();
+            createLi(getMessage,horaFormateada)
+            
+            scrollChatToBottom()
+            setTimeout(()=>this.value = "",1)
+            
+        }
+    });
+
+
+</script>   
+{% endblock %}

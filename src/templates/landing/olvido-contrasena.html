@@ -1,0 +1,36 @@
+{% extends "common/_base.html" %}
+
+{% block cssadicional %}
+
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b2 scrollWrap">
+    <div class="grilla">
+        <div class="b2Info">
+            <h1 class="gTitle scrollItem">Olvidé mi contraseña</h1>
+            <div class="gParrafo scrollItem">
+                <p>Ingresa el email que tienes asociado a tu cuenta. Te enviaremos un correo de confirmación.</p>
+            </div>
+            <form action="" class="g8Form scrollItem">
+                <div class="g8Input">
+					<span>Email</span>
+					<input type="text" class="g8Box validate[required,custom[email]]">
+				</div>
+                <button>Enviar</button>
+                <a href="#" class="g8LinkForm">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}

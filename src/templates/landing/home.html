@@ -1,0 +1,471 @@
+{% extends "landing/common/_base.html" %}
+
+{% block cssadicional %}
+<link rel="stylesheet" href="/static/web/js/swiper/swiper-bundle.min.css">
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+
+<section class="b1 scrollWrap">
+    <picture class="imgCover">
+        <!-- imagen mobile -->
+        <source srcset="/static/web/img/imagenBannerDesktop.png" media="(max-width: 767px)">
+        <!-- imagen desktop -->
+        <source srcset="{{home_page.home_banner.url}}" media="(max-width: 768px)">
+        <!-- imagen desktop -->
+        <img src="{{home_page.home_banner.url}}" width="1920" height="713"  alt="Myimage">
+    </picture>
+    <!--
+        Tres posiciones verticales
+        Agregar la clase : top , center, bottom
+    -->
+    {% comment %} <div class="grilla f center jcfs">
+        <div class="b1Info top">
+            <h2 class="scrollItem">{{home_page.first_title}}</h2>
+            <h1 class="scrollItem">{{home_page.main_title}}</h1>
+            <h3 class="scrollItem">{{home_page.secondary_title}}</h3>
+            <a href="#" class="clickVideo popup scrollItem" data-urlvideo="{{home_page.home_video_url}}">
+                <span>Ver video</span>
+                <!-- linea circular animada administrable -->
+                <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
+            </a>
+            <div class="b1Date f aifs jcfs scrollItem">
+                <div class="b1DateItem f aifs jcfs">
+                    <img src="/static/web/img/calendario.svg" alt="" width="20">
+                    <h4>19 de marzo de 2024<span>08:30 a 12:30</span></h4>
+                </div>
+                <div class="b1DateItem f aifs jcfs">
+                    <img src="/static/web/img/virtual.svg" alt="" width="20">
+                    <h4>Virtual<span>Zoom meetings</span></h4>
+                </div>
+            </div>
+        </div>
+    </div> {% endcomment %}
+</section>
+
+<section class="b3 f aic jcsb scrollWrap anclaBlock" id="acerca">
+    <div class="b3Left f aifs jcfs scrollItem">
+        <div class="b3ContentLeft">
+            <h3 class="gTitle">{{home_page.main_event_title}}</h3>
+            <div class="gParrafo">
+                {{home_page.main_event_description|safe}}
+            </div>
+            <ul class="b3List">
+                {% for row in home_page.get_items %}
+                    <li class="b3ItemList">
+                        <!-- Cambiar logica al click con datas -->
+                        <a href="#" class="b3ClickToggle" data-color-initial="#008AC9" data-color-active="#17181B">
+                            {{row.title}}
+                            <span class="circleLessMore"></span>
+                        </a>
+                        <div class="b3Info">
+                            <div class="gParrafo">
+                                {{row.description|safe}}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="b3Right scrollItem">
+        <picture class="imgCover">
+            <!-- imagen mobile -->
+            <source srcset="/static/web/img/b3_img_fondo.png" media="(max-width: 767px)">
+            <!-- imagen desktop -->
+            <source srcset="/static/web/img/b3_img_fondo.png" media="(max-width: 768px)">
+            <!-- imagen desktop -->
+            <img src="/static/web/img/b3_img_fondo.png" width="1920" height="713"  alt="Myimage">
+        </picture>
+        <a href="#" class="clickVideo popup " data-urlvideo="https://www.youtube.com/watch?v=l6_nRqIz_9o">
+            <span>Ver video</span>
+            <!-- linea circular animada administrable -->
+            <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
+        </a> 
+    </div>
+</section>
+
+<section class="b4 scrollWrap anclaBlock" id="agenda">
+    <div class="grilla">
+        <div class="b4Top f aife jcsb ffrw scrollItem">
+            <div class="b4Title">
+                <h4>Agenda</h4>
+                <h3 class="gTitle">Programas y Ponentes</h3>
+            </div>
+            <!-- Elemento azul hacerlo div  -->
+            <div class="b4Tabs f aic jcfe">
+                {% for event in events %}
+                <a href="" class="b4ClickTab">
+                    <h5>Dia 01<span>19 de Marzo</span></h5>
+                    <div class="lineActive" style="background:#008AC9;"></div>
+                </a>
+                {% endfor %}
+                {% comment %} <a href="" class="b4ClickTab">
+                    <h5>Dia 01<span>19 de Marzo</span></h5>
+                    <div class="lineActive" style="background:#008AC9;"></div>
+                </a>
+                <a href="" class="b4ClickTab">
+                    <h5>Dia 01<span>19 de Diciembre</span></h5>
+                    <div class="lineActive" style="background:#008AC9;"></div>
+                </a> {% endcomment %}
+                <div class="lineColorFull" style="background:#D7E9F0;"></div>
+            </div>
+        </div>
+        <div class="b4ContentWrap scrollItem">
+            {% for event in events %}
+                <!-- Listado de eventos por fecha -->
+                <div class="b4Wrap b4InfoTab">
+                    {% for schedule in event.get_schedules %}
+                        {% if schedule.description %}
+                            <!-- Si el evento no tiene imagen se agrega la clase "noImage" -->
+                            <div class="b4Item f aic jcsb noImage">
+                                <div class="b4ItemLeft f aifs jcfs">
+                                    <div class="b4Img pr">
+                                        <picture class="imgCover">
+                                            <!-- imagen mobile -->
+                                            <source srcset="/static/web/img/b4-img1.png" media="(max-width: 767px)">
+                                            <!-- imagen desktop -->
+                                            <source srcset="/static/web/img/b4-img1.png" media="(max-width: 768px)">
+                                            <!-- imagen desktop -->
+                                            <img src="/static/web/img/b4-img1.png" width="1920" height="713"  alt="Myimage">
+                                        </picture>
+                                    </div>
+                                    <div class="b4Info">
+                                        {% comment %} <h3>08:30 -09:00</h3> {% endcomment %}
+                                        <h3>{{schedule.start_time}} - {{schedule.end_time}}</h3>
+                                        <h4>{{schedule.name}}</h4>
+                                        <div class="gParrafo">
+                                            <p>Palabras de bienvenida a cargo de la presidente de la CCL</p>
+                                        </div>
+                                        <!-- Existe dos opcions de "Ver en vivo o Volver a ver" -->
+                                        {% comment %} <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a> {% endcomment %}
+                                        <!-- <a href="#" class="b4VolverVer a ver">Volver a ver</a> -->
+                                    </div>
+                                </div>
+                                <div class="b4ItemRight">
+                                    <ul class="b4PersonsExpoList">
+                                        {% for row in "12345678901"|make_list %}
+                                        <li class="">
+                                            <a href="" class="b4OpenPopupPerson"
+                                                data-name="Rosa Bueno"
+                                                data-cargo="Presidenta / Camara de Comercio de Lima"
+                                                data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
+                                                data-url="urlprueba"
+                                                >
+                                                <h6><img src="/static/web/img/expositor.png" alt="" width="16">Ronald de la Cruz Mendoza</h6>
+                                                <span>- CCL</span>
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% else %}
+                        <div class="b4Break">
+                            <h3>{{schedule.start_time}} - {{schedule.end_time}} <span>{{schedule.name}}</span></h3>
+                        </div>
+                        {% endif %}
+
+                    {% endfor %}
+                    <!-- Condicionar si existe o no break -->
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<div class="b4Popup">
+    <a href="#" class="b4ClosePopup icon-close"></a>
+    <div class="b4PopupImage">
+        <picture class="imgCover">
+            <!-- imagen mobile -->
+            <source srcset="/static/web/img/b4ImagePopup.png" media="(max-width: 767px)">
+            <!-- imagen desktop -->
+            <source srcset="/static/web/img/b4ImagePopup.png" media="(max-width: 768px)">
+            <!-- imagen desktop -->
+            <img src="/static/web/img/b4ImagePopup.png" width="1920" height="713"  alt="Myimage">
+        </picture>
+    </div>
+    <div class="b4InfoPopup f aic jcfs">
+        <div class="b4InfoPopupContent">
+            <h3 class="b4PopupName gTitle"></h3>
+            <h4 class="b4PopupCargo"></h4>
+            <!-- Si la info crece se genera un scroll -->
+            <div class="gParrafo b4PopupText">
+            </div>
+            <a href="#" class="b4linkedin">Ver perfil en Linkedin <img src="/static/web/img/arrow.svg" alt="" width="12"></a>
+        </div>
+    </div>
+</div>
+
+
+<section class="b5 scrollWrap anclaBlock" id="galeria">
+    <div class="grilla">
+        <h4>Conoce más</h4>
+        <h3 class="gTitle white">Galería del evento</h3>
+        <div class="b5Swiper swiper-container scrollItem swiper" data-initial="3">
+            <div class="b5Wrap swiper-wrapper">
+                {% for video in videos %}
+                <a  href="#" class="b5Item swiper-slide zoomImageHover">
+                    <div class="b5Img">
+                        <picture class="imgCover">
+                            <!-- imagen mobile -->
+                            <source srcset="{{video.image.url}}" media="(max-width: 767px)">
+                            <!-- imagen desktop -->
+                            <source srcset="{{video.image.url}}" media="(max-width: 768px)">
+                            <!-- imagen desktop -->
+                            <img src="{{video.image.url}}" width="1920" height="713"  alt="Myimage">
+                        </picture>
+                        {% if video.video_url %}
+                            <div class="clickVideo popup " data-urlvideo="{{video.video_url}}">
+                                <span>Ver video</span>
+                                <!-- linea circular animada administrable -->
+                                <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="b5Text">
+                        <div class="gParrafo">
+                            <p>{{video.description}}</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            <!-- pagination dots -->
+            <div class="b5Pagination gPagination"></div>
+            <!-- nav prev and next -->
+        </div>
+    </div>
+</section>
+
+<section class="b6 anclaBlock anclaBlock" id="auspiciador">
+    <div class="grilla">
+        <div class="b6Top">
+            <h4>Auspiciadores</h4>
+            <h3 class="gTitle tac">Con la participación de</h3>
+        </div>
+        <div class="b6Wrap">
+            {% for sponsor in sponsors %}
+                <div class="b6Item">
+                    <figure>
+                        <!-- que la medida sea administrable -->
+                        <img src="{{sponsor.image.url}}" alt="" width="100">
+                    </figure>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<div class="b16Popup">
+    <!-- <a href="#" class="icon-close"></a> -->
+    <div class="b16PopupContent">
+        <h3 class="gTitle">Networking</h3>
+        <div class="gParrafo">
+            <p>Usted ya está compartiendo sus datos.</p>
+        </div>
+        <div class="b16Buttons">
+            <a href="#" class="gButton b16AceptNet">Aceptar</a>
+            <a href="#" class="gButton b16CancelNet">Cancelar</a>
+        </div>
+    </div>
+</div>
+
+
+<section class="b7 anclaBlock" id="encuesta">
+    <!-- Que todo sea -->
+    <a href="#" class="grilla">
+        <div class="b7Info">
+            <h3 class="gTitle">Tu opinión es importante</h3>
+            <div class="gParrafo">
+                <p>Por favor, ayúdanos a mejorar nuestra atención completando la siguiente encuesta.</p>
+            </div>
+        </div>
+        <span><img src="/static/web/img/arrow.svg" alt=""></span>
+    </a>
+</section>
+
+<section class="b8 scrollWrap">
+    <div class="grilla">
+        <h3 class="gTitle scrollItem">Más Eventos</h3>
+        <div class="b8Wrap f aic jcc">
+            {% for row in "123456"|make_list %}
+            <a href="#" class="b8Item scrollItem zoomImageHover">
+                <div class="b8Img ">
+                    <picture class="imgCover">
+                        <!-- imagen mobile -->
+                        <source srcset="/static/web/img/b8_img1.png" media="(max-width: 767px)">
+                        <!-- imagen desktop -->
+                        <source srcset="/static/web/img/b8_img1.png" media="(max-width: 768px)">
+                        <!-- imagen desktop -->
+                        <img src="/static/web/img/b8_img1.png" width="1920" height="713"  alt="Myimage">
+                    </picture>
+                </div>
+                <div class="b8Info ">
+                    <h2>Tecnología con impacto</h2>
+                    <div class="b8InfoWrap f aic jcsb">
+                        <div class="b8Date f aifs jcfs  fdc">
+                            <div class="b8DateItem f aifs jcfs">
+                                <img src="/static/web/img/calendario-black.svg" alt="" width="20">
+                                <h4>19 de marzo de 2024<span>08:30 a 12:30</span></h4>
+                            </div>
+                            <div class="b8DateItem f aifs jcfs">
+                                <img src="/static/web/img/address.svg" alt="" width="20">
+                                <h4>Camara de Comercio de Lima</span></h4>
+                            </div>
+                        </div>
+                        <figure>
+                            <img src="/static/web/img/b8circleArrow.svg" alt="" width="74">
+                        </figure>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% comment %} <a href="#" class="gButton">Más eventos</a> {% endcomment %}
+    </div>
+</section>
+
+{% endblock %}
+
+{% block jsfinal %}
+<script src="/static/web/js/swiper/swiper-bundle.min.js"></script>
+<script type="text/javascript">
+
+    //bloque 3 - js
+    if(document.getElementsByClassName("b3")[0]){
+        eventGrilla("b3Left","left")
+        eventClickAccordion("b3ClickToggle")
+    }
+
+    //bloque 4 - js
+    if(document.getElementsByClassName("b4")[0]){
+        if(document.getElementsByClassName("b4PersonsExpoList")[0]){
+            let elb4ItemRight = document.getElementsByClassName("b4ItemRight")[0]
+            let elb4PersonsExpoList = document.getElementsByClassName("b4PersonsExpoList")
+            for(const b4PersonsExpoList of elb4PersonsExpoList ){
+                if(b4PersonsExpoList.children.length > 5){
+                    b4PersonsExpoList.parentNode.classList.add('activeScrollList')
+                }
+            }
+            
+        }
+        eventTab("b4ClickTab","b4InfoTab","click")
+
+        let elb4OpenPopupPerson = document.getElementsByClassName("b4OpenPopupPerson")
+        let elb4PopupName = document.getElementsByClassName("b4PopupName")[0];
+        let elb4PopupCargo = document.getElementsByClassName("b4PopupCargo")[0];
+        let elb4PopupText = document.getElementsByClassName("b4PopupText")[0];
+        let elb4linkedin = document.getElementsByClassName("b4linkedin")[0];
+        let elb4Popup = document.getElementsByClassName("b4Popup")[0];
+        let elb4ClosePopup = document.getElementsByClassName("b4ClosePopup")[0];
+
+        for(const b4OpenPopupPerson of elb4OpenPopupPerson){
+            b4OpenPopupPerson.addEventListener("click",function(e){
+                e.preventDefault();
+                elb4Popup.classList.add('active');
+                OVERLAY.classList.add('active');
+                OVERLAY.style.zIndex = 500
+                let getName = this.dataset.name;
+                let getCargo = this.dataset.cargo;
+                let getInfo = this.dataset.info;
+                let getUrl = this.dataset.url;
+
+                elb4PopupName.innerText = getName;
+                elb4PopupCargo.innerText = getCargo;
+                elb4PopupText.innerHTML = getInfo;
+                elb4linkedin.setAttribute("value",getUrl);
+            });
+        }
+
+        elb4ClosePopup.addEventListener("click",function(e){
+            e.preventDefault();
+            this.parentNode.classList.remove('active')
+            OVERLAY.removeAttribute("style");
+            OVERLAY.classList.remove('active')
+        });
+    }
+
+
+    //b5-js ***
+    if(document.getElementsByClassName('b5')[0]){
+        let elSwiperb5 = document.getElementsByClassName('b5Swiper')[0].dataset.initial
+        const breakpoint = window.matchMedia('(max-width: 1024px)');
+        const breakpointChecker = () => {
+            let getCountItems = document.getElementsByClassName('b5Item').length;
+            console.log(getCountItems);
+            breakpoint.matches === true ? 
+                (getCountItems >= 2 ? enableSwiper(elSwiperb5) : destroySwiper()): 
+                (getCountItems > elSwiperb5 ? enableSwiper(elSwiperb5) : destroySwiper())
+        }
+        let mySwiper;
+        let elWrapSwiperb5 = document.getElementsByClassName('b5')[0]
+        const destroySwiper = () =>{
+            elWrapSwiperb5.classList.add('noSwiper')
+            elWrapSwiperb5.classList.remove('swiperActive')
+            if(mySwiper !== undefined) {
+                return mySwiper.destroy(true,true);
+            }
+        }
+        const enableSwiper = (initial) => {
+            elWrapSwiperb5.classList.remove('noSwiper')
+            elWrapSwiperb5.classList.add('swiperActive')
+            mySwiper = new Swiper ('.b5Swiper', {
+                loop: true,
+                spaceBetween: 24,
+                centeredSlides: false,
+                pagination: {
+                    el: '.b5Pagination',
+                    type: 'bullets',
+                    clickable: true
+                },
+                navigation: {
+                    nextEl: '.b5Next',
+                    prevEl: '.b5Prev',
+                },
+                breakpoints:{
+                    1024:{
+                    slidesPerView: initial,
+                    spaceBetween: 24,
+                    },
+                    768:{
+                    slidesPerView: 2,
+                    spaceBetween: 24,
+                    },
+                    320:{
+                    slidesPerView: 1,
+                    spaceBetween: 24,
+                    }
+                }
+            });
+        };
+        breakpoint.addListener(breakpointChecker);
+        breakpointChecker();
+    }
+
+
+    if(document.getElementsByClassName('b16')[0]){
+        let elb16OpenPopup = document.getElementsByClassName('b16OpenPopup')[0]
+        let elb16Popup = document.getElementsByClassName('b16Popup')[0]
+        let elb16CancelNet = document.getElementsByClassName('b16CancelNet')[0]
+        elb16OpenPopup.addEventListener('click',function(e){
+            e.preventDefault();
+            elb16Popup.classList.add('active')
+            OVERLAY.classList.add('active')
+            OVERLAY.style.zIndex = "400"
+        })
+        elb16CancelNet.addEventListener('click',function(e){
+            e.preventDefault();
+            elb16Popup.classList.remove('active')
+            OVERLAY.classList.remove('active')
+            OVERLAY.removeAttribute('style')
+        })
+    }
+
+</script>
+{% endblock %}

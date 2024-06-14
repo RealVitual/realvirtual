@@ -1,0 +1,55 @@
+{% extends "common/_base.html" %}
+
+{% block cssadicional %}
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b12 scrollWrap">
+    <div class="grilla">
+        <h1 class="gTitle">Más eventos</h1>
+        <div class="b8Wrap f aic jcc">
+            {% for row in "14"|get_range %}
+            <a href="#" class="b8Item scrollItem zoomImageHover">
+                <div class="b8Img ">
+                    <picture class="imgCover">
+                        <!-- imagen mobile -->
+                        <source srcset="{{STATIC_URL}}img/b8_img1.png" media="(max-width: 767px)">
+                        <!-- imagen desktop -->
+                        <source srcset="{{STATIC_URL}}img/b8_img1.png" media="(max-width: 768px)">
+                        <!-- imagen desktop -->
+                        <img src="{{STATIC_URL}}img/b8_img1.png" width="1920" height="713"  alt="Myimage">
+                    </picture>
+                </div>
+                <div class="b8Info ">
+                    <h2>Tecnología con impacto</h2>
+                    <div class="b8InfoWrap f aic jcsb">
+                        <div class="b8Date f aifs jcfs  fdc">
+                            <div class="b8DateItem f aifs jcfs">
+                                <img src="{{STATIC_URL}}img/calendario-black.svg" alt="" width="20">
+                                <h4>19 de marzo de 2024<span>08:30 a 12:30</span></h4>
+                            </div>
+                            <div class="b8DateItem f aifs jcfs">
+                                <img src="{{STATIC_URL}}img/address.svg" alt="" width="20">
+                                <h4>Camara de Comercio de Lima</span></h4>
+                            </div>
+                        </div>
+                        <figure>
+                            <img src="{{STATIC_URL}}img/b8circleArrow.svg" alt="" width="74">
+                        </figure>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+    
+</script>
+{% endblock %}

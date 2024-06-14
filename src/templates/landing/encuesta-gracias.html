@@ -1,0 +1,62 @@
+{% extends "common/_base.html" %}
+
+{% block cssadicional %}
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b11 pageEncuestaGracias scrollWrap">
+    <div class="b11Left scrollItem">
+        <div class="b11LeftContent">
+            <a href="#" class="gReturn">Regresar</a>
+            <h1 class="gTitle">Tu opinión es importante</h1>
+            <div class="gParrafo">
+                <p>Evento: El Poder de la Data</p>
+            </div>
+        </div>
+    </div>
+    <div class="b11Right scrollItem">
+        <h3 class="b13Title">¡Gracias por tu respuesta!</h3>
+        <div class="b13Links f aic jcfs">
+            <a href="#" class="gButton">Ver más eventos</a>
+            <a href="#" class="return">Regresar al evento</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+
+    eventGrilla("b11Left","left")
+    eventGrilla("b11Right","right")
+
+    let elb11ItemOption = document.getElementsByClassName("b11ItemOption");
+    for(const b11ItemOption of elb11ItemOption){
+        b11ItemOption.addEventListener("click",function(){
+            let elchildrenOptions = this.parentNode.children
+            let getColorCheckRadio = this.children[0].dataset.colorActive
+            for(const childrenOptions of elchildrenOptions){
+                childrenOptions.classList.remove('active')
+            }
+            this.children[0].style.border = `1px solid ${getColorCheckRadio}`;
+            this.classList.add('active')
+        });
+    }
+
+    $('.b11Enviar').click(function(e){
+        e.preventDefault();
+        var item = $(this);
+        var valid = item.closest('.b11FormEncuesta').validationEngine('validate');
+        var form = $(this).closest('form');
+        if (!valid) {
+            console.log('form invalid')
+            } else {
+            console.log('form valid')
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "landing/common/_base.html" %}
+
+{% block cssadicional %}
+<link rel="stylesheet" href="/static/web/js/croppie/croppie.min.css">
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+
+<section class="b10 scrollWrap pageCredGenerate">
+    <div class="grilla ">
+        <div class="b10Wrap f aifs jcc">
+            <div class="b10Left scrollItem">
+                <h3 class="gTitle">Ya eres parte del evento "{{credential_settings.title_credential}}". </h3>
+                <label for="" class="gParrafo">Comparte la credencial en tus redes y etiquetanos como #elpoderdeladata.</label>
+                <div class="b10Links f aic jcfs">
+                    <a class="b10DownloadCredencial" href="{% url 'landing:download_credential' instance.code%}">Generara credencial <img src="/static/web/img/download.svg" alt="" width="22"></a>
+                    <a href="#" class="b10VerEvento">Ver evento</a>
+                </div>
+            </div>
+            <div class="b10Right scrollItem">
+                <!-- Imagen de fondo -->
+                <figure class="imgCover">
+                    <img src="{{credential_settings.image_credential.url}}" width="1920" height="713"  alt="Myimage">
+                </figure>
+                <div class="b10ContentInfo">
+                    <h5>{{credential_settings.title_credential}}</h5>
+                    <!-- en data-image-default ira la imagen por defecto cuando no suben una imagen propia -->
+                    <!-- Este data se usara para validar cuando suben una imagen y quieren cancelar para asì 
+                        poder recuperar la imagen por default -->
+                    {% if credential_settings.default_avatar %}
+                        <div id="result" data-image-default="{{credential_settings.default_avatar.url}}">
+                            <!-- colocar por defecto la imagen por default -->
+                            <img src="{{credential_settings.default_avatar.url}}" alt="" class="croppieImage">
+                        </div>
+                        <h6 class="b10NamePersonCred">Tu nombre</h6>
+                    {% else %}
+                        <div id="result" data-image-default="/static/web/img/credencial-imagen-default.png">
+                            <!-- colocar por defecto la imagen por default -->
+                            <img src="/static/web/img/credencial-imagen-default.png" alt="" class="croppieImage">
+                        </div>
+                        <h6 class="b10NamePersonCred">Tu nombre</h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
