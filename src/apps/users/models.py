@@ -1,3 +1,4 @@
+import os
 from uuid import uuid4
 from django.contrib.sessions.models import Session
 from django.db import models
@@ -13,6 +14,11 @@ from django.conf import settings
 from src.contrib.db.models import BaseModel
 from src.apps.conf.models import DocumentType, AgeRange, Country
 from src.apps.companies.models import Company
+
+
+def get_upload_path(internal_folder):
+    return os.path.join(
+      "%s/%s/" % (settings.BUCKET_FOLDER_NAME, internal_folder))
 
 
 class UserManager(BaseUserManager):
@@ -213,9 +219,9 @@ class User(BaseModel, PermissionsMixin, AbstractBaseUser):
     is_worker = models.BooleanField('Colaborador', default=False)
     objects = UserManager()
     profile_image = models.ImageField(
-        _('Imagen Perfil'), upload_to='profile_img', null=True, blank=True)
+        _('Imagen Perfil'), upload_to=get_upload_path('profile_img'), null=True, blank=True)
     credential_img = models.ImageField(
-        _('credential'), upload_to='credentials', null=True, blank=True)
+        _('credential'), upload_to=get_upload_path('credentials'), null=True, blank=True)
     being_used = models.BooleanField(_("Siendo usado"), default=False)
     address = models.CharField(
         _("direccion"), max_length=255, null=True, blank=True)
@@ -233,7 +239,7 @@ class User(BaseModel, PermissionsMixin, AbstractBaseUser):
     avoid_credential = models.BooleanField(
         _("Avoid credential"), default=False)
     certificate = models.FileField(
-        _('certificado'), upload_to="certificates",
+        _('certificado'), upload_to=get_upload_path("certificates"),
         null=True, blank=True)
     virtual = models.BooleanField(_('Virtual'), default=False)
     in_person = models.BooleanField(_('In Person'), default=False)

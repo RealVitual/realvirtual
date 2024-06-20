@@ -1,4 +1,6 @@
+import os
 from enum import Enum
+from django.conf import settings
 import qrcode
 from django.utils.translation import gettext_lazy as _
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -9,6 +11,11 @@ from six import StringIO
 from .mixins import UidMixin
 from src.apps.users.models import User
 from src.apps.companies.models import Company
+
+
+def get_upload_path(internal_folder):
+    return os.path.join(
+      "%s/%s/" % (settings.BUCKET_FOLDER_NAME, internal_folder))
 
 
 class Ticket(UidMixin, BaseModel):
@@ -23,7 +30,8 @@ class Ticket(UidMixin, BaseModel):
     code = models.CharField(
         _('Código del ticket'), max_length=8, blank=True, default='')
     qr = models.ImageField(
-        verbose_name='Qr', upload_to='tickets/qrcode', null=True, blank=True)
+        verbose_name='Qr', upload_to=get_upload_path('tickets/qrcode'),
+        null=True, blank=True)
     email = models.EmailField(max_length=150, blank=True)
     document = models.CharField(max_length=15, blank=True)
     full_name = models.CharField(max_length=200, default='', blank=True)
@@ -49,8 +57,9 @@ class Ticket(UidMixin, BaseModel):
     max_number_uses = models.PositiveIntegerField(
         verbose_name="Numero máximo de usos", default=0
     )
-    pdf = models.FileField(_('PDF'),
-                           upload_to='tickets/pdf', null=True, blank=True)
+    pdf = models.FileField(
+        _('PDF'),
+        upload_to=get_upload_path('tickets/pdf'), null=True, blank=True)
 
     def get_code(self):
         return settings.HASHIDS.encode(self.id)

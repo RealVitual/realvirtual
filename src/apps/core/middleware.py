@@ -1,7 +1,6 @@
 
 
 import operator
-import re
 from .utils import site_domain_list
 from src.apps.companies.models import Company
 from django.utils.deprecation import MiddlewareMixin

@@ -1,9 +1,16 @@
+import os
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from src.contrib.db.models import BaseModel
 from src.apps.companies.models import Company
 from ckeditor.fields import RichTextField
 from django.template.defaultfilters import slugify
+from django.conf import settings
+
+
+def get_upload_path(internal_folder):
+    return os.path.join(
+      "%s/%s/" % (settings.BUCKET_FOLDER_NAME, internal_folder))
 
 
 class Event(BaseModel):
@@ -18,7 +25,7 @@ class Event(BaseModel):
         _('description'), null=True, blank=True)
     main_img = models.ImageField(
         _('Imagen Principal'),
-        upload_to='main_image', null=True, blank=True)
+        upload_to=get_upload_path('main_image'), null=True, blank=True)
     video_url = models.URLField(
         _('Video URL'), blank=True, null=True)
     slug = models.SlugField(
@@ -56,7 +63,7 @@ class Exhibitor(BaseModel):
     description = models.TextField(
         _('Descripcion'), blank=True)
     image = models.ImageField(
-        _('Imagen'), upload_to='exhibitors/', blank=True,
+        _('Imagen'), upload_to=get_upload_path('exhibitors'), blank=True,
         null=True)
     link = models.CharField(
         _('Enlace'), blank=True, max_length=500)
@@ -85,7 +92,7 @@ class Schedule(BaseModel):
     exhibitors = models.ManyToManyField(
         Exhibitor, related_name='schedule_exhibitors', blank=True, null=True)
     image = models.ImageField(
-        _('Imagen'), upload_to='schedules/', blank=True,
+        _('Imagen'), upload_to=get_upload_path('schedules'), blank=True,
         null=True)
 
     class Meta:

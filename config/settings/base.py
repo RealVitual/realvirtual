@@ -61,6 +61,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'ckeditor',
+    'storages'
     ]
 
 LOCAL_APPS = [
@@ -154,7 +155,7 @@ MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = str(APPS_DIR.path('media'))
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'  # noqa 501
-# DEFAULT_FILE_STORAGE = 'src.apps.core.storage.MediaStorage'
+DEFAULT_FILE_STORAGE = 'src.apps.core.storage.MediaStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -183,3 +184,4 @@ AWS_SECRET_ACCESS_KEY = env.get_value(
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME  # noqa 501
 AWS_S3_SECURE_URLS = True
 BUCKET_FOLDER_NAME = env.get_value('BUCKET_FOLDER_NAME', str, "")
+AWS_DEFAULT_ACL = 'public-read'

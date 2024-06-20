@@ -50,7 +50,7 @@ class HomePage(TimeStampedModel):
         Company, related_name="home_company",
         on_delete=models.CASCADE, null=True)
     home_banner = models.ImageField(
-            _('Home Banner'), upload_to='banner', null=True, blank=True)
+            _('Home Banner'), upload_to=get_upload_path('banner'), null=True, blank=True)
     home_video_url = models.CharField(
             _('Home Video Url'), max_length=255, null=True, blank=True)
     first_title = models.CharField(

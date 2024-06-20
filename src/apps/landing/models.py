@@ -1,9 +1,16 @@
+import os
+from django.conf import settings
 from django.db import models
 from uuid import uuid4
 from django.utils.translation import gettext_lazy as _
 from src.contrib.db.models import BaseModel
 from src.apps.companies.models import Company
 from src.apps.users.models import User
+
+
+def get_upload_path(internal_folder):
+    return os.path.join(
+      "%s/%s/" % (settings.BUCKET_FOLDER_NAME, internal_folder))
 
 
 class Sponsor(BaseModel):
@@ -17,7 +24,7 @@ class Sponsor(BaseModel):
         _('Name'), max_length=255, blank=True)
     image = models.ImageField(
         _('Imagen'),
-        upload_to='sponsors', null=True, blank=True)
+        upload_to=get_upload_path('sponsors'), null=True, blank=True)
 
     class Meta:
         verbose_name = _("Sponsor")
@@ -38,7 +45,7 @@ class Video(BaseModel):
         _('Name'), max_length=255, blank=True)
     image = models.ImageField(
         _('Imagen'),
-        upload_to='sponsors', null=True, blank=True)
+        upload_to=get_upload_path('videos'), null=True, blank=True)
     description = models.TextField(
         _('Descripcion'), blank=True)
     video_url = models.URLField(
@@ -91,11 +98,11 @@ class CredentialCustomer(BaseModel):
         _('names'), null=True, max_length=100, blank=True)
     profile_image = models.ImageField(
         _('Imagen Perfil'),
-        upload_to='profile_img',
+        upload_to=get_upload_path('profile_img'),
         null=True, blank=True)
     credential_img = models.ImageField(
         _('credential'),
-        upload_to='credentials',
+        upload_to=get_upload_path('credentials'),
         null=True, blank=True)
     code = models.CharField(
         verbose_name=_('Codigo de acceso URL'), max_length=255, null=True)
@@ -123,11 +130,11 @@ class CredentialSettings(BaseModel):
         verbose_name=_('Titulo credencial'), max_length=255, null=True)
     image_credential = models.ImageField(
         _('Imagen Fondo'),
-        upload_to='credential',
+        upload_to=get_upload_path('credentials_backgrounds'),
         null=True, blank=True)
     default_avatar = models.ImageField(
         _('Default Avatar'),
-        upload_to='avatars',
+        upload_to=get_upload_path('avatars'),
         null=True, blank=True)
 
     html_code = models.TextField('Código HTML', blank=True)
@@ -153,7 +160,7 @@ class Question(BaseModel):
     name = models.CharField(_('Nombre'), max_length=255)
     image = models.FileField(
         _('Imagen icon'),
-        upload_to=('icons'),
+        upload_to=get_upload_path('icons'),
         null=True,
         blank=True)
 

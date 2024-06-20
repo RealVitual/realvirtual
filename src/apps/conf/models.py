@@ -1,16 +1,22 @@
+import os
 from django.db import models
 from django.db.models import JSONField
 from django.utils.translation import gettext_lazy as _
 from src.contrib.db.models import SingletonModel, BaseModel
 from django.contrib.postgres.fields import ArrayField
-from model_utils.models import TimeStampedModel
+from django.conf import settings
+
+
+def get_upload_path(internal_folder):
+    return os.path.join(
+      "%s/%s/" % (settings.BUCKET_FOLDER_NAME, internal_folder))
 
 
 class CompanySettings(SingletonModel):
     company_name = models.CharField(
         _('Nombre Cliente'), max_length=255, blank=True)
     logo = models.ImageField(
-            _('Logo'), upload_to='settings/', null=True, blank=True)
+            _('Logo'), upload_to=get_upload_path('settings'), null=True, blank=True)
     email = models.CharField(
         _('Email de contacto'), max_length=255, blank=True)
     phone = models.CharField(_('teléfono'), max_length=255, blank=True)
