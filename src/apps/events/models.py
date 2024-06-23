@@ -19,6 +19,8 @@ class Event(BaseModel):
         on_delete=models.CASCADE, null=True)
     name = models.CharField(
         _('Name'), max_length=255, blank=True)
+    subtitle = models.CharField(
+        _('Sub title'), max_length=255, blank=True)
     start_datetime = models.DateTimeField(_('Start Datetime'))
     end_datetime = models.DateTimeField(_('End Datetime'))
     description = RichTextField(

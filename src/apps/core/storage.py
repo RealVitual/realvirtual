@@ -9,13 +9,11 @@ class StaticStorage(S3Boto3Storage):
 
 class MediaStorage(S3Boto3Storage):
     file_overwrite = False
-    print(settings.AWS_ACCESS_KEY_ID)
 
     @property
     def location(self):
         media = 'media'
         location = '{}'.format(media)
-        print(location, 'LOCATION')
         return location
 
     @location.setter

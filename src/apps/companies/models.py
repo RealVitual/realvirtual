@@ -19,6 +19,12 @@ class Company(BaseModel):
     logo = models.ImageField(
             _('Logo'), upload_to=get_upload_path("company"),
             null=True, blank=True)
+    banner = models.ImageField(
+            _('Banner'), upload_to=get_upload_path('banner'),
+            null=True, blank=True)
+    mobile_banner = models.ImageField(
+            _('Mobile Banner'), upload_to=get_upload_path('mobile_banner'),
+            null=True, blank=True)
     main_event_datetime = models.DateTimeField(_('Main event datetime'),
                                                null=True, blank=True)
     main_event_end_datetime = models.DateTimeField(_('Main event datetime'),
@@ -50,7 +56,8 @@ class HomePage(TimeStampedModel):
         Company, related_name="home_company",
         on_delete=models.CASCADE, null=True)
     home_banner = models.ImageField(
-            _('Home Banner'), upload_to=get_upload_path('banner'), null=True, blank=True)
+            _('Home Banner'), upload_to=get_upload_path('banner'),
+            null=True, blank=True)
     home_video_url = models.CharField(
             _('Home Video Url'), max_length=255, null=True, blank=True)
     first_title = models.CharField(
@@ -59,6 +66,12 @@ class HomePage(TimeStampedModel):
             _('Main Title'), max_length=255, null=True, blank=True)
     secondary_title = models.CharField(
             _('Secondary Title'), max_length=255, null=True, blank=True)
+    date_description = models.CharField(
+        _('Date description'), max_length=50, blank=True, null=True
+    )
+    time_description = models.CharField(
+        _('Time description'), max_length=50, blank=True, null=True
+    )
     main_event_title = models.CharField(
         _('Main Event title'), max_length=255, blank=True)
     main_event_description = models.TextField(

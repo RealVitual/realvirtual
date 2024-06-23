@@ -1,4 +1,4 @@
-{% extends "common/_base.html" %}
+{% extends "landing/common/_base.html" %}
 
 {% block cssadicional %}
 {% endblock %}
@@ -12,12 +12,12 @@
         <a href="#" class="gReturn">Regresar</a>
         <div class="b14Top">
             <div class="b14TopLeft">
-                <h1>El Poder de la Data</h1>
-                <h2>Estrategias innovadoras 2024</h2>
+                <h1>{{event.name}}</h1>
+                <h2>{{event.subtitle}}</h2>
             </div>
             <div class="b14TopRight">
-                <h3><img src="{{STATIC_URL}}img/calendar-chat.svg" alt="" width="20">19 de marzo de 2024</h3>
-                <h3>08:30 a 12:30m</h3>
+                <h3><img src="{{STATIC_URL}}img/calendar-chat.svg" alt="" width="20">{{start_date}}</h3>
+                <h3>{{start_time}} a {{end_time}}</h3>
             </div>
         </div>
         <div class="b14Wrap">
@@ -33,7 +33,7 @@
                     <img src="{{STATIC_URL}}img/img-banner-chat.png" width="1920" height="713"  alt="Myimage">
                 </picture>
                 <!-- OPCIÒN CAMPO VIDEO -->
-                <iframe src="https://player.vimeo.com/video/385145267?autoplay=1&muted=1" frameborder="0"></iframe>
+                <iframe src="{{event.video_url}}" frameborder="0"></iframe>
             </div>
             <div class="b14Right">
                 <h3>Chat</h3>

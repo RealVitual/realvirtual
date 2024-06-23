@@ -1,3 +1,4 @@
+import pytz
 from django.shortcuts import render
 from src.apps.companies.models import HomePage
 from django.views.generic import CreateView, View
@@ -19,6 +20,7 @@ from datetime import datetime
 from .utils import record_to_pdf
 from src.apps.tickets.utils import generate_ticket_code
 from storages.backends.s3boto3 import S3Boto3Storage
+from django.conf import settings
 
 
 class HomeView(CreateView):
@@ -46,6 +48,7 @@ class HomeView(CreateView):
             sponsors = Sponsor.objects.filter(
                 is_active=True, company=company).order_by('position')
             context = {
+                'company': company,
                 'header': True,
                 'form_register': self.get_form(),
                 'form_login': LoginForm(initial=dict(company=request.company)),
@@ -133,17 +136,33 @@ def confirm_register(request):
 
 
 class EventsView(View):
-    template_name = "landing/eventos-listado.html"
+    template_name = "landing/evento-detalle.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        self.user = request.user
+        return super(EventsView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, **kwargs):
         events = []
-        # if request.company:
-        #     company = request.company
-        #     events = Event.objects.filter(
-        #         is_active=True, company=company).order_by('position')
+        if request.company:
+            company = request.company
+            events = Event.objects.filter(
+                is_active=True, company=company).order_by('start_datetime')
+            videos = Video.objects.filter(
+                is_active=True, company=company).order_by('position')
+            sponsors = Sponsor.objects.filter(
+                is_active=True, company=company).order_by('position')
+            home_page = HomePage.objects.get(company=company)
+
         context = {
+            'home_page': home_page,
+            'company': company,
             'header': True,
-            # 'events': events,
+            'events': events,
+            'videos': videos,
+            'sponsors': sponsors
         }
         return render(request, self.template_name, context)
 
@@ -346,3 +365,56 @@ def login_access(request):
 
         return HttpResponse(
             json.dumps(response_data), content_type="application/json")
+
+
+class EventTransmissionView(View):
+    template_name = "landing/chat.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        self.user = request.user
+        return super(EventTransmissionView, self).dispatch(request, *args, **kwargs) # noqa
+
+    def get(self, request, **kwargs):
+        months = {
+            "January": "Enero", "February": "Febrero",
+            "March": "Marzo", "April": "Abril",
+            "May": "Mayo", "June": "Junio", "July": "Julio",
+            "August": "Agosto", "September": "Setiembre",
+            "October": "Octubre", "November": "Noviembre",
+            "December": "Diciembre"
+        }
+        hour_code = {
+            "PM": "p.m.", "AM": "a.m."
+        }
+        days = {
+            "Sunday": "Domingo", "Monday": "Lunes",
+            "Tuesday": "Martes", "Wednesday": "Miércoles",
+            "Thursday": "Jueves", "Friday": "Viernes",
+            "Saturday": "Sábado"
+        }
+        event = []
+        context = dict()
+        slug = self.kwargs['slug']
+        if request.company:
+            company = request.company
+            event = Event.objects.get(
+                slug=slug, company=company)
+            date = event.start_datetime.astimezone(pytz.timezone(settings.TIME_ZONE)) # noqa
+            end_date = event.end_datetime.astimezone(pytz.timezone(settings.TIME_ZONE)) # noqa
+            month = months.get(date.strftime("%B"))
+            day = days.get(date.strftime("%A"))
+            h_code = date.strftime("%p")
+            h_code = hour_code.get(h_code)
+            start_date = date.strftime("{} %d de {} %Y".format(day, month.lower())) # noqa
+            start_time = date.strftime("%I:%M {}".format(h_code))
+            end_time = end_date.strftime("%I:%M {}".format(h_code))
+            context = {
+                'start_date': start_date,
+                'start_time': start_time,
+                'end_time': end_time,
+                'company': company,
+                'event': event,
+            }
+        return render(request, self.template_name, context)

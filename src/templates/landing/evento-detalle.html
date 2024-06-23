@@ -1,7 +1,7 @@
-{% extends "common/_base.html" %}
+{% extends "landing/common/_base.html" %}
 
 {% block cssadicional %}
-<link rel="stylesheet" href="{{STATIC_URL}}js/swiper/swiper-bundle.min.css">
+<link rel="stylesheet" href="/static/web/js/swiper/swiper-bundle.min.css">
 {% endblock %}
 
 {% block classbody %}{% endblock %}
@@ -9,17 +9,14 @@
 {% block content %}
 
 
-<!-- {% for row in "5"|get_range %}
-{% endfor %} -->
-
 <section class="b1 scrollWrap pageEventoDetalle">
     <picture class="imgCover">
         <!-- imagen mobile -->
-        <source srcset="{{STATIC_URL}}img/evento-detalle.png" media="(max-width: 767px)">
+        <source srcset="{{company.mobile_banner.url}}" media="(max-width: 767px)">
         <!-- imagen desktop -->
-        <source srcset="{{STATIC_URL}}img/evento-detalle.png" media="(max-width: 768px)">
+        <source srcset="{{company.banner.url}}" media="(max-width: 768px)">
         <!-- imagen desktop -->
-        <img src="{{STATIC_URL}}img/evento-detalle.png" width="1920" height="713"  alt="Myimage">
+        <img src="{{company.banner.url}}" width="1920" height="713"  alt="Myimage">
     </picture>
     <!--
         Tres posiciones verticales
@@ -27,13 +24,14 @@
     -->
     <div class="grilla f center jcfs">
         <div class="b1Info top">
-            <h2 class="scrollItem">Evento</h2>
-            <h1 class="scrollItem">El poder de la data</h1>
-            <h3 class="scrollItem">Estrategias innovadoras en publicidad</h3>
+            <h2 class="scrollItem">{{home_page.first_title}}</h2>
+            <h1 class="scrollItem">{{home_page.main_title}}</h1>
+            <h3 class="scrollItem">{{home_page.secondary_title}}</h3>
         </div>
     </div>
 </section>
 
+{% comment %}
 <section class="b9">
     <div class="grilla f aic jcsb">
         <div class="b9Item f aifs jcfs">
@@ -74,30 +72,26 @@
         </div>
     </div>
 </section>
+{% endcomment %}
 
 <section class="b3 f aic jcsb scrollWrap anclaBlock" id="acerca">
     <div class="b3Left f aifs jcfs scrollItem">
         <div class="b3ContentLeft">
-            <h3 class="gTitle">Acerca del evento</h3>
+            <h3 class="gTitle">{{home_page.main_event_title}}</h3>
             <div class="gParrafo">
-                <p>Durante el evento vamos a abarcar lo siguientes temas: Cambio de paradigma con la data, personalización de audiencias digitales y creatividad impulsada por datos.</p>
+                {{home_page.main_event_description|safe}}
             </div>
             <ul class="b3List">
-                {% for row in "5"|get_range %}
+                {% for row in home_page.get_items %}
                     <li class="b3ItemList">
                         <!-- Cambiar logica al click con datas -->
                         <a href="#" class="b3ClickToggle" data-color-initial="#008AC9" data-color-active="#17181B">
-                            Personalización de audiencias digitales
+                            {{row.title}}
                             <span class="circleLessMore"></span>
                         </a>
                         <div class="b3Info">
                             <div class="gParrafo">
-                                <p>El un cambio de paradigma es, no sólo una alteración de los modelos teóricos que generan consenso científico, sino también un cambio en la visión global acerca de una determinada disciplina o ciencia.</p>
-                                <ul>
-                                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, quaerat? Odit </li>
-                                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, quaerat? Odit </li>
-                                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, quaerat? Odit </li>
-                                </ul>
+                                {{row.description|safe}}
                             </div>
                         </div>
                     </li>
@@ -108,11 +102,11 @@
     <div class="b3Right scrollItem">
         <picture class="imgCover">
             <!-- imagen mobile -->
-            <source srcset="{{STATIC_URL}}img/b3_img_fondo.png" media="(max-width: 767px)">
+            <source srcset="/static/web/img/b3_img_fondo.png" media="(max-width: 767px)">
             <!-- imagen desktop -->
-            <source srcset="{{STATIC_URL}}img/b3_img_fondo.png" media="(max-width: 768px)">
+            <source srcset="/static/web/img/b3_img_fondo.png" media="(max-width: 768px)">
             <!-- imagen desktop -->
-            <img src="{{STATIC_URL}}img/b3_img_fondo.png" width="1920" height="713"  alt="Myimage">
+            <img src="/static/web/img/b3_img_fondo.png" width="1920" height="713"  alt="Myimage">
         </picture>
         <a href="#" class="clickVideo popup " data-urlvideo="https://www.youtube.com/watch?v=l6_nRqIz_9o">
             <span>Ver video</span>
@@ -131,69 +125,81 @@
             </div>
             <!-- Elemento azul hacerlo div  -->
             <div class="b4Tabs f aic jcfe">
+                {% for event in events %}
                 <a href="" class="b4ClickTab">
+                    <h5>Dia 01<span>19 de Marzo</span></h5>
+                    <div class="lineActive" style="background:#008AC9;"></div>
+                </a>
+                {% endfor %}
+                {% comment %} <a href="" class="b4ClickTab">
                     <h5>Dia 01<span>19 de Marzo</span></h5>
                     <div class="lineActive" style="background:#008AC9;"></div>
                 </a>
                 <a href="" class="b4ClickTab">
                     <h5>Dia 01<span>19 de Diciembre</span></h5>
                     <div class="lineActive" style="background:#008AC9;"></div>
-                </a>
+                </a> {% endcomment %}
                 <div class="lineColorFull" style="background:#D7E9F0;"></div>
             </div>
         </div>
         <div class="b4ContentWrap scrollItem">
-            {% for row in "2"|get_range %}
+            {% for event in events %}
                 <!-- Listado de eventos por fecha -->
                 <div class="b4Wrap b4InfoTab">
-                    {% for row in "2"|get_range %}
-                        <!-- Si el evento no tiene imagen se agrega la clase "noImage" -->
-                        <div class="b4Item f aic jcsb noImage">
-                            <div class="b4ItemLeft f aifs jcfs">
-                                <div class="b4Img pr">
-                                    <picture class="imgCover">
-                                        <!-- imagen mobile -->
-                                        <source srcset="{{STATIC_URL}}img/b4-img1.png" media="(max-width: 767px)">
-                                        <!-- imagen desktop -->
-                                        <source srcset="{{STATIC_URL}}img/b4-img1.png" media="(max-width: 768px)">
-                                        <!-- imagen desktop -->
-                                        <img src="{{STATIC_URL}}img/b4-img1.png" width="1920" height="713"  alt="Myimage">
-                                    </picture>
-                                </div>
-                                <div class="b4Info">
-                                    <h3>08:30 -09:00</h3>
-                                    <h4>Bienvenida</h4>
-                                    <div class="gParrafo">
-                                        <p>Palabras de bienvenida a cargo de la presidente de la CCL</p>
+                    {% for schedule in event.get_schedules %}
+                        {% if schedule.description %}
+                            <!-- Si el evento no tiene imagen se agrega la clase "noImage" -->
+                            <div class="b4Item f aic jcsb noImage">
+                                <div class="b4ItemLeft f aifs jcfs">
+                                    <div class="b4Img pr">
+                                        <picture class="imgCover">
+                                            <!-- imagen mobile -->
+                                            <source srcset="/static/web/img/b4-img1.png" media="(max-width: 767px)">
+                                            <!-- imagen desktop -->
+                                            <source srcset="/static/web/img/b4-img1.png" media="(max-width: 768px)">
+                                            <!-- imagen desktop -->
+                                            <img src="/static/web/img/b4-img1.png" width="1920" height="713"  alt="Myimage">
+                                        </picture>
                                     </div>
-                                    <!-- Existe dos opcions de "Ver en vivo o Volver a ver" -->
-                                    <a href="#" class="b4Envivo">En vivo <img src="{{STATIC_URL}}img/live.svg" alt=""></a>
-                                    <!-- <a href="#" class="b4VolverVer a ver">Volver a ver</a> -->
+                                    <div class="b4Info">
+                                        {% comment %} <h3>08:30 -09:00</h3> {% endcomment %}
+                                        <h3>{{schedule.start_time}} - {{schedule.end_time}}</h3>
+                                        <h4>{{schedule.name}}</h4>
+                                        <div class="gParrafo">
+                                            <p>Palabras de bienvenida a cargo de la presidente de la CCL</p>
+                                        </div>
+                                        <!-- Existe dos opcions de "Ver en vivo o Volver a ver" -->
+                                        {% comment %} <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a> {% endcomment %}
+                                        <!-- <a href="#" class="b4VolverVer a ver">Volver a ver</a> -->
+                                    </div>
+                                </div>
+                                <div class="b4ItemRight">
+                                    <ul class="b4PersonsExpoList">
+                                        {% for row in "12345678901"|make_list %}
+                                        <li class="">
+                                            <a href="" class="b4OpenPopupPerson"
+                                                data-name="Rosa Bueno"
+                                                data-cargo="Presidenta / Camara de Comercio de Lima"
+                                                data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
+                                                data-url="urlprueba"
+                                                >
+                                                <h6><img src="/static/web/img/expositor.png" alt="" width="16">Ronald de la Cruz Mendoza</h6>
+                                                <span>- CCL</span>
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="b4ItemRight">
-                                <ul class="b4PersonsExpoList">
-                                    {% for row in "12"|get_range %}
-                                    <li class="">
-                                        <a href="" class="b4OpenPopupPerson"
-                                            data-name="Rosa Bueno"
-                                            data-cargo="Presidenta / Camara de Comercio de Lima"
-                                            data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
-                                            data-url="urlprueba"
-                                            >
-                                            <h6><img src="{{STATIC_URL}}img/expositor.png" alt="" width="16">Ronald de la Cruz Mendoza</h6>
-                                            <span>- CCL</span>
-                                        </a>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+                        {% else %}
+                        <div class="b4Break">
+                            <h3>{{schedule.start_time}} - {{schedule.end_time}} <span>{{schedule.name}}</span></h3>
                         </div>
+                        {% endif %}
+
                     {% endfor %}
                     <!-- Condicionar si existe o no break -->
-                    <div class="b4Break">
-                        <h3>10:30 -11:00 <span>Coffee Break</span></h3>
-                    </div>
+
                 </div>
             {% endfor %}
         </div>
@@ -205,11 +211,11 @@
     <div class="b4PopupImage">
         <picture class="imgCover">
             <!-- imagen mobile -->
-            <source srcset="{{STATIC_URL}}img/b4ImagePopup.png" media="(max-width: 767px)">
+            <source srcset="/static/web/img/b4ImagePopup.png" media="(max-width: 767px)">
             <!-- imagen desktop -->
-            <source srcset="{{STATIC_URL}}img/b4ImagePopup.png" media="(max-width: 768px)">
+            <source srcset="/static/web/img/b4ImagePopup.png" media="(max-width: 768px)">
             <!-- imagen desktop -->
-            <img src="{{STATIC_URL}}img/b4ImagePopup.png" width="1920" height="713"  alt="Myimage">
+            <img src="/static/web/img/b4ImagePopup.png" width="1920" height="713"  alt="Myimage">
         </picture>
     </div>
     <div class="b4InfoPopup f aic jcfs">
@@ -219,7 +225,7 @@
             <!-- Si la info crece se genera un scroll -->
             <div class="gParrafo b4PopupText">
             </div>
-            <a href="#" class="b4linkedin">Ver perfil en Linkedin <img src="{{STATIC_URL}}img/arrow.svg" alt="" width="12"></a>
+            <a href="#" class="b4linkedin">Ver perfil en Linkedin <img src="/static/web/img/arrow.svg" alt="" width="12"></a>
         </div>
     </div>
 </div>
@@ -231,26 +237,28 @@
         <h3 class="gTitle white">Galería del evento</h3>
         <div class="b5Swiper swiper-container scrollItem swiper" data-initial="3">
             <div class="b5Wrap swiper-wrapper">
-                {% for row in "4"|get_range %}
+                {% for video in videos %}
                 <a  href="#" class="b5Item swiper-slide zoomImageHover">
                     <div class="b5Img">
                         <picture class="imgCover">
                             <!-- imagen mobile -->
-                            <source srcset="{{STATIC_URL}}img/b5_img_1.png" media="(max-width: 767px)">
+                            <source srcset="{{video.image.url}}" media="(max-width: 767px)">
                             <!-- imagen desktop -->
-                            <source srcset="{{STATIC_URL}}img/b5_img_1.png" media="(max-width: 768px)">
+                            <source srcset="{{video.image.url}}" media="(max-width: 768px)">
                             <!-- imagen desktop -->
-                            <img src="{{STATIC_URL}}img/b5_img_1.png" width="1920" height="713"  alt="Myimage">
+                            <img src="{{video.image.url}}" width="1920" height="713"  alt="Myimage">
                         </picture>
-                        <div class="clickVideo popup " data-urlvideo="https://www.youtube.com/watch?v=l6_nRqIz_9o">
-                            <span>Ver video</span>
-                            <!-- linea circular animada administrable -->
-                            <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
-                        </div> 
+                        {% if video.video_url %}
+                            <div class="clickVideo popup " data-urlvideo="{{video.video_url}}">
+                                <span>Ver video</span>
+                                <!-- linea circular animada administrable -->
+                                <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="b5Text">
                         <div class="gParrafo">
-                            <p>Lorem ipsum dolor sit amet consectetur. Et. Lorem ipsum dolor sit amet consectetur. Et.</p>
+                            <p>{{video.description}}</p>
                         </div>
                     </div>
                 </a>
@@ -270,51 +278,32 @@
             <h3 class="gTitle tac">Con la participación de</h3>
         </div>
         <div class="b6Wrap">
-            <div class="b6Item">
-                <figure>
-                    <!-- que la medida sea administrable -->
-                    <img src="{{STATIC_URL}}img/b6_img1.png" alt="" width="180">
-                </figure>
-            </div>
-            <div class="b6Item">
-                <figure>
-                    <!-- que la medida sea administrable -->
-                    <img src="{{STATIC_URL}}img/b6_img2.png" alt="" width="180">
-                </figure>
-            </div>
-            <div class="b6Item">
-                <figure>
-                    <!-- que la medida sea administrable -->
-                    <img src="{{STATIC_URL}}img/b6_img3.png" alt="" width="180">
-                </figure>
-            </div>
-            <div class="b6Item">
-                <figure>
-                    <!-- que la medida sea administrable -->
-                    <img src="{{STATIC_URL}}img/b6_img4.png" alt="" width="180">
-                </figure>
-            </div>
-            <div class="b6Item">
-                <figure>
-                    <!-- que la medida sea administrable -->
-                    <img src="{{STATIC_URL}}img/b6_img5.png" alt="" width="100">
-                </figure>
-            </div>
-            <div class="b6Item">
-                <figure>
-                    <!-- que la medida sea administrable -->
-                    <img src="{{STATIC_URL}}img/b6_img6.png" alt="" width="100">
-                </figure>
-            </div>
-            <div class="b6Item">
-                <figure>
-                    <!-- que la medida sea administrable -->
-                    <img src="{{STATIC_URL}}img/b6_img7.png" alt="" width="100">
-                </figure>
-            </div>
+            {% for sponsor in sponsors %}
+                <div class="b6Item">
+                    <figure>
+                        <!-- que la medida sea administrable -->
+                        <img src="{{sponsor.image.url}}" alt="" width="100">
+                    </figure>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </section>
+
+<div class="b16Popup">
+    <!-- <a href="#" class="icon-close"></a> -->
+    <div class="b16PopupContent">
+        <h3 class="gTitle">Networking</h3>
+        <div class="gParrafo">
+            <p>Usted ya está compartiendo sus datos.</p>
+        </div>
+        <div class="b16Buttons">
+            <a href="#" class="gButton b16AceptNet">Aceptar</a>
+            <a href="#" class="gButton b16CancelNet">Cancelar</a>
+        </div>
+    </div>
+</div>
+
 
 <section class="b7 anclaBlock" id="encuesta">
     <!-- Que todo sea -->
@@ -325,7 +314,7 @@
                 <p>Por favor, ayúdanos a mejorar nuestra atención completando la siguiente encuesta.</p>
             </div>
         </div>
-        <span><img src="{{STATIC_URL}}img/arrow.svg" alt=""></span>
+        <span><img src="/static/web/img/arrow.svg" alt=""></span>
     </a>
 </section>
 
@@ -333,16 +322,16 @@
     <div class="grilla">
         <h3 class="gTitle scrollItem">Más Eventos</h3>
         <div class="b8Wrap f aic jcc">
-            {% for row in "3"|get_range %}
+            {% for row in "123456"|make_list %}
             <a href="#" class="b8Item scrollItem zoomImageHover">
                 <div class="b8Img ">
                     <picture class="imgCover">
                         <!-- imagen mobile -->
-                        <source srcset="{{STATIC_URL}}img/b8_img1.png" media="(max-width: 767px)">
+                        <source srcset="/static/web/img/b8_img1.png" media="(max-width: 767px)">
                         <!-- imagen desktop -->
-                        <source srcset="{{STATIC_URL}}img/b8_img1.png" media="(max-width: 768px)">
+                        <source srcset="/static/web/img/b8_img1.png" media="(max-width: 768px)">
                         <!-- imagen desktop -->
-                        <img src="{{STATIC_URL}}img/b8_img1.png" width="1920" height="713"  alt="Myimage">
+                        <img src="/static/web/img/b8_img1.png" width="1920" height="713"  alt="Myimage">
                     </picture>
                 </div>
                 <div class="b8Info ">
@@ -350,30 +339,30 @@
                     <div class="b8InfoWrap f aic jcsb">
                         <div class="b8Date f aifs jcfs  fdc">
                             <div class="b8DateItem f aifs jcfs">
-                                <img src="{{STATIC_URL}}img/calendario-black.svg" alt="" width="20">
+                                <img src="/static/web/img/calendario-black.svg" alt="" width="20">
                                 <h4>19 de marzo de 2024<span>08:30 a 12:30</span></h4>
                             </div>
                             <div class="b8DateItem f aifs jcfs">
-                                <img src="{{STATIC_URL}}img/address.svg" alt="" width="20">
+                                <img src="/static/web/img/address.svg" alt="" width="20">
                                 <h4>Camara de Comercio de Lima</span></h4>
                             </div>
                         </div>
                         <figure>
-                            <img src="{{STATIC_URL}}img/b8circleArrow.svg" alt="" width="74">
+                            <img src="/static/web/img/b8circleArrow.svg" alt="" width="74">
                         </figure>
                     </div>
                 </div>
             </a>
             {% endfor %}
         </div>
-        <a href="#" class="gButton">Más eventos</a>
+        {% comment %} <a href="#" class="gButton">Más eventos</a> {% endcomment %}
     </div>
 </section>
 
 {% endblock %}
 
 {% block jsfinal %}
-<script src="{{STATIC_URL}}js/swiper/swiper-bundle.min.js"></script>
+<script src="/static/web/js/swiper/swiper-bundle.min.js"></script>
 <script type="text/javascript">
 
     //bloque 3 - js
@@ -482,13 +471,29 @@
                     }
                 }
             });
-            
         };
         breakpoint.addListener(breakpointChecker);
         breakpointChecker();
     }
-    
 
-    
+
+    if(document.getElementsByClassName('b16')[0]){
+        let elb16OpenPopup = document.getElementsByClassName('b16OpenPopup')[0]
+        let elb16Popup = document.getElementsByClassName('b16Popup')[0]
+        let elb16CancelNet = document.getElementsByClassName('b16CancelNet')[0]
+        elb16OpenPopup.addEventListener('click',function(e){
+            e.preventDefault();
+            elb16Popup.classList.add('active')
+            OVERLAY.classList.add('active')
+            OVERLAY.style.zIndex = "400"
+        })
+        elb16CancelNet.addEventListener('click',function(e){
+            e.preventDefault();
+            elb16Popup.classList.remove('active')
+            OVERLAY.classList.remove('active')
+            OVERLAY.removeAttribute('style')
+        })
+    }
+
 </script>
 {% endblock %}

@@ -3,13 +3,14 @@ from .views import (
     HomeView, EventsView, GenerateCredentialView, validate_register,
     confirm_register, SelectPreferencesView, TicketView, LogoutView,
     save_preferences_answers, AfterCreatedCredentialView, CustomerCredential,
-    login_access)
+    login_access, EventTransmissionView)
 
 app_name = 'landing'
 
 urlpatterns = [
      path('', HomeView.as_view(), name='home'),
-     path('evento', EventsView.as_view(), name='event'),
+     path('evento/', EventsView.as_view(), name='event'),
+     path('transmision/<slug>/', EventTransmissionView.as_view(), name='transmission'), # noqa
      path('logout/', LogoutView.as_view(), name='logout'),
      path('validate_register/', validate_register, name='validate_register'),
      path('confirm_register/', confirm_register, name='confirm_register'),

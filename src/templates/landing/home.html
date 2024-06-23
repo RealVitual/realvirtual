@@ -12,38 +12,42 @@
 <section class="b1 scrollWrap">
     <picture class="imgCover">
         <!-- imagen mobile -->
-        <source srcset="/static/web/img/imagenBannerDesktop.png" media="(max-width: 767px)">
+        <source srcset="{{company.mobile_banner.url}}" media="(max-width: 767px)">
         <!-- imagen desktop -->
-        <source srcset="{{home_page.home_banner.url}}" media="(max-width: 768px)">
+        <source srcset="{{company.banner.url}}" media="(max-width: 768px)">
         <!-- imagen desktop -->
-        <img src="{{home_page.home_banner.url}}" width="1920" height="713"  alt="Myimage">
+        <img src="{{company.banner.url}}" width="1920" height="713"  alt="Myimage">
     </picture>
     <!--
         Tres posiciones verticales
         Agregar la clase : top , center, bottom
     -->
-    {% comment %} <div class="grilla f center jcfs">
+    <div class="grilla f center jcfs">
         <div class="b1Info top">
             <h2 class="scrollItem">{{home_page.first_title}}</h2>
             <h1 class="scrollItem">{{home_page.main_title}}</h1>
             <h3 class="scrollItem">{{home_page.secondary_title}}</h3>
-            <a href="#" class="clickVideo popup scrollItem" data-urlvideo="{{home_page.home_video_url}}">
-                <span>Ver video</span>
-                <!-- linea circular animada administrable -->
-                <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
-            </a>
+            {% if home_page.home_video_url %}
+                <a href="#" class="clickVideo popup scrollItem" data-urlvideo="{{home_page.home_video_url}}">
+                    <span>Ver video</span>
+                    <!-- linea circular animada administrable -->
+                    <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
+                </a>
+            {% endif %}
             <div class="b1Date f aifs jcfs scrollItem">
                 <div class="b1DateItem f aifs jcfs">
                     <img src="/static/web/img/calendario.svg" alt="" width="20">
-                    <h4>19 de marzo de 2024<span>08:30 a 12:30</span></h4>
+                <h4>{{home_page.date_description}}<span>{{home_page.time_description}}</span>{{company.access_type}}</h4>
                 </div>
-                <div class="b1DateItem f aifs jcfs">
-                    <img src="/static/web/img/virtual.svg" alt="" width="20">
-                    <h4>Virtual<span>Zoom meetings</span></h4>
-                </div>
+                {% if not company.in_person %}
+                    <div class="b1DateItem f aifs jcfs">
+                        <img src="/static/web/img/virtual.svg" alt="" width="20">
+                        <h4>Virtual<span>Zoom meetings</span></h4>
+                    </div>
+                {% endif %}
             </div>
         </div>
-    </div> {% endcomment %}
+    </div>
 </section>
 
 <section class="b3 f aic jcsb scrollWrap anclaBlock" id="acerca">
