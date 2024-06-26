@@ -55,6 +55,40 @@ class Video(BaseModel):
         verbose_name = _("Video")
         verbose_name_plural = _("Videos")
 
+    def __str__(self):
+        if self.name:
+            return self.name
+        return self.description
+
+
+class ExternalEvent(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="external_events",
+        on_delete=models.CASCADE, null=True)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1)
+    name = models.CharField(
+        _('Name'), max_length=255, blank=True)
+    event_date = models.CharField(
+        _('Event date'), max_length=255, blank=True)
+    event_time = models.CharField(
+        _('Event time'), max_length=255, blank=True)
+    addreess = models.CharField(
+        _('Address'), max_length=255, blank=True)
+    image = models.ImageField(
+        _('Imagen'),
+        upload_to=get_upload_path('videos'), null=True, blank=True)
+    link = models.CharField(
+        _('Link'), max_length=255, blank=True)
+
+    class Meta:
+        verbose_name = _("External event")
+        verbose_name_plural = _("External events")
+
+    def __str__(self):
+        return self.name
+
 
 class CustomerInvitedLanding(BaseModel):
     company = models.ForeignKey(

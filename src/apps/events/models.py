@@ -1,4 +1,5 @@
 import os
+import pytz
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from src.contrib.db.models import BaseModel
@@ -50,6 +51,20 @@ class Event(BaseModel):
     def get_schedules(self):
         return self.schedules.filter(is_active=True).order_by('start_time')
 
+    def get_date(self):
+        months = {
+            "January": "Enero", "February": "Febrero",
+            "March": "Marzo", "April": "Abril",
+            "May": "Mayo", "June": "Junio", "July": "Julio",
+            "August": "Agosto", "September": "Setiembre",
+            "October": "Octubre", "November": "Noviembre",
+            "December": "Diciembre"
+        }
+        date = self.start_datetime.astimezone(pytz.timezone(settings.TIME_ZONE)) # noqa
+        month = months.get(date.strftime("%B"))
+        start_date = date.strftime("%d de {}".format(month))
+        return start_date
+
 
 class Exhibitor(BaseModel):
     company = models.ForeignKey(
@@ -96,6 +111,8 @@ class Schedule(BaseModel):
     image = models.ImageField(
         _('Imagen'), upload_to=get_upload_path('schedules'), blank=True,
         null=True)
+    video_url = models.URLField(
+        _('Video URL'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Horario')
@@ -104,3 +121,6 @@ class Schedule(BaseModel):
 
     def __str__(self):
         return "{}".format(self.name)
+
+    def get_exhibitors(self):
+        return self.exhibitors.all()

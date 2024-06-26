@@ -9,7 +9,7 @@
 {% block content %}
 
 
-<section class="b1 scrollWrap pageEventoDetalle">
+<section class="b1 scrollWrap">
     <picture class="imgCover">
         <!-- imagen mobile -->
         <source srcset="{{company.mobile_banner.url}}" media="(max-width: 767px)">
@@ -27,6 +27,25 @@
             <h2 class="scrollItem">{{home_page.first_title}}</h2>
             <h1 class="scrollItem">{{home_page.main_title}}</h1>
             <h3 class="scrollItem">{{home_page.secondary_title}}</h3>
+            {% if home_page.home_video_url %}
+                <a href="#" class="clickVideo popup scrollItem" data-urlvideo="{{home_page.home_video_url}}">
+                    <span>Ver video</span>
+                    <!-- linea circular animada administrable -->
+                    <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
+                </a>
+            {% endif %}
+            <div class="b1Date f aifs jcfs scrollItem">
+                <div class="b1DateItem f aifs jcfs">
+                    <img src="/static/web/img/calendario.svg" alt="" width="20">
+                <h4>{{home_page.date_description}}<span>{{home_page.time_description}}</span>{{company.access_type}}</h4>
+                </div>
+                {% if not company.in_person %}
+                    <div class="b1DateItem f aifs jcfs">
+                        <img src="/static/web/img/virtual.svg" alt="" width="20">
+                        <h4>Virtual<span>Zoom meetings</span></h4>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </section>

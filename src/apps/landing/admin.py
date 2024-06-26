@@ -1,13 +1,18 @@
 from django.contrib import admin
 from .models import (Video, Sponsor, CredentialCustomer,
                      CredentialSettings, UserAnswer, ChoiceQuestion,
-                     Question, TicketSettings)
+                     Question, TicketSettings, ExternalEvent)
 
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
     list_display = ('position', 'company')
-    # list_editable = ('name', 'company')
+    list_filter = ('company', )
+
+
+@admin.register(ExternalEvent)
+class ExternalEventAdmin(admin.ModelAdmin):
+    list_display = ('position', 'name', 'company')
     list_filter = ('company', )
 
 

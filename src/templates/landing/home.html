@@ -103,7 +103,7 @@
             <div class="b4Tabs f aic jcfe">
                 {% for event in events %}
                 <a href="" class="b4ClickTab">
-                    <h5>Dia 01<span>19 de Marzo</span></h5>
+                    <h5>{{event.name}}<span>{{event.get_date}}</span></h5>
                     <div class="lineActive" style="background:#008AC9;"></div>
                 </a>
                 {% endfor %}
@@ -142,24 +142,23 @@
                                         <h3>{{schedule.start_time}} - {{schedule.end_time}}</h3>
                                         <h4>{{schedule.name}}</h4>
                                         <div class="gParrafo">
-                                            <p>Palabras de bienvenida a cargo de la presidente de la CCL</p>
+                                            <p>{{schedule.name}}</p>
                                         </div>
-                                        <!-- Existe dos opcions de "Ver en vivo o Volver a ver" -->
                                         {% comment %} <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a> {% endcomment %}
-                                        <!-- <a href="#" class="b4VolverVer a ver">Volver a ver</a> -->
+                                        <a href="#" class="b4VolverVer a ver">Volver a ver</a>
                                     </div>
                                 </div>
                                 <div class="b4ItemRight">
                                     <ul class="b4PersonsExpoList">
-                                        {% for row in "12345678901"|make_list %}
+                                        {% for exhibitor in schedule.get_exhibitors %}
                                         <li class="">
                                             <a href="" class="b4OpenPopupPerson"
-                                                data-name="Rosa Bueno"
-                                                data-cargo="Presidenta / Camara de Comercio de Lima"
-                                                data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
-                                                data-url="urlprueba"
+                                                data-name="{{exhibitor.name}}"
+                                                data-cargo="{{exhibitor.title}}"
+                                                data-info="{{exhibitor.description}}"
+                                                data-url="{{exhibitor.link}}"
                                                 >
-                                                <h6><img src="/static/web/img/expositor.png" alt="" width="16">Ronald de la Cruz Mendoza</h6>
+                                                <h6><img src="/static/web/img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
                                                 <span>- CCL</span>
                                             </a>
                                         </li>
