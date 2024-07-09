@@ -157,6 +157,7 @@
                                                 data-cargo="{{exhibitor.title}}"
                                                 data-info="{{exhibitor.description}}"
                                                 data-url="{{exhibitor.link}}"
+                                                data-img="{{exhibitor.image.url}}"
                                                 >
                                                 <h6><img src="/static/web/img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
                                                 <span>- CCL</span>
@@ -186,11 +187,12 @@
     <div class="b4PopupImage">
         <picture class="imgCover">
             <!-- imagen mobile -->
-            <source srcset="/static/web/img/b4ImagePopup.png" media="(max-width: 767px)">
+            {% comment %} <source srcset="/static/web/img/b4ImagePopup.png" media="(max-width: 767px)" class="Myimagesource"> {% endcomment %}
+            <source srcset="" media="(max-width: 767px)" class="Myimagesource">
             <!-- imagen desktop -->
-            <source srcset="/static/web/img/b4ImagePopup.png" media="(max-width: 768px)">
+            <source srcset="" media="(max-width: 768px)" class="Myimagesource">
             <!-- imagen desktop -->
-            <img src="/static/web/img/b4ImagePopup.png" width="1920" height="713"  alt="Myimage">
+            <img src="" class="b4Image" width="1920" height="713"  alt="Myimage">
         </picture>
     </div>
     <div class="b4InfoPopup f aic jcfs">
@@ -366,8 +368,9 @@
         let elb4PopupText = document.getElementsByClassName("b4PopupText")[0];
         let elb4linkedin = document.getElementsByClassName("b4linkedin")[0];
         let elb4Popup = document.getElementsByClassName("b4Popup")[0];
+        let elb4Img = document.getElementsByClassName("b4Image")[0];
         let elb4ClosePopup = document.getElementsByClassName("b4ClosePopup")[0];
-
+        console.log(elb4Img, 'elb4Img')
         for(const b4OpenPopupPerson of elb4OpenPopupPerson){
             b4OpenPopupPerson.addEventListener("click",function(e){
                 e.preventDefault();
@@ -378,10 +381,17 @@
                 let getCargo = this.dataset.cargo;
                 let getInfo = this.dataset.info;
                 let getUrl = this.dataset.url;
+                let getImg = this.dataset.img;
 
                 elb4PopupName.innerText = getName;
                 elb4PopupCargo.innerText = getCargo;
                 elb4PopupText.innerHTML = getInfo;
+                elb4Img.src = getImg;
+                const images = document.getElementsByClassName("Myimagesource");
+                console.log(images, 'IMAGES')
+                for (let i = 0; i < images.length; i++) {
+                   images.item(i).srcset = getImg
+                }
                 elb4linkedin.setAttribute("value",getUrl);
             });
         }
