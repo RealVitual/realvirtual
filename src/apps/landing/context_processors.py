@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.urls import resolve
 from src.apps.conf.models import Country
+from src.apps.events.models import Event
 from django.urls import reverse
+from datetime import datetime
+import pytz
 
 
 def main_info(request, **kwargs):
@@ -11,6 +14,16 @@ def main_info(request, **kwargs):
     # print(company_exists, 'COMPANY')
     if request.user.is_authenticated and company_exists:
         print(company_exists, 'COMPANY')
+        is_live = False
+        now = datetime.now().replace(microsecond=0)
+        now = now.astimezone(pytz.utc)
+        events = Event.objects.filter(is_active=True)
+        for event in events:
+            start_date = event.start_datetime
+            end_date = event.end_datetime
+            if now >= start_date and end_date > now:
+                is_live = True
+                break
         user = request.user
         if user.in_person:
             user_url = "select_preferences"
@@ -28,7 +41,8 @@ def main_info(request, **kwargs):
             'STATIC_VERSION': settings.STATIC_VERSION,
             'current_url': current_url,
             "logged_user": user,
-            "user_url": user_url
+            "user_url": user_url,
+            "is_live": is_live
         }
     return {
         'countries': Country.objects.all(),

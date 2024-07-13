@@ -22,9 +22,9 @@
                 <a href="#auspiciador" class="headerAnclaBlock">Auspiciadores <span class="lineActive" style="background:#008ac9;"></span></a>
                 <a href="#networking" class="headerAnclaBlock">Networking <span class="lineActive" style="background:#008ac9;"></span></a>
                 <a href="#encuesta" class="headerAnclaBlock">Encuesta <span class="lineActive" style="background:#008ac9;"></span></a>
-                {% comment %}
-                <a href="#" class=" headerEnVivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
-                {% endcomment %}
+                {% if logged_user and is_live %}
+                    <a href="#" class=" headerEnVivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+                {% endif %}
             {% endif %}
         </div>
         <div class="headerRight f aic jcfe">
