@@ -1,0 +1,241 @@
+.b10
+    height calc(100vh - 100px)
+    .grilla
+        height 100%
+        flexg(center,center)
+    &.pageCredGenerate
+        .b10Left
+            margin-right 60px
+            max-width 490px
+        .gTitle
+            margin-bottom 16px
+        .gParrafo
+            font-size 24px
+            textg(t-400,normal,#000000)
+
+.b10Links
+    margin-top 90px
+
+.b10DownloadCredencial
+    height 52px
+    padding 0px 24px
+    border-radius 100px
+    background #008AC9
+    font-size 16px
+    textg(t-800,normal,#fff)
+    flexg(center,center)
+    img
+        margin-left 8px
+
+.b10VerEvento
+    font-size 16px
+    textg(t-800,normal,#008AC9)
+    text-align center
+    margin-left 32px
+
+
+.b10Left
+    margin-right 140px
+    max-width 350px
+    width 100%
+    .gParrafo
+        margin 16px 0px
+    .gButton
+        max-width 100%
+        width 100%
+        margin-top 24px
+        color #ABABAB
+        background #E5E5E5
+        pointer-events none
+        &.active
+            background #17181B
+            pointer-events: all
+            color #fff
+.b10Omitir
+    font-size 16px
+    textg(t-800,normal,#008AC9)
+    text-align center
+    margin-top 30px
+
+.b10Right
+    width 284px
+    height 350px
+    border-radius 10px
+    overflow hidden
+    position relative
+    padding 15px 10px
+    flexg(center,center)
+.b10ContentInfo
+    position relative
+    z-index 10
+    padding 0px 10px
+    .logo
+        margin auto
+        margin-bottom 10px
+    #result
+        position relative
+        width 110px
+        height 110px
+        margin auto
+        margin auto
+        margin 20px auto
+        width 108px
+        border-radius 50%
+        height auto
+        img
+            width 100%
+            height auto
+    h5
+        font-size 18px
+        textg(t-700,normal,#FFFFFF)
+        text-align center
+    h6
+        font-size 16px
+        textg(t-400,normal,#FFFFFF)
+        text-align center
+        margin-bottom 0px
+
+
+.b10ValidateFile
+    border-radius 8px
+    height 56px
+    padding 0px 16px
+    border 1px solid #219653
+    background #DCEDE3
+    flexg(center,space-between)
+    opacity0()
+    height 0px
+    &.active
+        opacity1()
+        height 56px 
+
+.b10FileNameCheck
+    width calc(100% - 20px)
+    img
+        margin-right 8px
+
+.b10CleanFile
+    width 20px
+
+.b10ContentFile
+    border: 1px dashed #1BBBE9
+    border-radius 8px
+    height 90px
+    flexg(center,center)
+    padding 0px 20px
+    position relative
+    cursor pointer
+    opacity1()
+    &.hide
+        opacity0()
+        height 0px
+    input
+        full()
+        z-index 10
+        opacity 0()
+        cursor pointer
+    h5
+        font-size 14px
+        textg(t-400,normal,#52626F)
+        text-align center
+
+.b10ClosePopup
+    font-size 20px
+    color #000
+    position absolute
+    right 20px
+    top 20px
+
+.b10WrapFile
+    full()
+
+.b10Popup
+    position fixed
+    top 50%
+    transform translateY(-50%)
+    left 0
+    right 0
+    margin auto
+    padding 16px
+    width fit-content
+    background #fff
+    opacity0()
+    z-index 600
+    padding-bottom 30px
+    &.active
+        opacity1()
+    .croppie-container
+        width fit-content
+    .cr-slider-wrap
+        width 100%
+    .cr-slider
+        width 100%
+.b10FileImage
+    margin-bottom 8px
+    img
+        margin-right 6px
+    h4
+        font-size 14px
+        textg(t-600,normal,#008AC9)
+        text-decoration underline
+
+.b10Buttons
+    button
+        height 48px
+        border-radius 100px
+        flexg(center,center)
+        background #008ac9
+        font-size 16px
+        textg(t-700,normal,#fff)
+        border 0px
+        padding 0px 30px
+        margin-right 20px
+        &:last-child
+            margin-right 0
+
+@media screen and (max-width 1024px)
+    .b10.pageCredGenerate .gParrafo
+        font-size 20px
+
+@media screen and (max-width 768px)
+    .b10Left
+        margin-right 100px
+    .b10.pageCredGenerate .b10Left
+        max-width: 100%
+        width 50%
+    .b10.pageCredGenerate .gParrafo
+        font-size 18px
+
+@media screen and (max-width 480px)
+    .b10
+        height auto
+        padding 48px 0px
+    .b10Wrap
+        flex-direction column
+    .b10Left,
+    .b10Right
+        max-width 100%
+        width 100%
+        margin-bottom 32px  
+    .b10Left
+        .gTitle,
+        .gParrafo
+            text-align center
+    .b10Popup
+        width calc(100% - 20px)
+        #croppieContainer
+            width 100%
+    .b10Right
+        width 290px
+        height 350px
+        margin auto
+    
+    .b10.pageCredGenerate .b10Left
+        max-width: 100%
+        width 100%
+    .b10Links
+        margin-top 32px
+        flex-direction: column
+    .b10VerEvento
+        margin-left 0px
+        margin-top 32px

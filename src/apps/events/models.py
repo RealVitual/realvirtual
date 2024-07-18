@@ -7,6 +7,8 @@ from src.apps.companies.models import Company
 from ckeditor.fields import RichTextField
 from django.template.defaultfilters import slugify
 from django.conf import settings
+from datetime import datetime
+import pytz
 
 
 def get_upload_path(internal_folder):
@@ -124,3 +126,23 @@ class Schedule(BaseModel):
 
     def get_exhibitors(self):
         return self.exhibitors.all()
+
+    def get_current_status(self):
+        start_date = self.event.start_datetime.date()
+        end_date = self.event.end_datetime.date()
+        start_time = self.start_time
+        end_time = self.end_time
+        start_datetime = datetime.combine(
+            start_date, start_time).astimezone(pytz.utc)
+        end_datetime = datetime.combine(
+            end_date, end_time).astimezone(pytz.utc)
+        now = datetime.now().replace(microsecond=0)
+        now = now.astimezone(pytz.utc)
+        status = ''
+        if now >= start_datetime and end_datetime > now:
+            status = 'is_live'
+        if end_datetime < now:
+            status = 'past'
+        if start_datetime > now:
+            status = 'upcoming'
+        return status

@@ -1,0 +1,210 @@
+.b18Content
+    .gParrafo
+        font-size 18px
+        textg(t-500,normal,#17181B)
+        margin-bottom 30px
+
+.b18Tabs
+    flexg(center,flex-start)
+    a
+        width fit-content
+        height 52px
+        border-radius 100px
+        padding 0px 24px
+        font-size 16px
+        textg(t-800,normal,#17181B)
+        flexg(center,center)
+        margin-right 16px
+        &:last-child
+            margin-right 0
+
+.b18ContentWrap
+    position relative
+    margin-top 50px
+
+.b18WrapContentTable
+    width 100%
+
+.b18Wrap
+    top 0
+    left 0
+    width 100%
+    table
+        width 100%
+        tr
+            background #FFFFFF
+            height 64px
+            margin-bottom 8px
+            border-radius 8px
+            overflow hidden
+            display flex
+            &:first-child
+                background transparent
+                height 48px
+            th
+                font-size 16px
+                textg(t-500,normal,#17181B)
+                text-align left
+                padding 10px 25px
+                height 100%
+                flexg(center,flex-start)
+                box-sizing border-box
+                width 100%
+            td
+                background #fff
+                padding 0px 25px
+                flexg(center,flex-start)
+                width 100%
+                height 100%
+                box-sizing border-box
+                font-size 16px
+                textg(t-400,normal,#17181B)
+                a
+                    color #008AC9
+                    flexg(center,flex-start)
+                    i
+                        margin-right 3px
+
+.b18Buscador
+    width 430px
+    height 56px
+    background #fff
+    border-radius 100px
+    margin-left 14px
+    position relative
+    placeholder(#2D2925,t-400)
+    &:after
+        content '\e929'
+        font-family icomoon
+        font-size 20px
+        color #2D2925
+        centerY()
+        right 24px
+    input
+        width 100%
+        height 100%
+        border-radius 100px
+        border 0px
+        padding-left 24px
+        font-size 14px
+        textg(t-400,normal,#2D2925)
+
+
+
+.b18Select
+    position relative
+    width 250px
+    height 56px
+    padding 0px 24px
+    background #fff
+    border-radius 100px
+    transition all 400ms ease
+    z-index 50
+    &.active
+        transition all 400ms ease
+        border-radius 28px
+        border-bottom-left-radius 0px
+        border-bottom-right-radius 0px
+        ul
+            opacity1()
+    ul
+        position absolute
+        top 100%
+        opacity0()
+        background #fff
+        width 100%
+        left 0
+        box-shadow 0px 12px 10px 2px rgba(#000,0.15)
+        padding 10px 0px
+        a
+            font-size 14px
+            textg(t-400,normal,#2D2925)
+            padding 10px 20px
+
+.b18ClickSelect
+    width 100%
+    height 100%
+    position relative
+    font-size 14px
+    textg(t-400,normal,#2D2925)
+    flexg(center,space-between)
+    &:after
+        content '\e608'
+        font-family icomoon
+        font-size 20px
+        color #2D2925
+        
+
+
+@media screen and (max-width 1024px)
+    .b18Wrap table tr th,
+    .b18Wrap table tr td
+        padding 10px 15px
+        font-size 14px
+        width 200px
+    .b18Wrap
+        &:after
+            content: '';
+            background: linear-gradient(-90deg, white, transparent);
+            position: absolute;
+            height: calc(100% - 40px)
+            width: 10%;
+            stroke-dasharray: 0;
+            right 0
+            z-index 20
+            bottom 0
+            pointer-events: none
+    
+    .b18Tabs
+        flex-flow nowrap
+        overflow-x auto
+        a
+            width fit-content
+            flex 0 0 auto
+
+    .b18WrapContentTable
+        overflow-x auto
+        flexg(flex-start,flex-start)
+        table
+            width 100%
+            flex 0 0 auto
+
+    .b18ContentWrap
+        position relative
+        padding-top 40px
+        margin-top 30px
+        &:after
+            content '\e924'
+            font-family icomoon
+            top 0px
+            right 10px
+            font-size 25px
+            position absolute
+            opacity: 0.5
+            animation: mover-izquierda-derecha 1s linear infinite
+    @keyframes mover-izquierda-derecha
+        0%
+            transform: translateX(0)
+        50%
+            transform: translateX(100%)
+        100%
+            transform: translateX(0)
+
+@media screen and (max-width 480px)
+    .b18Wrap table tr th,
+    .b18Wrap table tr td
+        width 180px
+    .b18Tabs
+        a
+            padding 0px 15px    
+            height 48px
+            font-size 14px
+            margin-right 10px
+    .b18Filters
+        flex-direction column
+    .b18Select
+        width 100%
+        margin-bottom 24px
+    .b18Buscador
+        width 100%
+        margin-left 0px

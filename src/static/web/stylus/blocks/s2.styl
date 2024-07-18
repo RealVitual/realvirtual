@@ -1,0 +1,68 @@
+.b2
+    height calc(100vh - 100px)
+    position relative
+    &:before
+        content ''
+        width 190px
+        height 380px
+        backgroundsize()
+        position absolute
+        background-image url(../img/patron-puntos.svg)
+        left 5%
+        bottom 10%
+    &:after
+        content ''
+        width 190px
+        height 380px
+        backgroundsize()
+        position absolute
+        background-image url(../img/patron-puntos.svg)
+        right 5%
+        top 10%
+    .grilla
+        height 100%
+        flexg(center,center)
+
+.b2Info
+    max-width 480px
+    width 100%
+    margin auto
+    text-align center
+    h1
+        font-size 36px
+        textg(t-700,normal,#17181B)
+        margin-bottom 20px
+    .gParrafo
+        margin-bottom 15px
+
+    form
+        max-width 360px
+        width 100%
+    button
+        margin-top 24px
+    .g8LinkForm
+        margin-top 24px
+
+@media screen and (max-width 1366px)
+    .b2Info
+        h1
+            font-size 30px
+    .b2
+        &:before,
+        &:after
+            width 160px
+            height 320px
+
+@media screen and (max-width 1024px)
+    .b2
+        height calc(100vh - 80px)
+@media screen and (max-width 768px)
+    .b2
+        &:before,
+        &:after
+            display none
+            
+@media screen and (max-width 480px)
+    .b2Info
+        h1
+            font-size 24px

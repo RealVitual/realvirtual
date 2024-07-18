@@ -1,0 +1,362 @@
+.b4
+    margin 90px 0px
+    .clickVideo
+        left initial
+        &:after
+            display none
+.b4Title
+    margin-bottom 32px
+    width 410px
+    margin-right 50px
+    h4
+        font-size 20px
+        textg(t-600,normal,#262626)
+        margin-bottom 8px
+
+.b4Tabs
+    width fit-content
+    margin-bottom 32px
+    position relative
+    .lineColorFull
+        position absolute
+        width 100%
+        height 5px
+        bottom 0
+    a
+        padding 0px 20px
+        padding-bottom 15px
+        position relative
+        .lineActive
+            height 5px
+            position absolute
+            width 0%
+            centerX()
+            transition all 400ms ease
+            bottom 0
+            z-index 30
+        &.active
+            .lineActive
+                width 100%
+                transition all 400ms ease
+        // @media screen and (min-width: 1025px)
+        //      &:hover
+        //         &:before
+        //             width 100%
+        //             transition all 400ms ease
+        h5
+            text-align center
+            font-size 13px
+            textg(t-600,normal,#262626)
+            span
+                font-size 20px
+                textg(t-700,normal,#262626)
+                display block
+                width 100%
+
+.b4ContentWrap
+    position relative
+
+.b4Wrap
+    position absolute
+    opacity0()
+    top 0
+    left 0
+    width 100%
+    padding 10px 0px
+    &.active
+        position relative
+        opacity1()
+
+.b4Item
+    height 200px
+    border-bottom 1px solid #EFEFF3
+    margin 10px 0px
+    &.noImage
+        .b4Img
+            display none
+        .b4Info
+            width 100%
+            padding-left 0px
+
+.b4Break
+    height 55px
+    margin 8px 0px
+    width 100%
+    background #F2F2F2
+    flexg(center,center)
+    h3
+        font-size 16px
+        textg(t-500,normal,#262626)
+        span
+            font-size 16px
+            textg(t-700,normal,#262626)
+            margin-left 8px
+            display inline
+
+.b4Img
+    width 280px
+    height 200px
+    position relative
+    border-radius 4px
+    overflow hidden
+
+.b4Info
+    padding-top 30px
+    width calc(100% - 280px)
+    padding-left 60px
+    padding-right 60px
+    position relative
+    h3
+        font-size 16px
+        textg(t-500,normal,#262626)
+        margin-bottom 16px
+    h4
+        font-size 24px
+        textg(t-600,normal,#262626)
+        margin-bottom 8px
+
+.b4Envivo,
+.b4VolverVer
+    position absolute
+    padding 0px 24px
+    height 28px
+    border-radius 100px
+    background #008AC9
+    top 20px
+    right 60px
+    flexg(center,center)
+    font-size 16px
+    textg(t-800,normal,#fff)
+    width fit-content
+    img
+        margin-left 8px
+        animation onda 1s infinite ease-out
+
+.b4VolverVer
+    background #17181B
+
+@keyframes animateZoom
+	0%
+		transform: scale(0.2) 
+		opacity: 0
+	50%
+		transform: scale(1) 
+		opacity: 0.5
+	100%
+		transform: scale(1.05) 
+		opacity: 0
+
+
+.b4ItemLeft,      
+.b4ItemRight
+    height 100%
+
+.b4ItemLeft
+    width calc(100% - 340px)
+
+.b4ItemRight
+    width 340px
+    padding 0px 24px
+    position relative
+    scrollbar(#808080,#dbdbdb,2,3)
+    &:before
+        content ''
+        centerY()
+        height 80%
+        background #D8E7F4
+        width 1px
+        left 0
+    &.activeScrollList
+        &:after
+            content: '';
+            background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 52%, rgba(255,255,255,0) 100%);
+            position: absolute;
+            width: 100%;
+            height: 30%;
+            left: 0;
+            bottom: 0;
+            pointer-events none
+        ul
+            padding-bottom 80px
+            justify-content: flex-start
+    ul
+        height 100%
+        flexg(center,center)
+        flex-direction column
+        overflow-y auto
+        padding-right 20px
+        padding-top 10px
+        li
+            margin-bottom 15px
+            width 100%
+            a
+                width 100%
+                flexg(center,space-between)
+            &:last-child
+                margin-bottom 0px
+            h6
+                font-size 14px
+                textg(t-500,normal,#262626)
+                flexg(center,flex-start)
+                img
+                    margin-right 5px
+            span
+                font-size 12px
+                textg(t-400,normal,#404040)
+
+.b4Popup
+    centerXY()
+    position fixed
+    border-radius 10px
+    overflow hidden
+    background #fff
+    max-width 1000px
+    width 100%
+    z-index 500
+    height 530px
+    flexg(center,center)
+    opacity0()
+    scrollbar(#808080,#dbdbdb,2,3)
+    &.active
+        opacity1()
+        animation animatePopup 0.3s ease
+        animation-delay 0.2s
+        transition-delay 0.2s
+
+
+@keyframes animatePopup
+	0%
+		transform translateY(-50%) scale(0.95)
+	50%
+		transform translateY(-50%) scale(1.05)
+	100%
+		transform translateY(-50%) scale(1)
+
+.b4ClosePopup
+    position absolute
+    top 20px
+    right 20px
+    font-size 30px
+
+.b4PopupImage
+    width 440px
+    height 100%
+    position relative
+
+.b4InfoPopup
+    width calc(100% - 440px)
+    padding-left 55px
+    padding-right 90px
+    height 100%
+
+.b4InfoPopupContent
+    h3
+        margin-bottom 12px
+    h4
+        font-size 16px
+        textg(t-500,normal,#909090)
+    .gParrafo
+        margin 30px 0px
+        max-height: 200px
+        overflow-y auto
+        padding-bottom 20px
+
+.b4linkedin
+    height 48px
+    border-radius 100px
+    flexg(center,center)
+    margin 0
+    font-size 16px
+    textg(t-800,normal,#262626)
+    padding 0px 24px
+    border 1px solid #262626
+    width fit-content
+    img
+        margin-left 10px
+
+@media screen and (max-width 1366px)
+    .b4Tabs
+        a
+            h5
+                span
+                    font-size 18px
+        
+@media screen and (max-width 1024px)
+    .b4
+        margin 70px 0px
+    .b4Info
+        padding 30px 20px
+        h4
+            font-size 20px
+        h3
+            font-size 14px
+    .b4Envivo
+        top 10px
+        right 20px
+        padding 0px 20px
+        font-size 14px
+    
+@media screen and (max-width 768px)
+    .b4Item
+        flex-direction column
+        height auto
+    .b4ItemLeft,
+    .b4ItemRight
+        height auto
+        width 100%
+        padding 0px
+    .b4ItemLeft
+        margin-bottom 30px
+    .b4ItemRight
+        &:before
+            display none
+        ul
+            flex-direction row
+            flex-flow row wrap
+            height auto
+            overflow-y inherit
+            padding-bottom 30px
+            li
+                width 35%
+                margin-right 10%
+        &.activeScrollList
+            ul
+                padding-bottom 30px
+            &:after
+                display none
+    .b4Top
+        flex-direction column
+        align-items flex-start
+    .b4
+        overflow hidden
+    .b4Title
+        width 100%
+        margin-right 0
+    .b4Tabs
+        flex-flow nowrap
+        overflow-x auto
+        justify-content flex-start
+        width 100%
+        height auto
+        a
+            flex 0 0 auto
+
+@media screen and (max-width 480px)
+    .b4ItemRight ul li
+        width 100%
+        margin-right 0
+    .b4ItemLeft
+        flex-direction column
+        height auto
+    .b4Info,
+    .b4Img
+        width 100%
+    .b4Img
+        height auto
+        padding-top 65%
+    .b4Info
+        padding 0px
+        margin-top 32px
+    .b4Envivo
+        top -5px
+        right 0

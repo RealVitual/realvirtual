@@ -11,9 +11,7 @@ def main_info(request, **kwargs):
     current_url = resolve(request.path_info).url_name
     user_url = ""
     company_exists = hasattr(request, 'company')
-    # print(company_exists, 'COMPANY')
     if request.user.is_authenticated and company_exists:
-        print(company_exists, 'COMPANY')
         is_live = False
         now = datetime.now().replace(microsecond=0)
         now = now.astimezone(pytz.utc)
@@ -26,11 +24,14 @@ def main_info(request, **kwargs):
                 break
         user = request.user
         if user.in_person:
-            user_url = "select_preferences"
+            user_url = reverse(
+                'landing:select_preferences')
             if user.user_tickets.filter(company=request.company):
-                user_url = "ticket"
+                user_url = reverse(
+                    'landing:ticket_view')
         else:
-            user_url = "generate_credential"
+            user_url = reverse(
+                'landing:generate_credential')
             if user.credentials.filter(company=request.company):
                 cred = user.credentials.filter(company=request.company).last()
                 user_url = reverse(

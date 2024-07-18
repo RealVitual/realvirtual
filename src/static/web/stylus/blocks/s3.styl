@@ -1,0 +1,118 @@
+.b3
+    height calc(100vh - 116px)
+    margin-top 16px
+    
+.b3Left,
+.b3Right
+    height 100%
+.b3Left
+    width calc(52% - 8px)
+.b3Right
+    width calc(48% - 8px)
+
+.b3Left
+    background #EFEFF3
+    padding-bottom 0px
+    scrollbar(#808080,#dbdbdb,2,3)
+    padding-right 20px
+    .gTitle
+        margin-bottom 16px
+
+.b3List
+    margin-top 15px
+    a
+        height 84px
+        font-size 22px
+        textg(t-500,normal,#17181B)
+        flexg(center,space-between)
+        position relative
+        padding-right 60px
+        .circleLessMore
+            centerY()
+            right 0
+            circle(50,transparent)
+            color #fff
+            &:before
+                content '\e922'
+                font-family icomoon
+        &.active
+            .circleLessMore
+                &:before
+                    content '\e911'
+
+.b3ItemList
+    border-bottom 1px solid #E0E0E0
+    &:last-child
+        border-bottom 0px
+
+.b3ContentLeft
+    padding 70px
+    height 100%
+    overflow-y auto
+    flex-flow row wrap
+.b3Info
+    .gParrafo
+        padding-bottom 20px
+        padding-right 50px
+.b3InfoItem
+    width 45%
+    figure
+        margin-bottom 8px
+    h4
+        font-size 24px
+        textg(t-700,normal,#262626)
+        margin-bottom 4px
+    h5
+        font-size 16px
+        textg(t-400,normal,#262626)
+
+.b3Right
+    position relative
+    .clickVideo
+        top initial
+        transform initial
+        left 55px
+        bottom 55px
+        right initial
+        
+@media screen and (max-width 1366px)
+    .b3ContentLeft
+        padding 50px
+    .b3List a
+        font-size 18px
+
+@media screen and (max-width 1024px)
+    .b3
+        height 500px
+    .b3ContentLeft
+        padding 40px 30px
+    .b3List a:after
+        width 40px
+        height 40px
+
+@media screen and (max-width 768px)
+    .b3
+        flex-direction column
+        margin-top 0px
+    .b3Left,
+    .b3Right
+        width 100%
+    .b3Left
+        padding-left 0px !important
+        height auto
+        padding-right 0px
+    .b3
+        height auto
+    .b3Right
+        height auto
+        padding-top 70%
+        .clickVideo
+            left 20px
+            bottom 20px
+    .b3ContentLeft
+        padding 60px 25px
+@media screen and (max-width 480px)
+    .b3ContentLeft
+        padding 50px 25px
+    .b3Info .gParrafo
+        padding-right 20px

@@ -185,24 +185,24 @@
                                         <h3>{{schedule.start_time}} - {{schedule.end_time}}</h3>
                                         <h4>{{schedule.name}}</h4>
                                         <div class="gParrafo">
-                                            <p>Palabras de bienvenida a cargo de la presidente de la CCL</p>
+                                            <p>{{schedule.name}}</p>
                                         </div>
-                                        <!-- Existe dos opcions de "Ver en vivo o Volver a ver" -->
                                         {% comment %} <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a> {% endcomment %}
-                                        <!-- <a href="#" class="b4VolverVer a ver">Volver a ver</a> -->
+                                        <a href="#" class="b4VolverVer a ver">Volver a ver</a>
                                     </div>
                                 </div>
                                 <div class="b4ItemRight">
                                     <ul class="b4PersonsExpoList">
-                                        {% for row in "12345678901"|make_list %}
+                                        {% for exhibitor in schedule.get_exhibitors %}
                                         <li class="">
                                             <a href="" class="b4OpenPopupPerson"
-                                                data-name="Rosa Bueno"
-                                                data-cargo="Presidenta / Camara de Comercio de Lima"
-                                                data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
-                                                data-url="urlprueba"
+                                                data-name="{{exhibitor.name}}"
+                                                data-cargo="{{exhibitor.title}}"
+                                                data-info="{{exhibitor.description}}"
+                                                data-url="{{exhibitor.link}}"
+                                                data-img="{{exhibitor.image.url}}"
                                                 >
-                                                <h6><img src="/static/web/img/expositor.png" alt="" width="16">Ronald de la Cruz Mendoza</h6>
+                                                <h6><img src="/static/web/img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
                                                 <span>- CCL</span>
                                             </a>
                                         </li>
@@ -337,44 +337,54 @@
     </a>
 </section>
 
-<section class="b8 scrollWrap">
+<section class="b8 scrollWrap" data-initial="3">
     <div class="grilla">
-        <h3 class="gTitle scrollItem">Más Eventos</h3>
-        <div class="b8Wrap f aic jcc">
-            {% for row in "123456"|make_list %}
-            <a href="#" class="b8Item scrollItem zoomImageHover">
-                <div class="b8Img ">
-                    <picture class="imgCover">
-                        <!-- imagen mobile -->
-                        <source srcset="/static/web/img/b8_img1.png" media="(max-width: 767px)">
-                        <!-- imagen desktop -->
-                        <source srcset="/static/web/img/b8_img1.png" media="(max-width: 768px)">
-                        <!-- imagen desktop -->
-                        <img src="/static/web/img/b8_img1.png" width="1920" height="713"  alt="Myimage">
-                    </picture>
-                </div>
-                <div class="b8Info ">
-                    <h2>Tecnología con impacto</h2>
-                    <div class="b8InfoWrap f aic jcsb">
-                        <div class="b8Date f aifs jcfs  fdc">
-                            <div class="b8DateItem f aifs jcfs">
-                                <img src="/static/web/img/calendario-black.svg" alt="" width="20">
-                                <h4>19 de marzo de 2024<span>08:30 a 12:30</span></h4>
-                            </div>
-                            <div class="b8DateItem f aifs jcfs">
-                                <img src="/static/web/img/address.svg" alt="" width="20">
-                                <h4>Camara de Comercio de Lima</span></h4>
+        <div class="b8Top f aic jcsb">
+            <h3 class="gTitle scrollItem">Más Eventos</h3>
+            <a href="#" class="gButton">Más eventos</a>
+        </div>
+        <div class="b8SwiperContent">
+            <div class="b8Swiper swiper-container scrollItem swiper" data-initial="3">
+                <div class="b8Wrap swiper-wrapper">
+                {% for row in "123456"|make_list %}
+                    <a href="#" class="b8Item swiper-slide scrollItem zoomImageHover">
+                        <div class="b8Img ">
+                            <picture class="imgCover">
+                                <!-- imagen mobile -->
+                                <source srcset="/static/web/img/b8_img1.png" media="(max-width: 767px)">
+                                <!-- imagen desktop -->
+                                <source srcset="/static/web/img/b8_img1.png" media="(max-width: 768px)">
+                                <!-- imagen desktop -->
+                                <img src="/static/web/img/b8_img1.png" width="1920" height="713"  alt="Myimage">
+                            </picture>
+                        </div>
+                        <div class="b8Info ">
+                            <h2>Tecnología con impacto</h2>
+                            <div class="b8InfoWrap f aic jcsb">
+                                <div class="b8Date f aifs jcfs  fdc">
+                                    <div class="b8DateItem f aifs jcfs">
+                                        <img src="/static/web/img/calendario-black.svg" alt="" width="20">
+                                        <h4>19 de marzo de 2024<span>08:30 a 12:30</span></h4>
+                                    </div>
+                                    <div class="b8DateItem f aifs jcfs">
+                                        <img src="/static/web/img/address.svg" alt="" width="20">
+                                        <h4>Camara de Comercio de Lima</span></h4>
+                                    </div>
+                                </div>
+                                <figure>
+                                    <img src="/static/web/img/b8circleArrow.svg" alt="" width="74">
+                                </figure>
                             </div>
                         </div>
-                        <figure>
-                            <img src="/static/web/img/b8circleArrow.svg" alt="" width="74">
-                        </figure>
-                    </div>
+                    </a>
+                    {% endfor %}
                 </div>
-            </a>
-            {% endfor %}
+            </div>
+            <div class="b2Nav gNav">
+                <div class="b8Prev gPrev"></div>
+                <div class="b8Next gNext"></div>
+            </div>
         </div>
-        {% comment %} <a href="#" class="gButton">Más eventos</a> {% endcomment %}
     </div>
 </section>
 
@@ -513,6 +523,65 @@
             OVERLAY.removeAttribute('style')
         })
     }
-
+     //b8-js ***
+     if(document.getElementsByClassName('b8')[0]){
+        let elSwiperb8 = document.getElementsByClassName('b8Swiper')[0].dataset.initial
+        const breakpointb8 = window.matchMedia('(max-width: 1024px)');
+        const breakpointCheckerb8 = () => {
+            let getCountItemsb8 = document.getElementsByClassName('b8Item').length;
+            console.log(getCountItemsb8);
+            breakpointb8.matches === true ? 
+                (getCountItemsb8 >= 2 ? enableSwiperb8(elSwiperb8) : destroySwiperb8()): 
+                (getCountItemsb8 > elSwiperb8 ? enableSwiperb8(elSwiperb8) : destroySwiperb8())
+        }
+        let mySwiperb8;
+        let elWrapSwiperb8 = document.getElementsByClassName('b8')[0]
+        const destroySwiperb8 = () =>{
+            elWrapSwiperb8.classList.add('noSwiper')
+            elWrapSwiperb8.classList.remove('swiperActive')
+            if(mySwiperb8 !== undefined) {
+                return mySwiperb8.destroy(true,true);
+            }
+        }
+        const enableSwiperb8 = (initial) => {
+            elWrapSwiperb8.classList.remove('noSwiper')
+            elWrapSwiperb8.classList.add('swiperActive')
+            mySwiperb8 = new Swiper ('.b8Swiper', {
+                loop: true,
+                spaceBetween: 24,
+                centeredSlides: false,
+                pagination: {
+                    el: '.b8Pagination',
+                    type: 'bullets',
+                    clickable: true
+                },
+                navigation: {
+                    nextEl: '.b8Next',
+                    prevEl: '.b8Prev',
+                },
+                breakpoints:{
+                    1280:{
+                        slidesPerView: 3,
+                        spaceBetween: 24,
+                    },
+                    1024:{
+                        slidesPerView: 2,
+                        spaceBetween: 24,
+                    },
+                    768:{
+                        slidesPerView: 2,
+                        spaceBetween: 24,
+                    },
+                    320:{
+                        slidesPerView: 1,
+                        spaceBetween: 24,
+                    }
+                }
+            });
+            
+        };
+        breakpointb8.addListener(breakpointCheckerb8);
+        breakpointCheckerb8();
+    }
 </script>
 {% endblock %}

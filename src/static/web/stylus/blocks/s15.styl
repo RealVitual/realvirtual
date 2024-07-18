@@ -1,0 +1,91 @@
+.b15
+    height calc(100vh - 100px)
+    .grilla
+        height 100%
+        flexg(center,center)
+
+.b15Left
+    margin-right 50px
+    .gTitle
+        margin-bottom 16px
+    h2,h3
+        font-size 24px
+        textg(t-600,normal,#262626)
+    h3
+        font-family t-400
+.b15Right
+    background #F2F2F2
+    padding 40px
+    border-radius 8px
+    width 840px
+    box-shadodw 0px 10px 40px -21px #00000052
+    figure
+        width 218px
+        img
+            width 100%
+
+.b15Info
+    width calc(100% - 218px)
+    padding-left 30px
+
+.b15WrapInfo
+    grid-gap 25px
+
+.b15InfoBottom
+    margin-top 15px
+    padding-top 15px
+    border-top 1px solid #fff   
+.b15Item
+    h3
+        position relative
+        padding-left 30px
+        font-size 14px
+        textg(t-500,normal,#828282)
+        img
+            centerY()
+            left 0
+    h4
+        padding-left 30px
+        font-size 16px
+        textg(t-500,normal,#17181B)
+
+
+@media screen and (max-width 1366px)
+    .b15Left
+        h2,h3
+            font-size 20px
+
+@media screen and (max-width 1024px)
+    .b15Wrap
+        flex-direction column
+    .b15Left
+        width 100%
+        text-align left
+        margin-right 0
+        margin-bottom 32px
+    .b15Right
+        width 100%
+
+@media screen and (max-width 768px)
+    .b15Right figure
+        width 150px
+    .b15Info
+        width calc(100% - 150px)
+    .b15Item h4
+        font-size 14px
+
+@media screen and (max-width 480px)
+    .b15
+        height auto
+        padding 72px 0px
+    .b15Right
+        flex-direction: column
+        height auto
+        padding 30px 20px
+        figure
+            margin auto
+            width 200px
+            margin-bottom 32px
+    .b15Info
+        width 100%
+        padding 0
