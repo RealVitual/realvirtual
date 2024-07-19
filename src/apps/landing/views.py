@@ -21,6 +21,8 @@ from .utils import record_to_pdf
 from src.apps.tickets.utils import generate_ticket_code
 from storages.backends.s3boto3 import S3Boto3Storage
 from django.conf import settings
+from src.apps.users.permissions import (
+    AuthenticatedPermission, )
 
 
 class HomeView(CreateView):
@@ -418,3 +420,18 @@ class EventTransmissionView(View):
                 'event': event,
             }
         return render(request, self.template_name, context)
+
+
+class CustomerTicket(APIView):
+    permission_classes = [AuthenticatedPermission]
+
+    def get(self, request, **kwargs):
+        tickets = request.user.user_tickets.filter(company=request.company)
+        if not tickets:
+            return redirect(reverse('landing:home'))
+        ticket = tickets.last()
+        img = requests.get(ticket.pdf.url)
+        response = HttpResponse(img.content, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename=%s' % \
+            ticket.pdf.name.split('/')[-1]
+        return response

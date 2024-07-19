@@ -15,8 +15,8 @@
                 <h2>¡Tu e-ticket se creó con éxito!</h2>
                 <h3>Presenta tu invitación el dia del evento</h3>
             </div>
-            <div class="b15Wrap f aic jcsb">
-                <div class="b15Right f aic jcsb" style="backbround: #f2f2f2;">
+            <div class="b15RightContent">
+                <div class="b15Right f aic jcsb">
                     <figure>
                         <img src="{{ticket.qr.url}}" alt="" width="20">
                     </figure>
@@ -47,6 +47,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="b15Buttons">
+                    <a href="{% url 'landing:download_customer_ticket' %}" class="gButton">Descargar E-Ticket</a>
+                    <a href="{% url 'landing:event' %}" class="link">Ver evento</a>
                 </div>
             </div>
         </div>

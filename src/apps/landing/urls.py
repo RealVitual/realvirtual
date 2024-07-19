@@ -3,7 +3,7 @@ from .views import (
     HomeView, EventsView, GenerateCredentialView, validate_register,
     confirm_register, SelectPreferencesView, TicketView, LogoutView,
     save_preferences_answers, AfterCreatedCredentialView, CustomerCredential,
-    login_access, EventTransmissionView)
+    login_access, EventTransmissionView, CustomerTicket)
 
 app_name = 'landing'
 
@@ -27,4 +27,6 @@ urlpatterns = [
           name='save_preferences_answers'),
      path('download-credential-image/<uid>/',
           CustomerCredential.as_view(), name='download_credential'),
+     path('download-customer-ticket/', CustomerTicket.as_view(),
+          name='download_customer_ticket'),
 ]
