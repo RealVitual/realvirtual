@@ -16,12 +16,24 @@
                 el color deberìa ser administrable segun el color de la web 
             -->
             {% if header %}
-                <a href="#acerca" class="headerAnclaBlock">Acerca de <span class="lineActive" style="background:#008ac9;"></span></a>
-                <a href="#agenda" class="headerAnclaBlock">Agenda <span class="lineActive" style="background:#008ac9;"></span></a>
-                <a href="#galeria" class="headerAnclaBlock">Galería <span class="lineActive" style="background:#008ac9;"></span></a>
-                <a href="#auspiciador" class="headerAnclaBlock">Auspiciadores <span class="lineActive" style="background:#008ac9;"></span></a>
-                <a href="#networking" class="headerAnclaBlock">Networking <span class="lineActive" style="background:#008ac9;"></span></a>
-                <a href="#encuesta" class="headerAnclaBlock">Encuesta <span class="lineActive" style="background:#008ac9;"></span></a>
+                {% if header_section.show_about_section %}
+                    <a href="#acerca" class="headerAnclaBlock">Acerca de <span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
+                {% if header_section.show_schedule_section %}
+                    <a href="#agenda" class="headerAnclaBlock">Agenda <span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
+                {% if header_section.show_gallery_section %}
+                    <a href="#galeria" class="headerAnclaBlock">Galería <span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
+                {% if header_section.show_sponsors_section %}
+                    <a href="#auspiciador" class="headerAnclaBlock">Auspiciadores <span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
+                {% if header_section.show_networking_section %}
+                    <a href="#networking" class="headerAnclaBlock">Networking <span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
+                {% if header_section.show_survey_section %}
+                    <a href="#encuesta" class="headerAnclaBlock">Encuesta <span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
                 {% if logged_user and is_live %}
                     <a href="#" class=" headerEnVivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
                 {% endif %}

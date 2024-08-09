@@ -51,6 +51,66 @@ class Company(BaseModel):
         return self.name
 
 
+class Header(TimeStampedModel):
+    company = models.ForeignKey(
+        Company, related_name="header",
+        on_delete=models.CASCADE, null=True)
+    show_about_section = models.BooleanField(
+        _('Mostrar Acerca de'), default=True
+    )
+    show_schedule_section = models.BooleanField(
+        _('Mostrar Agenda'), default=True
+    )
+    show_gallery_section = models.BooleanField(
+        _('Mostrar Galería'), default=True
+    )
+    show_sponsors_section = models.BooleanField(
+        _('Mostrar Auspiciadores'), default=True
+    )
+    show_networking_section = models.BooleanField(
+        _('Mostrar Networking'), default=True
+    )
+    show_survey_section = models.BooleanField(
+        _('Mostrar Encuesta'), default=True
+    )
+    show_more_events = models.BooleanField(
+        _('Mostrar Más eventos'), default=True
+    )
+
+    class Meta:
+        verbose_name = _("Header")
+        verbose_name_plural = _("Headers")
+
+    def __str__(self):
+        return f'Header for {self.company}'
+
+
+class Footer(TimeStampedModel):
+    company = models.ForeignKey(
+        Company, related_name="footer",
+        on_delete=models.CASCADE, null=True)
+    text = models.CharField('Texto', max_length=255, blank=True, null=True)
+    mobile = models.CharField(
+            _('Número teléfono'), max_length=255, null=True, blank=True)
+    facebook = models.URLField(
+            _('Facebook'), max_length=255, null=True, blank=True)
+    instagram = models.URLField(
+        _('Instagram'), max_length=255, blank=True, null=True
+    )
+    twitter = models.URLField(
+        _('Twitter'), max_length=255, blank=True, null=True
+    )
+    linkedin = models.URLField(
+        _('Linkedin'), max_length=255, blank=True)
+
+    class Meta:
+        verbose_name = _("Footer")
+        verbose_name_plural = _("Footers")
+
+    def __str__(self):
+        return f'Footer for {self.company}'
+
+
 class HomePage(TimeStampedModel):
     company = models.ForeignKey(
         Company, related_name="home_company",
@@ -78,6 +138,10 @@ class HomePage(TimeStampedModel):
         _('Main Event Description'), blank=True)
     main_event_video_url = models.CharField(
             _('Main Event Video Url'), max_length=255, null=True, blank=True)
+    main_event_image = models.ImageField(
+            _('Main Event image'),
+            upload_to=get_upload_path('main_event_image'),
+            null=True, blank=True)
 
     class Meta:
         verbose_name = _("Home Page")

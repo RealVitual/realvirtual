@@ -24,9 +24,9 @@
     -->
     <div class="grilla f center jcfs">
         <div class="b1Info top">
-            <h2 class="scrollItem">{{home_page.first_title}}</h2>
-            <h1 class="scrollItem">{{home_page.main_title}}</h1>
-            <h3 class="scrollItem">{{home_page.secondary_title}}</h3>
+            <h2 class="scrollItem">{{home_page.first_title|default:""}}</h2>
+            <h1 class="scrollItem">{{home_page.main_title|default:""}}</h1>
+            <h3 class="scrollItem">{{home_page.secondary_title|default:""}}</h3>
             {% if home_page.home_video_url %}
                 <a href="#" class="clickVideo popup scrollItem" data-urlvideo="{{home_page.home_video_url}}">
                     <span>Ver video</span>
@@ -37,19 +37,19 @@
             <div class="b1Date f aifs jcfs scrollItem">
                 <div class="b1DateItem f aifs jcfs">
                     <img src="/static/web/img/calendario.svg" alt="" width="20">
-                <h4>{{home_page.date_description}}<span>{{home_page.time_description}}</span>{{company.access_type}}</h4>
+                <h4>{{home_page.date_description}}<span>{{home_page.time_description}}</span></h4>
                 </div>
                 {% if not company.in_person %}
                     <div class="b1DateItem f aifs jcfs">
                         <img src="/static/web/img/virtual.svg" alt="" width="20">
-                        <h4>Virtual<span>Zoom meetings</span></h4>
+                        <h4>Virtual</h4>
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
 </section>
-
+{% if header_section.show_about_section %}
 <section class="b3 f aic jcsb scrollWrap anclaBlock" id="acerca">
     <div class="b3Left f aifs jcfs scrollItem">
         <div class="b3ContentLeft">
@@ -63,7 +63,7 @@
                         <!-- Cambiar logica al click con datas -->
                         <a href="#" class="b3ClickToggle" data-color-initial="#008AC9" data-color-active="#17181B">
                             {{row.title}}
-                            <span class="circleLessMore"></span>
+                                <span class="circleLessMore"></span>
                         </a>
                         <div class="b3Info">
                             <div class="gParrafo">
@@ -78,20 +78,22 @@
     <div class="b3Right scrollItem">
         <picture class="imgCover">
             <!-- imagen mobile -->
-            <source srcset="/static/web/img/b3_img_fondo.png" media="(max-width: 767px)">
+            <source srcset="{{home_page.main_event_image.url}}" media="(max-width: 767px)">
             <!-- imagen desktop -->
-            <source srcset="/static/web/img/b3_img_fondo.png" media="(max-width: 768px)">
+            <source srcset="{{home_page.main_event_image.url}}" media="(max-width: 768px)">
             <!-- imagen desktop -->
-            <img src="/static/web/img/b3_img_fondo.png" width="1920" height="713"  alt="Myimage">
+            <img src="{{home_page.main_event_image.url}}" width="1920" height="713"  alt="Myimage">
         </picture>
-        <a href="#" class="clickVideo popup " data-urlvideo="https://www.youtube.com/watch?v=l6_nRqIz_9o">
+        <a href="#" class="clickVideo popup " data-urlvideo="{{home_page.main_event_video_url}}">
             <span>Ver video</span>
             <!-- linea circular animada administrable -->
             <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
-        </a> 
+        </a>
     </div>
 </section>
+{% endif %}
 
+{% if header_section.show_schedule_section %}
 <section class="b4 scrollWrap anclaBlock" id="agenda">
     <div class="grilla">
         <div class="b4Top f aife jcsb ffrw scrollItem">
@@ -107,14 +109,6 @@
                     <div class="lineActive" style="background:#008AC9;"></div>
                 </a>
                 {% endfor %}
-                {% comment %} <a href="" class="b4ClickTab">
-                    <h5>Dia 01<span>19 de Marzo</span></h5>
-                    <div class="lineActive" style="background:#008AC9;"></div>
-                </a>
-                <a href="" class="b4ClickTab">
-                    <h5>Dia 01<span>19 de Diciembre</span></h5>
-                    <div class="lineActive" style="background:#008AC9;"></div>
-                </a> {% endcomment %}
                 <div class="lineColorFull" style="background:#D7E9F0;"></div>
             </div>
         </div>
@@ -125,24 +119,26 @@
                     {% for schedule in event.get_schedules %}
                         {% if schedule.description %}
                             <!-- Si el evento no tiene imagen se agrega la clase "noImage" -->
-                            <div class="b4Item f aic jcsb noImage">
+                            <div class="b4Item f aic jcsb">
                                 <div class="b4ItemLeft f aifs jcfs">
-                                    <div class="b4Img pr">
-                                        <picture class="imgCover">
-                                            <!-- imagen mobile -->
-                                            <source srcset="/static/web/img/b4-img1.png" media="(max-width: 767px)">
-                                            <!-- imagen desktop -->
-                                            <source srcset="/static/web/img/b4-img1.png" media="(max-width: 768px)">
-                                            <!-- imagen desktop -->
-                                            <img src="/static/web/img/b4-img1.png" width="1920" height="713"  alt="Myimage">
-                                        </picture>
-                                    </div>
+                                    {% if schedule.image %}
+                                        <div class="b4Img pr">
+                                            <picture class="imgCover">
+                                                <!-- imagen mobile -->
+                                                <source srcset="{{schedule.image.url}}" media="(max-width: 767px)">
+                                                <!-- imagen desktop -->
+                                                <source srcset="{{schedule.image.url}}" media="(max-width: 768px)">
+                                                <!-- imagen desktop -->
+                                                <img src="{{schedule.image.url}}" width="1920" height="713"  alt="Myimage">
+                                            </picture>
+                                        </div>
+                                    {% endif %}
                                     <div class="b4Info">
                                         {% comment %} <h3>08:30 -09:00</h3> {% endcomment %}
-                                        <h3>{{schedule.start_time}} - {{schedule.end_time}} {{schedule.get_current_status}}</h3>
+                                        <h3>{{schedule.start_time}} - {{schedule.end_time}}</h3>
                                         <h4>{{schedule.name}}</h4>
                                         <div class="gParrafo">
-                                            <p>{{schedule.name}}</p>
+                                            <p>{{schedule.description}}</p>
                                         </div>
                                         {% if schedule.get_current_status == 'is_live' %}
                                             <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
@@ -210,8 +206,10 @@
         </div>
     </div>
 </div>
+{% endif %}
 
 
+{% if header_section.show_gallery_section %}
 <section class="b5 scrollWrap anclaBlock" id="galeria">
     <div class="grilla">
         <h4>Conoce más</h4>
@@ -251,7 +249,8 @@
         </div>
     </div>
 </section>
-
+{% endif %}
+{% if header_section.show_sponsors_section %}
 <section class="b6 anclaBlock anclaBlock" id="auspiciador">
     <div class="grilla">
         <div class="b6Top">
@@ -270,7 +269,8 @@
         </div>
     </div>
 </section>
-
+{% endif %}
+{% if header_section.show_networking_section %}
 <div class="b16Popup">
     <!-- <a href="#" class="icon-close"></a> -->
     <div class="b16PopupContent">
@@ -284,8 +284,9 @@
         </div>
     </div>
 </div>
+{% endif %}
 
-
+{% if header_section.show_survey_section %}
 <section class="b7 anclaBlock" id="encuesta">
     <!-- Que todo sea -->
     <a href="#" class="grilla">
@@ -298,7 +299,8 @@
         <span><img src="/static/web/img/arrow.svg" alt=""></span>
     </a>
 </section>
-
+{% endif %}
+{% if header_section.show_more_events %}
 <section class="b8 scrollWrap" data-initial="3">
     <div class="grilla">
         <div class="b8Top f aic jcsb">
@@ -349,6 +351,9 @@
         </div>
     </div>
 </section>
+{% endif %}
+
+
 {% endblock %}
 
 {% block jsfinal %}

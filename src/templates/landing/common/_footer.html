@@ -1,17 +1,27 @@
 <footer>
     <div class="grilla f aic jcsb">
-        <h3>¿Necesitas ayuda? Comunícate con nosotros.</h3>
-        <a href="#" class="footerWsp f aic jcc">
-            <img src="/static/web/img/wsp.svg" alt="" width="60">
-            <h4>Whatsapp <span>948 720 770</span></h4>
-        </a>
+        <h3>{{footer.text}}</h3>
+        {% if footer.mobile %}
+            <a href="#" class="footerWsp f aic jcc">
+                <img src="/static/web/img/wsp.svg" alt="" width="60">
+                <h4>Whatsapp <span>{{footer.mobile}}</span></h4>
+            </a>
+        {% endif %}
         <div class="footerRedesContent">
             <h4>Redes socicales</h4>
             <div class="footerRedes f aic jcsb">
-                <a href="#"><img src="/static/web/img/facebook.svg" alt=""></a>
-                <a href="#"><img src="/static/web/img/instagram.svg" alt=""></a>
-                <a href="#"><img src="/static/web/img/twitter.svg" alt=""></a>
-                <a href="#"><img src="/static/web/img/linkedIn.svg" alt=""></a>
+                {% if footer.facebook %}
+                    <a href="{{footer.facebook}}" target="_blank"><img src="/static/web/img/facebook.svg" alt=""></a>
+                {% endif %}
+                {% if footer.instagram %}
+                    <a href="{{footer.instagram}}" target="_blank"><img src="/static/web/img/instagram.svg" alt=""></a>
+                {% endif %}
+                {% if footer.twitter %}
+                    <a href="{{footer.twitter}}" target="_blank"><img src="/static/web/img/twitter.svg" alt=""></a>
+                {% endif %}
+                {% if footer.linkedin %}
+                    <a href="{{footer.linkedin}}" target="_blank"><img src="/static/web/img/linkedIn.svg" alt=""></a>
+                {% endif %}
             </div>
         </div>
     </div>

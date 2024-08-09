@@ -8,7 +8,7 @@ from ckeditor.fields import RichTextField
 from django.template.defaultfilters import slugify
 from django.conf import settings
 from datetime import datetime
-import pytz
+from mptt.models import MPTTModel, TreeForeignKey
 
 
 def get_upload_path(internal_folder):
@@ -16,10 +16,52 @@ def get_upload_path(internal_folder):
       "%s/%s/" % (settings.BUCKET_FOLDER_NAME, internal_folder))
 
 
+class Filter(models.Model):
+    company = models.ForeignKey(
+        Company, related_name="filters",
+        on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=100, unique=True)
+    description = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Filter")
+        verbose_name_plural = _("Filters")
+
+
+class Category(MPTTModel):
+    company = models.ForeignKey(
+        Company, related_name="categories",
+        on_delete=models.CASCADE, null=True)
+    filter = models.ForeignKey(
+        Filter, related_name="filter_categories",
+        on_delete=models.DO_NOTHING, null=True)
+    name = models.CharField(max_length=100, unique=True)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE,
+                            null=True, blank=True,
+                            related_name='sub_categories')
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
+    def __str__(self):
+        return f"{self.filter.name} - {self.name}"
+
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+
+
 class Event(BaseModel):
     company = models.ForeignKey(
         Company, related_name="events",
         on_delete=models.CASCADE, null=True)
+    categories = models.ManyToManyField(Category,
+                                        related_name='category_eventos',
+                                        blank=True,
+                                        null=True)
     name = models.CharField(
         _('Name'), max_length=255, blank=True)
     subtitle = models.CharField(
