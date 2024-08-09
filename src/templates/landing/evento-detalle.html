@@ -59,11 +59,11 @@
             </div>
             <ul class="b3List">
                 {% for row in home_page.get_items %}
+                    {% if row.description != "" %}
                     <li class="b3ItemList">
-                        <!-- Cambiar logica al click con datas -->
                         <a href="#" class="b3ClickToggle" data-color-initial="#008AC9" data-color-active="#17181B">
                             {{row.title}}
-                                <span class="circleLessMore"></span>
+                            <span class="circleLessMore"></span>
                         </a>
                         <div class="b3Info">
                             <div class="gParrafo">
@@ -71,6 +71,11 @@
                             </div>
                         </div>
                     </li>
+                    {% else %}
+                    <li class="b3ItemList noToggle">
+                        <p class="onlyTextList" class="" style="font-family: 'DMSans-Medium', sans-serif;font-size: 18px;">{{row.title}} </p>
+                    </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
@@ -202,7 +207,7 @@
             <!-- Si la info crece se genera un scroll -->
             <div class="gParrafo b4PopupText">
             </div>
-            <a href="#" class="b4linkedin">Ver perfil en Linkedin <img src="/static/web/img/arrow.svg" alt="" width="12"></a>
+            <a href="#" target="_blank" class="b4linkedin">Ver perfil en Linkedin <img src="/static/web/img/arrow.svg" alt="" width="12"></a>
         </div>
     </div>
 </div>
@@ -410,7 +415,7 @@
                 for (let i = 0; i < images.length; i++) {
                    images.item(i).srcset = getImg
                 }
-                elb4linkedin.setAttribute("value",getUrl);
+                elb4linkedin.setAttribute("href",getUrl);
             });
         }
 
