@@ -8,7 +8,7 @@ import requests
 from src.apps.events.models import Event
 from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
-    UserAnswer, TicketSettings)
+    UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer)
 from .forms import (
     RegisterForm, CredentialCustomerForm, LoginForm)
 from django.contrib.auth import login, logout
@@ -171,6 +171,12 @@ class EventsView(View):
 
 class SelectPreferencesView(View):
     template_name = "landing/ayudanos.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        self.user = request.user
+        return super(SelectPreferencesView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, **kwargs):
         questions = Question.objects.filter(
@@ -435,3 +441,55 @@ class CustomerTicket(APIView):
         response['Content-Disposition'] = 'attachment; filename=%s' % \
             ticket.pdf.name.split('/')[-1]
         return response
+
+
+class SurveyView(View):
+    template_name = "landing/encuesta.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        self.user = request.user
+        return super(SurveyView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, **kwargs):
+        questions = SurveryQuestion.objects.filter(
+            company=request.company, is_active=True).order_by('position')
+        context = {
+            "questions": questions,
+            'header': False,
+        }
+        return render(request, self.template_name, context)
+
+
+class SuccessSurveyView(View):
+    template_name = "landing/encuesta-gracias.html"
+
+    def get(self, request, **kwargs):
+        context = {
+        }
+        return render(request, self.template_name, context)
+
+
+@login_required
+def save_survey_answers(request):
+    if request.method == 'POST' and is_ajax(request=request):
+        data = request.POST.dict()
+        data.pop('csrfmiddlewaretoken', None)
+        user = request.user
+        UserSurveyAnswer.objects.filter(
+            user=user, company=request.company).delete()
+        response_data = {}
+        for key, value in data.items():
+            print(key, 'KEY!')
+            print(value, 'VALUE!')
+            answer = UserSurveyAnswer(
+                user=user, company=request.company)
+            answer.question_id = int(key)
+            answer.choice_question_id = int(value)
+            answer.save()
+        url = "finished_survey"
+        response_data['redirect_url'] = reverse('landing:%s' % url)
+        response_data['success'] = 1
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/json")

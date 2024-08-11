@@ -1,4 +1,4 @@
-{% extends "common/_base.html" %}
+{% extends "landing/common/_base.html" %}
 
 {% block cssadicional %}
 {% endblock %}
@@ -20,8 +20,8 @@
     <div class="b11Right scrollItem">
         <h3 class="b13Title">¡Gracias por tu respuesta!</h3>
         <div class="b13Links f aic jcfs">
-            <a href="#" class="gButton">Ver más eventos</a>
-            <a href="#" class="return">Regresar al evento</a>
+            <a href="{% url 'landing:home' %}" class="gButton">Ver más eventos</a>
+            <a href="{% url 'landing:event' %}" class="return">Regresar al evento</a>
         </div>
     </div>
 </section>

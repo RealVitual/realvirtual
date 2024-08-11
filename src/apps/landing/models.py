@@ -284,3 +284,83 @@ class TicketSettings(BaseModel):
 
     def __str__(self):
         return self.event_name
+
+
+class SurveryQuestion(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_survey_questions",
+        on_delete=models.CASCADE, null=True)
+    position = models.SmallIntegerField(_('Posición'), default=1)
+    name = models.CharField(
+        _('Nombre'),
+        max_length=255)
+
+    class Meta:
+        verbose_name = _('Pregunta de Encuesta')
+        verbose_name_plural = _('Preguntas de Encuesta')
+        ordering = ['company', 'position']
+
+    def __str__(self):
+        return self.name
+
+    def get_choices(self):
+        return self.survey_choice_questions.filter(
+            is_active=True).order_by('position')
+
+
+class SurveryChoiceQuestion(BaseModel):
+    question = models.ForeignKey(
+        SurveryQuestion,
+        related_name='survey_choice_questions',
+        on_delete=models.CASCADE)
+    position = models.SmallIntegerField(_('Posición'), default=1)
+    name = models.CharField(
+        _('Nombre'),
+        max_length=255,
+        blank=True,
+        null=True)
+    image = models.FileField(
+        _('Imagen icon'),
+        upload_to=get_upload_path('icons'),
+        null=True,
+        blank=True)
+
+    class Meta:
+        verbose_name = _('Opción')
+        verbose_name_plural = _('Opciones')
+        ordering = ['position', '-modified']
+
+    def __str__(self):
+        if self.name:
+            return self.name
+        return self.question.question
+
+
+class UserSurveyAnswer(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_survey_answers",
+        on_delete=models.CASCADE, null=True)
+    question = models.ForeignKey(
+        SurveryQuestion,
+        related_name='answer_survey_questions',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True)
+    choice_question = models.ForeignKey(
+        SurveryChoiceQuestion,
+        related_name='answer_choice_survey_questions',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True)
+    user = models.ForeignKey(
+        User,
+        related_name='user_survey_answers',
+        on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Respuesta de Encuesta')
+        verbose_name_plural = _('Respuestas de Encuesta')
+        ordering = ['-modified']
+
+    def __str__(self):
+        return self.user.email

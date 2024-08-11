@@ -33,7 +33,6 @@ def main_info(request, **kwargs):
             'countries': Country.objects.all(),
             'STATIC_VERSION': settings.STATIC_VERSION,
             'current_url': current_url,
-            "logged_user": user,
             "header_section": header_section,
             "footer": footer
         }
@@ -55,6 +54,7 @@ def main_info(request, **kwargs):
                         kwargs=dict(uid=cred.code))
             data['user_url'] = user_url
             data['is_live'] = is_live
+            data['logged_user'] = user
         return data
     return {
         'countries': Country.objects.all(),

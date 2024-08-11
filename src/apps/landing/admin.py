@@ -1,7 +1,9 @@
 from django.contrib import admin
 from .models import (Video, Sponsor, CredentialCustomer,
                      CredentialSettings, UserAnswer, ChoiceQuestion,
-                     Question, TicketSettings, ExternalEvent)
+                     Question, TicketSettings, ExternalEvent,
+                     SurveryChoiceQuestion, SurveryQuestion,
+                     UserSurveyAnswer)
 
 
 @admin.register(Video)
@@ -57,4 +59,23 @@ class QuestionAdmin(admin.ModelAdmin):
 @admin.register(TicketSettings)
 class TicketSettingsAdmin(admin.ModelAdmin):
     list_display = ('event_name', 'company')
+    list_filter = ('company', )
+
+
+class SurveyChoiceQuestionTabular(admin.TabularInline):
+    model = SurveryChoiceQuestion
+    list_display = ('user', 'company')
+    extra = 0
+
+
+@admin.register(SurveryQuestion)
+class SurveyQuestionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'company')
+    list_filter = ('company', )
+    inlines = [SurveyChoiceQuestionTabular]
+
+
+@admin.register(UserSurveyAnswer)
+class UserSurveyAnswerAdmin(admin.ModelAdmin):
+    list_display = ('user', 'company')
     list_filter = ('company', )

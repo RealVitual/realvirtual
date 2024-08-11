@@ -1,4 +1,4 @@
-{% extends "common/_base.html" %}
+{% extends "landing/common/_base.html" %}
 
 {% block cssadicional %}
 {% endblock %}
@@ -12,157 +12,36 @@
         <div class="b11LeftContent">
             <a href="#" class="gReturn">Regresar</a>
             <h1 class="gTitle">Tu opinión es importante</h1>
+            {% comment %}
+            {% endcomment %}
             <div class="gParrafo">
                 <p>Evento: El Poder de la Data</p>
             </div>
         </div>
     </div>
     <div class="b11Right">
-        <form action="" class="b11FormEncuesta g8Form">
-            <div class="b11Item">
-                <label class="b11NameOptions">1. Como calificarías el evento en general (de 1 a 5)</label>
-                <div class="b11ListOption">
-                    <div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="1" type="radio" name="optionregalo"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op1.svg" alt="">
-                        <h3>1</h3>
-                        <label for="1"></label>
-                    </div>
-                    <div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="2" type="radio" name="optionregalo"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op2.svg" alt="">
-                        <h3>2</h3>
-                        <label for="2"></label>
-                    </div>
-                    <div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="3" type="radio" name="optionregalo"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op3.svg" alt="">
-                        <h3>3</h3>
-                        <label for="3"></label>
-                    </div>
-                    <div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="4" type="radio" name="optionregalo"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op4.svg" alt="">
-                        <h3>4</h3>
-                        <label for="4"></label>
-                    </div>
-                    <div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="5" type="radio" name="optionregalo"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op5.svg" alt="">
-                        <h3>5</h3>
-                        <label for="5"></label>
+        <form action="" class="b11FormEncuesta g8Form" method="POST">
+            {% csrf_token %}
+            {% for question in questions %}
+                <div class="b11Item">
+                    <label class="b11NameOptions">
+                        {{question.position}}. {{question.name}}
+                    </label>
+                    <div class="b11ListOption">
+                        {% for choice in question.get_choices %}
+                            <div class="b11ItemOption pr">
+                                <!-- border color administrable -->
+                                <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
+                                </div>
+                                <input id="{{choice.id}}" type="radio" name="{{question.id}}"  class="validate[required]" value="{{choice.id}}">
+                                <img src="{{choice.image.url}}" alt="">
+                                <h3>{{choice.name}}</h3>
+                                <label for="{{choice.id}}"></label>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            </div>
-            <div class="b11Item">
-                <label class="b11NameOptions">1. Como calificarías el evento en general (de 1 a 5)</label>
-                <div class="b11ListOption">
-                    <div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="11" type="radio" name="optionregalo2"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op1.svg" alt="">
-                        <h3>1</h3>
-                        <label for="11"></label>
-                    </div>
-                    <div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="22" type="radio" name="optionregalo2"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op2.svg" alt="">
-                        <h3>2</h3>
-                        <label for="22"></label>
-                    </div><div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="23" type="radio" name="optionregalo2"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op3.svg" alt="">
-                        <h3>3</h3>
-                        <label for="23"></label>
-                    </div><div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="24" type="radio" name="optionregalo2"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op4.svg" alt="">
-                        <h3>4</h3>
-                        <label for="24"></label>
-                    </div><div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="25" type="radio" name="optionregalo2"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op5.svg" alt="">
-                        <h3>5</h3>
-                        <label for="25"></label>
-                    </div>
-                </div>
-            </div>
-            <div class="b11Item">
-                <label class="b11NameOptions">1. Como calificarías el evento en general (de 1 a 5)</label>
-                <div class="b11ListOption">
-                    <div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="41" type="radio" name="optionregalo3"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op1.svg" alt="">
-                        <h3>1</h3>
-                        <label for="41"></label>
-                    </div>
-                    <div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="42" type="radio" name="optionregalo3"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op2.svg" alt="">
-                        <h3>2</h3>
-                        <label for="42"></label>
-                    </div><div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="43" type="radio" name="optionregalo3"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op3.svg" alt="">
-                        <h3>3</h3>
-                        <label for="43"></label>
-                    </div><div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="44" type="radio" name="optionregalo3"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op4.svg" alt="">
-                        <h3>4</h3>
-                        <label for="44"></label>
-                    </div><div class="b11ItemOption pr">
-                        <!-- border color administrable -->
-                        <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                        </div>
-                        <input id="45" type="radio" name="optionregalo3"  class="validate[required]">
-                        <img src="{{STATIC_URL}}img/op5.svg" alt="">
-                        <h3>5</h3>
-                        <label for="45"></label>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
             <button class="gButton b11Enviar">Enviar</button>
         </form>
     </div>
@@ -196,9 +75,19 @@
         var form = $(this).closest('form');
         if (!valid) {
             console.log('form invalid')
-            } else {
-
-        }
+        } else {
+            data = form.serialize()
+            console.log(data)
+            $.ajax({
+                url : "/save_survey_answers/",
+                type : "post",
+                data: data,
+            }).done(function(data) {
+                if(data.success){
+                    window.location.href = data.redirect_url
+                }
+            });
+    }
     });
 </script>
 {% endblock %}

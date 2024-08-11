@@ -3,7 +3,8 @@ from .views import (
     HomeView, EventsView, GenerateCredentialView, validate_register,
     confirm_register, SelectPreferencesView, TicketView, LogoutView,
     save_preferences_answers, AfterCreatedCredentialView, CustomerCredential,
-    login_access, EventTransmissionView, CustomerTicket)
+    login_access, EventTransmissionView, CustomerTicket, SuccessSurveyView,
+    SurveyView, save_survey_answers)
 
 app_name = 'landing'
 
@@ -29,4 +30,10 @@ urlpatterns = [
           CustomerCredential.as_view(), name='download_credential'),
      path('download-customer-ticket/', CustomerTicket.as_view(),
           name='download_customer_ticket'),
+     path('encuesta/',
+          SurveyView.as_view(), name='survey_view'),
+     path('encuesta-culminada/',
+          SuccessSurveyView.as_view(), name='finished_survey'),
+     path('save_survey_answers/', save_survey_answers,
+          name='save_survey_answers'),
 ]
