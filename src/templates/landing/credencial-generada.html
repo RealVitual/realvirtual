@@ -30,18 +30,18 @@
                     <!-- en data-image-default ira la imagen por defecto cuando no suben una imagen propia -->
                     <!-- Este data se usara para validar cuando suben una imagen y quieren cancelar para asì 
                         poder recuperar la imagen por default -->
-                    {% if credential_settings.default_avatar %}
+                    {% if instance.profile_image %}
+                        <div id="result" data-image-default="{{credential_settings.default_avatar.url}}">
+                            <!-- colocar por defecto la imagen por default -->
+                            <img src="{{instance.profile_image.url}}" alt="" class="croppieImage">
+                        </div>
+                        <h6 class="b10NamePersonCred">{{instance.names}}</h6>
+                    {% else %}
                         <div id="result" data-image-default="{{credential_settings.default_avatar.url}}">
                             <!-- colocar por defecto la imagen por default -->
                             <img src="{{credential_settings.default_avatar.url}}" alt="" class="croppieImage">
                         </div>
-                        <h6 class="b10NamePersonCred">Tu nombre</h6>
-                    {% else %}
-                        <div id="result" data-image-default="/static/web/img/credencial-imagen-default.png">
-                            <!-- colocar por defecto la imagen por default -->
-                            <img src="/static/web/img/credencial-imagen-default.png" alt="" class="croppieImage">
-                        </div>
-                        <h6 class="b10NamePersonCred">Tu nombre</h6>
+                        <h6 class="b10NamePersonCred">{{instance.names}}</h6>
                     {% endif %}
                 </div>
             </div>

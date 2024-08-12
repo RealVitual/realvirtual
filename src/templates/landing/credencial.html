@@ -178,8 +178,12 @@
         OVERLAY.removeAttribute('style')
         elb10ValidateFile.classList.add('active')
         elb10ContentFile.classList.add('hide')
+        setTimeout(()=>{
+            let elresult = resultContainer.children[0].getAttribute("src");
+            console.log(elresult);
+            $("#uploadText").attr('value', elresult);
+        },500)
         detectedButton()
-        
     });
     //Boton cancelar el recorte
     elb10CerrarPopup.addEventListener('click', function(e) {
