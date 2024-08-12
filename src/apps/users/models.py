@@ -244,7 +244,10 @@ class User(BaseModel, PermissionsMixin, AbstractBaseUser):
     virtual = models.BooleanField(_('Virtual'), default=False)
     in_person = models.BooleanField(_('In Person'), default=False)
     company = models.ForeignKey(Company, related_name="company_users",
-                                null=True, blank=True, on_delete=models.DO_NOTHING)
+                                null=True, blank=True,
+                                on_delete=models.DO_NOTHING)
+    allow_networking = models.BooleanField(
+        _('Allow Networking'), default=False)
 
     def save(self, *args, **kwargs):
 

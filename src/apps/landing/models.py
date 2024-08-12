@@ -364,3 +364,45 @@ class UserSurveyAnswer(BaseModel):
 
     def __str__(self):
         return self.user.email
+
+
+class NetworkingOption(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_networking_options",
+        on_delete=models.CASCADE, null=True)
+    name = models.CharField(
+        _('Nombre'),
+        max_length=255,
+        blank=True,
+        null=True)
+
+    class Meta:
+        verbose_name = _('Opción de Networking')
+        verbose_name_plural = _('Opciones de Networking')
+
+    def __str__(self):
+        return self.name
+
+
+class UserNetworkingPreference(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_user_networking_preferences",
+        on_delete=models.CASCADE, null=True)
+    networking_option = models.ForeignKey(
+        NetworkingOption,
+        related_name='networking_user_preferences',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True)
+    user = models.ForeignKey(
+        User,
+        related_name='networkin_preferences',
+        on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Preferencia en Networking')
+        verbose_name_plural = _('Preferencias en Networking')
+        ordering = ['-modified']
+
+    def __str__(self):
+        return "{}-{}".format(self.user.email, self.networking_option.name)

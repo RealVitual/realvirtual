@@ -1,0 +1,88 @@
+{% extends "landing/common/_base.html" %}
+
+{% block cssadicional %}
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b11 pageEncuesta scrollWrap">
+    <div class="b11Left scrollItem">
+        <div class="b11LeftContent">
+            <a href="#" class="gReturn">Regresar</a>
+            <h1 class="gTitle">Networking</h1>
+            <div class="gParrafo">
+                <p>Rubro de trabajo</p>
+            </div>
+        </div>
+    </div>
+    <div class="b11Right scrollItem">
+        <div class="b18Content">
+            <div class="gParrafo">
+                <p>Selecciona el grupo/rubro de tu interés</p>
+            </div>
+            <div class="b18Filters f aic jcfs">
+               <div class="b18Select">
+                    <a href="#" class="b18ClickSelect"></a>
+                    <ul>
+                        <li><a href="#" class="b18ItemOption ">Todos</a></li>
+                        <li><a href="#" class="b18ItemOption active">option 2</a></li>
+                        <li><a href="#" class="b18ItemOption">option 3</a></li>
+                    </ul>
+               </div>
+               <div class="b18Buscador">
+                    <input type="text" placeholder="Buscar">
+               </div>
+            </div>
+            <div class="b18ContentWrap">
+                <div class="b18Wrap" data-tab="data-0">
+                    <div class="b18WrapContentTable">
+                        <table>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Rubro</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                            </tr>
+                            <tr>
+                                <td>Luis Callirgos</td>
+                                <td>Productor </td>
+                                <td><a href="mailto:lcallirgos@gmail.com">lcallirgos@gmail.com</a></td>
+                                <td><a href="#"><i class="icon-whatsapp"></i>Chat</a></td>
+                            </tr>
+                            <tr>
+                                <td>Luis Callirgos</td>
+                                <td>Productor </td>
+                                <td><a href="mailto:lcallirgos@gmail.com">lcallirgos@gmail.com</a></td>
+                                <td><a href="#"><i class="icon-whatsapp"></i>Chat</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+    eventGrilla("b11Left","left")
+    eventGrilla("b11Right","right")
+     let elb18ClickSelect = document.getElementsByClassName("b18ClickSelect")[0];
+     let elb18ItemOption = document.getElementsByClassName("b18ItemOption");
+     elb18ClickSelect.addEventListener("click", function(e) {
+        e.preventDefault();
+        this.parentElement.classList.toggle('active');
+     });
+
+     for(const b18ItemOption of elb18ItemOption){
+        if(b18ItemOption.classList.contains('active')){
+            let getText = b18ItemOption.textContent;
+            elb18ClickSelect.innerText = getText
+        }
+     }
+</script>
+{% endblock %}

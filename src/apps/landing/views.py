@@ -8,18 +8,18 @@ import requests
 from src.apps.events.models import Event
 from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
-    UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer)
+    UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
+    NetworkingOption, UserNetworkingPreference)
 from .forms import (
     RegisterForm, CredentialCustomerForm, LoginForm)
 from django.contrib.auth import login, logout
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 import json
 from datetime import datetime
 from .utils import record_to_pdf
 from src.apps.tickets.utils import generate_ticket_code
-from storages.backends.s3boto3 import S3Boto3Storage
 from django.conf import settings
 from src.apps.users.permissions import (
     AuthenticatedPermission, )
@@ -493,3 +493,87 @@ def save_survey_answers(request):
         response_data['success'] = 1
         return HttpResponse(
             json.dumps(response_data), content_type="application/json")
+
+
+class NetworkingView(View):
+    template_name = "landing/networking.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        self.user = request.user
+        return super(NetworkingView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, **kwargs):
+        options = NetworkingOption.objects.filter(
+            company=request.company, is_active=True).order_by('name')
+        context = {
+            "options": options,
+            'header': False,
+        }
+        return render(request, self.template_name, context)
+
+
+@login_required
+def allow_networking_user(request):
+    if request.method == 'POST' and is_ajax(request=request):
+        data = request.POST.dict()
+        data.pop('csrfmiddlewaretoken', None)
+        user = request.user
+        networking = int(data.get('networking', 1))
+        user.allow_networking = networking
+        user.save()
+        response_data = {}
+        url = "networking_preferences"
+        if not networking:
+            url = "home"
+        response_data['redirect_url'] = reverse('landing:%s' % url)
+        response_data['success'] = 1
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/json")
+
+
+@login_required
+def save_networking_preferences(request):
+    if request.method == 'POST' and is_ajax(request=request):
+        data = request.POST.dict()
+        data.pop('csrfmiddlewaretoken', None)
+        print(data)
+        user = request.user
+
+        for key, value in data.items():
+            answer = UserNetworkingPreference(
+                user=user, company=request.company)
+            answer.networking_option_id = int(key)
+            answer.save()
+
+        response_data = {}
+        url = "networking"
+        response_data['redirect_url'] = reverse('landing:%s' % url)
+        response_data['success'] = 1
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/json")
+
+
+class NetworkingUsersView(View):
+    template_name = "landing/networking-si-continuar.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        self.user = request.user
+        return super(NetworkingUsersView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, **kwargs):
+        networking_users = UserNetworkingPreference.objects.filter(
+            company=request.company,
+        ).exclude(user=request.user)
+        print(networking_users, 'networking_users')
+        options = ['']
+        options = NetworkingOption.objects.filter(
+            company=request.company,
+            is_active=True).order_by('name')
+        context = {
+            "networking_users": networking_users
+        }
+        return render(request, self.template_name, context)

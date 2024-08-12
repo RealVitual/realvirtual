@@ -4,7 +4,8 @@ from .views import (
     confirm_register, SelectPreferencesView, TicketView, LogoutView,
     save_preferences_answers, AfterCreatedCredentialView, CustomerCredential,
     login_access, EventTransmissionView, CustomerTicket, SuccessSurveyView,
-    SurveyView, save_survey_answers)
+    SurveyView, save_survey_answers, allow_networking_user, NetworkingView,
+    save_networking_preferences, NetworkingUsersView)
 
 app_name = 'landing'
 
@@ -36,4 +37,12 @@ urlpatterns = [
           SuccessSurveyView.as_view(), name='finished_survey'),
      path('save_survey_answers/', save_survey_answers,
           name='save_survey_answers'),
+     path('allow_networking_user/', allow_networking_user,
+          name='allow_networking_user'),
+     path('networking-preferencias/', NetworkingView.as_view(),
+          name='networking_preferences'),
+     path('save_networking_preferences/', save_networking_preferences,
+          name='save_networking_preferences'),
+     path('networking/', NetworkingUsersView.as_view(),
+          name='networking'),
 ]

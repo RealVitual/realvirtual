@@ -1,0 +1,152 @@
+{% extends "landing/common/_base.html" %}
+
+{% block cssadicional %}
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b11 pageEncuesta scrollWrap">
+    <div class="b11Left scrollItem">
+        <div class="b11LeftContent">
+            <a href="{% url 'landing:home' %}" class="gReturn">Regresar</a>
+            <h1 class="gTitle">Networking</h1>
+            <div class="gParrafo">
+                <p>Rubro de trabajo</p>
+            </div>
+        </div>
+    </div>
+    <div class="b11Right scrollItem">
+        <div class="b17Content">
+            <div class="gParrafo">
+                <p>Selecciona el grupo/rubro de tu interés</p>
+            </div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="b17Tabs f aic jcfs ffrw">
+                    {% for option in options %}
+                        <div class="b17Option">
+                            <input id="{{option.id}}"  type="checkbox" name="{{option.id}}" value="{{option.id}}">
+                            <label for="{{option.id}}" class="b17TabItem" class="active" data-color="#008AC9">
+                                <h3>{{option.name}}</h3>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="b17Buttons">
+                    <a href="" class="b16OpenPopup">Dejar de compartir</a>
+                    <button class="gButton b17Submit">Continuar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div class="b16Popup">
+    <a href="#" class="icon-close b16CancelNet"></a>
+    <div class="b16PopupContent">
+        <h3 class="gTitle">¿Deseas dejar de compartir tu información?</h3>
+        <div class="gParrafo">
+            <p>Al aceptar ya no podrás ver la información de resto de los asistentes.</p>
+        </div>
+        <div class="b16Buttons">
+            <a href="#" class="gButton b16AceptNet">Acepto</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+    eventGrilla("b11Left","left")
+    eventGrilla("b11Right","right")
+
+    let elb17TabItem = document.getElementsByClassName('b17TabItem')
+    let elb17Submit = document.getElementsByClassName('b17Submit')[0]
+
+    for(const b17TabItem of elb17TabItem){
+        let getColor = b17TabItem.dataset.color;
+        b17TabItem.style.border  = `1px solid ${getColor}`;
+        b17TabItem.children[0].style.color = getColor
+        b17TabItem.addEventListener('click',function(e){
+            let getColorActive = this.dataset.color;
+            if(!this.classList.contains('activetab')){
+                this.classList.add('activetab')
+                this.style.background = getColorActive
+                this.children[0].style.color = "#fff"
+            }else{
+                this.classList.remove('activetab')
+                this.style.background = "transparent"
+                this.children[0].style.color = getColorActive
+            }
+            if(document.getElementsByClassName('activetab').length > 0){
+                elb17Submit.classList.add('active')
+            }else{
+                elb17Submit.classList.remove('active')
+            }
+        })
+    }
+
+    $('.b17Submit').click(function(e){
+        e.preventDefault();
+        var item = $(this);
+        var valid = item.closest('form').validationEngine('validate');
+        var form = $(this).closest('form');
+        if (!valid) {
+            } else {
+                let data = form.serialize()
+                console.log(data, 'DATA')
+                $.ajax({
+                    url : "{% url 'landing:save_networking_preferences' %}",
+                    type : "post",
+                    data: data,
+                }).done(function(data) {
+                    console.log(data, 'DATA RESPONSE')
+                    if(data.success){
+                        window.location.href = data.redirect_url
+                    }
+                });
+        }
+    });
+
+
+    if(document.getElementsByClassName('b11')[0]){
+        let elb16OpenPopup = document.getElementsByClassName('b16OpenPopup')[0]
+        let elb16Popup = document.getElementsByClassName('b16Popup')[0]
+        let elb16CancelNet = document.getElementsByClassName('b16CancelNet')[0]
+        elb16OpenPopup.addEventListener('click',function(e){
+            e.preventDefault();
+            elb16Popup.classList.add('active')
+            OVERLAY.classList.add('active')
+            OVERLAY.style.zIndex = "400"
+        })
+        elb16CancelNet.addEventListener('click',function(e){
+            e.preventDefault();
+            elb16Popup.classList.remove('active')
+            OVERLAY.classList.remove('active')
+            OVERLAY.removeAttribute('style')
+        })
+    }
+
+    let b16AceptNet = document.getElementsByClassName("b16AceptNet")[0];
+    b16AceptNet.addEventListener("click",function(e){
+        e.preventDefault();
+        $.ajax({
+            url : "{% url 'landing:allow_networking_user' %}",
+            type : "post",
+            data: {
+                networking: 0,
+                csrfmiddlewaretoken: "{{csrf_token}}"
+            },
+        }).done(function(data) {
+            console.log(data, 'DATA RESPONSE')
+            if(data.success){
+                window.location.href = data.redirect_url
+            }
+        });
+    });
+
+</script>
+{% endblock %}

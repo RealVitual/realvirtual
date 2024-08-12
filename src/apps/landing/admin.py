@@ -3,7 +3,8 @@ from .models import (Video, Sponsor, CredentialCustomer,
                      CredentialSettings, UserAnswer, ChoiceQuestion,
                      Question, TicketSettings, ExternalEvent,
                      SurveryChoiceQuestion, SurveryQuestion,
-                     UserSurveyAnswer)
+                     UserSurveyAnswer, NetworkingOption,
+                     UserNetworkingPreference)
 
 
 @admin.register(Video)
@@ -79,3 +80,15 @@ class SurveyQuestionAdmin(admin.ModelAdmin):
 class UserSurveyAnswerAdmin(admin.ModelAdmin):
     list_display = ('user', 'company')
     list_filter = ('company', )
+
+
+@admin.register(NetworkingOption)
+class NetworkingOptionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'company')
+    list_filter = ('company', )
+
+
+@admin.register(UserNetworkingPreference)
+class UserNetworkingPreferenceAdmin(admin.ModelAdmin):
+    list_display = ('user', 'networking_option', 'company')
+    list_filter = ('company', 'networking_option')

@@ -21,6 +21,7 @@ class CustomerAdmin(UA):
                        'full_name', 'occupation', 'jon_company',
                        'company_position',
                        'age_range', 'country', 'speciality',
+                       'allow_networking',
                        'virtual', 'in_person')
         }),
         (_('Permissions'), {
