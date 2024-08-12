@@ -83,7 +83,7 @@ class RegisterForm(forms.ModelForm):
             else:
                 message = "No estás en la base de datos de invitados"
                 return False, message, False
-        if access_type in [
+        elif access_type in [
                 "HYBRID", "IN_PERSON"]:
             if self.company.current_quantity < self.company.capacity:
                 self.in_person = True
@@ -97,6 +97,11 @@ class RegisterForm(forms.ModelForm):
                 self.virtual = True
                 message = "Sólo Podrás acceder al evento de forma virtual. ¿Deseas continuar?" # noqa
                 return False, message, True
+        else:
+            message = ""
+            self.in_person = False
+            self.virtual = True
+            return True, message, False
 
 
 class CredentialCustomerForm(forms.ModelForm):
