@@ -406,3 +406,17 @@ class UserNetworkingPreference(BaseModel):
 
     def __str__(self):
         return "{}-{}".format(self.user.email, self.networking_option.name)
+
+
+class FreeImage(models.Model):
+    name = models.CharField(_('Nombre'), max_length=255)
+    image = models.ImageField(
+        verbose_name=_('Imagen'),
+        upload_to=get_upload_path('free_images'))
+
+    class Meta:
+        verbose_name = _('Free Image')
+        verbose_name_plural = _('Free Images')
+
+    def __str__(self):
+        return self.name

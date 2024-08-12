@@ -4,7 +4,7 @@ from .models import (Video, Sponsor, CredentialCustomer,
                      Question, TicketSettings, ExternalEvent,
                      SurveryChoiceQuestion, SurveryQuestion,
                      UserSurveyAnswer, NetworkingOption,
-                     UserNetworkingPreference)
+                     UserNetworkingPreference, FreeImage)
 
 
 @admin.register(Video)
@@ -92,3 +92,8 @@ class NetworkingOptionAdmin(admin.ModelAdmin):
 class UserNetworkingPreferenceAdmin(admin.ModelAdmin):
     list_display = ('user', 'networking_option', 'company')
     list_filter = ('company', 'networking_option')
+
+
+@admin.register(FreeImage)
+class FreeImageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'image')

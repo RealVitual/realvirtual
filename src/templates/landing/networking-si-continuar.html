@@ -26,9 +26,10 @@
                <div class="b18Select">
                     <a href="#" class="b18ClickSelect"></a>
                     <ul>
-                        <li><a href="#" class="b18ItemOption ">Todos</a></li>
-                        <li><a href="#" class="b18ItemOption active">option 2</a></li>
-                        <li><a href="#" class="b18ItemOption">option 3</a></li>
+                        <li><a href="#" class="b18ItemOption active">Todos</a></li>
+                        {% for option in options %}
+                        <li><a href="#" class="b18ItemOption">{{option.name}}</a></li>
+                        {% endfor %}
                     </ul>
                </div>
                <div class="b18Buscador">
@@ -43,20 +44,20 @@
                                 <th>Nombre</th>
                                 <th>Rubro</th>
                                 <th>Email</th>
+                                {% comment %}
                                 <th>Teléfono</th>
+                                {% endcomment %}
                             </tr>
-                            <tr>
-                                <td>Luis Callirgos</td>
-                                <td>Productor </td>
-                                <td><a href="mailto:lcallirgos@gmail.com">lcallirgos@gmail.com</a></td>
-                                <td><a href="#"><i class="icon-whatsapp"></i>Chat</a></td>
-                            </tr>
-                            <tr>
-                                <td>Luis Callirgos</td>
-                                <td>Productor </td>
-                                <td><a href="mailto:lcallirgos@gmail.com">lcallirgos@gmail.com</a></td>
-                                <td><a href="#"><i class="icon-whatsapp"></i>Chat</a></td>
-                            </tr>
+                            {% for contact  in networking_users %}
+                                <tr>
+                                    <td>{{contact.user.full_name}}</td>
+                                    <td>{{contact.networking_option.name}} </td>
+                                    <td><a href="mailto:{{contact.user.email}}">{{contact.user.email}}</a></td>
+                                    {% if contact.user.phone %}
+                                        <td><a href="https://wa.me/{{contact.user.phone}}?hola"><i class="icon-whatsapp"></i>Chat</a></td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
                         </table>
                     </div>
                 </div>

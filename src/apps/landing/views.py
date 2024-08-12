@@ -566,7 +566,7 @@ class NetworkingUsersView(View):
 
     def get(self, request, **kwargs):
         networking_users = UserNetworkingPreference.objects.filter(
-            company=request.company,
+            company=request.company, user__allow_networking=True
         ).exclude(user=request.user)
         print(networking_users, 'networking_users')
         options = ['']
@@ -574,6 +574,7 @@ class NetworkingUsersView(View):
             company=request.company,
             is_active=True).order_by('name')
         context = {
-            "networking_users": networking_users
+            "networking_users": networking_users,
+            "options": options
         }
         return render(request, self.template_name, context)
