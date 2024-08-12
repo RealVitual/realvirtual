@@ -278,19 +278,47 @@
 </section>
 {% endif %}
 {% if header_section.show_networking_section %}
-<div class="b16Popup">
-    <!-- <a href="#" class="icon-close"></a> -->
-    <div class="b16PopupContent">
-        <h3 class="gTitle">Networking</h3>
-        <div class="gParrafo">
-            <p>Usted ya está compartiendo sus datos.</p>
+    {% if logged_user %}
+        <section class="b16 anclaBlock" id="networking">
+            <div class="grilla">
+                <h3 class="gTitle">Networking</h3>
+                {% if logged_user.allow_networking %}
+                    <div class="gParrafo">
+                        <p>Conéctate con los demás usuarios.</p>
+                    </div>
+                    <a href="{% url 'landing:networking_preferences' %}" class="gButton">Ir a Networking</a>
+                {% else %}
+                    <div class="gParrafo">
+                        <p>¿Autorizas compartir tu información de contacto con el resto de los asistentes?</p>
+                    </div>
+                    <a href="#" class="gButton b16OpenPopup">Si, continuar</a>
+                {% endif %}
+            </div>
+        </section>
+
+        <div class="b16Popup">
+            <!-- <a href="#" class="icon-close"></a> -->
+            <div class="b16PopupContent">
+                <h3 class="gTitle">Networking</h3>
+                <div class="gParrafo">
+                    <p>Confirma que desea compartir sus datos con los demás asistentes del evento.</p>
+                </div>
+                <div class="b16Buttons">
+                    <a href="#" class="gButton b16AceptNet">Aceptar</a>
+                    <a href="#" class="gButton b16CancelNet">Cancelar</a>
+                </div>
+            </div>
         </div>
-        <div class="b16Buttons">
-            <a href="#" class="gButton b16AceptNet">Aceptar</a>
-            <a href="#" class="gButton b16CancelNet">Cancelar</a>
-        </div>
-    </div>
-</div>
+    {% else %}
+        <section class="b16 anclaBlock" id="networking">
+            <div class="grilla">
+                <h3 class="gTitle">Networking</h3>
+                <div class="gParrafo">
+                    <p>Para conectarte con los demás usuarios primero debes registrarte</p>
+                </div>
+            </div>
+        </section>
+    {% endif %}
 {% endif %}
 
 {% if header_section.show_survey_section %}
@@ -564,5 +592,24 @@
         breakpointb8.addListener(breakpointCheckerb8);
         breakpointCheckerb8();
     }
+
+    let b16AceptNet = document.getElementsByClassName("b16AceptNet")[0];
+    b16AceptNet.addEventListener("click",function(e){
+        e.preventDefault();
+        $.ajax({
+            url : "{% url 'landing:allow_networking_user' %}",
+            type : "post",
+            data: {
+                networking: 1,
+                csrfmiddlewaretoken: "{{csrf_token}}"
+            },
+        }).done(function(data) {
+            console.log(data, 'DATA RESPONSE')
+            if(data.success){
+                window.location.href = data.redirect_url
+            }
+        });
+    });
+
 </script>
 {% endblock %}
