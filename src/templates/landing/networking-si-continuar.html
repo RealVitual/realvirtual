@@ -10,10 +10,10 @@
 <section class="b11 pageEncuesta scrollWrap">
     <div class="b11Left scrollItem">
         <div class="b11LeftContent">
-            <a href="#" class="gReturn">Regresar</a>
+            <a href="##" onClick="history.go(-1); return false;" class="gReturn">Regresar</a>
             <h1 class="gTitle">Networking</h1>
             <div class="gParrafo">
-                <p>Rubro de trabajo</p>
+                <p>{{home_page.main_title}}</p>
             </div>
         </div>
     </div>
@@ -75,6 +75,7 @@
      let elb18ClickSelect = document.getElementsByClassName("b18ClickSelect")[0];
      let elb18ItemOption = document.getElementsByClassName("b18ItemOption");
      elb18ClickSelect.addEventListener("click", function(e) {
+        console.log(e, 'E')
         e.preventDefault();
         this.parentElement.classList.toggle('active');
      });

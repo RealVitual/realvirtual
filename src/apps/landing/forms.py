@@ -109,7 +109,7 @@ class CredentialCustomerForm(forms.ModelForm):
 
     class Meta:
         model = CredentialCustomer
-        fields = ('names', )
+        fields = ('names', 'profile_image')
 
     def __init__(self, *args, **kwargs):
         self.date_name = kwargs["initial"].get("date_name")
@@ -120,6 +120,7 @@ class CredentialCustomerForm(forms.ModelForm):
     def save(self):
         data = self.cleaned_data
         image_code = data.pop('profile_image')
+        print(image_code, 'image_code')
         data['user'] = self.user
         data['company'] = self.company
         instance = CredentialCustomer.objects.create(**data)
@@ -128,8 +129,10 @@ class CredentialCustomerForm(forms.ModelForm):
         user = self.user
 
         if image_code:
+            print(image_code, 'IMAGE CODE')
             profile_image = decode_base64_file(
                 image_code, full_credential_name)
+            print(profile_image, 'profile_image')
             instance.profile_image = profile_image
             user.profile_image = profile_image
             instance.save()

@@ -466,7 +466,9 @@ class SuccessSurveyView(View):
     template_name = "landing/encuesta-gracias.html"
 
     def get(self, request, **kwargs):
+        home_page = HomePage.objects.get(company=request.company)
         context = {
+            "home_page": home_page
         }
         return render(request, self.template_name, context)
 
@@ -507,9 +509,16 @@ class NetworkingView(View):
     def get(self, request, **kwargs):
         options = NetworkingOption.objects.filter(
             company=request.company, is_active=True).order_by('name')
+        preferences = UserNetworkingPreference.objects.filter(
+            user=request.user, company=request.company
+        ).values_list('networking_option__id', flat=True)
+        print(preferences, 'PREFERENCES')
+        home_page = HomePage.objects.get(company=request.company)
         context = {
             "options": options,
             'header': False,
+            'preferences': preferences,
+            "home_page": home_page
         }
         return render(request, self.template_name, context)
 
@@ -538,9 +547,10 @@ def save_networking_preferences(request):
     if request.method == 'POST' and is_ajax(request=request):
         data = request.POST.dict()
         data.pop('csrfmiddlewaretoken', None)
-        print(data)
         user = request.user
-
+        UserNetworkingPreference.objects.filter(
+            user=user, company=request.company
+        ).delete()
         for key, value in data.items():
             answer = UserNetworkingPreference(
                 user=user, company=request.company)
@@ -562,19 +572,21 @@ class NetworkingUsersView(View):
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
         self.user = request.user
-        return super(NetworkingUsersView, self).dispatch(request, *args, **kwargs)
+        return super(NetworkingUsersView, self).dispatch(
+            request, *args, **kwargs)
 
     def get(self, request, **kwargs):
         networking_users = UserNetworkingPreference.objects.filter(
             company=request.company, user__allow_networking=True
         ).exclude(user=request.user)
-        print(networking_users, 'networking_users')
         options = ['']
         options = NetworkingOption.objects.filter(
             company=request.company,
             is_active=True).order_by('name')
+        home_page = HomePage.objects.get(company=request.company)
         context = {
             "networking_users": networking_users,
-            "options": options
+            "options": options,
+            "home_page": home_page
         }
         return render(request, self.template_name, context)

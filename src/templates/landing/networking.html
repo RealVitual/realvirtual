@@ -10,10 +10,10 @@
 <section class="b11 pageEncuesta scrollWrap">
     <div class="b11Left scrollItem">
         <div class="b11LeftContent">
-            <a href="{% url 'landing:home' %}" class="gReturn">Regresar</a>
+            <a href="##" onClick="history.go(-1); return false;" class="gReturn">Regresar</a>
             <h1 class="gTitle">Networking</h1>
             <div class="gParrafo">
-                <p>Rubro de trabajo</p>
+                <p>{{home_page.main_title}}</p>
             </div>
         </div>
     </div>
@@ -27,10 +27,17 @@
                 <div class="b17Tabs f aic jcfs ffrw">
                     {% for option in options %}
                         <div class="b17Option">
-                            <input id="{{option.id}}"  type="checkbox" name="{{option.id}}" value="{{option.id}}">
-                            <label for="{{option.id}}" class="b17TabItem" class="active" data-color="#008AC9">
+                            {% if option.id in preferences %}
+                            <input id="{{option.id}}"  type="checkbox" name="{{option.id}}" value="{{option.id}}" checked>
+                            <label for="{{option.id}}" class="b17TabItem {{option.id}}" checked class="active" data-color="#008AC9">
                                 <h3>{{option.name}}</h3>
                             </label>
+                            {% else %}
+                            <input id="{{option.id}}"  type="checkbox" name="{{option.id}}" value="{{option.id}}">
+                            <label for="{{option.id}}" class="b17TabItem {{option.id}}" class="active" data-color="#008AC9">
+                                <h3>{{option.name}}</h3>
+                            </label>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -48,7 +55,7 @@
     <div class="b16PopupContent">
         <h3 class="gTitle">¿Deseas dejar de compartir tu información?</h3>
         <div class="gParrafo">
-            <p>Al aceptar ya no podrás ver la información de resto de los asistentes.</p>
+            <p>Al aceptar ya no podrás ver la información del resto de asistentes.</p>
         </div>
         <div class="b16Buttons">
             <a href="#" class="gButton b16AceptNet">Acepto</a>
@@ -65,6 +72,19 @@
 
     let elb17TabItem = document.getElementsByClassName('b17TabItem')
     let elb17Submit = document.getElementsByClassName('b17Submit')[0]
+
+    setTimeout(() => {
+        $('input[type=checkbox]').each(function () {
+            console.log('THIS')
+            let check_id = this.id
+            if (this.checked) {
+                console.log(check_id, 'CHECK ID')
+                console.log($("." + check_id))
+                $('.'+ check_id).addClass('activetab');
+                $('.'+ check_id).click();
+            }
+        });
+      }, 3000);
 
     for(const b17TabItem of elb17TabItem){
         let getColor = b17TabItem.dataset.color;
