@@ -40,15 +40,32 @@ class HomeView(CreateView):
 
     def get(self, request, **kwargs):
         context = {}
+        months = {
+            "January": "Enero", "February": "Febrero",
+            "March": "Marzo", "April": "Abril",
+            "May": "Mayo", "June": "Junio", "July": "Julio",
+            "August": "Agosto", "September": "Setiembre",
+            "October": "Octubre", "November": "Noviembre",
+            "December": "Diciembre"
+        }
         if request.company:
             company = request.company
             home_page = HomePage.objects.get(company=company)
             events = Event.objects.filter(
                 is_active=True, company=company).order_by('start_datetime')
+            dates = events.values_list('start_datetime', flat=True)
+            dates_select = []
+            for date in dates:
+                option_date = date.astimezone(pytz.timezone(
+                    settings.TIME_ZONE))
+                month = months.get(date.strftime("%B"))
+                dates_select.append(
+                    option_date.strftime("%d de {}".format(month)))
             videos = Video.objects.filter(
                 is_active=True, company=company).order_by('position')
             sponsors = Sponsor.objects.filter(
                 is_active=True, company=company).order_by('position')
+            event = events[0]
             context = {
                 'company': company,
                 'header': True,
@@ -57,7 +74,10 @@ class HomeView(CreateView):
                 'events': events,
                 'home_page': home_page,
                 'videos': videos,
-                'sponsors': sponsors
+                'sponsors': sponsors,
+                'event': event,
+                'dates_select': dates_select,
+                'first_date': dates_select[0]
             }
         return render(request, self.template_name, context)
 
@@ -148,15 +168,32 @@ class EventsView(View):
 
     def get(self, request, **kwargs):
         events = []
+        months = {
+            "January": "Enero", "February": "Febrero",
+            "March": "Marzo", "April": "Abril",
+            "May": "Mayo", "June": "Junio", "July": "Julio",
+            "August": "Agosto", "September": "Setiembre",
+            "October": "Octubre", "November": "Noviembre",
+            "December": "Diciembre"
+        }
         if request.company:
             company = request.company
             events = Event.objects.filter(
                 is_active=True, company=company).order_by('start_datetime')
+            dates = events.values_list('start_datetime', flat=True)
+            dates_select = []
+            for date in dates:
+                option_date = date.astimezone(pytz.timezone(
+                    settings.TIME_ZONE))
+                month = months.get(date.strftime("%B"))
+                dates_select.append(
+                    option_date.strftime("%d de {}".format(month)))
             videos = Video.objects.filter(
                 is_active=True, company=company).order_by('position')
             sponsors = Sponsor.objects.filter(
                 is_active=True, company=company).order_by('position')
             home_page = HomePage.objects.get(company=company)
+            event = events[0]
 
         context = {
             'home_page': home_page,
@@ -164,7 +201,10 @@ class EventsView(View):
             'header': True,
             'events': events,
             'videos': videos,
-            'sponsors': sponsors
+            'sponsors': sponsors,
+            'event': event,
+            'dates_select': dates_select,
+            'first_date': dates_select[0]
         }
         return render(request, self.template_name, context)
 

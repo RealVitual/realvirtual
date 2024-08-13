@@ -95,6 +95,7 @@ OVERLAY.addEventListener('click',function(e){
 	document.getElementsByClassName('formRegistro')[0]?.classList.remove('active');
 	document.getElementsByClassName("b4Popup")[0]?.classList.remove('active');
 	document.getElementsByClassName('b16Popup')[0]?.classList.remove('active');
+	document.getElementsByClassName('b19Popup')[0]?.classList.remove('active');
 	BODY.classList.remove('noScroll');
 	this.classList.remove('active');
 	this.removeAttribute("style")
@@ -550,3 +551,60 @@ if(document.getElementsByClassName("headerAnclaBlock")[0]){
 		});
 	});
 }
+
+
+
+if (localStorage.getItem('selectedItems')) {
+	const storedItems = JSON.parse(localStorage.getItem('selectedItems'));
+	document.getElementById('total-count').innerText = storedItems.length;
+}
+
+// if(document.getElementsByClassName("agregarCalendario")[0]){
+// 	const items = document.querySelectorAll('.agregarCalendario');
+// 	const totalCountDisplay = document.getElementById('total-count');
+// 	let totalCount = 0;
+// 	const selectedItems = new Set();
+
+// 	// Cargar el estado inicial desde localStorage
+// 	if (localStorage.getItem('selectedItems')) {
+// 		const storedItems = JSON.parse(localStorage.getItem('selectedItems'));
+// 		storedItems.forEach(itemId => {
+// 			const item = document.querySelector(`.agregarCalendario[data-item-id="${itemId}"]`);
+// 			if (item) {
+// 				item.classList.add('selected');
+// 				selectedItems.add(itemId);
+// 				item.children[0].textContent = "Agendado";
+// 			}
+// 		});
+// 		totalCount = selectedItems.size;
+// 		updateTotalCountDisplay();
+// 	}
+
+// 	items.forEach(item => {
+// 		item.addEventListener('click', function(e) {
+// 			e.preventDefault()
+// 			const itemId = this.getAttribute('data-item-id');
+// 			if (selectedItems.has(itemId)) {
+// 				selectedItems.delete(itemId);
+// 				this.classList.remove('selected');
+// 				this.children[0].textContent = "Agendar";
+// 				totalCount--;
+// 			} else {
+// 				selectedItems.add(itemId);
+// 				this.classList.add('selected');
+// 				this.children[0].textContent = "Agendado";
+// 				totalCount++;
+// 			}
+// 			updateTotalCountDisplay();
+// 			saveToLocalStorage();
+// 		});
+// 	});
+
+// 	function updateTotalCountDisplay() {
+// 		totalCountDisplay.textContent = totalCount;
+// 	}
+
+// 	function saveToLocalStorage() {
+// 		localStorage.setItem('selectedItems', JSON.stringify(Array.from(selectedItems)));
+// 	}
+// }

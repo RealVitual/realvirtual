@@ -5,7 +5,6 @@
         &:after
             display none
 .b4Title
-    margin-bottom 32px
     width 410px
     margin-right 50px
     h4
@@ -55,17 +54,80 @@
 
 .b4ContentWrap
     position relative
+    flexg(flex-start,space-between)
+    
+.b4FilterLeft
+    width 250px
+    background #EFEFF3
+    border-radius 5px
+    max-height 680px
+    padding 32px 24px
+    position sticky
+    top 120px
+    h3
+        font-size 14px
+        textg(t-500,normal,#000000)
+        margin-bottom 16px
+        text-transform uppercase
 
-.b4Wrap
-    position absolute
-    opacity0()
-    top 0
-    left 0
-    width 100%
+
+.b4FilterItem
+    scrollbar(#808080,#dbdbdb,4,3)
+
+.b4FilterItemClick
+    font-size 16px
+    textg(t-700,normal,#000)
+    position relative
+    padding-right 20px
     padding 10px 0px
+    &:after
+        content '\e608'
+        font-family icomoon
+        font-size 30px
+        display inline-block
+        centerY()
+        right 0
+        transform translateY(-50%) rotate(0deg) 
+        transition all 400ms ease
     &.active
-        position relative
-        opacity1()
+        &:after
+            transform translateY(-50%) rotate(180deg) 
+            transition all 400ms ease
+
+.b4FilterItemInfo
+    ul
+        padding 10px 0px
+        height 100%
+        overflow-y auto
+        max-height 140px
+        height auto
+        li
+            margin-bottom 8px
+
+.b4ItemOption
+    position relative
+    cursor pointer
+    padding-left 30px
+    .optionRadio
+        centerY()
+        circle(18,transparent)
+        left 0
+        span
+            opacity0()
+            circle(12,transparent)
+            centerY()
+            left 2px
+    &.active
+        .optionRadio
+            span
+                opacity1()
+    h6
+        font-size 14px
+        textg(t-400,normal,#202121)
+
+.b4WrapList
+    width calc(100% - 250px)
+    padding-left 24px
 
 .b4Item
     height 200px
@@ -101,37 +163,86 @@
     overflow hidden
 
 .b4Info
-    padding-top 30px
+    padding-top 10px
     width calc(100% - 280px)
-    padding-left 60px
-    padding-right 60px
+    padding-left 25px
+    padding-right 30px
     position relative
-    h3
-        font-size 16px
-        textg(t-500,normal,#262626)
-        margin-bottom 16px
+    .hora,
+    .fecha,
+    .sala
+        font-size 14px
+        textg(t-400,normal,#262626)
+        margin-bottom 4px
+        flexg(center,flex-start)
+        img
+            margin-right 10px
     h4
-        font-size 24px
+        font-size 20px
         textg(t-600,normal,#262626)
+        margin-top 10px
         margin-bottom 8px
+    .gParrafo
+        font-size 14px
+        line-height 1.2
 
 .b4Envivo,
-.b4VolverVer
+.b4VolverVer,
     position absolute
     padding 0px 24px
     height 28px
     border-radius 100px
     background #008AC9
-    top 20px
-    right 60px
     flexg(center,center)
-    font-size 16px
+    font-size 15px
     textg(t-800,normal,#fff)
     width fit-content
+    right initial
+    right 5px !important
+    top 5px
+    transform initial
+    z-index 30
     img
         margin-left 8px
         animation onda 1s infinite ease-out
+.b4Envivo
+    background rgba(235, 87, 87, 1)
+    position absolute
+    right 5px
+    top 5px
 
+.b4Agendar
+    position absolute
+    padding 0px 15px
+    left initial !important
+    right 5px
+    top 5px
+    border-radius 100px
+    background rgba(215, 233, 240, 1)
+    font-size 15px
+    textg(t-800,normal,#008AC9)
+    flexg(center,center)
+    height 28px
+    padding-left 40px
+    transition all 400ms ease
+    &:before
+        content ''
+        centerY()
+        circle(18,#fff)
+        left 10px
+        border 1px solid #008AC9
+        transition all 400ms ease
+    &.selected
+        background rgba(green,0.8)
+        padding-left 15px
+        padding-right 30px
+        color #fff
+        &:before
+           left calc(100% - 25px)
+    img
+        margin-left 10px
+
+    
 .b4VolverVer
     background #17181B
 
@@ -158,7 +269,7 @@
     width 340px
     padding 0px 24px
     position relative
-    scrollbar(#808080,#dbdbdb,2,3)
+    scrollbar(#808080,#dbdbdb,4,3)
     &:before
         content ''
         centerY()
@@ -216,7 +327,7 @@
     height 530px
     flexg(center,center)
     opacity0()
-    scrollbar(#808080,#dbdbdb,2,3)
+    scrollbar(#808080,#dbdbdb,4,3)
     &.active
         opacity1()
         animation animatePopup 0.3s ease
@@ -274,6 +385,72 @@
     img
         margin-left 10px
 
+.b4Top
+    position relative
+    z-index 50
+    margin-bottom 32px
+
+.b4SelectWrap
+    position relative
+    z-index 40
+    scrollbar(#808080,#dbdbdb,4,3)
+.b4Select
+    height 56px
+    border-radius 4px
+    border 1px solid #008ac9
+    position relative
+    width 230px
+    margin-right 20px
+    &&:last-child
+        margin-right 0px
+    &.active
+        .b4ListOptions
+            opacity1()
+        .b4ClickSelect
+            &:after
+                transform translateY(-50%) rotate(180deg) 
+                transition all 400ms ease
+
+
+.b4ListOptions
+    position absolute
+    top 100%
+    width 100%
+    padding 10px 0px
+    background #fff
+    opacity0()
+    box-shadow 0px 0px 10px 2px rgba(#000,0.2)
+    max-height 150px
+    height auto
+    overflow-y auto
+    a
+        padding 5px 10px
+        font-size 16px
+        textg(t-500,normal,#000)
+.b4ClickSelect
+    flexg(center,center)
+    height 100%
+    padding 0px 20px
+    padding-right 30px
+    position relative
+    &:after
+        content '\e608'
+        font-family icomoon
+        font-size 22px
+        display inline-block
+        centerY()
+        right 10px
+        transform translateY(-50%) rotate(0deg) 
+        transition all 400ms ease
+    span
+        textg(t-500,normal,#000)
+        color rgba(67, 67, 67, 1)
+        margin-right 10px
+        &.name
+            margin-right 0
+            font-size 16px
+            color #000
+
 @media screen and (max-width 1366px)
     .b4Tabs
         a
@@ -286,8 +463,10 @@
         margin 70px 0px
     .b4Info
         padding 30px 20px
-        h4
-            font-size 20px
+        .sale,
+        .fecha,
+        .hora
+            font-size 14px
         h3
             font-size 14px
     .b4Envivo
@@ -340,6 +519,17 @@
         height auto
         a
             flex 0 0 auto
+    .b4Title
+        margin-bottom 32px
+    .b4ContentWrap
+        flex-direction column
+    .b4FilterLeft
+        position absolute
+        top 0
+        right calc(100% + 20px)
+    .b4WrapList
+        width 100%
+        padding-left 0px
 
 @media screen and (max-width 480px)
     .b4ItemRight ul li
@@ -360,3 +550,12 @@
     .b4Envivo
         top -5px
         right 0
+    .b4SelectWrap
+        justify-content space-between
+        width 100%
+    .b4Select
+        width 48%
+        margin-right 0
+    .b4ClickSelect
+        span.name
+            font-size 14px

@@ -169,6 +169,27 @@ class Schedule(BaseModel):
     def get_exhibitors(self):
         return self.exhibitors.all()
 
+    def get_date(self):
+        months = {
+            "January": "Enero", "February": "Febrero",
+            "March": "Marzo", "April": "Abril",
+            "May": "Mayo", "June": "Junio", "July": "Julio",
+            "August": "Agosto", "September": "Setiembre",
+            "October": "Octubre", "November": "Noviembre",
+            "December": "Diciembre"
+        }
+        # days = {
+        #     "Sunday": "Domingo", "Monday": "Lunes",
+        #     "Tuesday": "Martes", "Wednesday": "Miércoles",
+        #     "Thursday": "Jueves", "Friday": "Viernes",
+        #     "Saturday": "Sábado"
+        # }
+        date = self.event.start_datetime.astimezone(
+            pytz.timezone(settings.TIME_ZONE))
+        month = months.get(date.strftime("%B"))
+        # day = days.get(date.strftime("%A"))
+        return date.strftime("%d de {}".format(month.lower()))
+
     def get_current_status(self):
         start_date = self.event.start_datetime.date()
         end_date = self.event.end_datetime.date()

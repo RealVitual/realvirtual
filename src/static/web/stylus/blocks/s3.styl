@@ -20,7 +20,7 @@
 
 .b3List
     margin-top 15px
-    a
+    a,.onlyTextList
         height 84px
         font-size 22px
         textg(t-500,normal,#17181B)
@@ -44,6 +44,15 @@
     border-bottom 1px solid #E0E0E0
     &:last-child
         border-bottom 0px
+    &.noToggle
+        a,.onlyTextList
+            padding-right 0px
+            height auto
+            padding 30px 0px
+        .b3ClickToggle
+            .circleLessMore
+                display none
+
 
 .b3ContentLeft
     padding 70px
@@ -78,17 +87,20 @@
 @media screen and (max-width 1366px)
     .b3ContentLeft
         padding 50px
-    .b3List a
-        font-size 18px
+    .b3List
+        a,.onlyTextList
+            font-size 18px
 
 @media screen and (max-width 1024px)
     .b3
         height 500px
     .b3ContentLeft
         padding 40px 30px
-    .b3List a:after
-        width 40px
-        height 40px
+    .b3List
+        a
+            &:after
+                width 40px
+                height 40px
 
 @media screen and (max-width 768px)
     .b3

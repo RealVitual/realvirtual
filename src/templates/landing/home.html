@@ -107,55 +107,147 @@
                 <h3 class="gTitle">Programas y Ponentes</h3>
             </div>
             <!-- Elemento azul hacerlo div  -->
-            <div class="b4Tabs f aic jcfe">
-                {% for event in events %}
-                <a href="" class="b4ClickTab">
-                    <h5>{{event.name}}<span>{{event.get_date}}</span></h5>
-                    <div class="lineActive" style="background:#008AC9;"></div>
-                </a>
-                {% endfor %}
-                <div class="lineColorFull" style="background:#D7E9F0;"></div>
+            <div class="b4SelectWrap f aic jcfe">
+               {% comment %}
+                <div class="b4Select">
+                    <a href="#" class="b4ClickSelect"><span>De</span><span class="name">19 de Diciembre</span></a>
+                    <div class="b4ListOptions">
+                        <a href="#" class="b4OptionSelect">20 de octubre</a>
+                        <a href="#" class="b4OptionSelect">19 de octubre</a>
+                        <a href="#" class="b4OptionSelect">19 de octubre</a>
+                        <a href="#" class="b4OptionSelect">19 de octubre</a>
+                        <a href="#" class="b4OptionSelect">19 de octubre</a>
+                        <a href="#" class="b4OptionSelect">19 de octubre</a>
+                        <a href="#" class="b4OptionSelect">19 de octubre</a>
+                        <a href="#" class="b4OptionSelect">19 de octubre</a>
+                    </div>
+                </div>
+               {% endcomment %}
+               <div class="b4Select">
+                    <a href="#" class="b4ClickSelect"><span></span><span class="name">{{first_date}}</span></a>
+                    <div class="b4ListOptions">
+                        {% for date in dates_select %}
+                        <a href="#" class="b4OptionSelect">{{date}}</a>
+                        {% endfor %}
+                    </div>
+               </div>
             </div>
         </div>
         <div class="b4ContentWrap scrollItem">
-            {% for event in events %}
-                <!-- Listado de eventos por fecha -->
-                <div class="b4Wrap b4InfoTab">
+            <div class="b4FilterLeft">
+                <h3>Filtros</h6>
+                {% for row in "12" %}
+                <div class="b4FilterItem">
+                    <!-- ADMINISTRAR EL ATRIBUT "data-color-active" en caso se necesite cambiar de color -->
+                    <a href="#" class="b4FilterItemClick">Tema</a>
+                    <div class="b4FilterItemInfo">
+                        <ul>
+                            <li class="b4ItemOption">
+                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                    <span style="background: #008AC9"></span>
+                                </div>
+                                <h6>Ciberseguridad</h6>
+                            </li>
+                            <li class="b4ItemOption">
+                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                    <span style="background: #008AC9"></span>
+                                </div>
+                                <h6>Estrategias innovadoras</h6>
+                            </li>
+                            <li class="b4ItemOption">
+                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                    <span style="background: #008AC9"></span>
+                                </div>
+                                <h6>Conservatorio</h6>
+                            </li>
+                            <li class="b4ItemOption">
+                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                    <span style="background: #008AC9"></span>
+                                </div>
+                                <h6>Creatividad</h6>
+                            </li>
+                            <li class="b4ItemOption">
+                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                    <span style="background: #008AC9"></span>
+                                </div>
+                                <h6>Liderazgo</h6>
+                            </li>
+                            <li class="b4ItemOption">
+                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                    <span style="background: #008AC9"></span>
+                                </div>
+                                <h6>Ciberseguridad</h6>
+                            </li>
+                            <li class="b4ItemOption">
+                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                    <span style="background: #008AC9"></span>
+                                </div>
+                                <h6>Estrategias innovadoras</h6>
+                            </li>
+                            <li class="b4ItemOption">
+                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                    <span style="background: #008AC9"></span>
+                                </div>
+                                <h6>Conservatorio</h6>
+                            </li>
+                            <li class="b4ItemOption">
+                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                    <span style="background: #008AC9"></span>
+                                </div>
+                                <h6>Creatividad</h6>
+                            </li>
+                            <li class="b4ItemOption">
+                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                    <span style="background: #008AC9"></span>
+                                </div>
+                                <h6>Liderazgo</h6>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="b4WrapList b4InfoTab">
                     {% for schedule in event.get_schedules %}
                         {% if schedule.description %}
-                            <!-- Si el evento no tiene imagen se agrega la clase "noImage" -->
-                            <div class="b4Item f aic jcsb">
-                                <div class="b4ItemLeft f aifs jcfs">
-                                    {% if schedule.image %}
-                                        <div class="b4Img pr">
-                                            <picture class="imgCover">
-                                                <!-- imagen mobile -->
-                                                <source srcset="{{schedule.image.url}}" media="(max-width: 767px)">
-                                                <!-- imagen desktop -->
-                                                <source srcset="{{schedule.image.url}}" media="(max-width: 768px)">
-                                                <!-- imagen desktop -->
-                                                <img src="{{schedule.image.url}}" width="1920" height="713"  alt="Myimage">
-                                            </picture>
-                                        </div>
+                        <div class="b4Item f aic jcsb ">
+                            <div class="b4ItemLeft f aifs jcfs {% if not schedule.image %}noImage{% endif %}">
+                                {% if schedule.image %}
+                                    <div class="b4Img pr">
+                                        <picture class="imgCover">
+                                            <source srcset="{{schedule.image.url}}" media="(max-width: 767px)">
+                                            <source srcset="{{schedule.image.url}}" media="(max-width: 768px)">
+                                            <img src="{{schedule.image.url}}" width="1920" height="713"  alt="Myimage">
+                                        </picture>
+                                    </div>
+                                {% else %}
+                                {% endif %}
+                                <div class="b4Info">
+                                    <!-- Existe dos opcions de "Ver en vivo o Volver a ver" -->
+                                    <!-- <a href="#" class="b4Envivo">En vivo <img src="{{STATIC_URL}}img/live.svg" alt=""></a> -->
+                                    <!-- <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="https://www.youtube.com/watch?v=l6_nRqIz_9o">Volver a ver</a> -->
+                                    {% if schedule.get_current_status == 'upcoming' %}
+                                        <a href="#" class="b4Agendar agregarCalendario" data-item-id="1"><span>Agendar</span></a>
                                     {% endif %}
-                                    <div class="b4Info">
-                                        {% comment %} <h3>08:30 -09:00</h3> {% endcomment %}
-                                        <h3>{{schedule.start_time}} - {{schedule.end_time}}</h3>
-                                        <h4>{{schedule.name}}</h4>
-                                        <div class="gParrafo">
-                                            <p>{{schedule.description}}</p>
-                                        </div>
-                                        {% if schedule.get_current_status == 'is_live' %}
-                                            <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
-                                        {% endif %}
-                                        {% if schedule.get_current_status == 'past' and schedule.video_url %}
-                                            <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
-                                        {% endif %}
+                                    {% if schedule.get_current_status == 'is_live' %}
+                                        <a href="#" class="b4Envivo">En vivo <img src="{{STATIC_URL}}img/live.svg" alt=""></a>
+                                    {% endif %}
+                                    {% if schedule.get_current_status == 'past' and schedule.video_url %}
+                                        <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
+                                    {% endif %}
+                                    <p class="sala"><img src="{{STATIC_URL}}img/icon-calendar.svg" alt="" width="13"> Sala 1</p>
+                                    <p class="fecha"><img src="{{STATIC_URL}}img/icon-calendar.svg" alt="" width="13">{{schedule.get_date}}</p>
+                                    <p class="hora"><img src="{{STATIC_URL}}img/icon-hour.svg" alt="" width="13"> {{schedule.start_time}} - {{schedule.end_time}}</p>
+                                    <h4>{{schedule.name}}</h4>
+                                    <div class="gParrafo">
+                                        <p>{{schedule.description}}</p>
                                     </div>
                                 </div>
-                                <div class="b4ItemRight">
-                                    <ul class="b4PersonsExpoList">
-                                        {% for exhibitor in schedule.get_exhibitors %}
+                            </div>
+                            <div class="b4ItemRight">
+                                <ul class="b4PersonsExpoList">
+                                    {% for exhibitor in schedule.get_exhibitors %}
                                         <li class="">
                                             <a href="" class="b4OpenPopupPerson"
                                                 data-name="{{exhibitor.name}}"
@@ -164,27 +256,22 @@
                                                 data-url="{{exhibitor.link}}"
                                                 data-img="{{exhibitor.image.url}}"
                                                 >
-                                                <h6><img src="/static/web/img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
-                                                {% comment %}
-                                                <span>- CCL</span>
-                                                {% endcomment %}
+                                                <h6><img src="{{STATIC_URL}}img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
+                                                <span> - {{exhibitor.title}}</span>
                                             </a>
                                         </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
+                                    {% endfor %}
+                                </ul>
                             </div>
-                        {% else %}
-                        <div class="b4Break">
-                            <h3>{{schedule.start_time}} - {{schedule.end_time}} <span>{{schedule.name}}</span></h3>
                         </div>
+                        {% else %}
+                            <div class="b4Break">
+                                <h3>{{schedule.start_time}} - {{schedule.end_time}} <span>{{schedule.name}}</span></h3>
+                            </div>
                         {% endif %}
-
                     {% endfor %}
-                    <!-- Condicionar si existe o no break -->
 
-                </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
 </section>
@@ -394,15 +481,104 @@
 {% block jsfinal %}
 <script src="/static/web/js/swiper/swiper-bundle.min.js"></script>
 <script type="text/javascript">
-
-    //bloque 3 - js
     if(document.getElementsByClassName("b3")[0]){
         eventGrilla("b3Left","left")
         eventClickAccordion("b3ClickToggle")
     }
 
-    //bloque 4 - js
-    if(document.getElementsByClassName("b4")[0]){
+     //bloque 4 - js
+     if(document.getElementsByClassName("agregarCalendario")[0]){
+            const items = document.querySelectorAll('.agregarCalendario');
+            const totalCountDisplay = document.getElementById('total-count');
+            let totalCount = 0;
+            const selectedItems = new Set();
+
+            // Cargar el estado inicial desde localStorage
+            if (localStorage.getItem('selectedItems')) {
+                const storedItems = JSON.parse(localStorage.getItem('selectedItems'));
+                storedItems.forEach(itemId => {
+                    const item = document.querySelector(`.agregarCalendario[data-item-id="${itemId}"]`);
+                    if (item) {
+                        item.classList.add('selected');
+                        selectedItems.add(itemId);
+                        item.children[0].textContent = "Agendado";
+                    }
+                });
+                totalCount = selectedItems.size;
+                updateTotalCountDisplay();
+            }
+
+            items.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault()
+                    const itemId = this.getAttribute('data-item-id');
+                    if (selectedItems.has(itemId)) {
+                        selectedItems.delete(itemId);
+                        this.classList.remove('selected');
+                        this.children[0].textContent = "Agendar";
+                        totalCount--;
+                    } else {
+                        selectedItems.add(itemId);
+                        this.classList.add('selected');
+                        this.children[0].textContent = "Agendado";
+                        totalCount++;
+                    }
+                    updateTotalCountDisplay();
+                    saveToLocalStorage();
+                });
+            });
+
+            function updateTotalCountDisplay() {
+                totalCountDisplay.textContent = totalCount;
+            }
+
+            function saveToLocalStorage() {
+                localStorage.setItem('selectedItems', JSON.stringify(Array.from(selectedItems)));
+            }
+        }
+
+        let elb4ClickSelect = document.getElementsByClassName("b4ClickSelect")
+        for(const b4ClickSelect of elb4ClickSelect){
+            let eloptioItem = b4ClickSelect.nextElementSibling.children;
+            for(const optioItem of eloptioItem){
+                optioItem.addEventListener("click",function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    let getTextNameOption = this.textContent;
+                    this.parentNode.previousElementSibling.children[1].innerText = getTextNameOption
+                    this.parentNode.parentNode.classList.remove('active')
+                });
+            }
+            b4ClickSelect.addEventListener('click',function(e) {
+                e.preventDefault()
+                e.stopPropagation();
+                this.parentNode.classList.toggle('active');
+            })
+        }
+
+        window.addEventListener("click",function(){
+            console.log('hiciste clik')
+            for(const b4ClickSelect of elb4ClickSelect){
+                b4ClickSelect.parentNode.classList.remove('active')
+            }
+        });
+       
+
+        
+        let elb4ItemOption = document.getElementsByClassName("b4ItemOption");
+        for(const b4ItemOption of elb4ItemOption){
+            b4ItemOption.addEventListener("click",function(){
+                let elchildrenOptions = this.parentNode.children
+                let getColorCheckRadio = this.children[0].dataset.colorActive
+                for(const childrenOptions of elchildrenOptions){
+                    childrenOptions.classList.remove('active')
+                    childrenOptions.children[0].style.border = `1px solid #000`;
+                }
+                this.children[0].style.border = `1px solid ${getColorCheckRadio}`;
+                this.classList.add('active')
+            });
+        }
+
         if(document.getElementsByClassName("b4PersonsExpoList")[0]){
             let elb4ItemRight = document.getElementsByClassName("b4ItemRight")[0]
             let elb4PersonsExpoList = document.getElementsByClassName("b4PersonsExpoList")
@@ -413,19 +589,21 @@
             }
             
         }
-        eventTab("b4ClickTab","b4InfoTab","click")
+        eventClickAccordion("b4FilterItemClick")
+        //eventTab("b4ClickTab","b4InfoTab","click")
 
         let elb4OpenPopupPerson = document.getElementsByClassName("b4OpenPopupPerson")
         let elb4PopupName = document.getElementsByClassName("b4PopupName")[0];
+        let elb4Popupimg = document.getElementsByClassName("b4Popupimg")[0];
         let elb4PopupCargo = document.getElementsByClassName("b4PopupCargo")[0];
         let elb4PopupText = document.getElementsByClassName("b4PopupText")[0];
         let elb4linkedin = document.getElementsByClassName("b4linkedin")[0];
         let elb4Popup = document.getElementsByClassName("b4Popup")[0];
-        let elb4Img = document.getElementsByClassName("b4Image")[0];
         let elb4ClosePopup = document.getElementsByClassName("b4ClosePopup")[0];
-        console.log(elb4Img, 'elb4Img')
+
         for(const b4OpenPopupPerson of elb4OpenPopupPerson){
             b4OpenPopupPerson.addEventListener("click",function(e){
+                console.log('click open person')
                 e.preventDefault();
                 elb4Popup.classList.add('active');
                 OVERLAY.classList.add('active');
@@ -438,14 +616,9 @@
 
                 elb4PopupName.innerText = getName;
                 elb4PopupCargo.innerText = getCargo;
+                elb4Popupimg.setAttribute('src',getImg);
                 elb4PopupText.innerHTML = getInfo;
-                elb4Img.src = getImg;
-                const images = document.getElementsByClassName("Myimagesource");
-                console.log(images, 'IMAGES')
-                for (let i = 0; i < images.length; i++) {
-                   images.item(i).srcset = getImg
-                }
-                elb4linkedin.setAttribute("href",getUrl);
+                elb4linkedin.setAttribute("value",getUrl);
             });
         }
 
@@ -455,7 +628,6 @@
             OVERLAY.removeAttribute("style");
             OVERLAY.classList.remove('active')
         });
-    }
 
 
     //b5-js ***
@@ -509,6 +681,7 @@
                     }
                 }
             });
+            
         };
         breakpoint.addListener(breakpointChecker);
         breakpointChecker();
@@ -516,22 +689,28 @@
 
 
     if(document.getElementsByClassName('b16')[0]){
-        let elb16OpenPopup = document.getElementsByClassName('b16OpenPopup')[0]
         let elb16Popup = document.getElementsByClassName('b16Popup')[0]
         let elb16CancelNet = document.getElementsByClassName('b16CancelNet')[0]
-        elb16OpenPopup.addEventListener('click',function(e){
-            e.preventDefault();
-            elb16Popup.classList.add('active')
-            OVERLAY.classList.add('active')
-            OVERLAY.style.zIndex = "400"
-        })
         elb16CancelNet.addEventListener('click',function(e){
             e.preventDefault();
             elb16Popup.classList.remove('active')
             OVERLAY.classList.remove('active')
             OVERLAY.removeAttribute('style')
         })
+        let b16openPopups = document.getElementsByClassName('b16OpenPopup')
+        if(b16openPopups.length > 0){
+            let elb16OpenPopup = b16openPopups[0]
+            elb16OpenPopup.addEventListener('click',function(e){
+                e.preventDefault();
+                elb16Popup.classList.add('active')
+                OVERLAY.classList.add('active')
+                OVERLAY.style.zIndex = "400"
+            })
+        }
     }
+
+
+
      //b8-js ***
      if(document.getElementsByClassName('b8')[0]){
         let elSwiperb8 = document.getElementsByClassName('b8Swiper')[0].dataset.initial
@@ -592,7 +771,6 @@
         breakpointb8.addListener(breakpointCheckerb8);
         breakpointCheckerb8();
     }
-
     let b16AceptNet = document.getElementsByClassName("b16AceptNet")[0];
     b16AceptNet.addEventListener("click",function(e){
         e.preventDefault();
