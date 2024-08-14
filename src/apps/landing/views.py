@@ -207,7 +207,9 @@ class EventsView(View):
             'sponsors': sponsors,
             'event': event,
             'dates_select': dates_select,
-            'first_date': dates_select[0]
+            'first_date': dates_select[0],
+            'exhibitors': Exhibitor.objects.filter(
+                company=company, is_active=True)
         }
         return render(request, self.template_name, context)
 

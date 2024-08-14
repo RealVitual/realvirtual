@@ -128,6 +128,8 @@ class Exhibitor(BaseModel):
         null=True)
     link = models.CharField(
         _('Enlace'), blank=True, max_length=500)
+    organization = models.CharField(
+        _('Organización'), max_length=255, blank=True)
 
     class Meta:
         verbose_name = _('Expositor')
