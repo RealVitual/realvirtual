@@ -73,7 +73,7 @@
                     </li>
                     {% else %}
                     <li class="b3ItemList noToggle">
-                        <p class="onlyTextList" class="">{{row.title}} </p>
+                        <p class="onlyTextList" class="" style="font-family: 'DMSans-Medium', sans-serif;font-size: 18px;">{{row.title}} </p>
                     </li>
                     {% endif %}
                 {% endfor %}
@@ -133,7 +133,7 @@
                </div>
             </div>
         </div>
-        <div class="b4ContentWrap scrollItem">
+        <div class="b4ContentWrap scrollItem hideFilterLeft">
             <div class="b4FilterLeft">
                 <h3>Filtros</h6>
                 {% for row in "12" %}
@@ -257,7 +257,7 @@
                                                 data-img="{{exhibitor.image.url}}"
                                                 >
                                                 <h6><img src="{{STATIC_URL}}img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
-                                                <span> - {{exhibitor.title}}</span>
+                                                <span> - {{exhibitor.organization}}</span>
                                             </a>
                                         </li>
                                     {% endfor %}
@@ -279,15 +279,9 @@
 <div class="b4Popup">
     <a href="#" class="b4ClosePopup icon-close"></a>
     <div class="b4PopupImage">
-        <picture class="imgCover">
-            <!-- imagen mobile -->
-            {% comment %} <source srcset="/static/web/img/b4ImagePopup.png" media="(max-width: 767px)" class="Myimagesource"> {% endcomment %}
-            <source srcset="" media="(max-width: 767px)" class="Myimagesource">
-            <!-- imagen desktop -->
-            <source srcset="" media="(max-width: 768px)" class="Myimagesource">
-            <!-- imagen desktop -->
-            <img src="" class="b4Image" width="1920" height="713"  alt="Myimage">
-        </picture>
+        <figure class="imgCover">
+            <img src="" class="b4Popupimg" width="1920" height="713"  alt="Myimage">
+        </figure>
     </div>
     <div class="b4InfoPopup f aic jcfs">
         <div class="b4InfoPopupContent">
@@ -301,7 +295,39 @@
     </div>
 </div>
 {% endif %}
-
+{% if header_section.show_exhibitors_section %}
+    <section class="b21 scrollWrap anclaBlock" id="expositor">
+        <div class="grilla">
+            <h1 class="gTitle">Expositores</h1>
+            <div class="b21Wrap column3 column2-1024 column1-480">
+                {% for ex in exhibitors %}
+                <a  href="#" class="b4OpenPopupPerson b5Item swiper-slide zoomImageHover"
+                    data-name="{{ex.name}}"
+                    data-cargo="{{ex.title}}"
+                    data-info="{{ex.desccription}}"
+                    data-url="{{ex.link}}"
+                    data-img="{{ex.image.url}}">
+                    <div class="b5Img">
+                        <picture class="imgCover">
+                            <!-- imagen mobile -->
+                            <source srcset="{{ex.image.url}}" media="(max-width: 767px)">
+                            <!-- imagen desktop -->
+                            <source srcset="{{ex.image.url}}" media="(max-width: 768px)">
+                            <!-- imagen desktop -->
+                            <img src="{{ex.image.url}}" width="1920" height="713"  alt="Myimage">
+                        </picture>
+                    </div>
+                    <div class="b5Text">
+                        <div class="gParrafo">
+                            <p>{{ex.name}}</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}
 
 {% if header_section.show_gallery_section %}
 <section class="b5 scrollWrap anclaBlock" id="galeria">
@@ -618,7 +644,7 @@
                 elb4PopupCargo.innerText = getCargo;
                 elb4Popupimg.setAttribute('src',getImg);
                 elb4PopupText.innerHTML = getInfo;
-                elb4linkedin.setAttribute("value",getUrl);
+                elb4linkedin.setAttribute("href",getUrl);
             });
         }
 
