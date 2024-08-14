@@ -34,6 +34,9 @@
                 {% if header_section.show_survey_section %}
                     <a href="#encuesta" class="headerAnclaBlock">Encuesta <span class="lineActive" style="background:#008ac9;"></span></a>
                 {% endif %}
+                {% if header_section.show_exhibitors_section %}
+                <a href="#expositor" class="headerAnclaBlock">Expositores <span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
                 {% if logged_user and is_live %}
                     <a href="#" class=" headerEnVivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
                 {% endif %}
@@ -70,7 +73,7 @@
 
 <!-- POPUP LOGIN -->
 <div class="g8PopupForm formLogin pr">
-    <a href="#" class="g8ClosePopup icon-close pa"></a>
+    <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a>
     <h3>Iniciar Sesión</h3>
     <div class="g8Form">
         <form action="" method="POST">
@@ -89,14 +92,14 @@
         </form>
     </div>
     <div class="g8Bottom tac">
-        <a href="">Olvidé mi contraseña</a>
-        <h4>No tengo una cuenta <a href="#">Registrarme</a></h4>
+        <a href="{% url 'landing:recover_password' %}">Olvidé mi contraseña</a>
+        <h4>No tengo una cuenta <a href="#" id="openRegistrarme">Registrarme</a></h4>
     </div>
 </div>
 
 <!-- POPUP REGISTRO -->
 <div class="g8PopupForm formRegistro pr">
-    <a href="#" class="g8ClosePopup icon-close pa close-register"></a>
+    <a href="#" class="g8ClosePopup icon-close pa closeRegistro"></a>
     <h3>Crear cuenta</h3>
     <div class="g8Form warning-form" style="display:none;">
         <div class="gParrafo message-warning">
@@ -179,7 +182,7 @@
 					<label for="check2">Acepto los <a href="#">Términos y Condiciones.</a></a></label>
 				</div>
 				<button class="g8SumitRegistro save-register">Enviar</button>
-                <h4>Ya tengo una cuenta <a href="#">Inicial sesión</a></h4>
+                <h4>Ya tengo una cuenta <a href="#" id="openIniciaSesion">Inicial sesión</a></h4>
 			</div>
         </form>
     </div>

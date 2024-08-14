@@ -76,6 +76,9 @@ class Header(TimeStampedModel):
     show_more_events = models.BooleanField(
         _('Mostrar Más eventos'), default=True
     )
+    show_exhibitors_section = models.BooleanField(
+        _('Mostrar Expositores'), default=True
+    )
 
     class Meta:
         verbose_name = _("Header")

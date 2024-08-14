@@ -5,17 +5,18 @@ from django.views.generic import CreateView, View
 from django.http import HttpResponse
 from rest_framework.views import APIView
 import requests
-from src.apps.events.models import Event
+from src.apps.events.models import Event, Exhibitor
 from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
     NetworkingOption, UserNetworkingPreference)
 from .forms import (
-    RegisterForm, CredentialCustomerForm, LoginForm)
+    RegisterForm, CredentialCustomerForm, LoginForm, EmailPasswordForm)
 from django.contrib.auth import login, logout
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 import json
 from datetime import datetime
 from .utils import record_to_pdf
@@ -77,7 +78,9 @@ class HomeView(CreateView):
                 'sponsors': sponsors,
                 'event': event,
                 'dates_select': dates_select,
-                'first_date': dates_select[0]
+                'first_date': dates_select[0],
+                'exhibitors': Exhibitor.objects.filter(
+                    company=company, is_active=True)
             }
         return render(request, self.template_name, context)
 
@@ -630,3 +633,44 @@ class NetworkingUsersView(View):
             "home_page": home_page
         }
         return render(request, self.template_name, context)
+
+
+class RecoverPasswordView(CreateView):
+    form_class = EmailPasswordForm
+    template_name = "landing/olvido-contrasena.html"
+    landing_page = None
+    slug = None
+
+    def get_form_kwargs(self, **kwargs):
+        form_kwargs = super(
+            RecoverPasswordView, self).get_form_kwargs(**kwargs)
+        form_kwargs["initial"] = dict(domain=self.request.build_absolute_uri('/')[:-1])
+        return form_kwargs
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(reverse('landing:generate_credential'))
+        context = {
+            'form': self.get_form()
+            }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        data = request.POST
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form, request)
+        else:
+            return self.form_invalid(form, request)
+
+    def form_valid(self, form, request):
+        form.save()
+        messages.info(request, "Se ha enviado un correo con instrucciones")
+        return redirect(reverse(
+                    'landing:recover_password'))
+
+    def form_invalid(self, form, request):
+        messages.error(
+                request, form.non_field_errors())
+        return redirect(reverse(
+            'landing:recover_password'))

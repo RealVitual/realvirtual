@@ -510,6 +510,23 @@ if(document.getElementsByClassName('headerButtonLogin')[0] || document.getElemen
 		OVERLAY.classList.add('active')
 		OVERLAY.style.zIndex = "500"
 	});
+
+	if(document.getElementById("openRegistrarme")){
+		let elopenRegistrarme = document.getElementById("openRegistrarme");
+		elopenRegistrarme.addEventListener('click',function(e){
+			e.preventDefault();
+			document.getElementsByClassName("closeIniciaSesion")[0].click();
+			elHeaderButtonRegistrate.click()
+		});
+	}
+	if(document.getElementById("openIniciaSesion")){
+		let elopenIniciaSesion = document.getElementById("openIniciaSesion");
+		elopenIniciaSesion.addEventListener('click',function(e){
+			e.preventDefault();
+			document.getElementsByClassName("closeRegistro")[0].click();
+			elHeaderButtonLogin.click()
+		});
+	}
 }
 
 if(document.getElementsByClassName("headerAnclaBlock")[0]){
@@ -554,10 +571,12 @@ if(document.getElementsByClassName("headerAnclaBlock")[0]){
 
 
 
-if (localStorage.getItem('selectedItems')) {
+if (localStorage.getItem('selectedItems') && document.getElementsByClassName("headerEventos")[0]) {
 	const storedItems = JSON.parse(localStorage.getItem('selectedItems'));
 	document.getElementById('total-count').innerText = storedItems.length;
 }
+
+
 
 // if(document.getElementsByClassName("agregarCalendario")[0]){
 // 	const items = document.querySelectorAll('.agregarCalendario');

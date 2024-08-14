@@ -55,7 +55,11 @@
 .b4ContentWrap
     position relative
     flexg(flex-start,space-between)
-    
+    &.hideFilterLeft
+        .b4FilterLeft
+            display none
+        .b4WrapList
+            width 100%
 .b4FilterLeft
     width 250px
     background #EFEFF3
@@ -530,6 +534,17 @@
     .b4WrapList
         width 100%
         padding-left 0px
+    
+    .b4PopupImage
+        width 300px
+    .b4Popup
+        justify-content space-between
+        width calc(100% - 40px)
+        
+    .b4InfoPopup
+        width calc(100% - 300px)
+        padding-left 30px
+        padding-right 40px
 
 @media screen and (max-width 480px)
     .b4ItemRight ul li
@@ -559,3 +574,15 @@
     .b4ClickSelect
         span.name
             font-size 14px
+    .b4Popup
+        flex-direction column
+        height auto
+    .b4PopupImage
+        width 100%
+    .b4InfoPopup
+        width 100%
+        padding 40px 20px
+    .b4InfoPopupContent .gParrafo
+        height 200px
+    .b4PopupImage
+        display none

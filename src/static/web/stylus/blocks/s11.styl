@@ -1,6 +1,11 @@
 .b11
     flexg(flex-start,flex-start)
-    min-height calc(100vh - 100px)
+    flex-direction column
+    background #F1F7FF
+    margin auto
+    padding-top 30px
+    min-height calc(100vh - 240px)
+    padding 96px 0px
     form
         .gButton
             max-width: 290px
@@ -46,21 +51,23 @@
             pointer-events: none
 
 .b11Left
-    width 35%
-    padding-top 90px
+    width 100%
     padding-right 100px
     height 100%
-    position sticky
-    top 110px
     padding-bottom 40px
+    padding 0px !important
+    max-width 1440px
+    width 94%
+    margin auto
+    margin-bottom 60px
     .gTitle
         font-size 45px
     .gReturn
         font-size 16px
         textg(t-500,normal,#52626F)
-        position absolute
-        top 10px
+        position relative
         left 0
+        margin-bottom 30px
         &:before
             color #52626F
             display none
@@ -71,16 +78,17 @@
 
 .b11LeftContent
     position relative
-    padding-top 90px
 
 .b11Right
-    width 65%
+    width 100%
     padding-top 90px
     padding-left 100px
     padding-bottom 100px
-    background #F1F7FF
     height 100%
-    min-height: calc(100vh - 100px)
+    padding 0px !important
+    max-width 1440px
+    width 94%
+    margin auto
 
 .b11NameOptions
     flexg(center,flex-start)
@@ -131,6 +139,8 @@
         height 24px
 
 @media screen and (max-width 1024px)
+    .b11
+        padding 60px 0px
     .b11Left
         padding-right 50px
         width 30%
@@ -144,11 +154,13 @@
 
 @media screen and (max-width 768px)
     .b11
+        padding 48px 0px
+    .b11
         flex-direction column
         min-height initial
     .b11Left,
     .b11Right
-        padding 40px 20px !important
+        padding 0px 20px !important
         width 100%
         top 0
         position relative
@@ -158,10 +170,9 @@
         .gParrafo
             font-size 16px
     .b11Left
+        margin-bottom 32px
         .gTitle
             font-size 24px
-    .b11LeftContent
-        padding-top 70px
     .b11
         form
             .gButton
@@ -172,6 +183,6 @@
                 padding-top 0px !important
     .b11Right
         min-height initial
-        padding 50px 20px !important
+        padding 0px 20px !important
     .b11.pageEncuesta .b11NameOptions
         font-size 16px

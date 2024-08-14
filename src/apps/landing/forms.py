@@ -3,6 +3,8 @@ from src.apps.customers.models import Customer
 from django.contrib.auth import authenticate
 from .models import CustomerInvitedLanding, CredentialCustomer
 from .utils import decode_base64_file, generate_credential
+from uuid import uuid4
+from src.apps.users.models import User
 
 
 class RegisterForm(forms.ModelForm):
@@ -39,8 +41,9 @@ class RegisterForm(forms.ModelForm):
         if (can_confirm and self.is_confirmartion) or allow_register:
             try:
                 Customer.objects.get(email=email, company=self.company)
-                mensaje = "Ya existe una cuenta con el email ingresado."
-                raise forms.ValidationError(mensaje)
+                message = "Ya existe una cuenta con el email ingresado."
+                raise forms.ValidationError(dict(message=message,
+                                                 can_confirm=False))
             except Customer.DoesNotExist:
                 print('customer does not exist')
                 pass
@@ -120,7 +123,6 @@ class CredentialCustomerForm(forms.ModelForm):
     def save(self):
         data = self.cleaned_data
         image_code = data.pop('profile_image')
-        print(image_code, 'image_code')
         data['user'] = self.user
         data['company'] = self.company
         instance = CredentialCustomer.objects.create(**data)
@@ -129,10 +131,8 @@ class CredentialCustomerForm(forms.ModelForm):
         user = self.user
 
         if image_code:
-            print(image_code, 'IMAGE CODE')
             profile_image = decode_base64_file(
                 image_code, full_credential_name)
-            print(profile_image, 'profile_image')
             instance.profile_image = profile_image
             user.profile_image = profile_image
             instance.save()
@@ -184,3 +184,28 @@ class LoginForm(forms.Form):
         return dict(
             user=user, user_access=user_access, message=message,
             credentials=credentials)
+
+
+class EmailPasswordForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput())
+
+    def __init__(self, *args, **kwargs):
+        self.domain = kwargs['initial'].get('domain')
+        super(EmailPasswordForm, self).__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs['placeholder'] = "E-mail"
+
+    def clean(self):
+        data = self.cleaned_data
+        email = data.get("email")
+        if not User.objects.filter(email=email):
+            mensaje = "No existe usuario con ese correo"
+            raise forms.ValidationError(mensaje)
+        return data
+
+    def save(self, commit=True):
+        email = self.cleaned_data.get('email')
+        uuid_hash = str(uuid4())
+        customer = User.objects.get(email=email)
+        customer.uuid_hash = uuid_hash
+        customer.save()
+        url = "%s/reset-password/%s" % (self.domain, uuid_hash)
