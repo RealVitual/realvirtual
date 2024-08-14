@@ -36,7 +36,9 @@
             {% endif %}
             <div class="b1Date f aifs jcfs scrollItem">
                 <div class="b1DateItem f aifs jcfs">
-                    <img src="/static/web/img/calendario.svg" alt="" width="20">
+                    {% if home_page.date_description and home_page.time_description %}
+                        <img src="/static/web/img/calendario.svg" alt="" width="20">
+                    {% endif %}
                 <h4>{{home_page.date_description|default:""}}<span>{{home_page.time_description|default:""}}</span></h4>
                 </div>
                 {% if not company.in_person %}
