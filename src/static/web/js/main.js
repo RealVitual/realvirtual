@@ -79,7 +79,7 @@ const eventClickAccordion = (elementClick) => {
 			
 		})
 	}
-	itemClickAccordion[0].click()
+	// itemClickAccordion[0].click()
 }
 
 // *********************************** EVENT CLICK ELEMENT OVERLAY ********************************
