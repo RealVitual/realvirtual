@@ -35,17 +35,17 @@
                 </a>
             {% endif %}
             <div class="b1Date f aifs jcfs scrollItem">
-                <div class="b1DateItem f aifs jcfs">
-                    {% if home_page.date_description and home_page.time_description %}
-                        <img src="/static/web/img/calendario.svg" alt="" width="20">
-                    {% endif %}
-                <h4>{{home_page.date_description|default:""}}<span>{{home_page.time_description|default:""}}</span></h4>
-                </div>
-                {% if not company.in_person %}
+                {% if home_page.date_description and home_page.time_description %}
                     <div class="b1DateItem f aifs jcfs">
-                        <img src="/static/web/img/virtual.svg" alt="" width="20">
-                        <h4>Virtual</h4>
+                            <img src="/static/web/img/calendario.svg" alt="" width="20">
+                    <h4>{{home_page.date_description|default:""}}<span>{{home_page.time_description|default:""}}</span></h4>
                     </div>
+                    {% if not company.in_person %}
+                        <div class="b1DateItem f aifs jcfs">
+                            <img src="/static/web/img/virtual.svg" alt="" width="20">
+                            <h4>Virtual</h4>
+                        </div>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
@@ -91,11 +91,13 @@
             <!-- imagen desktop -->
             <img src="{{home_page.main_event_image.url}}" width="1920" height="713"  alt="Myimage">
         </picture>
+        {% if home_page.main_event_video_url %}
         <a href="#" class="clickVideo popup " data-urlvideo="{{home_page.main_event_video_url}}">
             <span>Ver video</span>
             <!-- linea circular animada administrable -->
             <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
         </a>
+        {% endif %}
     </div>
 </section>
 {% endif %}
@@ -242,7 +244,7 @@
                                     {% if schedule.get_current_status == 'past' and schedule.video_url %}
                                         <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
                                     {% endif %}
-                                    <p class="sala"><img src="/static/web/img/icon-calendar.svg" alt="" width="13"> Sala 1</p>
+                                    <p class="sala"><img src="/static/web/img/sala.svg" alt="" width="13"> Sala 1</p>
                                     <p class="fecha"><img src="/static/web/img/icon-calendar.svg" alt="" width="13">{{schedule.get_date}}</p>
                                     <p class="hora"><img src="/static/web/img/icon-hour.svg" alt="" width="13"> {{schedule.start_time}} - {{schedule.end_time}}</p>
                                     <h4>{{schedule.name}}</h4>

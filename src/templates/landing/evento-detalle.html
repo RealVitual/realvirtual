@@ -35,17 +35,17 @@
                 </a>
             {% endif %}
             <div class="b1Date f aifs jcfs scrollItem">
-                <div class="b1DateItem f aifs jcfs">
-                    {% if home_page.date_description and home_page.time_description %}
-                        <img src="/static/web/img/calendario.svg" alt="" width="20">
-                    {% endif %}
-                <h4>{{home_page.date_description|default:""}}<span>{{home_page.time_description|default:""}}</span></h4>
-                </div>
-                {% if not company.in_person %}
+                {% if home_page.date_description and home_page.time_description %}
                     <div class="b1DateItem f aifs jcfs">
-                        <img src="/static/web/img/virtual.svg" alt="" width="20">
-                        <h4>Virtual</h4>
+                            <img src="/static/web/img/calendario.svg" alt="" width="20">
+                    <h4>{{home_page.date_description|default:""}}<span>{{home_page.time_description|default:""}}</span></h4>
                     </div>
+                    {% if not company.in_person %}
+                        <div class="b1DateItem f aifs jcfs">
+                            <img src="/static/web/img/virtual.svg" alt="" width="20">
+                            <h4>Virtual</h4>
+                        </div>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
@@ -91,11 +91,13 @@
             <!-- imagen desktop -->
             <img src="{{home_page.main_event_image.url}}" width="1920" height="713"  alt="Myimage">
         </picture>
+        {% if home_page.main_event_video_url %}
         <a href="#" class="clickVideo popup " data-urlvideo="{{home_page.main_event_video_url}}">
             <span>Ver video</span>
             <!-- linea circular animada administrable -->
             <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
         </a>
+        {% endif %}
     </div>
 </section>
 {% endif %}
@@ -126,10 +128,13 @@
                 </div>
                {% endcomment %}
                <div class="b4Select">
-                    <a href="#" class="b4ClickSelect"><span></span><span class="name">{{first_date}}</span></a>
+                    <a href="#" class="b4ClickSelect">
+                        <span></span>
+                        <span class="name">{{first_date}}</span></a>
                     <div class="b4ListOptions">
+                        <a href="" class="b4OptionSelect">Todos</a>
                         {% for date in dates_select %}
-                        <a href="#" class="b4OptionSelect">{{date}}</a>
+                        <a href="" class="b4OptionSelect">{{date}}</a>
                         {% endfor %}
                     </div>
                </div>
@@ -211,6 +216,7 @@
             </div>
 
             <div class="b4WrapList b4InfoTab">
+                {% for event in events %}
                     {% for schedule in event.get_schedules %}
                         {% if schedule.description %}
                         <div class="b4Item f aic jcsb ">
@@ -238,7 +244,7 @@
                                     {% if schedule.get_current_status == 'past' and schedule.video_url %}
                                         <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
                                     {% endif %}
-                                    <p class="sala"><img src="/static/web/img/icon-calendar.svg" alt="" width="13"> Sala 1</p>
+                                    <p class="sala"><img src="/static/web/img/sala.svg" alt="" width="13"> Sala 1</p>
                                     <p class="fecha"><img src="/static/web/img/icon-calendar.svg" alt="" width="13">{{schedule.get_date}}</p>
                                     <p class="hora"><img src="/static/web/img/icon-hour.svg" alt="" width="13"> {{schedule.start_time}} - {{schedule.end_time}}</p>
                                     <h4>{{schedule.name}}</h4>
@@ -272,7 +278,7 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -573,6 +579,14 @@
                     e.preventDefault();
                     e.stopPropagation();
                     let getTextNameOption = this.textContent;
+                    let currentUrl = window.location.href;
+                    if(getTextNameOption == 'Todos'){
+                        window.location.href = '/'
+                    }else{
+                        let url = new URL(currentUrl);
+                        url.searchParams.set('date', getTextNameOption);
+                        window.location.href = url.toString();
+                    }
                     this.parentNode.previousElementSibling.children[1].innerText = getTextNameOption
                     this.parentNode.parentNode.classList.remove('active')
                 });
@@ -590,9 +604,7 @@
                 b4ClickSelect.parentNode.classList.remove('active')
             }
         });
-       
 
-        
         let elb4ItemOption = document.getElementsByClassName("b4ItemOption");
         for(const b4ItemOption of elb4ItemOption){
             b4ItemOption.addEventListener("click",function(){
@@ -615,7 +627,6 @@
                     b4PersonsExpoList.parentNode.classList.add('activeScrollList')
                 }
             }
-            
         }
         eventClickAccordion("b4FilterItemClick")
         //eventTab("b4ClickTab","b4InfoTab","click")
@@ -665,8 +676,8 @@
         const breakpointChecker = () => {
             let getCountItems = document.getElementsByClassName('b5Item').length;
             console.log(getCountItems);
-            breakpoint.matches === true ? 
-                (getCountItems >= 2 ? enableSwiper(elSwiperb5) : destroySwiper()): 
+            breakpoint.matches === true ?
+                (getCountItems >= 2 ? enableSwiper(elSwiperb5) : destroySwiper()):
                 (getCountItems > elSwiperb5 ? enableSwiper(elSwiperb5) : destroySwiper())
         }
         let mySwiper;
@@ -709,7 +720,6 @@
                     }
                 }
             });
-            
         };
         breakpoint.addListener(breakpointChecker);
         breakpointChecker();
@@ -746,8 +756,8 @@
         const breakpointCheckerb8 = () => {
             let getCountItemsb8 = document.getElementsByClassName('b8Item').length;
             console.log(getCountItemsb8);
-            breakpointb8.matches === true ? 
-                (getCountItemsb8 >= 2 ? enableSwiperb8(elSwiperb8) : destroySwiperb8()): 
+            breakpointb8.matches === true ?
+                (getCountItemsb8 >= 2 ? enableSwiperb8(elSwiperb8) : destroySwiperb8()):
                 (getCountItemsb8 > elSwiperb8 ? enableSwiperb8(elSwiperb8) : destroySwiperb8())
         }
         let mySwiperb8;
@@ -794,7 +804,6 @@
                     }
                 }
             });
-            
         };
         breakpointb8.addListener(breakpointCheckerb8);
         breakpointCheckerb8();
@@ -810,7 +819,6 @@
                 csrfmiddlewaretoken: "{{csrf_token}}"
             },
         }).done(function(data) {
-            console.log(data, 'DATA RESPONSE')
             if(data.success){
                 window.location.href = data.redirect_url
             }

@@ -61,7 +61,6 @@ class HomeView(CreateView):
                 events = [event for event in events_query if event.get_date() == filtered_date]
             else:
                 events = events_query
-            print(events, 'events')
             dates_select = []
             for date in dates:
                 option_date = date.astimezone(pytz.timezone(
@@ -175,7 +174,7 @@ class EventsView(View):
         return super(EventsView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, **kwargs):
-        events = []
+        context = {}
         months = {
             "January": "Enero", "February": "Febrero",
             "March": "Marzo", "April": "Abril",
@@ -186,9 +185,16 @@ class EventsView(View):
         }
         if request.company:
             company = request.company
-            events = Event.objects.filter(
+            home_page = HomePage.objects.get(company=company)
+            filtered_date = request.GET.get('date', None)
+            events_query = Event.objects.filter(
                 is_active=True, company=company).order_by('start_datetime')
-            dates = events.values_list('start_datetime', flat=True)
+            dates = events_query.values_list('start_datetime', flat=True)
+            events = []
+            if filtered_date:
+                events = [event for event in events_query if event.get_date() == filtered_date]
+            else:
+                events = events_query
             dates_select = []
             for date in dates:
                 option_date = date.astimezone(pytz.timezone(
@@ -200,22 +206,20 @@ class EventsView(View):
                 is_active=True, company=company).order_by('position')
             sponsors = Sponsor.objects.filter(
                 is_active=True, company=company).order_by('position')
-            home_page = HomePage.objects.get(company=company)
-            event = events[0]
-
-        context = {
-            'home_page': home_page,
-            'company': company,
-            'header': True,
-            'events': events,
-            'videos': videos,
-            'sponsors': sponsors,
-            'event': event,
-            'dates_select': dates_select,
-            'first_date': dates_select[0],
-            'exhibitors': Exhibitor.objects.filter(
-                company=company, is_active=True)
-        }
+            context = {
+                'company': company,
+                'header': True,
+                'form_register': self.get_form(),
+                'form_login': LoginForm(initial=dict(company=request.company)),
+                'events': events,
+                'home_page': home_page,
+                'videos': videos,
+                'sponsors': sponsors,
+                'dates_select': dates_select,
+                'first_date': "Todos" if not filtered_date else filtered_date,
+                'exhibitors': Exhibitor.objects.filter(
+                    company=company, is_active=True)
+            }
         return render(request, self.template_name, context)
 
 
