@@ -69,9 +69,21 @@
                             if(data.success){
                                 window.location.href = data.redirect_url
                             }else{
+                                var msg = $('.login-message-warning')
+                                var login_form = $('.login-form')
+                                var login_warning_form = $('.login-warning-form')
+                                login_form.hide();
+                                $('.tac').hide();
+                                msg.html("<p>" + data.message + "</p>")
+                                login_warning_form.show();
                             }
                         });
                 }
+            });
+            $('.return-login-form').on('click', function (e) {
+                $('.login-warning-form').hide();
+                $('.login-form').show();
+                $('.tac').show();
             });
             //Evento form REGISTRO
             $('.save-register').click(function(e){

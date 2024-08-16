@@ -75,7 +75,14 @@
 <div class="g8PopupForm formLogin pr">
     <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a>
     <h3>Iniciar Sesión</h3>
-    <div class="g8Form">
+    <div class="g8Confirm fdc aifs login-warning-form" style="display:none;">
+        <div class="gParrafo login-message-warning">
+        </div>
+        <div class="g8Bottom">
+            <h4><a class="return-login-form" href="#"><- Regresar</a></h4>
+        </div>
+    </div>
+    <div class="g8Form login-form">
         <form action="" method="POST">
             {% csrf_token %}
             <div class="g8GroupInput one">

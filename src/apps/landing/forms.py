@@ -40,7 +40,7 @@ class RegisterForm(forms.ModelForm):
                                              can_confirm=can_confirm))
         if (can_confirm and self.is_confirmartion) or allow_register:
             try:
-                Customer.objects.get(email=email, company=self.company)
+                Customer.objects.get(email=email)
                 message = "Ya existe una cuenta con el email ingresado."
                 raise forms.ValidationError(dict(message=message,
                                                  can_confirm=False))
@@ -147,7 +147,7 @@ class CredentialCustomerForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-
+    message = forms.CharField(required=False)
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput())
 
@@ -164,11 +164,11 @@ class LoginForm(forms.Form):
         try:
             user = Customer.objects.get(email=email, company=self.company)
         except Customer.DoesNotExist:
-            mensaje = "No existe una cuenta registrada con ese email"
-            raise forms.ValidationError(mensaje)
+            message = "No existe una cuenta registrada con ese email"
+            raise forms.ValidationError(dict(message=message))
         if not user.check_password(password):
-            mensaje = "El email y password no coinciden"
-            raise forms.ValidationError(mensaje)
+            message = "Error de Credenciales"
+            raise forms.ValidationError(dict(message=message))
         return data
 
     def save(self):

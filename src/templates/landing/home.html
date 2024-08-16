@@ -126,10 +126,13 @@
                 </div>
                {% endcomment %}
                <div class="b4Select">
-                    <a href="#" class="b4ClickSelect"><span></span><span class="name">{{first_date}}</span></a>
+                    <a href="#" class="b4ClickSelect">
+                        <span></span>
+                        <span class="name">{{first_date}}</span></a>
                     <div class="b4ListOptions">
+                        <a href="" class="b4OptionSelect">Todos</a>
                         {% for date in dates_select %}
-                        <a href="#" class="b4OptionSelect">{{date}}</a>
+                        <a href="" class="b4OptionSelect">{{date}}</a>
                         {% endfor %}
                     </div>
                </div>
@@ -211,6 +214,7 @@
             </div>
 
             <div class="b4WrapList b4InfoTab">
+                {% for event in events %}
                     {% for schedule in event.get_schedules %}
                         {% if schedule.description %}
                         <div class="b4Item f aic jcsb ">
@@ -272,7 +276,7 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -573,6 +577,14 @@
                     e.preventDefault();
                     e.stopPropagation();
                     let getTextNameOption = this.textContent;
+                    let currentUrl = window.location.href;
+                    if(getTextNameOption == 'Todos'){
+                        window.location.href = '/'
+                    }else{
+                        let url = new URL(currentUrl);
+                        url.searchParams.set('date', getTextNameOption);
+                        window.location.href = url.toString();
+                    }
                     this.parentNode.previousElementSibling.children[1].innerText = getTextNameOption
                     this.parentNode.parentNode.classList.remove('active')
                 });
@@ -590,9 +602,7 @@
                 b4ClickSelect.parentNode.classList.remove('active')
             }
         });
-       
 
-        
         let elb4ItemOption = document.getElementsByClassName("b4ItemOption");
         for(const b4ItemOption of elb4ItemOption){
             b4ItemOption.addEventListener("click",function(){
@@ -615,7 +625,6 @@
                     b4PersonsExpoList.parentNode.classList.add('activeScrollList')
                 }
             }
-            
         }
         eventClickAccordion("b4FilterItemClick")
         //eventTab("b4ClickTab","b4InfoTab","click")
@@ -665,8 +674,8 @@
         const breakpointChecker = () => {
             let getCountItems = document.getElementsByClassName('b5Item').length;
             console.log(getCountItems);
-            breakpoint.matches === true ? 
-                (getCountItems >= 2 ? enableSwiper(elSwiperb5) : destroySwiper()): 
+            breakpoint.matches === true ?
+                (getCountItems >= 2 ? enableSwiper(elSwiperb5) : destroySwiper()):
                 (getCountItems > elSwiperb5 ? enableSwiper(elSwiperb5) : destroySwiper())
         }
         let mySwiper;
@@ -709,7 +718,6 @@
                     }
                 }
             });
-            
         };
         breakpoint.addListener(breakpointChecker);
         breakpointChecker();
@@ -746,8 +754,8 @@
         const breakpointCheckerb8 = () => {
             let getCountItemsb8 = document.getElementsByClassName('b8Item').length;
             console.log(getCountItemsb8);
-            breakpointb8.matches === true ? 
-                (getCountItemsb8 >= 2 ? enableSwiperb8(elSwiperb8) : destroySwiperb8()): 
+            breakpointb8.matches === true ?
+                (getCountItemsb8 >= 2 ? enableSwiperb8(elSwiperb8) : destroySwiperb8()):
                 (getCountItemsb8 > elSwiperb8 ? enableSwiperb8(elSwiperb8) : destroySwiperb8())
         }
         let mySwiperb8;
@@ -794,7 +802,6 @@
                     }
                 }
             });
-            
         };
         breakpointb8.addListener(breakpointCheckerb8);
         breakpointCheckerb8();
@@ -810,7 +817,6 @@
                 csrfmiddlewaretoken: "{{csrf_token}}"
             },
         }).done(function(data) {
-            console.log(data, 'DATA RESPONSE')
             if(data.success){
                 window.location.href = data.redirect_url
             }
