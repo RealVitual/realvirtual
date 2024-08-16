@@ -235,14 +235,16 @@
                                     <!-- Existe dos opcions de "Ver en vivo o Volver a ver" -->
                                     <!-- <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a> -->
                                     <!-- <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="https://www.youtube.com/watch?v=l6_nRqIz_9o">Volver a ver</a> -->
-                                    {% if schedule.get_current_status == 'upcoming' %}
-                                        <a href="#" class="b4Agendar agregarCalendario" data-item-id="1"><span>Agendar</span></a>
-                                    {% endif %}
-                                    {% if schedule.get_current_status == 'is_live' %}
-                                        <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
-                                    {% endif %}
-                                    {% if schedule.get_current_status == 'past' and schedule.video_url %}
-                                        <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
+                                    {% if logged_user %}
+                                        {% if schedule.get_current_status == 'upcoming' %}
+                                            <a href="#" class="b4Agendar agregarCalendario" data-item-id="1"><span>Agendar</span></a>
+                                        {% endif %}
+                                        {% if schedule.get_current_status == 'is_live' %}
+                                            <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+                                        {% endif %}
+                                        {% if schedule.get_current_status == 'past' and schedule.video_url %}
+                                            <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
+                                        {% endif %}
                                     {% endif %}
                                     <p class="sala"><img src="/static/web/img/sala.svg" alt="" width="13"> Sala 1</p>
                                     <p class="fecha"><img src="/static/web/img/icon-calendar.svg" alt="" width="13">{{schedule.get_date}}</p>
