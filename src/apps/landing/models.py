@@ -410,7 +410,7 @@ class UserNetworkingPreference(BaseModel):
 
 class FreeImage(models.Model):
     name = models.CharField(_('Nombre'), max_length=255)
-    image = models.ImageField(
+    image = models.FileField(
         verbose_name=_('Imagen'),
         upload_to=get_upload_path('free_images'))
 

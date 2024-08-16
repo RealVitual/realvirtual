@@ -164,14 +164,24 @@ def confirm_register(request):
             json.dumps(response_data), content_type="application/json")
 
 
-class EventsView(View):
+class EventsView(CreateView):
     template_name = "landing/evento-detalle.html"
+    form_class = RegisterForm
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
         self.user = request.user
         return super(EventsView, self).dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self, **kwargs):
+        form_kwargs = super(
+            EventsView, self).get_form_kwargs(**kwargs)
+        form_kwargs["initial"] = dict(
+            domain=self.request.META['HTTP_HOST'],
+            company=self.request.company)
+        form_kwargs["prefix"] = "register"
+        return form_kwargs
 
     def get(self, request, **kwargs):
         context = {}
