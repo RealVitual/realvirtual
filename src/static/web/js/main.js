@@ -627,3 +627,21 @@ if (localStorage.getItem('selectedItems') && document.getElementsByClassName("he
 // 		localStorage.setItem('selectedItems', JSON.stringify(Array.from(selectedItems)));
 // 	}
 // }
+
+
+if(document.getElementsByClassName("show-hide-pass")[0]){
+	let elShowHiddePass = document.getElementsByClassName("show-hide-pass")
+	for(const ShowHiddePass of elShowHiddePass){
+		ShowHiddePass.addEventListener('click',function(e){
+			e.preventDefault();
+			if(!this.classList.contains('active')){
+				this.classList.add('active')
+				this.previousElementSibling.setAttribute('type','text')
+			}else{
+				this.classList.remove('active')
+				this.previousElementSibling.setAttribute('type','password')
+			}
+			
+		})
+	}
+}

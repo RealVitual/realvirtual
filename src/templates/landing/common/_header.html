@@ -90,9 +90,10 @@
                     <span>Email</span>
                     <input type="text" id="login_email" class="g8Box validate[required,custom[email]]" name="{{form_login.email.html_name}}">
                 </div>
-                <div class="g8Input">
+                <div class="g8Input password">
                     <span>Contraseña *</span>
                     <input type="password" id="login_passwowrd" class="g8Box validate[required]" name="{{form_login.password.html_name}}">
+                    <a href="#" class="show-hide-pass"></a>
                 </div>
             </div>
             <button class="g8SumitLogin">Ingresar</button>
@@ -169,13 +170,15 @@
                 </div>
             </div>
             <div class="g8GroupInput two">
-                <div class="g8Input">
+                <div class="g8Input password">
                     <span>Contraseña *</span>
                     <input type="password" id="passwowrd" class="g8Box validate[required]" name="{{form_register.password.html_name}}">
+                    <a href="#" class="show-hide-pass"></a>
                 </div>
-                <div class="g8Input">
+                <div class="g8Input password">
                     <span>Confirmar Contraseña *</span>
                     <input type="password" id="passwordconfirm"  class="g8Box validate[required,equals[passwowrd]]" name="{{form_register.confirm_password.html_name}}">
+                    <a href="#" class="show-hide-pass"></a>
                 </div>
             </div>
             <div class="g8Confirm fdc aifs">

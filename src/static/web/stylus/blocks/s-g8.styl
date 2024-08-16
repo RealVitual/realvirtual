@@ -9,6 +9,16 @@
 		border 0px
 		width 100%
 		margin-top 10px
+		position relative
+		&.isLoading
+			&:before
+				content ''
+				background-image url(../img/loading.gif)
+				backgroundsize()
+				width 25px
+				height 25px
+				centerY()
+				right 30px
 	.formError
 		bottom calc(100% + 10px) !important
 		top initial !important
@@ -98,6 +108,26 @@
 	margin-bottom 10px
 	border-radius 10px
 	width 100%
+	&.password
+		.show-hide-pass
+			centerY()
+			right 10px
+			width 23px
+			height 23px
+			&:before
+				content ''
+				background-image url(../img/ocultar.svg)
+				width 100%
+				height 100%
+				display block
+				backgroundsize()
+			&.active
+				&:before
+					background-image url(../img/mostrar.svg)
+
+
+
+
 	input,select,textarea,.clickSelect
 		width 100%
 		height 100%
