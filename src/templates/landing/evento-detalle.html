@@ -525,8 +525,7 @@
      //bloque 4 - js
      if(document.getElementsByClassName("agregarCalendario")[0]){
             const items = document.querySelectorAll('.agregarCalendario');
-            const totalCountDisplay = document.getElementById('total-count');
-            let totalCount = "{{user_schedules_quantity}}";
+            let totalCount = {{user_schedules_quantity}};
             const items_id = {{user_schedules|safe}}
             const selectedItems = new Set(items_id);
             for(const itemId of selectedItems){
@@ -586,11 +585,7 @@
             }
 
             function updateTotalCountDisplay() {
-                totalCountDisplay.textContent = totalCount;
-            }
-
-            function saveToLocalStorage() {
-                localStorage.setItem('selectedItems', JSON.stringify(Array.from(selectedItems)));
+                document.getElementById('total-count').textContent = totalCount;
             }
         }
 
