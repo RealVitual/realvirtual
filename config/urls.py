@@ -23,6 +23,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin-django/', admin.site.urls),
     path('', include('src.apps.landing.urls', namespace='landing')),
+    path('api/events/', include('src.apps.events.urls', namespace='events')),
 ]
 
 urlpatterns += static(

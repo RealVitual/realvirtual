@@ -12,9 +12,6 @@
             </a>
         </div>
         <div class="headerAnclas f aic jcc">
-            <!-- la clase "lineActive" es la barra qeu se activa cuando se da click , 
-                el color deberìa ser administrable segun el color de la web 
-            -->
             {% if header %}
                 {% if header_section.show_about_section %}
                     <a href="#acerca" class="headerAnclaBlock">Acerca de <span class="lineActive" style="background:#008ac9;"></span></a>
@@ -43,6 +40,12 @@
             {% endif %}
         </div>
         <div class="headerRight f aic jcfe">
+            {% if logged_user %}
+                <a href="" class="headerEventos">
+                    <img src="/static/web/img/icon-calendar.svg" alt="" width="20">
+                    <span class="countEvents" id="total-count">{{user_schedules_quantity}}</span>
+                </a>
+            {% endif %}
             <div class="headerOptionsSessions">
                 <!-- OPCIÒN CUANDO NO ESTA LOGEADO -->
                 <div class="headerOptionLogout f aic jcfe">

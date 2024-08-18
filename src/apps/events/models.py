@@ -9,6 +9,7 @@ from django.template.defaultfilters import slugify
 from django.conf import settings
 from datetime import datetime
 from mptt.models import MPTTModel, TreeForeignKey
+from src.apps.users.models import User
 
 
 def get_upload_path(internal_folder):
@@ -166,7 +167,7 @@ class Schedule(BaseModel):
         ordering = ('start_time', )
 
     def __str__(self):
-        return "{}".format(self.name)
+        return "{} - ({})".format(self.name, self.event.name)
 
     def get_exhibitors(self):
         return self.exhibitors.all()
@@ -211,3 +212,28 @@ class Schedule(BaseModel):
         if start_datetime > now:
             status = 'upcoming'
         return status
+
+
+class ScheduleCustomerEvent(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_customer_schedules",
+        on_delete=models.CASCADE,)
+    user = models.ForeignKey(
+        User, related_name="customer_schedules",
+        on_delete=models.CASCADE)
+    event = models.ForeignKey(
+        Event, related_name="event_customers",
+        verbose_name=_('Evento'),
+        on_delete=models.CASCADE)
+    schedule = models.ForeignKey(
+        Schedule, related_name="schedule_customers",
+        verbose_name=_('Schedule'),
+        on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Horario Agendado')
+        verbose_name_plural = _('Horarios Agendados')
+        ordering = ['-modified']
+
+    def __str__(self):
+        return self.user.email

@@ -237,7 +237,7 @@
                                     <!-- <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="https://www.youtube.com/watch?v=l6_nRqIz_9o">Volver a ver</a> -->
                                     {% if logged_user %}
                                         {% if schedule.get_current_status == 'upcoming' %}
-                                            <a href="#" class="b4Agendar agregarCalendario" data-item-id="1"><span>Agendar</span></a>
+                                            <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a>
                                         {% endif %}
                                         {% if schedule.get_current_status == 'is_live' %}
                                             <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
@@ -526,43 +526,64 @@
      if(document.getElementsByClassName("agregarCalendario")[0]){
             const items = document.querySelectorAll('.agregarCalendario');
             const totalCountDisplay = document.getElementById('total-count');
-            let totalCount = 0;
-            const selectedItems = new Set();
-
-            // Cargar el estado inicial desde localStorage
-            if (localStorage.getItem('selectedItems')) {
-                const storedItems = JSON.parse(localStorage.getItem('selectedItems'));
-                storedItems.forEach(itemId => {
-                    const item = document.querySelector(`.agregarCalendario[data-item-id="${itemId}"]`);
-                    if (item) {
-                        item.classList.add('selected');
-                        selectedItems.add(itemId);
-                        item.children[0].textContent = "Agendado";
-                    }
-                });
-                totalCount = selectedItems.size;
-                updateTotalCountDisplay();
+            let totalCount = "{{user_schedules_quantity}}";
+            const items_id = {{user_schedules|safe}}
+            const selectedItems = new Set(items_id);
+            for(const itemId of selectedItems){
+                let item = document.querySelector(`.agregarCalendario[data-item-id="${itemId}"]`);
+                if (item) {
+                    item.classList.add('selected');
+                    item.children[0].textContent = "Agendado";
+                }
             }
 
             items.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault()
                     const itemId = this.getAttribute('data-item-id');
-                    if (selectedItems.has(itemId)) {
-                        selectedItems.delete(itemId);
-                        this.classList.remove('selected');
-                        this.children[0].textContent = "Agendar";
-                        totalCount--;
+                    if (selectedItems.has(parseInt(itemId))) {
+                        scheduleManager(parseInt(itemId), 0, selectedItems, this.classList, this.children[0])
+
                     } else {
-                        selectedItems.add(itemId);
-                        this.classList.add('selected');
-                        this.children[0].textContent = "Agendado";
-                        totalCount++;
+                        scheduleManager(parseInt(itemId), 1, selectedItems, this.classList, this.children[0])
+
                     }
-                    updateTotalCountDisplay();
-                    saveToLocalStorage();
                 });
             });
+
+            function scheduleManager(schedule_id, status, selectedItems, classList, item_content){
+                $.ajax({
+                    url: '{% url "events:generate_schedule" %}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        schedule_id: schedule_id,
+                        status: status,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function(data){
+                        if (data.success) {
+                            console.log(status)
+                            if(status == 1){
+                                classList.add('selected');
+                                selectedItems.add(schedule_id)
+                                item_content.textContent = "Agendado";
+                                totalCount++;
+                            }else{
+                                classList.remove('selected');
+                                selectedItems.delete(schedule_id)
+                                item_content.textContent = "Agendar";
+                                totalCount--;
+                            }
+                            updateTotalCountDisplay();
+                        } else {
+                            console.log(data)
+                        }
+                    },
+                    error: function(xhr, status){
+                    }
+                });
+            }
 
             function updateTotalCountDisplay() {
                 totalCountDisplay.textContent = totalCount;
@@ -585,9 +606,15 @@
                     if(getTextNameOption == 'Todos'){
                         window.location.href = '/'
                     }else{
-                        let url = new URL(currentUrl);
-                        url.searchParams.set('date', getTextNameOption);
-                        window.location.href = url.toString();
+                        if(!currentUrl.includes('#agenda')){
+                            let url = new URL(currentUrl + '#agenda');
+                            url.searchParams.set('date', getTextNameOption);
+                            window.location.href = url.toString();
+                        }else{
+                            let url = new URL(currentUrl);
+                            url.searchParams.set('date', getTextNameOption);
+                            window.location.href = url.toString();
+                        }
                     }
                     this.parentNode.previousElementSibling.children[1].innerText = getTextNameOption
                     this.parentNode.parentNode.classList.remove('active')

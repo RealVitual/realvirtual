@@ -571,12 +571,6 @@ if(document.getElementsByClassName("headerAnclaBlock")[0]){
 
 
 
-if (localStorage.getItem('selectedItems') && document.getElementsByClassName("headerEventos")[0]) {
-	const storedItems = JSON.parse(localStorage.getItem('selectedItems'));
-	document.getElementById('total-count').innerText = storedItems.length;
-}
-
-
 
 // if(document.getElementsByClassName("agregarCalendario")[0]){
 // 	const items = document.querySelectorAll('.agregarCalendario');

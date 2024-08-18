@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Event, Exhibitor, Schedule, Category, Filter
+from .models import (
+    Event, Exhibitor, Schedule, Category, Filter,
+    ScheduleCustomerEvent)
 from mptt.admin import MPTTModelAdmin
 
 
@@ -18,7 +20,7 @@ class ScheduleTabular(admin.TabularInline):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('name', 'company')
+    list_display = ('name', 'start_datetime',  'company')
     inlines = [ScheduleTabular]
     list_editable = ('company', )
     list_filter = ('company', )
@@ -40,6 +42,12 @@ class ExhibitorAdmin(admin.ModelAdmin):
 class FilterAdmin(admin.ModelAdmin):
     list_display = ('name', 'company')
     list_filter = ('company', )
+
+
+@admin.register(ScheduleCustomerEvent)
+class ScheduleCustomerEventAdmin(admin.ModelAdmin):
+    list_display = ('user', 'company', 'event', 'schedule')
+    list_filter = ('company', 'event', 'schedule')
 
 
 admin.site.register(Category, MPTTModelAdmin)

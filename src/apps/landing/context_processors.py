@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.urls import resolve
 from src.apps.conf.models import Country
-from src.apps.events.models import Event
+from src.apps.events.models import Event, ScheduleCustomerEvent
 from src.apps.companies.models import Footer, Header
 from django.urls import reverse
 from datetime import datetime
@@ -52,9 +52,14 @@ def main_info(request, **kwargs):
                     user_url = reverse(
                         'landing:credential_generated',
                         kwargs=dict(uid=cred.code))
+            user_schedules = ScheduleCustomerEvent.objects.filter(
+                company=request.company, user=user).values_list(
+                    'schedule__id', flat=True)
             data['user_url'] = user_url
             data['is_live'] = is_live
             data['logged_user'] = user
+            data['user_schedules'] = list(user_schedules)
+            data['user_schedules_quantity'] = len(user_schedules)
         return data
     return {
         'countries': Country.objects.all(),
