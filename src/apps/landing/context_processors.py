@@ -34,7 +34,9 @@ def main_info(request, **kwargs):
             'STATIC_VERSION': settings.STATIC_VERSION,
             'current_url': current_url,
             "header_section": header_section,
-            "footer": footer
+            "footer": footer,
+            'user_schedules_quantity': 0,
+            'user_schedules': []
         }
         if user.is_authenticated:
             if user.in_person:
@@ -64,5 +66,7 @@ def main_info(request, **kwargs):
     return {
         'countries': Country.objects.all(),
         'STATIC_VERSION': settings.STATIC_VERSION,
-        'current_url': current_url
+        'current_url': current_url,
+        'user_schedules_quantity': 0,
+        'user_schedules': []
     }

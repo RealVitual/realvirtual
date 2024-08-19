@@ -562,7 +562,6 @@
                     },
                     success: function(data){
                         if (data.success) {
-                            console.log(status)
                             if(status == 1){
                                 classList.add('selected');
                                 selectedItems.add(schedule_id)
@@ -623,7 +622,6 @@
         }
 
         window.addEventListener("click",function(){
-            console.log('hiciste clik')
             for(const b4ClickSelect of elb4ClickSelect){
                 b4ClickSelect.parentNode.classList.remove('active')
             }
@@ -666,7 +664,6 @@
 
         for(const b4OpenPopupPerson of elb4OpenPopupPerson){
             b4OpenPopupPerson.addEventListener("click",function(e){
-                console.log('click open person')
                 e.preventDefault();
                 elb4Popup.classList.add('active');
                 OVERLAY.classList.add('active');
@@ -699,7 +696,6 @@
         const breakpoint = window.matchMedia('(max-width: 1024px)');
         const breakpointChecker = () => {
             let getCountItems = document.getElementsByClassName('b5Item').length;
-            console.log(getCountItems);
             breakpoint.matches === true ?
                 (getCountItems >= 2 ? enableSwiper(elSwiperb5) : destroySwiper()):
                 (getCountItems > elSwiperb5 ? enableSwiper(elSwiperb5) : destroySwiper())
@@ -753,12 +749,14 @@
     if(document.getElementsByClassName('b16')[0]){
         let elb16Popup = document.getElementsByClassName('b16Popup')[0]
         let elb16CancelNet = document.getElementsByClassName('b16CancelNet')[0]
-        elb16CancelNet.addEventListener('click',function(e){
-            e.preventDefault();
-            elb16Popup.classList.remove('active')
-            OVERLAY.classList.remove('active')
-            OVERLAY.removeAttribute('style')
-        })
+        if(elb16CancelNet){
+            elb16CancelNet.addEventListener('click',function(e){
+                e.preventDefault();
+                elb16Popup.classList.remove('active')
+                OVERLAY.classList.remove('active')
+                OVERLAY.removeAttribute('style')
+            })
+        }
         let b16openPopups = document.getElementsByClassName('b16OpenPopup')
         if(b16openPopups.length > 0){
             let elb16OpenPopup = b16openPopups[0]
@@ -779,7 +777,6 @@
         const breakpointb8 = window.matchMedia('(max-width: 1024px)');
         const breakpointCheckerb8 = () => {
             let getCountItemsb8 = document.getElementsByClassName('b8Item').length;
-            console.log(getCountItemsb8);
             breakpointb8.matches === true ?
                 (getCountItemsb8 >= 2 ? enableSwiperb8(elSwiperb8) : destroySwiperb8()):
                 (getCountItemsb8 > elSwiperb8 ? enableSwiperb8(elSwiperb8) : destroySwiperb8())
@@ -833,21 +830,23 @@
         breakpointCheckerb8();
     }
     let b16AceptNet = document.getElementsByClassName("b16AceptNet")[0];
-    b16AceptNet.addEventListener("click",function(e){
-        e.preventDefault();
-        $.ajax({
-            url : "{% url 'landing:allow_networking_user' %}",
-            type : "post",
-            data: {
-                networking: 1,
-                csrfmiddlewaretoken: "{{csrf_token}}"
-            },
-        }).done(function(data) {
-            if(data.success){
-                window.location.href = data.redirect_url
-            }
+    if(b16AceptNet){
+        b16AceptNet.addEventListener("click",function(e){
+            e.preventDefault();
+            $.ajax({
+                url : "{% url 'landing:allow_networking_user' %}",
+                type : "post",
+                data: {
+                    networking: 1,
+                    csrfmiddlewaretoken: "{{csrf_token}}"
+                },
+            }).done(function(data) {
+                if(data.success){
+                    window.location.href = data.redirect_url
+                }
+            });
         });
-    });
+    }
 
 </script>
 {% endblock %}
