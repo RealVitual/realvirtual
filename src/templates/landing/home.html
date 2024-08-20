@@ -140,75 +140,33 @@
                </div>
             </div>
         </div>
-        <div class="b4ContentWrap scrollItem hideFilterLeft">
+        <div class="b4ContentWrap scrollItem {% if not company.use_filters %}hideFilterLeft{% endif %}">
             <div class="b4FilterLeft">
                 <h3>Filtros</h6>
-                {% for row in "12" %}
+                <div class="b4FilterItemInfo">
+                    <ul>
+                        <li class="b4ItemOption">
+                            <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
+                                <span style="background: #008AC9"></span>
+                            </div>
+                            <h6>Todos</h6>
+                        </li>
+                    </ul>
+                </div>
+                {% for f in filters %}
                 <div class="b4FilterItem">
                     <!-- ADMINISTRAR EL ATRIBUT "data-color-active" en caso se necesite cambiar de color -->
-                    <a href="#" class="b4FilterItemClick">Tema</a>
+                    <a href="#" class="b4FilterItemClick">{{f.name}}</a>
                     <div class="b4FilterItemInfo">
                         <ul>
+                            {% for category in f.ordered_categories %}
                             <li class="b4ItemOption">
                                 <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
                                     <span style="background: #008AC9"></span>
                                 </div>
-                                <h6>Ciberseguridad</h6>
+                                <h6>{{category.name}}</h6>
                             </li>
-                            <li class="b4ItemOption">
-                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
-                                    <span style="background: #008AC9"></span>
-                                </div>
-                                <h6>Estrategias innovadoras</h6>
-                            </li>
-                            <li class="b4ItemOption">
-                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
-                                    <span style="background: #008AC9"></span>
-                                </div>
-                                <h6>Conservatorio</h6>
-                            </li>
-                            <li class="b4ItemOption">
-                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
-                                    <span style="background: #008AC9"></span>
-                                </div>
-                                <h6>Creatividad</h6>
-                            </li>
-                            <li class="b4ItemOption">
-                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
-                                    <span style="background: #008AC9"></span>
-                                </div>
-                                <h6>Liderazgo</h6>
-                            </li>
-                            <li class="b4ItemOption">
-                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
-                                    <span style="background: #008AC9"></span>
-                                </div>
-                                <h6>Ciberseguridad</h6>
-                            </li>
-                            <li class="b4ItemOption">
-                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
-                                    <span style="background: #008AC9"></span>
-                                </div>
-                                <h6>Estrategias innovadoras</h6>
-                            </li>
-                            <li class="b4ItemOption">
-                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
-                                    <span style="background: #008AC9"></span>
-                                </div>
-                                <h6>Conservatorio</h6>
-                            </li>
-                            <li class="b4ItemOption">
-                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
-                                    <span style="background: #008AC9"></span>
-                                </div>
-                                <h6>Creatividad</h6>
-                            </li>
-                            <li class="b4ItemOption">
-                                <div class="optionRadio pr" data-color-active="#008AC9" style="border: 1px solid #000">
-                                    <span style="background: #008AC9"></span>
-                                </div>
-                                <h6>Liderazgo</h6>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>

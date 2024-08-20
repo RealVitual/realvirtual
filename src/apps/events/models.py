@@ -10,6 +10,7 @@ from django.conf import settings
 from datetime import datetime
 from mptt.models import MPTTModel, TreeForeignKey
 from src.apps.users.models import User
+from src.contrib.db.models import BaseModel
 
 
 def get_upload_path(internal_folder):
@@ -17,10 +18,13 @@ def get_upload_path(internal_folder):
       "%s/%s/" % (settings.BUCKET_FOLDER_NAME, internal_folder))
 
 
-class Filter(models.Model):
+class Filter(BaseModel):
     company = models.ForeignKey(
         Company, related_name="filters",
         on_delete=models.CASCADE, null=True)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1)
     name = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=255, blank=True, null=True)
 
@@ -30,6 +34,10 @@ class Filter(models.Model):
     class Meta:
         verbose_name = _("Filter")
         verbose_name_plural = _("Filters")
+        ordering = ['position']
+
+    def ordered_categories(self):
+        return self.filter_categories.order_by('position')
 
 
 class Category(MPTTModel):
@@ -39,6 +47,9 @@ class Category(MPTTModel):
     filter = models.ForeignKey(
         Filter, related_name="filter_categories",
         on_delete=models.DO_NOTHING, null=True)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1)
     name = models.CharField(max_length=100, unique=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE,
                             null=True, blank=True,
@@ -48,21 +59,20 @@ class Category(MPTTModel):
         order_insertion_by = ['name']
 
     def __str__(self):
-        return f"{self.filter.name} - {self.name}"
+        if self.filter:
+            return f"{self.filter.name} - {self.name}"
+        return f"{self.company.name} - {self.name}"
 
     class Meta:
         verbose_name = _("Category")
         verbose_name_plural = _("Categories")
+        ordering = ['position']
 
 
 class Event(BaseModel):
     company = models.ForeignKey(
         Company, related_name="events",
         on_delete=models.CASCADE, null=True)
-    categories = models.ManyToManyField(Category,
-                                        related_name='category_eventos',
-                                        blank=True,
-                                        null=True)
     name = models.CharField(
         _('Name'), max_length=255, blank=True)
     subtitle = models.CharField(
@@ -145,6 +155,10 @@ class Schedule(BaseModel):
     event = models.ForeignKey(
         Event, related_name="schedules",
         on_delete=models.CASCADE, null=True)
+    categories = models.ManyToManyField(Category,
+                                        related_name='category_eventos',
+                                        blank=True,
+                                        null=True)
     start_time = models.TimeField(
         _('Start time'), null=True, blank=True)
     end_time = models.TimeField(

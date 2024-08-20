@@ -29,6 +29,7 @@ class Company(BaseModel):
                                                null=True, blank=True)
     main_event_end_datetime = models.DateTimeField(_('Main event datetime'),
                                                    null=True, blank=True)
+    use_filters = models.BooleanField(_('Usa filtros'), default=False)
     is_virtual = models.BooleanField(_('Is virtual'), default=True)
     in_person = models.BooleanField(_('In Person'), default=False)
     is_private = models.BooleanField(_('Is Private'), default=False)
@@ -55,26 +56,48 @@ class Header(TimeStampedModel):
     company = models.ForeignKey(
         Company, related_name="header",
         on_delete=models.CASCADE, null=True)
+    about_section_header_name = models.CharField(
+        _('Nombre Acerca De Header'), max_length=20, default="Acerca de"
+    )
     show_about_section = models.BooleanField(
         _('Mostrar Acerca de'), default=True
+    )
+    schecule_header_name = models.CharField(
+        _('Nombre Horario Header'), max_length=20, default="Agenda"
     )
     show_schedule_section = models.BooleanField(
         _('Mostrar Agenda'), default=True
     )
+    gallery_header_name = models.CharField(
+        _('Nombre Galería Header'), max_length=20, default="Galería"
+    )
     show_gallery_section = models.BooleanField(
         _('Mostrar Galería'), default=True
+    )
+    sponsors_header_name = models.CharField(
+        _('Nombre Auspiciadores Header'), max_length=20,
+        default="Auspiciadores"
     )
     show_sponsors_section = models.BooleanField(
         _('Mostrar Auspiciadores'), default=True
     )
+    networking_header_name = models.CharField(
+        _('Nombre Networking Header'), max_length=20, default="Networking"
+    )
     show_networking_section = models.BooleanField(
         _('Mostrar Networking'), default=True
+    )
+    survey_header_name = models.CharField(
+        _('Nombre Encuesta Header'), max_length=20, default="Encuesta"
     )
     show_survey_section = models.BooleanField(
         _('Mostrar Encuesta'), default=True
     )
     show_more_events = models.BooleanField(
         _('Mostrar Más eventos'), default=True
+    )
+    exhibitors_header_name = models.CharField(
+        _('Nombre Expositores Header'), max_length=20, default="Expositores"
     )
     show_exhibitors_section = models.BooleanField(
         _('Mostrar Expositores'), default=True

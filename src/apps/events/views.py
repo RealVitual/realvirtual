@@ -10,8 +10,6 @@ class GenerateScheduleCustomerEvent(APIView):
     permission_classes = [AuthenticatedPermission]
 
     def post(self, request):
-        print(request.company, 'REQUEST COMPANY')
-        print(request.data, 'REQUEST DATA')
         serializer = self.serializer_class(
             data=request.data,
             context={
@@ -21,5 +19,4 @@ class GenerateScheduleCustomerEvent(APIView):
             serializer.save()
             return Response(dict(
                 success=True), status=200)
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -15,6 +15,8 @@ class ScheduleTabular(admin.TabularInline):
             fields = formset.form.base_fields
             fields['exhibitors'].queryset = Exhibitor.objects.filter(
                 company=obj.company)
+            fields['categories'].queryset = Category.objects.filter(
+                company=obj.company).order_by('filter__name', 'name')
         return formset
 
 
