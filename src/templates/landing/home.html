@@ -113,8 +113,8 @@
     <div class="grilla">
         <div class="b4Top f aife jcsb ffrw scrollItem">
             <div class="b4Title">
-                <h4>Agenda</h4>
-                <h3 class="gTitle">Programas y Ponentes</h3>
+                <h4>{{home_page.schedule_section_name}}</h4>
+                <h3 class="gTitle">{{home_page.schedule_section_title}}</h3>
             </div>
             <div class="b4SelectWrap f aic jcfe">
                {% comment %}
@@ -267,7 +267,7 @@
 {% if header_section.show_exhibitors_section %}
     <section class="b21 scrollWrap anclaBlock" id="expositor">
         <div class="grilla">
-            <h1 class="gTitle">Expositores</h1>
+            <h1 class="gTitle">{{home_page.exhibitors_section_name}}</h1>
             <div class="b21Wrap column3 column2-1024 column1-480">
                 {% for ex in exhibitors %}
                 <a  href="#" class="b4OpenPopupPerson b5Item swiper-slide zoomImageHover"
@@ -343,8 +343,8 @@
 <section class="b6 anclaBlock anclaBlock" id="auspiciador">
     <div class="grilla">
         <div class="b6Top">
-            <h4>Empresas</h4>
-            <h3 class="gTitle tac">Con la participación de</h3>
+            <h4>{{home_page.sponsors_section_name}}</h4>
+            <h3 class="gTitle tac">{{home_page.sponsors_section_text}}</h3>
         </div>
         <div class="b6Wrap">
             {% for sponsor in sponsors %}
@@ -363,10 +363,10 @@
     {% if logged_user %}
         <section class="b16 anclaBlock" id="networking">
             <div class="grilla">
-                <h3 class="gTitle">Networking</h3>
+                <h3 class="gTitle">{{home_page.networking_section_name}}</h3>
                 {% if logged_user.allow_networking %}
                     <div class="gParrafo">
-                        <p>Conéctate con los demás usuarios.</p>
+                        <p>{{home_page.networking_description_text}}</p>
                     </div>
                     <a href="{% url 'landing:networking_preferences' %}" class="gButton">Ir a Networking</a>
                 {% else %}
@@ -381,7 +381,7 @@
         <div class="b16Popup">
             <!-- <a href="#" class="icon-close"></a> -->
             <div class="b16PopupContent">
-                <h3 class="gTitle">Networking</h3>
+                <h3 class="gTitle">{{home_page.networking_section_name}}</h3>
                 <div class="gParrafo">
                     <p>Confirma que desea compartir sus datos con los demás asistentes del evento.</p>
                 </div>
@@ -394,7 +394,7 @@
     {% else %}
         <section class="b16 anclaBlock" id="networking">
             <div class="grilla">
-                <h3 class="gTitle">Networking</h3>
+                <h3 class="gTitle">{{home_page.networking_section_name}}</h3>
                 <div class="gParrafo">
                     <p>Para conectarte con los demás usuarios primero debes registrarte</p>
                 </div>
@@ -408,9 +408,9 @@
     <!-- Que todo sea -->
     <a href="{% url 'landing:survey_view' %}" class="grilla">
         <div class="b7Info">
-            <h3 class="gTitle">Tu opinión es importante</h3>
+            <h3 class="gTitle">{{home_page.survey_section_name}}</h3>
             <div class="gParrafo">
-                <p>Por favor, ayúdanos a mejorar nuestra atención completando la siguiente encuesta.</p>
+                <p>{{home_page.survey_description_text}}</p>
             </div>
         </div>
         <span><img src="/static/web/img/arrow.svg" alt=""></span>

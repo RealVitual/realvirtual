@@ -107,6 +107,12 @@ class Header(TimeStampedModel):
     show_exhibitors_section = models.BooleanField(
         _('Mostrar Expositores'), default=True
     )
+    register_title = models.CharField(
+        _('Título Registro'), max_length=20, default="Regístrate"
+    )
+    login_title = models.CharField(
+        _('Título Login'), max_length=20, default="Inicia Sesión"
+    )
 
     class Meta:
         verbose_name = _("Header")
@@ -173,6 +179,34 @@ class HomePage(TimeStampedModel):
             _('Main Event image'),
             upload_to=get_upload_path('main_event_image'),
             null=True, blank=True)
+    schedule_section_name = models.CharField(
+        _('Agenda nombre Sección'), max_length=255,
+        blank=True, default="Agenda")
+    schedule_section_title = models.CharField(
+        _('Agenda título Sección'), max_length=255,
+        blank=True, default="Programas y Ponentes")
+    exhibitors_section_name = models.CharField(
+        _('Expositores nombre Sección'), max_length=255,
+        blank=True, default="Expositores")
+    sponsors_section_name = models.CharField(
+        _('Auspiciadores nombre Sección'), max_length=255,
+        blank=True, default="Empresa")
+    sponsors_section_text = models.CharField(
+        _('Auspiciadores texto'), max_length=255,
+        blank=True, default="Con la participación de")
+    networking_section_name = models.CharField(
+        _('Networking nombre Sección'), max_length=255,
+        blank=True, default="Networking")
+    networking_description_text = models.CharField(
+        _('Networking descripción texto'), max_length=255,
+        blank=True, default="Conéctate con los demás usuarios.")
+    survey_section_name = models.CharField(
+        _('Encuesta nombre Sección'), max_length=255,
+        blank=True, default="Tu opinión es importante")
+    survey_description_text = models.CharField(
+        _('Encuesta descripción texto'), max_length=255,
+        blank=True,
+        default="Por favor, ayúdanos a mejorar nuestra atención completando la siguiente encuesta.") # noqa
 
     class Meta:
         verbose_name = _("Home Page")
