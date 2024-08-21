@@ -198,7 +198,6 @@
     })
 
     const detectedButton = () => {
-        console.log('entro perro')
         if(document.getElementsByClassName('b10InputText')[0].classList.contains('active')){
             elb10GenerateCred.classList.add('active')
         }else{
@@ -214,6 +213,7 @@
         if (!valid) {
             console.log('credencial incorrecta')
             } else {
+                $('.b10GenerateCred').addClass('isLoading');
                 form.submit()
         }
     });

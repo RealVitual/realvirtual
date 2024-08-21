@@ -488,7 +488,7 @@ if(document.getElementsByClassName('headerButtonLogin')[0] || document.getElemen
 	let elformRegistro = document.getElementsByClassName('formRegistro')[0];
 	let elHeaderButtonLogin = document.getElementsByClassName('headerButtonLogin')[0];
 	let elHeaderButtonRegistrate = document.getElementsByClassName('headerButtonRegistrate')[0];
-	let elg8ClosePopup = document.getElementsByClassName('g8ClosePopup')
+	// let elg8ClosePopup = document.getElementsByClassName('g8ClosePopup')
 
 	elHeaderButtonLogin.addEventListener('click', function(e){
 		e.preventDefault();
@@ -497,13 +497,13 @@ if(document.getElementsByClassName('headerButtonLogin')[0] || document.getElemen
 		OVERLAY.style.zIndex = "500"
 	});
 
-	for(const g8ClosePopup of elg8ClosePopup){
-		g8ClosePopup.addEventListener('click', function(e){
-			e.preventDefault();
-			this.parentNode.classList.remove('active')
-			OVERLAY.classList.remove('active')
-		});
-	}
+	// for(const g8ClosePopup of elg8ClosePopup){
+	// 	g8ClosePopup.addEventListener('click', function(e){
+	// 		e.preventDefault();
+	// 		this.parentNode.classList.remove('active')
+	// 		OVERLAY.classList.remove('active')
+	// 	});
+	// }
 	elHeaderButtonRegistrate.addEventListener('click', function(e){
 		e.preventDefault();
 		elformRegistro.classList.add('active')
@@ -569,6 +569,12 @@ if(document.getElementsByClassName("headerAnclaBlock")[0]){
 	});
 }
 
+
+
+if (localStorage.getItem('selectedItems') && document.getElementsByClassName("headerEventos")[0]) {
+	const storedItems = JSON.parse(localStorage.getItem('selectedItems'));
+	document.getElementById('total-count').innerText = storedItems.length;
+}
 
 
 
