@@ -25,6 +25,9 @@ class Company(BaseModel):
     mobile_banner = models.ImageField(
             _('Mobile Banner'), upload_to=get_upload_path('mobile_banner'),
             null=True, blank=True)
+    video_file = models.FileField(
+            _('Video File Banner'), upload_to=get_upload_path('video_banner'),
+            null=True, blank=True)
     main_event_datetime = models.DateTimeField(_('Main event datetime'),
                                                null=True, blank=True)
     main_event_end_datetime = models.DateTimeField(_('Main event datetime'),

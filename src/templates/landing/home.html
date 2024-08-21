@@ -10,14 +10,20 @@
 
 
 <section class="b1 scrollWrap">
-    <picture class="imgCover">
-        <!-- imagen mobile -->
-        <source srcset="{{company.mobile_banner.url}}" media="(max-width: 767px)">
-        <!-- imagen desktop -->
-        <source srcset="{{company.banner.url}}" media="(max-width: 768px)">
-        <!-- imagen desktop -->
-        <img src="{{company.banner.url}}" width="1920" height="713"  alt="Myimage">
-    </picture>
+    {% if company.video_file %}
+        <video width="640" height="360" autoplay loop muted>
+            <source src="{{company.video_file.url}}" type="video/mp4">
+        </video>
+    {% else %}
+        <picture class="imgCover">
+            <!-- imagen mobile -->
+            <source srcset="{{company.mobile_banner.url}}" media="(max-width: 767px)">
+            <!-- imagen desktop -->
+            <source srcset="{{company.banner.url}}" media="(max-width: 768px)">
+            <!-- imagen desktop -->
+            <img src="{{company.banner.url}}" width="1920" height="713"  alt="Myimage">
+        </picture>
+    {% endif %}
     <!--
         Tres posiciones verticales
         Agregar la clase : top , center, bottom
@@ -27,7 +33,7 @@
             <h2 class="scrollItem">{{home_page.first_title|default:""}}</h2>
             <h1 class="scrollItem">{{home_page.main_title|default:""}}</h1>
             <h3 class="scrollItem">{{home_page.secondary_title|default:""}}</h3>
-            {% if home_page.home_video_url %}
+            {% if home_page.home_video_url and not company.video_file %}
                 <a href="#" class="clickVideo popup scrollItem" data-urlvideo="{{home_page.home_video_url}}">
                     <span>Ver video</span>
                     <!-- linea circular animada administrable -->
@@ -177,8 +183,8 @@
                 {% for event in events %}
                     {% for schedule in event.get_schedules %}
                         {% if schedule.description %}
-                        <div class="b4Item f aic jcsb ">
-                            <div class="b4ItemLeft f aifs jcfs {% if not schedule.image %}noImage{% endif %}">
+                        <div class="b4Item f aic jcsb {% if not schedule.image %}noImage{% endif %}">
+                            <div class="b4ItemLeft f aifs jcfs">
                                 {% if schedule.image %}
                                     <div class="b4Img pr">
                                         <picture class="imgCover">
