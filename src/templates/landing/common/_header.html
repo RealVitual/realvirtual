@@ -62,7 +62,9 @@
                                 {% if logged_user.in_person %}
                                     <li><a href="{{user_url}}">Mi Ticket</a></li>
                                 {% else %}
-                                    <li><a href="{{user_url}}">Mi credencial</a></li>
+                                    {% if request.company.enable_credentials %}
+                                        <li><a href="{{user_url}}">Mi credencial</a></li>
+                                    {% endif %}
                                 {% endif %}
                             </ul>
                             <a href="{% url 'landing:logout' %}" class="logout">Cerrar Sesión</a>

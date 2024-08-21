@@ -33,6 +33,8 @@ class Company(BaseModel):
     main_event_end_datetime = models.DateTimeField(_('Main event datetime'),
                                                    null=True, blank=True)
     use_filters = models.BooleanField(_('Usa filtros'), default=False)
+    enable_credentials = models.BooleanField(_('Habilitar credenciales'),
+                                             default=False)
     is_virtual = models.BooleanField(_('Is virtual'), default=True)
     in_person = models.BooleanField(_('In Person'), default=False)
     is_private = models.BooleanField(_('Is Private'), default=False)

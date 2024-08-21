@@ -394,6 +394,8 @@ class GenerateCredentialView(CreateView):
         self.user = request.user
         if not self.user.is_authenticated:
             return redirect(reverse('landing:home'))
+        if not request.company.enable_credentials:
+            return redirect(reverse('landing:event'))
         return super(GenerateCredentialView, self).dispatch(request, *args, **kwargs) # noqa
 
     def get(self, request, *args, **kwargs):
