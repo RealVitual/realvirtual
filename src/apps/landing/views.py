@@ -5,7 +5,7 @@ from django.views.generic import CreateView, View
 from django.http import HttpResponse
 from rest_framework.views import APIView
 import requests
-from src.apps.events.models import Event, Exhibitor, Filter
+from src.apps.events.models import Event, Exhibitor, Filter, Schedule
 from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
@@ -52,11 +52,34 @@ class HomeView(CreateView):
         if request.company:
             company = request.company
             home_page = HomePage.objects.get(company=company)
-            filtered_date = request.GET.get('date', None)
+            filtered_date = None
+            query_filters = dict(request.GET)
+            filtered_categories = []
+            filtered_filters = []
+            for filter, category in query_filters.items():
+                if filter == "date":
+                    filtered_date = category[0]
+                else:
+                    filtered_filters.append(filter)
+                    filtered_categories.append(category[0])
             events_query = Event.objects.filter(
                 is_active=True, company=company).order_by('start_datetime')
             dates = events_query.values_list('start_datetime', flat=True)
             events = []
+            if filtered_categories:
+                events_query = events_query.filter(
+                    schedules__categories__filter_name__in=filtered_categories)
+                for event in events_query:
+                    event.filtered_schedules = Schedule.objects.filter(
+                        event=event,
+                        is_active=True,
+                        categories__filter_name__in=filtered_categories).order_by(
+                            'start_time')
+            else:
+                for event in events_query:
+                    event.filtered_schedules = Schedule.objects.filter(
+                        event=event,
+                        is_active=True).order_by('start_time')
             if filtered_date:
                 events = [event for event in events_query if event.get_date() == filtered_date] # noqa
             else:
@@ -90,7 +113,9 @@ class HomeView(CreateView):
                 'first_date': "Todos" if not filtered_date else filtered_date,
                 'exhibitors': Exhibitor.objects.filter(
                     company=company, is_active=True),
-                'filters': filters
+                'filters': filters,
+                'filtered_categories': filtered_categories,
+                'filtered_filters': filtered_filters
             }
         return render(request, self.template_name, context)
 
@@ -202,11 +227,34 @@ class EventsView(CreateView):
         if request.company:
             company = request.company
             home_page = HomePage.objects.get(company=company)
-            filtered_date = request.GET.get('date', None)
+            filtered_date = None
+            query_filters = dict(request.GET)
+            filtered_categories = []
+            filtered_filters = []
+            for filter, category in query_filters.items():
+                if filter == "date":
+                    filtered_date = category[0]
+                else:
+                    filtered_filters.append(filter)
+                    filtered_categories.append(category[0])
             events_query = Event.objects.filter(
                 is_active=True, company=company).order_by('start_datetime')
             dates = events_query.values_list('start_datetime', flat=True)
             events = []
+            if filtered_categories:
+                events_query = events_query.filter(
+                    schedules__categories__filter_name__in=filtered_categories)
+                for event in events_query:
+                    event.filtered_schedules = Schedule.objects.filter(
+                        event=event,
+                        is_active=True,
+                        categories__filter_name__in=filtered_categories).order_by(
+                            'start_time')
+            else:
+                for event in events_query:
+                    event.filtered_schedules = Schedule.objects.filter(
+                        event=event,
+                        is_active=True).order_by('start_time')
             if filtered_date:
                 events = [event for event in events_query if event.get_date() == filtered_date] # noqa
             else:
@@ -240,7 +288,9 @@ class EventsView(CreateView):
                 'first_date': "Todos" if not filtered_date else filtered_date,
                 'exhibitors': Exhibitor.objects.filter(
                     company=company, is_active=True),
-                'filters': filters
+                'filters': filters,
+                'filtered_categories': filtered_categories,
+                'filtered_filters': filtered_filters
             }
         return render(request, self.template_name, context)
 

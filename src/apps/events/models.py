@@ -27,6 +27,10 @@ class Filter(BaseModel):
         default=1)
     name = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=255, blank=True, null=True)
+    filter_name = models.SlugField(
+        _('Filter name'),
+        max_length=450,
+        blank=True, editable=True)
 
     def __str__(self):
         return self.name
@@ -35,6 +39,11 @@ class Filter(BaseModel):
         verbose_name = _("Filter")
         verbose_name_plural = _("Filters")
         ordering = ['position']
+
+    def save(self, *args, **kwargs):
+        if not self.filter_name:
+            self.filter_name = slugify(self.name)
+        super(Filter, self).save(*args, **kwargs)
 
     def ordered_categories(self):
         return self.filter_categories.order_by('position')
@@ -54,6 +63,10 @@ class Category(MPTTModel):
     parent = TreeForeignKey('self', on_delete=models.CASCADE,
                             null=True, blank=True,
                             related_name='sub_categories')
+    filter_name = models.SlugField(
+        _('Filter name'),
+        max_length=450,
+        blank=True, editable=True)
 
     class MPTTMeta:
         order_insertion_by = ['name']
@@ -67,6 +80,11 @@ class Category(MPTTModel):
         verbose_name = _("Category")
         verbose_name_plural = _("Categories")
         ordering = ['position']
+
+    def save(self, *args, **kwargs):
+        if not self.filter_name:
+            self.filter_name = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
 
 
 class Event(BaseModel):
