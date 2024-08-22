@@ -5,7 +5,7 @@ from django.views.generic import CreateView, View
 from django.http import HttpResponse
 from rest_framework.views import APIView
 import requests
-from src.apps.events.models import Event, Exhibitor, Filter, Schedule
+from src.apps.events.models import Event, Exhibitor, Filter, Schedule, Shift
 from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
@@ -56,34 +56,37 @@ class HomeView(CreateView):
             query_filters = dict(request.GET)
             filtered_categories = []
             filtered_filters = []
-            for filter, category in query_filters.items():
+            filtered_shift = None
+            for filter, value in query_filters.items():
                 if filter == "date":
-                    filtered_date = category[0]
+                    filtered_date = value[0]
+                elif filter == "shift":
+                    filtered_shift = value[0]
                 else:
                     filtered_filters.append(filter)
-                    filtered_categories.append(category[0])
-            events_query = Event.objects.filter(
-                is_active=True, company=company).order_by('start_datetime')
-            dates = events_query.values_list('start_datetime', flat=True)
-            events = []
+                    filtered_categories.append(value[0])
+            schedules = Schedule.objects.filter(
+                event__is_active=True,
+                event__company=company,
+                is_active=True).order_by(
+                    'event__start_datetime', 'start_time')
+            events_list = list(dict.fromkeys(
+                [schedule.event for schedule in schedules]))
+            shifts = list(dict.fromkeys(
+                [schedule.shift for schedule in schedules]))
+            dates = [event.start_datetime for event in events_list]
             if filtered_categories:
-                events_query = events_query.filter(
-                    schedules__categories__filter_name__in=filtered_categories)
-                for event in events_query:
-                    event.filtered_schedules = Schedule.objects.filter(
-                        event=event,
-                        is_active=True,
-                        categories__filter_name__in=filtered_categories).order_by(
-                            'start_time')
-            else:
-                for event in events_query:
-                    event.filtered_schedules = Schedule.objects.filter(
-                        event=event,
-                        is_active=True).order_by('start_time')
+                schedules = schedules.filter(
+                    categories__filter_name__in=filtered_categories).order_by(
+                        'event__start_datetime', 'start_time')
+            events_list = list(dict.fromkeys(
+                [schedule.event for schedule in schedules]))
             if filtered_date:
-                events = [event for event in events_query if event.get_date() == filtered_date] # noqa
-            else:
-                events = events_query
+                events_list = [event for event in events_list if event.get_date() == filtered_date] # noqa
+                schedules = schedules.filter(event__in=events_list)
+            if filtered_shift:
+                schedules = schedules.filter(shift__filter_name=filtered_shift)
+                filtered_shift = Shift.objects.get(filter_name=filtered_shift)
             dates_select = []
             for date in dates:
                 option_date = date.astimezone(pytz.timezone(
@@ -105,17 +108,19 @@ class HomeView(CreateView):
                 'header': True,
                 'form_register': self.get_form(),
                 'form_login': LoginForm(initial=dict(company=request.company)),
-                'events': events,
+                'schedules': schedules,
                 'home_page': home_page,
                 'videos': videos,
                 'sponsors': sponsors,
                 'dates_select': dates_select,
-                'first_date': "Todos" if not filtered_date else filtered_date,
+                'filtered_date': filtered_date if filtered_date else None,
                 'exhibitors': Exhibitor.objects.filter(
                     company=company, is_active=True),
                 'filters': filters,
                 'filtered_categories': filtered_categories,
-                'filtered_filters': filtered_filters
+                'filtered_filters': filtered_filters,
+                'shifts':  shifts,
+                'filtered_shift': filtered_shift.name if filtered_shift else None
             }
         return render(request, self.template_name, context)
 
@@ -231,34 +236,37 @@ class EventsView(CreateView):
             query_filters = dict(request.GET)
             filtered_categories = []
             filtered_filters = []
-            for filter, category in query_filters.items():
+            filtered_shift = None
+            for filter, value in query_filters.items():
                 if filter == "date":
-                    filtered_date = category[0]
+                    filtered_date = value[0]
+                elif filter == "shift":
+                    filtered_shift = value[0]
                 else:
                     filtered_filters.append(filter)
-                    filtered_categories.append(category[0])
-            events_query = Event.objects.filter(
-                is_active=True, company=company).order_by('start_datetime')
-            dates = events_query.values_list('start_datetime', flat=True)
-            events = []
+                    filtered_categories.append(value[0])
+            schedules = Schedule.objects.filter(
+                event__is_active=True,
+                event__company=company,
+                is_active=True).order_by(
+                    'event__start_datetime', 'start_time')
+            events_list = list(dict.fromkeys(
+                [schedule.event for schedule in schedules]))
+            shifts = list(dict.fromkeys(
+                [schedule.shift for schedule in schedules]))
+            dates = [event.start_datetime for event in events_list]
             if filtered_categories:
-                events_query = events_query.filter(
-                    schedules__categories__filter_name__in=filtered_categories)
-                for event in events_query:
-                    event.filtered_schedules = Schedule.objects.filter(
-                        event=event,
-                        is_active=True,
-                        categories__filter_name__in=filtered_categories).order_by(
-                            'start_time')
-            else:
-                for event in events_query:
-                    event.filtered_schedules = Schedule.objects.filter(
-                        event=event,
-                        is_active=True).order_by('start_time')
+                schedules = schedules.filter(
+                    categories__filter_name__in=filtered_categories).order_by(
+                        'event__start_datetime', 'start_time')
+            events_list = list(dict.fromkeys(
+                [schedule.event for schedule in schedules]))
             if filtered_date:
-                events = [event for event in events_query if event.get_date() == filtered_date] # noqa
-            else:
-                events = events_query
+                events_list = [event for event in events_list if event.get_date() == filtered_date] # noqa
+                schedules = schedules.filter(event__in=events_list)
+            if filtered_shift:
+                schedules = schedules.filter(shift__filter_name=filtered_shift)
+                filtered_shift = Shift.objects.get(filter_name=filtered_shift)
             dates_select = []
             for date in dates:
                 option_date = date.astimezone(pytz.timezone(
@@ -280,17 +288,19 @@ class EventsView(CreateView):
                 'header': True,
                 'form_register': self.get_form(),
                 'form_login': LoginForm(initial=dict(company=request.company)),
-                'events': events,
+                'schedules': schedules,
                 'home_page': home_page,
                 'videos': videos,
                 'sponsors': sponsors,
                 'dates_select': dates_select,
-                'first_date': "Todos" if not filtered_date else filtered_date,
+                'filtered_date': filtered_date if filtered_date else None,
                 'exhibitors': Exhibitor.objects.filter(
                     company=company, is_active=True),
                 'filters': filters,
                 'filtered_categories': filtered_categories,
-                'filtered_filters': filtered_filters
+                'filtered_filters': filtered_filters,
+                'shifts':  shifts,
+                'filtered_shift': filtered_shift.name if filtered_shift else None
             }
         return render(request, self.template_name, context)
 

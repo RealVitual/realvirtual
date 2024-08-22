@@ -36,8 +36,9 @@ class Company(BaseModel):
     main_event_end_datetime = models.DateTimeField(_('Main event datetime'),
                                                    null=True, blank=True)
     use_filters = models.BooleanField(_('Usa filtros'), default=False)
-    use_rooms = models.BooleanField(_('Usa salas'), default=False)
+    use_rooms = models.BooleanField(_('Usa salas en lista'), default=False)
     use_shifts = models.BooleanField(_('Usa turnos'), default=False)
+    use_dates = models.BooleanField(_('Usa fecha en lista'), default=False)
     enable_credentials = models.BooleanField(_('Habilitar credenciales'),
                                              default=False)
     is_virtual = models.BooleanField(_('Is virtual'), default=True)

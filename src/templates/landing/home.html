@@ -117,29 +117,38 @@
                 <h3 class="gTitle">{{home_page.schedule_section_title}}</h3>
             </div>
             <div class="b4SelectWrap f aic jcfe">
-               {% comment %}
+                {% if company.use_shifts %}
                 <div class="b4Select">
-                    <a href="#" class="b4ClickSelect"><span>De</span><span class="name">19 de Diciembre</span></a>
+                    {% if filtered_shift %}
+                    <a href="#" class="b4ClickSelect"><span>Turno</span><span class="name">{{filtered_shift}}</span></a>
+                    {% else %}
+                    <a href="#" class="b4ClickSelect"><span>Turnos</span><span class="name">Todos</span></a>
+                    {% endif %}
                     <div class="b4ListOptions">
-                        <a href="#" class="b4OptionSelect">20 de octubre</a>
-                        <a href="#" class="b4OptionSelect">19 de octubre</a>
-                        <a href="#" class="b4OptionSelect">19 de octubre</a>
-                        <a href="#" class="b4OptionSelect">19 de octubre</a>
-                        <a href="#" class="b4OptionSelect">19 de octubre</a>
-                        <a href="#" class="b4OptionSelect">19 de octubre</a>
-                        <a href="#" class="b4OptionSelect">19 de octubre</a>
-                        <a href="#" class="b4OptionSelect">19 de octubre</a>
+                        {% if filtered_shift %}
+                            <a href="#" class="b4OptionSelect" data-type="shift" data-option="all">Todos</a>
+                        {% endif %}
+                        {% for shift in shifts %}
+                            <a href="#" class="b4OptionSelect" data-type="shift" data-option="{{shift.filter_name}}">{{shift.name}}</a>
+                        {% endfor %}
                     </div>
                 </div>
-               {% endcomment %}
+                {% endif %}
+
                <div class="b4Select">
                     <a href="#" class="b4ClickSelect">
                         <span></span>
-                        <span class="name">{{first_date}}</span></a>
+                        {% if filtered_date %}
+                        <span class="name">{{filtered_date}}</span></a>
+                        {% else %}
+                        <span class="name">Todos</span></a>
+                        {% endif %}
                     <div class="b4ListOptions">
-                        <a href="" class="b4OptionSelect">Todos</a>
+                        {% if filtered_date %}
+                            <a href="#" class="b4OptionSelect" data-type="date" data-option="all">Todos</a>
+                        {% endif %}
                         {% for date in dates_select %}
-                        <a href="" class="b4OptionSelect">{{date}}</a>
+                        <a href="" class="b4OptionSelect" data-option="{{date}}" data-type="date">{{date}}</a>
                         {% endfor %}
                     </div>
                </div>
@@ -178,67 +187,69 @@
             </div>
 
             <div class="b4WrapList b4InfoTab">
-                {% for event in events %}
-                    {% for schedule in event.filtered_schedules %}
-                        {% if schedule.description %}
-                        <div class="b4Item f aic jcsb {% if not schedule.image %}noImage{% endif %}">
-                            <div class="b4ItemLeft f aifs jcfs">
-                                {% if schedule.image %}
-                                    <div class="b4Img pr">
-                                        <picture class="imgCover">
-                                            <source srcset="{{schedule.image.url}}" media="(max-width: 767px)">
-                                            <source srcset="{{schedule.image.url}}" media="(max-width: 768px)">
-                                            <img src="{{schedule.image.url}}" width="1920" height="713"  alt="Myimage">
-                                        </picture>
-                                    </div>
-                                {% else %}
-                                {% endif %}
-                                <div class="b4Info">
-                                    {% if logged_user %}
-                                        {% if schedule.get_current_status == 'upcoming' %}
-                                            <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a>
-                                        {% endif %}
-                                        {% if schedule.get_current_status == 'is_live' %}
-                                            <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
-                                        {% endif %}
-                                        {% if schedule.get_current_status == 'past' and schedule.video_url %}
-                                            <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
-                                        {% endif %}
+                {% for schedule in schedules %}
+                    {% if schedule.description %}
+                    <div class="b4Item f aic jcsb {% if not schedule.image %}noImage{% endif %}">
+                        <div class="b4ItemLeft f aifs jcfs">
+                            {% if schedule.image %}
+                                <div class="b4Img pr">
+                                    <picture class="imgCover">
+                                        <source srcset="{{schedule.image.url}}" media="(max-width: 767px)">
+                                        <source srcset="{{schedule.image.url}}" media="(max-width: 768px)">
+                                        <img src="{{schedule.image.url}}" width="1920" height="713"  alt="Myimage">
+                                    </picture>
+                                </div>
+                            {% else %}
+                            {% endif %}
+                            <div class="b4Info">
+                                {% if logged_user %}
+                                    {% if schedule.get_current_status == 'upcoming' %}
+                                        <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a>
                                     {% endif %}
-                                    <p class="sala"><img src="/static/web/img/sala.svg" alt="" width="13"> Sala 1</p>
+                                    {% if schedule.get_current_status == 'is_live' %}
+                                        <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+                                    {% endif %}
+                                    {% if schedule.get_current_status == 'past' and schedule.video_url %}
+                                        <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
+                                    {% endif %}
+                                {% endif %}
+                                {% if company.use_rooms %}
+                                    <p class="sala"><img src="/static/web/img/sala.svg" alt="" width="13">{{schedule.room.name}}</p>
+                                {% endif %}
+                                {% if company.use_dates %}
                                     <p class="fecha"><img src="/static/web/img/icon-calendar.svg" alt="" width="13">{{schedule.get_date}}</p>
-                                    <p class="hora"><img src="/static/web/img/icon-hour.svg" alt="" width="13"> {{schedule.start_time}} - {{schedule.end_time}}</p>
-                                    <h4>{{schedule.name}}</h4>
-                                    <div class="gParrafo">
-                                        <p>{{schedule.description}}</p>
-                                    </div>
+                                {% endif %}
+                                <p class="hora"><img src="/static/web/img/icon-hour.svg" alt="" width="13"> {{schedule.start_time}} - {{schedule.end_time}}</p>
+                                <h4>{{schedule.name}}</h4>
+                                <div class="gParrafo">
+                                    <p>{{schedule.description}}</p>
                                 </div>
                             </div>
-                            <div class="b4ItemRight">
-                                <ul class="b4PersonsExpoList">
-                                    {% for exhibitor in schedule.get_exhibitors %}
-                                        <li class="">
-                                            <a href="" class="b4OpenPopupPerson"
-                                                data-name="{{exhibitor.name}}"
-                                                data-cargo="{{exhibitor.title}}"
-                                                data-info="{{exhibitor.description}}"
-                                                data-url="{{exhibitor.link}}"
-                                                data-img="{{exhibitor.image.url}}"
-                                                >
-                                                <h6><img src="/static/web/img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
-                                                <span> - {{exhibitor.organization}}</span>
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
                         </div>
-                        {% else %}
-                            <div class="b4Break">
-                                <h3>{{schedule.start_time}} - {{schedule.end_time}} <span>{{schedule.name}}</span></h3>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
+                        <div class="b4ItemRight">
+                            <ul class="b4PersonsExpoList">
+                                {% for exhibitor in schedule.get_exhibitors %}
+                                    <li class="">
+                                        <a href="" class="b4OpenPopupPerson"
+                                            data-name="{{exhibitor.name}}"
+                                            data-cargo="{{exhibitor.title}}"
+                                            data-info="{{exhibitor.description}}"
+                                            data-url="{{exhibitor.link}}"
+                                            data-img="{{exhibitor.image.url}}"
+                                            >
+                                            <h6><img src="/static/web/img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
+                                            <span> - {{exhibitor.organization}}</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="b4Break">
+                            <h3>{{schedule.start_time}} - {{schedule.end_time}} <span>{{schedule.name}}</span></h3>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -554,18 +565,27 @@
                 optioItem.addEventListener("click",function(e){
                     e.preventDefault();
                     e.stopPropagation();
-                    let getTextNameOption = this.textContent;
+                    let getTextNameOption = this.getAttribute('data-option');
+                    let filter_type = this.getAttribute('data-type');
                     let currentUrl = window.location.href;
-                    if(getTextNameOption == 'Todos'){
-                        window.location.href = '/#agenda'
-                    }else{
+                    if(getTextNameOption == 'all'){
                         if(!currentUrl.includes('#')){
                             let url = new URL(currentUrl + '#agenda');
-                            url.searchParams.set('date', getTextNameOption);
+                            url.searchParams.delete(filter_type);
                             window.location.href = url.toString();
                         }else{
                             let url = new URL(currentUrl);
-                            url.searchParams.set('date', getTextNameOption);
+                            url.searchParams.delete(filter_type);
+                            window.location.href = url.toString();
+                        }
+                    }else{
+                        if(!currentUrl.includes('#')){
+                            let url = new URL(currentUrl + '#agenda');
+                            url.searchParams.set(filter_type, getTextNameOption);
+                            window.location.href = url.toString();
+                        }else{
+                            let url = new URL(currentUrl);
+                            url.searchParams.set(filter_type, getTextNameOption);
                             window.location.href = url.toString();
                         }
                     }
@@ -604,20 +624,38 @@
                 let currentUrl = window.location.href;
                 if (category == 'all'){
                     let params = new URL(document.location.toString()).searchParams;
-                    if(params.get('date')){
-                        let filtered_date = params.get('date')
+                    let filtered_date = params.get('date')
+                    let filtered_shift = params.get('shift')
+                    if(!currentUrl.includes('#')){
                         let url = new URL(window.location.origin + "/#agenda");
-                        url.searchParams.set('date', filtered_date);
+                        if(filtered_date){
+                            url.searchParams.set('date', filtered_date);
+                        }
+                        if(filtered_shift){
+                            url.searchParams.set('shift', filtered_shift)
+                        }
+                        window.location.href = url.toString();
+                    }else{
+                        let url = new URL(window.location.origin);
+                        if(filtered_date){
+                            url.searchParams.set('date', filtered_date);
+                        }
+                        if(filtered_shift){
+                            url.searchParams.set('shift', filtered_shift)
+                        }
+                        window.location.href = url.toString();
+                    }
+                }else{
+                    if(!currentUrl.includes('#')){
+                        let url = new URL(currentUrl + '#agenda');
+                        url.searchParams.set(filter, category);
                         window.location.href = url.toString();
                     }else{
                         let url = new URL(currentUrl);
                         url.searchParams.set(filter, category);
                         window.location.href = url.toString();
                     }
-                }else{
-                    let url = new URL(currentUrl);
-                    url.searchParams.set(filter, category);
-                    window.location.href = url.toString();
+
                 }
 
             });
