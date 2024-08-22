@@ -623,28 +623,18 @@
                 this.classList.add('active')
                 let currentUrl = window.location.href;
                 if (category == 'all'){
+                    console.log(category, 'ALLLLL')
                     let params = new URL(document.location.toString()).searchParams;
                     let filtered_date = params.get('date')
                     let filtered_shift = params.get('shift')
-                    if(!currentUrl.includes('#')){
-                        let url = new URL(window.location.origin + "/#agenda");
-                        if(filtered_date){
-                            url.searchParams.set('date', filtered_date);
-                        }
-                        if(filtered_shift){
-                            url.searchParams.set('shift', filtered_shift)
-                        }
-                        window.location.href = url.toString();
-                    }else{
-                        let url = new URL(window.location.origin);
-                        if(filtered_date){
-                            url.searchParams.set('date', filtered_date);
-                        }
-                        if(filtered_shift){
-                            url.searchParams.set('shift', filtered_shift)
-                        }
-                        window.location.href = url.toString();
+                    let url = new URL(window.location.origin + "/#agenda");
+                    if(filtered_date){
+                        url.searchParams.set('date', filtered_date);
                     }
+                    if(filtered_shift){
+                        url.searchParams.set('shift', filtered_shift)
+                    }
+                    window.location.href = url.toString();
                 }else{
                     if(!currentUrl.includes('#')){
                         let url = new URL(currentUrl + '#agenda');

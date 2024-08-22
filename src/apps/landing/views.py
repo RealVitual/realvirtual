@@ -57,6 +57,7 @@ class HomeView(CreateView):
             filtered_categories = []
             filtered_filters = []
             filtered_shift = None
+            schedules = []
             for filter, value in query_filters.items():
                 if filter == "date":
                     filtered_date = value[0]
@@ -65,28 +66,31 @@ class HomeView(CreateView):
                 else:
                     filtered_filters.append(filter)
                     filtered_categories.append(value[0])
-            schedules = Schedule.objects.filter(
+            schedules_query = Schedule.objects.filter(
                 event__is_active=True,
                 event__company=company,
                 is_active=True).order_by(
                     'event__start_datetime', 'start_time')
             events_list = list(dict.fromkeys(
-                [schedule.event for schedule in schedules]))
+                [schedule.event for schedule in schedules_query]))
             shifts = list(dict.fromkeys(
-                [schedule.shift for schedule in schedules]))
+                [schedule.shift for schedule in schedules_query]))
             dates = [event.start_datetime for event in events_list]
             if filtered_categories:
-                schedules = schedules.filter(
+                schedules_query = schedules_query.filter(
                     categories__filter_name__in=filtered_categories).order_by(
                         'event__start_datetime', 'start_time')
             events_list = list(dict.fromkeys(
-                [schedule.event for schedule in schedules]))
+                [schedule.event for schedule in schedules_query]))
             if filtered_date:
                 events_list = [event for event in events_list if event.get_date() == filtered_date] # noqa
-                schedules = schedules.filter(event__in=events_list)
+                schedules_query = schedules_query.filter(event__in=events_list)
             if filtered_shift:
-                schedules = schedules.filter(shift__filter_name=filtered_shift)
+                schedules_query = schedules_query.filter(shift__filter_name=filtered_shift)
                 filtered_shift = Shift.objects.get(filter_name=filtered_shift)
+            for schedule in schedules_query:
+                if schedule not in schedules:
+                    schedules.append(schedule)
             dates_select = []
             for date in dates:
                 option_date = date.astimezone(pytz.timezone(
@@ -237,6 +241,7 @@ class EventsView(CreateView):
             filtered_categories = []
             filtered_filters = []
             filtered_shift = None
+            schedules = []
             for filter, value in query_filters.items():
                 if filter == "date":
                     filtered_date = value[0]
@@ -245,28 +250,31 @@ class EventsView(CreateView):
                 else:
                     filtered_filters.append(filter)
                     filtered_categories.append(value[0])
-            schedules = Schedule.objects.filter(
+            schedules_query = Schedule.objects.filter(
                 event__is_active=True,
                 event__company=company,
                 is_active=True).order_by(
                     'event__start_datetime', 'start_time')
             events_list = list(dict.fromkeys(
-                [schedule.event for schedule in schedules]))
+                [schedule.event for schedule in schedules_query]))
             shifts = list(dict.fromkeys(
-                [schedule.shift for schedule in schedules]))
+                [schedule.shift for schedule in schedules_query]))
             dates = [event.start_datetime for event in events_list]
             if filtered_categories:
-                schedules = schedules.filter(
+                schedules_query = schedules_query.filter(
                     categories__filter_name__in=filtered_categories).order_by(
                         'event__start_datetime', 'start_time')
             events_list = list(dict.fromkeys(
-                [schedule.event for schedule in schedules]))
+                [schedule.event for schedule in schedules_query]))
             if filtered_date:
                 events_list = [event for event in events_list if event.get_date() == filtered_date] # noqa
-                schedules = schedules.filter(event__in=events_list)
+                schedules_query = schedules_query.filter(event__in=events_list)
             if filtered_shift:
-                schedules = schedules.filter(shift__filter_name=filtered_shift)
+                schedules_query = schedules_query.filter(shift__filter_name=filtered_shift)
                 filtered_shift = Shift.objects.get(filter_name=filtered_shift)
+            for schedule in schedules_query:
+                if schedule not in schedules:
+                    schedules.append(schedule)
             dates_select = []
             for date in dates:
                 option_date = date.astimezone(pytz.timezone(
