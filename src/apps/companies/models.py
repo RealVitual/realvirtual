@@ -19,6 +19,9 @@ class Company(BaseModel):
     logo = models.ImageField(
             _('Logo'), upload_to=get_upload_path("company"),
             null=True, blank=True)
+    favicon = models.ImageField(
+            _('Favicon'), upload_to=get_upload_path("favicon"),
+            null=True, blank=True)
     banner = models.ImageField(
             _('Banner'), upload_to=get_upload_path('banner'),
             null=True, blank=True)
@@ -33,6 +36,8 @@ class Company(BaseModel):
     main_event_end_datetime = models.DateTimeField(_('Main event datetime'),
                                                    null=True, blank=True)
     use_filters = models.BooleanField(_('Usa filtros'), default=False)
+    use_rooms = models.BooleanField(_('Usa salas'), default=False)
+    use_shifts = models.BooleanField(_('Usa turnos'), default=False)
     enable_credentials = models.BooleanField(_('Habilitar credenciales'),
                                              default=False)
     is_virtual = models.BooleanField(_('Is virtual'), default=True)
@@ -61,6 +66,18 @@ class Header(TimeStampedModel):
     company = models.ForeignKey(
         Company, related_name="header",
         on_delete=models.CASCADE, null=True)
+    header_color = models.CharField(
+        _('Header color'), max_length=20, default="#FFFFF"
+    )
+    header_text_color = models.CharField(
+        _('Header texto color'), max_length=20, default="#17181b"
+    )
+    button_color = models.CharField(
+        _('Header botón color'), max_length=20, default="#008ac9"
+    )
+    button_text_color = models.CharField(
+        _('Header texto botón color'), max_length=20, default="#FFFFF"
+    )
     about_section_header_name = models.CharField(
         _('Nombre Acerca De Header'), max_length=20, default="Acerca de"
     )

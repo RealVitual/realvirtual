@@ -2,7 +2,7 @@
     1: sessionOn
     2: sessionOff
 -->
-<header class="header {% if logged_user %}sessionOn{% else %}sessionOff{% endif %}">
+<header class="header {% if logged_user %}sessionOn{% else %}sessionOff{% endif %}" style="background-color: {{header_section.header_color}}">
     <div class="grilla f aic jcsb">
         <div class="headerLeft">
             <a href="{% url 'landing:home' %}">
@@ -14,25 +14,25 @@
         <div class="headerAnclas f aic jcc">
             {% if header %}
                 {% if header_section.show_about_section %}
-                    <a href="#acerca" class="headerAnclaBlock">{{header_section.about_section_header_name}} <span class="lineActive" style="background:#008ac9;"></span></a>
+                    <a href="#acerca" class="headerAnclaBlock">{{header_section.about_section_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
                 {% if header_section.show_schedule_section %}
-                    <a href="#agenda" class="headerAnclaBlock">{{header_section.schecule_header_name}} <span class="lineActive" style="background:#008ac9;"></span></a>
+                    <a href="#agenda" class="headerAnclaBlock">{{header_section.schecule_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
                 {% if header_section.show_gallery_section %}
-                    <a href="#galeria" class="headerAnclaBlock">{{header_section.gallery_header_name}} <span class="lineActive" style="background:#008ac9;"></span></a>
-                {% endif %}
-                {% if header_section.show_sponsors_section %}
-                    <a href="#auspiciador" class="headerAnclaBlock">{{header_section.sponsors_header_name}} <span class="lineActive" style="background:#008ac9;"></span></a>
+                    <a href="#galeria" class="headerAnclaBlock">{{header_section.gallery_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
                 {% if header_section.show_networking_section %}
-                    <a href="#networking" class="headerAnclaBlock">{{header_section.networking_header_name}} <span class="lineActive" style="background:#008ac9;"></span></a>
+                    <a href="#networking" class="headerAnclaBlock">{{header_section.networking_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
                 {% if header_section.show_survey_section %}
-                    <a href="#encuesta" class="headerAnclaBlock">{{header_section.survey_header_name}} <span class="lineActive" style="background:#008ac9;"></span></a>
+                    <a href="#encuesta" class="headerAnclaBlock">{{header_section.survey_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
                 {% if header_section.show_exhibitors_section %}
-                <a href="#expositor" class="headerAnclaBlock">{{header_section.exhibitors_header_name}} <span class="lineActive" style="background:#008ac9;"></span></a>
+                <a href="#expositor" class="headerAnclaBlock">{{header_section.exhibitors_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
+                {% endif %}
+                {% if header_section.show_sponsors_section %}
+                    <a href="#auspiciador" class="headerAnclaBlock">{{header_section.sponsors_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
                 {% if logged_user and is_live %}
                     <a href="#" class=" headerEnVivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
@@ -49,7 +49,9 @@
             <div class="headerOptionsSessions">
                 <div class="headerOptionLogout f aic jcfe">
                     <a href="" class="headerButtonLogin login">{{header_section.login_title}}</a>
-                    <a href="" class="headerButtonRegistrate">{{header_section.register_title}}</a>
+                    <a href="" class="headerButtonRegistrate" style="background: {{header_section.button_color}}; color: {{header_section.button_text_color}};">
+                        {{header_section.register_title}}
+                    </a>
                 </div>
                 <div class="headerOptionLogin f aic jcfe">
                     <h3 class="headerNameUser">Hola {{logged_user.names}}</h3>

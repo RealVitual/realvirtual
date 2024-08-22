@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title></title>
-<!-- 	<link rel="icon" type="image/png" href="/static/web/img/favicon/256x256.png"/>
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/web/img/favicon/114x114.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/web/img/favicon/72x72.png">
-    <link rel="apple-touch-icon-precomposed" href="/static/web/img/favicon/57x57.png"> -->
+    {% if company.favicon %}
+        <link rel="icon" type="image/png" href="{{company.favicon.url}}"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{company.favicon.url}}">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{company.favicon.url}}">
+        <link rel="apple-touch-icon-precomposed" href="{{company.favicon.url}}">
+    {% endif %}
     {% block cssadicional %}
     {% endblock %}
     <link rel="stylesheet" type="text/css" href="/static/web/css/styles.css?v=1{{ BUILD_ID }}"/>

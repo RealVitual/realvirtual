@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Event, Exhibitor, Schedule, Category, Filter,
-    ScheduleCustomerEvent)
+    ScheduleCustomerEvent, Room, Shift)
 from mptt.admin import MPTTModelAdmin
 
 
@@ -50,6 +50,16 @@ class FilterAdmin(admin.ModelAdmin):
 class ScheduleCustomerEventAdmin(admin.ModelAdmin):
     list_display = ('user', 'company', 'event', 'schedule')
     list_filter = ('company', 'event', 'schedule')
+
+
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Shift)
+class ShiftAdmin(admin.ModelAdmin):
+    pass
 
 
 admin.site.register(Category, MPTTModelAdmin)

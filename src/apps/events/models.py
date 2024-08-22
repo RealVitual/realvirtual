@@ -18,6 +18,54 @@ def get_upload_path(internal_folder):
       "%s/%s/" % (settings.BUCKET_FOLDER_NAME, internal_folder))
 
 
+class Room(BaseModel):
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1)
+    name = models.CharField(max_length=100, unique=True)
+    filter_name = models.SlugField(
+        _('Filter name'),
+        max_length=450,
+        blank=True, editable=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Sala")
+        verbose_name_plural = _("Salas")
+        ordering = ['position']
+
+    def save(self, *args, **kwargs):
+        if not self.filter_name:
+            self.filter_name = slugify(self.name)
+        super(Room, self).save(*args, **kwargs)
+
+
+class Shift(BaseModel):
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1)
+    name = models.CharField(max_length=100, unique=True)
+    filter_name = models.SlugField(
+        _('Filter name'),
+        max_length=450,
+        blank=True, editable=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Turno")
+        verbose_name_plural = _("Turnos")
+        ordering = ['position']
+
+    def save(self, *args, **kwargs):
+        if not self.filter_name:
+            self.filter_name = slugify(self.name)
+        super(Shift, self).save(*args, **kwargs)
+
+
 class Filter(BaseModel):
     company = models.ForeignKey(
         Company, related_name="filters",
@@ -192,6 +240,12 @@ class Schedule(BaseModel):
         null=True)
     video_url = models.URLField(
         _('Video URL'), blank=True, null=True)
+    room = models.ForeignKey(
+        Room, related_name="room_schedules",
+        on_delete=models.DO_NOTHING, null=True, blank=True)
+    shift = models.ForeignKey(
+        Shift, related_name="shift_schedules",
+        on_delete=models.DO_NOTHING, null=True, blank=True)
 
     class Meta:
         verbose_name = _('Horario')
