@@ -35,9 +35,9 @@
             <h3 class="scrollItem">{{home_page.secondary_title|default:""}}</h3>
             {% if home_page.home_video_url and not company.video_file %}
                 <a href="#" class="clickVideo popup scrollItem" data-urlvideo="{{home_page.home_video_url}}">
-                    <span>Ver video</span>
+                    <span style="color:{{home_page.text_buttons_color}};">Ver video</span>
                     <!-- linea circular animada administrable -->
-                    <div class="lineCircleAnimate" style="border:2px solid {{header_section.button_color}};"></div>
+                    <div class="lineCircleAnimate" style="border:2px solid {{home_page.buttons_color}};"></div>
                 </a>
             {% endif %}
             <div class="b1Date f aifs jcfs scrollItem">
@@ -69,7 +69,7 @@
                 {% for row in home_page.get_items %}
                     {% if row.description != "" %}
                     <li class="b3ItemList">
-                        <a href="#" class="b3ClickToggle" data-color-initial="{{header_section.button_color}}" data-color-active="#17181B">
+                        <a href="#" class="b3ClickToggle" data-color-initial="{{home_page.buttons_color}}" data-color-active="#17181B">
                             {{row.title}}
                             <span class="circleLessMore"></span>
                         </a>
@@ -99,9 +99,9 @@
         </picture>
         {% if home_page.main_event_video_url %}
         <a href="#" class="clickVideo popup " data-urlvideo="{{home_page.main_event_video_url}}">
-            <span>Ver video</span>
+            <span style="color:{{home_page.text_buttons_color}};">Ver video</span>
             <!-- linea circular animada administrable -->
-            <div class="lineCircleAnimate" style="border:2px solid #008AC9;"></div>
+            <div class="lineCircleAnimate" style="border:2px solid {{home_page.buttons_color}};"></div>
         </a>
         {% endif %}
     </div>

@@ -169,6 +169,12 @@ class HomePage(TimeStampedModel):
     company = models.ForeignKey(
         Company, related_name="home_company",
         on_delete=models.CASCADE, null=True)
+    buttons_color = models.CharField(
+        _('Botones color'), max_length=20, default="#008ac9"
+    )
+    text_buttons_color = models.CharField(
+        _('Texto en Botones color'), max_length=20, default="#FFFFFF"
+    )
     home_banner = models.ImageField(
             _('Home Banner'), upload_to=get_upload_path('banner'),
             null=True, blank=True)
