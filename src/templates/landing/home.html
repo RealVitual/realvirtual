@@ -236,7 +236,7 @@
                                             {% if exhibitor.flag_image %}
                                             data-bandera="{{exhibitor.flag_image.url}}"
                                             {% else %}
-                                            data-bandera="/static/web/img/country_flag.jpeg"
+                                            data-bandera=""
                                             {% endif %}
                                             >
                                             <h6><img src="/static/web/img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
@@ -294,7 +294,7 @@
                     {% if ex.flag_image %}
                     data-bandera="{{ex.flag_image.url}}"
                     {% else %}
-                    data-bandera="/static/web/img/country_flag.jpeg"
+                    data-bandera=""
                     {% endif %}
                 >
                     <div class="b5Img">

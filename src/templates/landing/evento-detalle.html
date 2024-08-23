@@ -117,12 +117,27 @@
                 <h3 class="gTitle">{{home_page.schedule_section_title}}</h3>
             </div>
             <div class="b4SelectWrap f aic jcfe">
+                <div class="b4Select">
+                    {% if filtered_date %}
+                        <a href="#" class="b4ClickSelect"><span>Día</span><span class="name">{{filtered_date}}</span></a>
+                    {% else %}
+                        <a href="#" class="b4ClickSelect"><span>Días</span><span class="name">Todos</span></a>
+                    {% endif %}
+                    <div class="b4ListOptions">
+                        {% if filtered_date %}
+                            <a href="#" class="b4OptionSelect" data-type="date" data-option="all">Todos</a>
+                        {% endif %}
+                        {% for date in dates_select %}
+                        <a href="" class="b4OptionSelect" data-option="{{date}}" data-type="date">{{date}}</a>
+                        {% endfor %}
+                    </div>
+               </div>
                 {% if company.use_shifts %}
                 <div class="b4Select">
                     {% if filtered_shift %}
-                    <a href="#" class="b4ClickSelect"><span>Turno</span><span class="name">{{filtered_shift}}</span></a>
+                        <a href="#" class="b4ClickSelect"><span>Turno</span><span class="name">{{filtered_shift}}</span></a>
                     {% else %}
-                    <a href="#" class="b4ClickSelect"><span>Turnos</span><span class="name">Todos</span></a>
+                        <a href="#" class="b4ClickSelect"><span>Turnos</span><span class="name">Todos</span></a>
                     {% endif %}
                     <div class="b4ListOptions">
                         {% if filtered_shift %}
@@ -134,24 +149,6 @@
                     </div>
                 </div>
                 {% endif %}
-
-               <div class="b4Select">
-                    <a href="#" class="b4ClickSelect">
-                        <span></span>
-                        {% if filtered_date %}
-                        <span class="name">{{filtered_date}}</span></a>
-                        {% else %}
-                        <span class="name">Todos</span></a>
-                        {% endif %}
-                    <div class="b4ListOptions">
-                        {% if filtered_date %}
-                            <a href="#" class="b4OptionSelect" data-type="date" data-option="all">Todos</a>
-                        {% endif %}
-                        {% for date in dates_select %}
-                        <a href="" class="b4OptionSelect" data-option="{{date}}" data-type="date">{{date}}</a>
-                        {% endfor %}
-                    </div>
-               </div>
             </div>
         </div>
         <div class="b4ContentWrap scrollItem {% if not company.use_filters %}hideFilterLeft{% endif %}">
@@ -236,6 +233,11 @@
                                             data-info="{{exhibitor.description}}"
                                             data-url="{{exhibitor.link}}"
                                             data-img="{{exhibitor.image.url}}"
+                                            {% if exhibitor.flag_image %}
+                                            data-bandera="{{exhibitor.flag_image.url}}"
+                                            {% else %}
+                                            data-bandera=""
+                                            {% endif %}
                                             >
                                             <h6><img src="/static/web/img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
                                             <span> - {{exhibitor.organization}}</span>
@@ -265,9 +267,11 @@
     </div>
     <div class="b4InfoPopup f aic jcfs">
         <div class="b4InfoPopupContent">
-            <h3 class="b4PopupName gTitle"></h3>
+            <div class="b4TopName">
+                <h3 class="b4PopupName gTitle"></h3>
+                <img class="b4PopupBandera" alt="">
+            </div>
             <h4 class="b4PopupCargo"></h4>
-            <!-- Si la info crece se genera un scroll -->
             <div class="gParrafo b4PopupText">
             </div>
             <a href="#" target="_blank" class="b4linkedin">Ver perfil en Linkedin <img src="/static/web/img/arrow.svg" alt="" width="12"></a>
@@ -279,14 +283,20 @@
     <section class="b21 scrollWrap anclaBlock" id="expositor">
         <div class="grilla">
             <h1 class="gTitle">{{home_page.exhibitors_section_name}}</h1>
-            <div class="b21Wrap column3 column2-1024 column1-480">
+            <div class="b21Wrap column4 column4-1024 column3-768 column2-480">
                 {% for ex in exhibitors %}
                 <a  href="#" class="b4OpenPopupPerson b5Item swiper-slide zoomImageHover"
                     data-name="{{ex.name}}"
                     data-cargo="{{ex.title}}"
                     data-info="{{ex.description}}"
                     data-url="{{ex.link}}"
-                    data-img="{{ex.image.url}}">
+                    data-img="{{ex.image.url}}"
+                    {% if ex.flag_image %}
+                    data-bandera="{{ex.flag_image.url}}"
+                    {% else %}
+                    data-bandera=""
+                    {% endif %}
+                >
                     <div class="b5Img">
                         <picture class="imgCover">
                             <!-- imagen mobile -->
@@ -623,28 +633,18 @@
                 this.classList.add('active')
                 let currentUrl = window.location.href;
                 if (category == 'all'){
+                    console.log(category, 'ALLLLL')
                     let params = new URL(document.location.toString()).searchParams;
                     let filtered_date = params.get('date')
                     let filtered_shift = params.get('shift')
-                    if(!currentUrl.includes('#')){
-                        let url = new URL(window.location.origin + "/#agenda");
-                        if(filtered_date){
-                            url.searchParams.set('date', filtered_date);
-                        }
-                        if(filtered_shift){
-                            url.searchParams.set('shift', filtered_shift)
-                        }
-                        window.location.href = url.toString();
-                    }else{
-                        let url = new URL(window.location.origin);
-                        if(filtered_date){
-                            url.searchParams.set('date', filtered_date);
-                        }
-                        if(filtered_shift){
-                            url.searchParams.set('shift', filtered_shift)
-                        }
-                        window.location.href = url.toString();
+                    let url = new URL(window.location.origin + "/#agenda");
+                    if(filtered_date){
+                        url.searchParams.set('date', filtered_date);
                     }
+                    if(filtered_shift){
+                        url.searchParams.set('shift', filtered_shift)
+                    }
+                    window.location.href = url.toString();
                 }else{
                     if(!currentUrl.includes('#')){
                         let url = new URL(currentUrl + '#agenda');
@@ -665,7 +665,7 @@
             let elb4ItemRight = document.getElementsByClassName("b4ItemRight")[0]
             let elb4PersonsExpoList = document.getElementsByClassName("b4PersonsExpoList")
             for(const b4PersonsExpoList of elb4PersonsExpoList ){
-                if(b4PersonsExpoList.children.length > 5){
+                if(b4PersonsExpoList.children.length > 4){
                     b4PersonsExpoList.parentNode.classList.add('activeScrollList')
                 }
             }
@@ -681,7 +681,7 @@
         let elb4linkedin = document.getElementsByClassName("b4linkedin")[0];
         let elb4Popup = document.getElementsByClassName("b4Popup")[0];
         let elb4ClosePopup = document.getElementsByClassName("b4ClosePopup")[0];
-
+        let elb4PopupBandera = document.getElementsByClassName("b4PopupBandera")[0];
         for(const b4OpenPopupPerson of elb4OpenPopupPerson){
             b4OpenPopupPerson.addEventListener("click",function(e){
                 e.preventDefault();
@@ -693,12 +693,13 @@
                 let getInfo = this.dataset.info;
                 let getUrl = this.dataset.url;
                 let getImg = this.dataset.img;
-
+                let getBander = this.dataset.bandera;
                 elb4PopupName.innerText = getName;
                 elb4PopupCargo.innerText = getCargo;
                 elb4Popupimg.setAttribute('src',getImg);
                 elb4PopupText.innerHTML = getInfo;
-                elb4linkedin.setAttribute("href",getUrl);
+                elb4linkedin.setAttribute("value",getUrl);
+                elb4PopupBandera.setAttribute("src",getBander);
             });
         }
 
