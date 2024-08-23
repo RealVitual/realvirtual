@@ -41,6 +41,22 @@ class Company(BaseModel):
     use_dates = models.BooleanField(_('Usa fecha en lista'), default=False)
     enable_credentials = models.BooleanField(_('Habilitar credenciales'),
                                              default=False)
+    privacy_policy = models.FileField(
+            _('Políticas de privacidad'),
+            upload_to=get_upload_path('documents'),
+            null=True, blank=True)
+    protection_data_policy = models.FileField(
+            _('Políticas de Protección de datos'),
+            upload_to=get_upload_path('documents'),
+            null=True, blank=True)
+    cookies_policy = models.FileField(
+            _('Políticas Cookies'),
+            upload_to=get_upload_path('documents'),
+            null=True, blank=True)
+    terms_and_conditions = models.FileField(
+            _('Términos y condiciones'),
+            upload_to=get_upload_path('documents'),
+            null=True, blank=True)
     is_virtual = models.BooleanField(_('Is virtual'), default=True)
     in_person = models.BooleanField(_('In Person'), default=False)
     is_private = models.BooleanField(_('Is Private'), default=False)

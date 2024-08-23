@@ -188,14 +188,52 @@
             </div>
             <div class="g8Confirm fdc aifs">
                 <p>(*) Campos obligatorios</p>
-				<div class="g8Checkbox">
-					<input id="check1" type="checkbox" checked class="validate[required]" name="checkbox1" value="checkbox1">
-					<label for="check1">Acepto las <a href="#">Políticas de Privacidad</a> y <a href="#">Protección de Datos Personales.</a></label>
-				</div>
-				<div class="g8Checkbox">
-					<input id="check2" type="checkbox" checked class="validate[required]" name="checkbox2" value="checkbox2">
-					<label for="check2">Acepto los <a href="#">Términos y Condiciones.</a></a></label>
-				</div>
+                {% if company.privacy_policy or company.protection_data_policy or company.cookies_policy %}
+                    <div class="g8Checkbox">
+                        <input id="check1" type="checkbox" checked class="validate[required]" name="checkbox1" value="checkbox1">
+                        <label for="check1">
+                            {% if company.privacy_policy and not company.protection_data_policy and not company.cookies_policy %}
+                            Acepto las
+                            <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            {% endif %}
+                            {% if company.privacy_policy and company.protection_data_policy and not company.cookies_policy %}
+                            Acepto las
+                            <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            y <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
+                            {% endif %}
+                            {% if company.privacy_policy and not company.protection_data_policy and company.cookies_policy %}
+                            Acepto las
+                            <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            y <a target="_blank" href="{{company.cookies_policy}}">Cookies.</a>
+                            {% endif %}
+                            {% if company.privacy_policy and company.protection_data_policy and company.cookies_policy %}
+                            Acepto las
+                            <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            , <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
+                            y <a target="_blank" href="{{company.cookies_policy}}">Cookies.</a>
+                            {% endif %}
+                            {% if not company.privacy_policy and company.protection_data_policy and not company.cookies_policy %}
+                            Acepto la
+                            <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
+                            {% endif %}
+                            {% if not company.privacy_policy and company.protection_data_policy and company.cookies_policy %}
+                            Acepto la
+                            <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
+                            y <a target="_blank" href="{{company.cookies_policy}}">Cookies.</a>
+                            {% endif %}
+                            {% if not company.privacy_policy and not company.protection_data_policy and company.cookies_policy %}
+                            Acepto las
+                            <a target="_blank" href="{{company.cookies_policy}}">Cookies.</a>
+                            {% endif %}
+                        </label>
+				    </div>
+                {% endif %}
+                {% if company.terms_and_conditions %}
+                    <div class="g8Checkbox">
+                        <input id="check2" type="checkbox" checked class="validate[required]" name="checkbox2" value="checkbox2">
+                        <label for="check2">Acepto los <a href="{{company.terms_and_conditions}}">Términos y Condiciones.</a></a></label>
+                    </div>
+                {% endif %}
 				<button class="g8SumitRegistro save-register">Enviar</button>
                 <h4>Ya tengo una cuenta <a href="#" id="openIniciaSesion">Inicial sesión</a></h4>
 			</div>
