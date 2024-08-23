@@ -203,6 +203,9 @@ class Exhibitor(BaseModel):
     image = models.ImageField(
         _('Imagen'), upload_to=get_upload_path('exhibitors'), blank=True,
         null=True)
+    flag_image = models.ImageField(
+        _('Bandera Imagen'), upload_to=get_upload_path('flags'), blank=True,
+        null=True)
     link = models.CharField(
         _('Enlace'), blank=True, max_length=500)
     organization = models.CharField(
