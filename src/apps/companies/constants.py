@@ -9,3 +9,13 @@ class AccessType(Enum):
     @classmethod
     def choices(cls):
         return [(choice.name, choice.value) for choice in cls]
+
+
+class EmailType(Enum):
+    REGISTER = 'Registro completado'
+    PASSWORD = 'Recuperar/Reestablecer contraseña'
+    SCHEDULE = 'Confirmación de agenda'
+
+    @classmethod
+    def choices(cls):
+        return [(choice.name, choice.value) for choice in cls]

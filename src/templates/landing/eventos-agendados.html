@@ -1,0 +1,155 @@
+{% extends "landing/common/_base.html" %}
+
+{% block cssadicional %}
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b20">
+    <div class="grilla">
+        <a href="#" onclick="history.back()" class="gReturn">Regresar</a>
+        <div class="b20Top f aic jcsb fdc-480">
+            {% comment %} <h1 class="gTitle">Mi calendario | Mayo</h1>
+            <div class="b4Select">
+                <a href="#" class="b4ClickSelect"><span>Mes</span><span class="name">Mayo</span></a>
+                <div class="b4ListOptions">
+                    <a href="#" class="b4OptionSelect">Enero</a>
+                    <a href="#" class="b4OptionSelect">Febrero</a>
+                    <a href="#" class="b4OptionSelect">Marzo</a>
+                    <a href="#" class="b4OptionSelect">Abril</a>
+                    <a href="#" class="b4OptionSelect">Mayo</a>
+                    <a href="#" class="b4OptionSelect">Junio</a>
+                    <a href="#" class="b4OptionSelect">Julio</a>
+                </div>
+           </div> {% endcomment %}
+        </div>
+        <div class="b20Wrap">
+            {% for schedule in schedules %}
+            <div class="b4Item f aic jcsb ">
+                <div class="b4ItemLeft f aifs jcfs">
+                    {% if schedule.image %}
+                        <div class="b4Img pr">
+                            <picture class="imgCover">
+                                <source srcset="{{schedule.image.url}}" media="(max-width: 767px)">
+                                <source srcset="{{schedule.image.url}}" media="(max-width: 768px)">
+                                <img src="{{schedule.image.url}}" width="1920" height="713"  alt="Myimage">
+                            </picture>
+                        </div>
+                    {% else %}
+                    {% endif %}
+                    <div class="b4Info">
+                        {% if logged_user %}
+                            {% if schedule.get_current_status == 'is_live' %}
+                                <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+                            {% endif %}
+                            {% if schedule.get_current_status == 'past' and schedule.video_url %}
+                                <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
+                            {% endif %}
+                        {% endif %}
+                        {% if company.use_rooms %}
+                            <p class="sala"><img src="/static/web/img/sala.svg" alt="" width="13">{{schedule.room.name}}</p>
+                        {% endif %}
+                        {% if company.use_dates %}
+                            <p class="fecha"><img src="/static/web/img/icon-calendar.svg" alt="" width="13">{{schedule.get_date}}</p>
+                        {% endif %}
+                        <p class="hora"><img src="/static/web/img/icon-hour.svg" alt="" width="13"> {{schedule.start_time}} - {{schedule.end_time}}</p>
+                        <h4>{{schedule.name}}</h4>
+                        <div class="gParrafo">
+                            <p>{{schedule.description}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="b4ItemRight">
+                    <ul class="b4PersonsExpoList">
+                        {% for exhibitor in schedule.get_exhibitors %}
+                            <li class="">
+                                <a href="" class="b4OpenPopupPerson"
+                                    data-name="{{exhibitor.name}}"
+                                    data-cargo="{{exhibitor.title}}"
+                                    data-info="{{exhibitor.description}}"
+                                    data-url="{{exhibitor.link}}"
+                                    data-img="{{exhibitor.image.url}}"
+                                    {% if exhibitor.flag_image %}
+                                    data-bandera="{{exhibitor.flag_image.url}}"
+                                    {% else %}
+                                    data-bandera=""
+                                    {% endif %}
+                                    >
+                                    <h6><img src="/static/web/img/expositor.png" alt="" width="16">
+                                        {{exhibitor.name_on_list}}</h6>
+                                    {% comment %} <span> - {{exhibitor.organization}}</span> {% endcomment %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<div class="b4Popup">
+    <a href="#" class="b4ClosePopup icon-close"></a>
+    <div class="b4PopupImage">
+        <figure class="imgCover">
+            <img src="" class="b4Popupimg" width="1920" height="713"  alt="Myimage">
+        </figure>
+    </div>
+    <div class="b4InfoPopup f aic jcfs">
+        <div class="b4InfoPopupContent">
+            <div class="b4TopName">
+                <h3 class="b4PopupName gTitle"></h3>
+                <img class="b4PopupBandera" alt="">
+            </div>
+            <h4 class="b4PopupCargo"></h4>
+            <div class="gParrafo b4PopupText">
+            </div>
+            <a href="#" target="_blank" class="b4linkedin">Ver perfil en Linkedin <img src="/static/web/img/arrow.svg" alt="" width="12"></a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+    let elb4OpenPopupPerson = document.getElementsByClassName("b4OpenPopupPerson")
+    let elb4PopupName = document.getElementsByClassName("b4PopupName")[0];
+    let elb4Popupimg = document.getElementsByClassName("b4Popupimg")[0];
+    let elb4PopupCargo = document.getElementsByClassName("b4PopupCargo")[0];
+    let elb4PopupText = document.getElementsByClassName("b4PopupText")[0];
+    let elb4linkedin = document.getElementsByClassName("b4linkedin")[0];
+    let elb4Popup = document.getElementsByClassName("b4Popup")[0];
+    let elb4ClosePopup = document.getElementsByClassName("b4ClosePopup")[0];
+    let elb4PopupBandera = document.getElementsByClassName("b4PopupBandera")[0];
+    for(const b4OpenPopupPerson of elb4OpenPopupPerson){
+        b4OpenPopupPerson.addEventListener("click",function(e){
+            e.preventDefault();
+            elb4Popup.classList.add('active');
+            OVERLAY.classList.add('active');
+            OVERLAY.style.zIndex = 500
+            let getName = this.dataset.name;
+            let getCargo = this.dataset.cargo;
+            let getInfo = this.dataset.info;
+            let getUrl = this.dataset.url;
+            let getImg = this.dataset.img;
+            let getBander = this.dataset.bandera;
+            elb4PopupName.innerText = getName;
+            elb4PopupCargo.innerText = getCargo;
+            elb4Popupimg.setAttribute('src',getImg);
+            elb4PopupText.innerHTML = getInfo;
+            elb4linkedin.setAttribute("value",getUrl);
+            elb4PopupBandera.setAttribute("src",getBander);
+        });
+    }
+
+    elb4ClosePopup.addEventListener("click",function(e){
+        e.preventDefault();
+        this.parentNode.classList.remove('active')
+        OVERLAY.removeAttribute("style");
+        OVERLAY.classList.remove('active')
+    });
+</script>
+{% endblock %}

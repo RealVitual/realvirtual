@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Company, HomePage, ItemMainEvent, Header, Footer
+from .models import (
+    Company, HomePage, ItemMainEvent, Header,
+    Footer, EmailSettings, EmailTemplate)
 
 
 @admin.register(Company)
@@ -20,3 +22,5 @@ class HomeAdmin(admin.ModelAdmin):
 
 admin.site.register(Header)
 admin.site.register(Footer)
+admin.site.register(EmailSettings)
+admin.site.register(EmailTemplate)

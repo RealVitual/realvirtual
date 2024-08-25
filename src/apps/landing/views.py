@@ -5,7 +5,8 @@ from django.views.generic import CreateView, View
 from django.http import HttpResponse
 from rest_framework.views import APIView
 import requests
-from src.apps.events.models import Event, Exhibitor, Filter, Schedule, Shift
+from src.apps.events.models import (
+    Event, Exhibitor, Filter, Schedule, Shift, ScheduleCustomerEvent)
 from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
@@ -86,7 +87,8 @@ class HomeView(CreateView):
                 events_list = [event for event in events_list if event.get_date() == filtered_date] # noqa
                 schedules_query = schedules_query.filter(event__in=events_list)
             if filtered_shift:
-                schedules_query = schedules_query.filter(shift__filter_name=filtered_shift)
+                schedules_query = schedules_query.filter(
+                    shift__filter_name=filtered_shift)
                 filtered_shift = Shift.objects.get(filter_name=filtered_shift)
             for schedule in schedules_query:
                 if schedule not in schedules:
@@ -777,3 +779,105 @@ class RecoverPasswordView(CreateView):
                 request, form.non_field_errors())
         return redirect(reverse(
             'landing:recover_password'))
+
+
+class ScheduledEventsView(View):
+    template_name = "landing/eventos-agendados.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        self.user = request.user
+        return super(ScheduledEventsView, self).dispatch(
+            request, *args, **kwargs)
+
+    def get(self, request, **kwargs):
+        context = {}
+        months = {
+            "January": "Enero", "February": "Febrero",
+            "March": "Marzo", "April": "Abril",
+            "May": "Mayo", "June": "Junio", "July": "Julio",
+            "August": "Agosto", "September": "Setiembre",
+            "October": "Octubre", "November": "Noviembre",
+            "December": "Diciembre"
+        }
+        if request.company:
+            company = request.company
+            home_page = HomePage.objects.get(company=company)
+            filtered_date = None
+            query_filters = dict(request.GET)
+            filtered_categories = []
+            filtered_filters = []
+            filtered_shift = None
+            schedules = []
+            for filter, value in query_filters.items():
+                if filter == "date":
+                    filtered_date = value[0]
+                elif filter == "shift":
+                    filtered_shift = value[0]
+                else:
+                    filtered_filters.append(filter)
+                    filtered_categories.append(value[0])
+            user_schedules = ScheduleCustomerEvent.objects.filter(
+                company=request.company, user=request.user).values_list(
+                    'schedule__id', flat=True)
+            schedules_query = Schedule.objects.filter(
+                event__is_active=True,
+                event__company=company,
+                id__in=user_schedules,
+                is_active=True).order_by(
+                    'event__start_datetime', 'start_time')
+            events_list = list(dict.fromkeys(
+                [schedule.event for schedule in schedules_query]))
+            shifts = list(dict.fromkeys(
+                [schedule.shift for schedule in schedules_query]))
+            dates = [event.start_datetime for event in events_list]
+            if filtered_categories:
+                schedules_query = schedules_query.filter(
+                    categories__filter_name__in=filtered_categories).order_by(
+                        'event__start_datetime', 'start_time')
+            events_list = list(dict.fromkeys(
+                [schedule.event for schedule in schedules_query]))
+            if filtered_date:
+                events_list = [event for event in events_list if event.get_date() == filtered_date] # noqa
+                schedules_query = schedules_query.filter(event__in=events_list)
+            if filtered_shift:
+                schedules_query = schedules_query.filter(shift__filter_name=filtered_shift)
+                filtered_shift = Shift.objects.get(filter_name=filtered_shift)
+            for schedule in schedules_query:
+                if schedule not in schedules:
+                    schedules.append(schedule)
+            dates_select = []
+            for date in dates:
+                option_date = date.astimezone(pytz.timezone(
+                    settings.TIME_ZONE))
+                month = months.get(date.strftime("%B"))
+                dates_select.append(
+                    option_date.strftime("%d de {}".format(month)))
+            videos = Video.objects.filter(
+                is_active=True, company=company).order_by('position')
+            sponsors = Sponsor.objects.filter(
+                is_active=True, company=company).order_by('position')
+            filters = []
+            if company.use_filters:
+                filters = Filter.objects.filter(
+                    company=request.company, is_active=True
+                ).order_by('position')
+            context = {
+                'company': company,
+                'header': True,
+                'schedules': schedules,
+                'home_page': home_page,
+                'videos': videos,
+                'sponsors': sponsors,
+                'dates_select': dates_select,
+                'filtered_date': filtered_date if filtered_date else None,
+                'exhibitors': Exhibitor.objects.filter(
+                    company=company, is_active=True),
+                'filters': filters,
+                'filtered_categories': filtered_categories,
+                'filtered_filters': filtered_filters,
+                'shifts':  shifts,
+                'filtered_shift': filtered_shift.name if filtered_shift else None
+            }
+        return render(request, self.template_name, context)

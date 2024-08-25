@@ -5,7 +5,8 @@ from .views import (
     save_preferences_answers, AfterCreatedCredentialView, CustomerCredential,
     login_access, EventTransmissionView, CustomerTicket, SuccessSurveyView,
     SurveyView, save_survey_answers, allow_networking_user, NetworkingView,
-    save_networking_preferences, NetworkingUsersView, RecoverPasswordView)
+    save_networking_preferences, NetworkingUsersView, RecoverPasswordView,
+    ScheduledEventsView)
 
 app_name = 'landing'
 
@@ -47,4 +48,6 @@ urlpatterns = [
           name='networking'),
      path('recover-password/',
           RecoverPasswordView.as_view(), name="recover_password"),
+     path('agendados/',
+          ScheduledEventsView.as_view(), name='scheduled_events'),
 ]

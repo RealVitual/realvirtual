@@ -198,6 +198,9 @@ class Exhibitor(BaseModel):
         _('Nombre'), max_length=255, blank=True)
     title = models.CharField(
         _('Título'), max_length=255, blank=True)
+    name_on_list = models.CharField(
+        _('Nombre en lista'), max_length=100, blank=True, null=True
+    )
     description = models.TextField(
         _('Descripcion'), blank=True)
     image = models.ImageField(

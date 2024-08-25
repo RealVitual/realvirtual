@@ -571,10 +571,10 @@ if(document.getElementsByClassName("headerAnclaBlock")[0]){
 
 
 
-if (localStorage.getItem('selectedItems') && document.getElementsByClassName("headerEventos")[0]) {
-	const storedItems = JSON.parse(localStorage.getItem('selectedItems'));
-	document.getElementById('total-count').innerText = storedItems.length;
-}
+// if (localStorage.getItem('selectedItems') && document.getElementsByClassName("headerEventos")[0]) {
+// 	const storedItems = JSON.parse(localStorage.getItem('selectedItems'));
+// 	document.getElementById('total-count').innerText = storedItems.length;
+// }
 
 
 

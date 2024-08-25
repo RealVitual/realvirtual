@@ -6,6 +6,8 @@ from ckeditor.fields import RichTextField
 import os
 from .constants import AccessType
 from django.conf import settings
+from .constants import (
+    EmailType, )
 
 
 def get_upload_path(internal_folder):
@@ -278,3 +280,56 @@ class ItemMainEvent(BaseModel):
 
     def __str__(self):
         return f'item for {self.home_page}'
+
+
+class EmailSettings(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="email_settings",
+        on_delete=models.DO_NOTHING, null=True, blank=True)
+    host = models.CharField(
+        "Email Host", max_length=500, blank=True, null=True)
+    port = models.CharField(
+        "Email Port", max_length=500, default=587)
+    username = models.CharField(
+        "Username Email", max_length=500, blank=True, null=True)
+    password = models.CharField(
+        "Password Email", max_length=500, blank=True, null=True)
+    use_tls = models.BooleanField(_('Usa TLS'), default=True)
+    schedule_mail = models.BooleanField(
+        _('Enviar correo de agenda'), default=True)
+    register_mail = models.BooleanField(
+        _('Enviar correo de registro'), default=True)
+
+    class Meta:
+        verbose_name = _('Reglas de correo')
+        verbose_name_plural = _('Reglas de correo')
+
+    def __str__(self):
+        return "Reglas de correo"
+
+
+class EmailTemplate(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="email_templates",
+        on_delete=models.DO_NOTHING, null=True, blank=True)
+    email_type = models.CharField(
+        verbose_name=_('¿Para qué se usará el correo?'),
+        max_length=30, choices=EmailType.choices(),
+        default=EmailType.REGISTER)
+    name = models.CharField(
+        'Nombre', max_length=200, null=True)
+    subject = models.CharField("Asunto", max_length=128)
+    html_code = models.TextField('Código HTML', blank=True)
+    from_email = models.EmailField(
+        _('Email Emisor'), null=True, blank=True)
+    from_name = models.CharField(
+            _('Nombre Emisor'), null=True, blank=True,
+            max_length=255)
+    attach_file = models.BooleanField(_('Tiene adjunto'), default=False)
+
+    class Meta:
+        verbose_name = _('Plantilla Correo')
+        verbose_name_plural = _('Plantillas Correo')
+
+    def __str__(self):
+        return f'{self.email_type} - {self.company}'

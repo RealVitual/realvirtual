@@ -118,19 +118,23 @@
             </div>
             <div class="b4SelectWrap f aic jcfe">
                 <div class="b4Select">
-                    {% if filtered_date %}
-                        <a href="#" class="b4ClickSelect"><span>Día</span><span class="name">{{filtered_date}}</span></a>
+                    {% if dates_select|length == 1 %}
+                        <a class="b4ClickSelect"><span>Día</span><span class="name">{{dates_select.0}}</span></a>
                     {% else %}
-                        <a href="#" class="b4ClickSelect"><span>Días</span><span class="name">Todos</span></a>
-                    {% endif %}
-                    <div class="b4ListOptions">
                         {% if filtered_date %}
-                            <a href="#" class="b4OptionSelect" data-type="date" data-option="all">Todos</a>
+                            <a href="#" class="b4ClickSelect"><span>Día</span><span class="name">{{filtered_date}}</span></a>
+                        {% else %}
+                            <a href="#" class="b4ClickSelect"><span>Días</span><span class="name">Todos</span></a>
                         {% endif %}
-                        {% for date in dates_select %}
-                        <a href="" class="b4OptionSelect" data-option="{{date}}" data-type="date">{{date}}</a>
-                        {% endfor %}
-                    </div>
+                        <div class="b4ListOptions">
+                            {% if filtered_date %}
+                                <a href="#" class="b4OptionSelect" data-type="date" data-option="all">Todos</a>
+                            {% endif %}
+                            {% for date in dates_select %}
+                            <a href="" class="b4OptionSelect" data-option="{{date}}" data-type="date">{{date}}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                </div>
                 {% if company.use_shifts %}
                 <div class="b4Select">
@@ -239,8 +243,9 @@
                                             data-bandera=""
                                             {% endif %}
                                             >
-                                            <h6><img src="/static/web/img/expositor.png" alt="" width="16">{{exhibitor.name}}</h6>
-                                            <span> - {{exhibitor.organization}}</span>
+                                            <h6><img src="/static/web/img/expositor.png" alt="" width="16">
+                                                {{exhibitor.name_on_list}}</h6>
+                                            {% comment %} <span> - {{exhibitor.organization}}</span> {% endcomment %}
                                         </a>
                                     </li>
                                 {% endfor %}
@@ -502,7 +507,6 @@
         eventClickAccordion("b3ClickToggle")
     }
 
-     //bloque 4 - js
      if(document.getElementsByClassName("agregarCalendario")[0]){
             const items = document.querySelectorAll('.agregarCalendario');
             let totalCount = {{user_schedules_quantity}};
@@ -555,7 +559,6 @@
                             }
                             updateTotalCountDisplay();
                         } else {
-                            console.log(data)
                         }
                     },
                     error: function(xhr, status){
@@ -564,44 +567,53 @@
             }
 
             function updateTotalCountDisplay() {
+                if(totalCount > 0){
+                    $('.headerEventos').attr('href', "{% url 'landing:scheduled_events' %}")
+                }else{
+                    $('.headerEventos').removeAttr('href');
+                }
                 document.getElementById('total-count').textContent = totalCount;
             }
         }
 
         let elb4ClickSelect = document.getElementsByClassName("b4ClickSelect")
         for(const b4ClickSelect of elb4ClickSelect){
-            let eloptioItem = b4ClickSelect.nextElementSibling.children;
-            for(const optioItem of eloptioItem){
-                optioItem.addEventListener("click",function(e){
-                    e.preventDefault();
-                    e.stopPropagation();
-                    let getTextNameOption = this.getAttribute('data-option');
-                    let filter_type = this.getAttribute('data-type');
-                    let currentUrl = window.location.href;
-                    if(getTextNameOption == 'all'){
-                        if(!currentUrl.includes('#')){
-                            let url = new URL(currentUrl + '#agenda');
-                            url.searchParams.delete(filter_type);
-                            window.location.href = url.toString();
+            if(b4ClickSelect.nextElementSibling){
+                let eloptioItem = b4ClickSelect.nextElementSibling.children;
+                for(const optioItem of eloptioItem){
+                    optioItem.addEventListener("click",function(e){
+                        e.preventDefault();
+                        e.stopPropagation();
+                        let getTextNameOption = this.getAttribute('data-option');
+                        let filter_type = this.getAttribute('data-type');
+                        let currentUrl = window.location.href;
+                        if(getTextNameOption == 'all'){
+                            if(!currentUrl.includes('#')){
+                                let url = new URL(currentUrl + '#agenda');
+                                url.searchParams.delete(filter_type);
+                                window.location.href = url.toString();
+                            }else{
+                                let url = new URL(currentUrl);
+                                url.searchParams.delete(filter_type);
+                                window.location.href = url.toString();
+                            }
                         }else{
-                            let url = new URL(currentUrl);
-                            url.searchParams.delete(filter_type);
-                            window.location.href = url.toString();
+                            if(!currentUrl.includes('#')){
+                                let url = new URL(currentUrl + '#agenda');
+                                url.searchParams.set(filter_type, getTextNameOption);
+                                window.location.href = url.toString();
+                            }else{
+                                let url = new URL(currentUrl);
+                                url.searchParams.set(filter_type, getTextNameOption);
+                                window.location.href = url.toString();
+                            }
                         }
-                    }else{
-                        if(!currentUrl.includes('#')){
-                            let url = new URL(currentUrl + '#agenda');
-                            url.searchParams.set(filter_type, getTextNameOption);
-                            window.location.href = url.toString();
-                        }else{
-                            let url = new URL(currentUrl);
-                            url.searchParams.set(filter_type, getTextNameOption);
-                            window.location.href = url.toString();
-                        }
-                    }
-                    this.parentNode.previousElementSibling.children[1].innerText = getTextNameOption
-                    this.parentNode.parentNode.classList.remove('active')
-                });
+                        this.parentNode.previousElementSibling.children[1].innerText = getTextNameOption
+                        this.parentNode.parentNode.classList.remove('active')
+                    });
+                }
+            }
+            else{
             }
             b4ClickSelect.addEventListener('click',function(e) {
                 e.preventDefault()
@@ -621,8 +633,6 @@
             b4ItemOption.addEventListener("click",function(){
                 let filter = this.getAttribute('data-filter')
                 let category = this.getAttribute('data-category')
-                console.log(filter)
-                console.log(category)
                 let elchildrenOptions = this.parentNode.children
                 let getColorCheckRadio = this.children[0].dataset.colorActive
                 for(const childrenOptions of elchildrenOptions){
@@ -633,7 +643,6 @@
                 this.classList.add('active')
                 let currentUrl = window.location.href;
                 if (category == 'all'){
-                    console.log(category, 'ALLLLL')
                     let params = new URL(document.location.toString()).searchParams;
                     let filtered_date = params.get('date')
                     let filtered_shift = params.get('shift')
@@ -671,7 +680,6 @@
             }
         }
         eventClickAccordion("b4FilterItemClick")
-        //eventTab("b4ClickTab","b4InfoTab","click")
 
         let elb4OpenPopupPerson = document.getElementsByClassName("b4OpenPopupPerson")
         let elb4PopupName = document.getElementsByClassName("b4PopupName")[0];
@@ -710,8 +718,6 @@
             OVERLAY.classList.remove('active')
         });
 
-
-    //b5-js ***
     if(document.getElementsByClassName('b5')[0]){
         let elSwiperb5 = document.getElementsByClassName('b5Swiper')[0].dataset.initial
         const breakpoint = window.matchMedia('(max-width: 1024px)');
@@ -790,9 +796,6 @@
         }
     }
 
-
-
-     //b8-js ***
      if(document.getElementsByClassName('b8')[0]){
         let elSwiperb8 = document.getElementsByClassName('b8Swiper')[0].dataset.initial
         const breakpointb8 = window.matchMedia('(max-width: 1024px)');

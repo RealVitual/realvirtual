@@ -41,10 +41,17 @@
         </div>
         <div class="headerRight f aic jcfe">
             {% if logged_user %}
-                <a href="" class="headerEventos">
+                {% if user_schedules_quantity > 0 %}
+                    <a href="{% url 'landing:scheduled_events' %}" class="headerEventos">
+                        <img src="/static/web/img/icon-calendar.svg" alt="" width="20">
+                        <span class="countEvents" id="total-count">{{user_schedules_quantity}}</span>
+                    </a>
+                {% else %}
+                <a class="headerEventos">
                     <img src="/static/web/img/icon-calendar.svg" alt="" width="20">
                     <span class="countEvents" id="total-count">{{user_schedules_quantity}}</span>
                 </a>
+                {% endif %}
             {% endif %}
             <div class="headerOptionsSessions">
                 <div class="headerOptionLogout f aic jcfe">
@@ -81,7 +88,7 @@
     <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a>
     <h3>Iniciar Sesión</h3>
     <div class="g8Confirm fdc aifs login-warning-form" style="display:none;">
-        <div class="gParrafo login-message-warning">
+        <div class="g8Bottom gParrafo">
         </div>
         <div class="g8Bottom">
             <a class="return-login-form" href="#"><- Regresar</a>
