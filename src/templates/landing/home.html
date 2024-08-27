@@ -227,7 +227,7 @@
                                         <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a>
                                     {% endif %}
                                     {% if schedule.get_current_status == 'is_live' %}
-                                        <a href="#" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+                                        <a href="{% url 'landing:transmission'  schedule.event.slug %}" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
                                     {% endif %}
                                     {% if schedule.get_current_status == 'past' and schedule.video_url %}
                                         <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>

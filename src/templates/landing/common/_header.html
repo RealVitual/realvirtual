@@ -35,7 +35,7 @@
                     <a href="#auspiciador" class="headerAnclaBlock" style="color:{{header_section.header_text_color}};">{{header_section.sponsors_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
                 {% if logged_user and is_live %}
-                    <a href="#" class=" headerEnVivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+                    <a href="{% url 'landing:transmission' is_live.slug %}" class=" headerEnVivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
                 {% endif %}
             {% endif %}
         </div>

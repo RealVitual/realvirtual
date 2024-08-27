@@ -26,7 +26,7 @@ def main_info(request, **kwargs):
             start_date = event.start_datetime
             end_date = event.end_datetime
             if now >= start_date and end_date > now:
-                is_live = True
+                is_live = event
                 break
         user = request.user
         data = {
