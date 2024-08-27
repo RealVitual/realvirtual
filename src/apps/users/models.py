@@ -232,8 +232,8 @@ class User(BaseModel, PermissionsMixin, AbstractBaseUser):
             verbose_name=_('Ha generado credencial'), default=False
         )
     country = models.ForeignKey(
-        Country, related_name="country_users",
-        on_delete=models.DO_NOTHING, null=True, blank=True)
+        Country, related_name="country_customers",
+        on_delete=models.SET_NULL, null=True, blank=True)
     received_welcome_email = models.BooleanField(
         _("Recibió correo"), default=False)
     avoid_credential = models.BooleanField(
