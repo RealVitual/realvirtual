@@ -238,7 +238,7 @@
                 {% if company.terms_and_conditions %}
                     <div class="g8Checkbox">
                         <input id="check2" type="checkbox" checked class="validate[required]" name="checkbox2" value="checkbox2">
-                        <label for="check2">Acepto los <a href="{{company.terms_and_conditions}}">Términos y Condiciones.</a></a></label>
+                        <label for="check2">Acepto los <a href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a></a></label>
                     </div>
                 {% endif %}
 				<button class="g8SumitRegistro save-register">Enviar</button>
