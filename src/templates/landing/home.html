@@ -16,18 +16,11 @@
         </video>
     {% else %}
         <picture class="imgCover">
-            <!-- imagen mobile -->
             <source srcset="{{company.mobile_banner.url}}" media="(max-width: 767px)">
-            <!-- imagen desktop -->
             <source srcset="{{company.banner.url}}" media="(max-width: 768px)">
-            <!-- imagen desktop -->
             <img src="{{company.banner.url}}" width="1920" height="713"  alt="Myimage">
         </picture>
     {% endif %}
-    <!--
-        Tres posiciones verticales
-        Agregar la clase : top , center, bottom
-    -->
     <div class="grilla f center jcfs">
         <div class="b1Info top">
             <h2 class="scrollItem">{{home_page.first_title|default:""}}</h2>
@@ -57,6 +50,32 @@
         </div>
     </div>
 </section>
+{% if company.use_counter%}
+<section class="b22">
+    <div class="grilla">
+        <h3>{{company.counter_text}}</h3>
+        <div id="contador" data-date="{{company.set_counter_time}}">
+            <div class="elemento">
+                <span id="dias">00</span>
+                <p>DÍAS</p>
+            </div>
+            <div class="elemento">
+                <span id="horas">00</span>
+                <p>HORAS</p>
+            </div>
+            <div class="elemento">
+                <span id="minutos">00</span>
+                <p>MINUTOS</p>
+            </div>
+            <div class="elemento">
+                <span id="segundos">00</span>
+                <p>SEGUNDOS</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 {% if header_section.show_about_section %}
 <section class="b3 f aic jcsb scrollWrap anclaBlock" id="acerca">
     <div class="b3Left f aifs jcfs scrollItem">
@@ -871,6 +890,32 @@
             });
         });
     }
-
+    if(document.getElementsByClassName('b22')[0]){
+        function actualizarContador() {
+            const fechaObjetivoString = document.getElementById("contador").getAttribute("data-date");
+            const [fecha, hora] = fechaObjetivoString.split(' ');
+            const [dia, mes, año] = fecha.split('-');
+            const fechaObjetivoISO = `${año}-${mes}-${dia}T${hora}`;
+            const fechaObjetivo = new Date(fechaObjetivoISO);
+            const ahora = new Date();
+            const diferencia = fechaObjetivo - ahora;
+            if (diferencia > 0) {
+                const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+                const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+                document.getElementById("dias").innerText = dias.toString().padStart(2, "0");
+                document.getElementById("horas").innerText = horas.toString().padStart(2, "0");
+                document.getElementById("minutos").innerText = minutos.toString().padStart(2, "0");
+                document.getElementById("segundos").innerText = segundos.toString().padStart(2, "0");
+            } else {
+                document.getElementById("dias").innerText = "00";
+                document.getElementById("horas").innerText = "00";
+                document.getElementById("minutos").innerText = "00";
+                document.getElementById("segundos").innerText = "00";
+            }
+        }
+        setInterval(actualizarContador, 1000);
+    }
 </script>
 {% endblock %}

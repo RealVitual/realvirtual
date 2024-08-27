@@ -18,6 +18,12 @@ def get_upload_path(internal_folder):
 class Company(BaseModel):
     name = models.CharField(_('name'), max_length=255)
     domain = models.CharField(_('domain'), max_length=255, unique=True)
+    counter_datetime = models.DateTimeField(_('Fecha y Hora de contador'),
+                                            null=True, blank=True)
+    use_counter = models.BooleanField(_('Usa Contador'), default=False)
+    counter_text = models.CharField(
+        _('Texto contador'), max_length=255, blank=True,
+        null=True, default="Evento disponible en")
     logo = models.ImageField(
             _('Logo'), upload_to=get_upload_path("company"),
             null=True, blank=True)
@@ -79,6 +85,10 @@ class Company(BaseModel):
 
     def __str__(self):
         return self.name
+
+    def set_counter_time(self):
+        print(self.counter_datetime.strftime('%d-%m-%Y %H:%M:%S'))
+        return self.counter_datetime.strftime('%d-%m-%Y %H:%M:%S')
 
 
 class Header(TimeStampedModel):
