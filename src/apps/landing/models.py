@@ -171,6 +171,12 @@ class CredentialSettings(BaseModel):
         _('Default Avatar'),
         upload_to=get_upload_path('avatars'),
         null=True, blank=True)
+    first_text_message = models.CharField(
+        verbose_name=_('Primer mensaje Exito'),
+        max_length=255, null=True, blank=True)
+    second_text_message = models.CharField(
+        verbose_name=_('Segundo mensaje Exito'),
+        max_length=255, null=True, blank=True)
 
     html_code = models.TextField('Código HTML', blank=True)
     zoom = models.PositiveIntegerField(_('Zoom'), default=1)

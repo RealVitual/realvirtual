@@ -16,8 +16,10 @@ def get_upload_path(internal_folder):
 
 
 class Company(BaseModel):
-    name = models.CharField(_('name'), max_length=255)
-    domain = models.CharField(_('domain'), max_length=255, unique=True)
+    name = models.CharField(_('Nombre compañia'), max_length=255)
+    main_event_name = models.CharField(_('Nombre principal del evento'),
+                                       max_length=255, blank=True, null=True)
+    domain = models.CharField(_('dominio'), max_length=255, unique=True)
     counter_datetime = models.DateTimeField(_('Fecha y Hora de contador'),
                                             null=True, blank=True)
     use_counter = models.BooleanField(_('Usa Contador'), default=False)

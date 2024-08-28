@@ -45,24 +45,18 @@
                 </form>
             </div>
             <div class="b10Right scrollItem">
-                <!-- Imagen de fondo -->
                 <figure class="imgCover">
                     <img src="{{credential_settings.image_credential.url}}" width="1920" height="713"  alt="Myimage">
                 </figure>
                 <div class="b10ContentInfo">
-                    <h5>{{credential_settings.title_credential}}</h5>
-                    <!-- en data-image-default ira la imagen por defecto cuando no suben una imagen propia -->
-                    <!-- Este data se usara para validar cuando suben una imagen y quieren cancelar para asì 
-                        poder recuperar la imagen por default -->
+                    <h5>{{credential_settings.title_credential|default:""}}</h5>
                     {% if credential_settings.default_avatar %}
                         <div id="result" data-image-default="{{credential_settings.default_avatar.url}}">
-                            <!-- colocar por defecto la imagen por default -->
                             <img src="{{credential_settings.default_avatar.url}}" alt="" class="croppieImage">
                         </div>
                         <h6 class="b10NamePersonCred">Tu nombre</h6>
                     {% else %}
                         <div id="result" data-image-default="/static/web/img/credencial-imagen-default.png">
-                            <!-- colocar por defecto la imagen por default -->
                             <img src="/static/web/img/credencial-imagen-default.png" alt="" class="croppieImage">
                         </div>
                         <h6 class="b10NamePersonCred">Tu nombre</h6>
