@@ -161,7 +161,8 @@ class CredentialSettings(BaseModel):
         Company, related_name="company_credential_settings",
         on_delete=models.CASCADE, null=True)
     title_credential = models.CharField(
-        verbose_name=_('Titulo credencial'), max_length=255, null=True)
+        verbose_name=_('Titulo credencial'),
+        max_length=255, null=True, blank=True)
     image_credential = models.ImageField(
         _('Imagen Fondo'),
         upload_to=get_upload_path('credentials_backgrounds'),
@@ -183,7 +184,7 @@ class CredentialSettings(BaseModel):
         verbose_name_plural = _('Configuraciones de Credencial')
 
     def __str__(self):
-        return self.title_credential
+        return f"{self.company}"
 
 
 class Question(BaseModel):

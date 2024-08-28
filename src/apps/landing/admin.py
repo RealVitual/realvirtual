@@ -33,7 +33,7 @@ class CredentialCustomerAdmin(admin.ModelAdmin):
 
 @admin.register(CredentialSettings)
 class CredentialSettingsAdmin(admin.ModelAdmin):
-    list_display = ('title_credential', 'company')
+    list_display = ('company', )
     list_filter = ('company', )
 
 
