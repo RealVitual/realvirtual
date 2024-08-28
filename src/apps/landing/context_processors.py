@@ -6,6 +6,7 @@ from src.apps.companies.models import Footer, Header
 from django.urls import reverse
 from datetime import datetime
 import pytz
+from django.conf import settings
 
 
 def main_info(request, **kwargs):
@@ -36,7 +37,8 @@ def main_info(request, **kwargs):
             "header_section": header_section,
             "footer": footer,
             'user_schedules_quantity': 0,
-            'user_schedules': []
+            'user_schedules': [],
+            'recaptcha_site_key': settings.RECAPTCHA_SITE_KEY
         }
         if user.is_authenticated:
             if user.in_person:

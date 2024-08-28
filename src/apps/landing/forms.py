@@ -164,7 +164,7 @@ class LoginForm(forms.Form):
         try:
             user = Customer.objects.get(email=email, company=self.company)
         except Customer.DoesNotExist:
-            message = "No existe una cuenta registrada con ese email"
+            message = "Error de Credenciales"
             raise forms.ValidationError(dict(message=message))
         if not user.check_password(password):
             message = "Error de Credenciales"
@@ -198,7 +198,7 @@ class EmailPasswordForm(forms.Form):
         data = self.cleaned_data
         email = data.get("email")
         if not User.objects.filter(email=email):
-            mensaje = "No existe usuario con ese correo"
+            mensaje = "Error de Credenciales"
             raise forms.ValidationError(mensaje)
         return data
 

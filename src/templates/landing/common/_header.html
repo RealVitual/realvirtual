@@ -96,6 +96,7 @@
     </div>
     <div class="g8Form login-form">
         <form action="" method="POST">
+            <input type="hidden" id="g-recaptcha-response_login" name="g-recaptcha-response">
             {% csrf_token %}
             <div class="g8GroupInput one">
                 <div class="g8Input">
@@ -134,6 +135,7 @@
     </div>
     <div class="g8Form register-form">
         <form action="" method="POST" class="form-register">
+            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
             {% csrf_token %}
             <div class="g8GroupInput two">
                 <div class="g8Input">

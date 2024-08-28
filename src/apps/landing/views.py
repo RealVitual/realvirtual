@@ -138,33 +138,47 @@ def is_ajax(request):
 def validate_register(request):
     if request.method == 'POST' and is_ajax(request=request):
         data = request.POST.dict()
-        register_form = RegisterForm(
-            initial=dict(domain=request.META['HTTP_HOST'],
-                         company=request.company),
-            data=data,
-            prefix="register"
-            )
+        recaptcha_response = data.pop('g-recaptcha-response')
+        print(recaptcha_response)
+        recaptcha_data = {
+            'secret': settings.RECAPTCHA_SECRET_KEY,
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify',
+                          data=recaptcha_data)
+        result = r.json()
+        print(r.text)
         response_data = {}
-        if register_form.is_valid():
-            response_data['success'] = 1
-            response_data['message'] = 'OK'
-            form_object = register_form.save()
-            user = form_object.get('user', None)
-            if user:
-                login(request, user)
-                url = "generate_credential"
-                if user.in_person:
-                    company = request.company
-                    company.current_quantity += 1
-                    company.save()
-                    company.refresh_from_db()
-                    url = "select_preferences"
+        if result['success']:
+            register_form = RegisterForm(
+                initial=dict(domain=request.META['HTTP_HOST'],
+                             company=request.company),
+                data=data,
+                prefix="register"
+                )
+            if register_form.is_valid():
                 response_data['success'] = 1
-                response_data['redirect_url'] = reverse('landing:%s' % url)
+                response_data['message'] = 'OK'
+                form_object = register_form.save()
+                user = form_object.get('user', None)
+                if user:
+                    login(request, user)
+                    url = "generate_credential"
+                    if user.in_person:
+                        company = request.company
+                        company.current_quantity += 1
+                        company.save()
+                        company.refresh_from_db()
+                        url = "select_preferences"
+                    response_data['success'] = 1
+                    response_data['redirect_url'] = reverse('landing:%s' % url)
+            else:
+                response_data['success'] = 0
+                response_data['message'] = register_form.errors['message'].as_data()[0].args[0] # noqa
+                response_data['can_confirm'] = register_form.errors['can_confirm'].as_data()[0].args[0] # noqa
         else:
             response_data['success'] = 0
-            response_data['message'] = register_form.errors['message'].as_data()[0].args[0] # noqa
-            response_data['can_confirm'] = register_form.errors['can_confirm'].as_data()[0].args[0] # noqa
+            response_data['message'] = 'reCAPTCHA Inválido, Por favor inténtelo nuevamente.' # noqa
         return HttpResponse(
             json.dumps(response_data), content_type="application/json")
 
@@ -183,7 +197,6 @@ def confirm_register(request):
         response_data = {}
         if register_form.is_valid():
             form_object = register_form.save()
-            print(form_object, 'FORM OBJECT')
             user = form_object.get('user', None)
             if user:
                 login(request, user)
@@ -197,7 +210,6 @@ def confirm_register(request):
                 response_data['success'] = 1
                 response_data['redirect_url'] = reverse('landing:%s' % url)
         else:
-            print(register_form.errors, '<-- ERRORS')
             response_data['success'] = 0
             response_data['message'] = register_form.errors['message'].as_data()[0].args[0] # noqa
             response_data['can_confirm'] = register_form.errors['can_confirm'].as_data()[0].args[0] # noqa
@@ -493,32 +505,42 @@ class CustomerCredential(APIView):
 def login_access(request):
     if request.method == 'POST' and is_ajax(request=request):
         data = request.POST.dict()
-        login_form = LoginForm(
-            initial=dict(company=request.company),
-            data=data)
+        recaptcha_response = data.pop('g-recaptcha-response')
+        recaptcha_data = {
+            'secret': settings.RECAPTCHA_SECRET_KEY,
+            'response': recaptcha_response
+        }
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify',
+                          data=recaptcha_data)
+        result = r.json()
         response_data = {}
-
-        if login_form.is_valid():
-            form_object = login_form.save()
-            user = form_object.get('user', None)
-            user_access = form_object.get('user_access')
-            if user_access:
-                login(request, user)
-                if user.in_person:
-                    url = "select_preferences"
-                    if user.user_tickets.filter(company=request.company):
-                        url = "event"
-                else:
-                    url = "generate_credential"
-                    if user.credentials.filter(company=request.company):
-                        url = "event"
-            response_data['redirect_url'] = reverse('landing:%s' % url)
-            response_data['success'] = 1
-            response_data['message'] = 'Acceso exitoso'
+        if result['success']:
+            login_form = LoginForm(
+                initial=dict(company=request.company),
+                data=data)
+            if login_form.is_valid():
+                form_object = login_form.save()
+                user = form_object.get('user', None)
+                user_access = form_object.get('user_access')
+                if user_access:
+                    login(request, user)
+                    if user.in_person:
+                        url = "select_preferences"
+                        if user.user_tickets.filter(company=request.company):
+                            url = "event"
+                    else:
+                        url = "generate_credential"
+                        if user.credentials.filter(company=request.company):
+                            url = "event"
+                response_data['redirect_url'] = reverse('landing:%s' % url)
+                response_data['success'] = 1
+                response_data['message'] = 'Acceso exitoso'
+            else:
+                response_data['success'] = 0
+                response_data['message'] = login_form.errors['message'].as_data()[0].args[0] # noqa
         else:
             response_data['success'] = 0
-            response_data['message'] = login_form.errors['message'].as_data()[0].args[0]
-
+            response_data['message'] = 'reCAPTCHA Inválido, Por favor inténtelo nuevamente.' # noqa
         return HttpResponse(
             json.dumps(response_data), content_type="application/json")
 
