@@ -519,19 +519,16 @@
 {% endblock %}
 
 {% block jsfinal %}
-<script src="https://www.google.com/recaptcha/api.js"></script>
-<script src="https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}"></script>
+{% comment %} <script src="https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}"></script>
 <script src="/static/web/js/swiper/swiper-bundle.min.js"></script>
 <script>
-    setTimeout(()=>{
         grecaptcha.ready(function() {
-            grecaptcha.execute('{{recaptcha_site_key}}', {action: "/login/"}).then(function(token) {
+            grecaptcha.execute('{{recaptcha_site_key}}', {action: "/"}).then(function(token) {
               document.getElementById('g-recaptcha-response').value = token;
               document.getElementById('g-recaptcha-response_login').value = token;
             });
           });
-    },1000)
-</script>
+</script> {% endcomment %}
 <script type="text/javascript">
     if(document.getElementsByClassName("b3")[0]){
         eventGrilla("b3Left","left")

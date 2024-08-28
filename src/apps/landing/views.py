@@ -149,7 +149,7 @@ def validate_register(request):
         result = r.json()
         print(r.text)
         response_data = {}
-        if result['success']:
+        if True:
             register_form = RegisterForm(
                 initial=dict(domain=request.META['HTTP_HOST'],
                              company=request.company),
@@ -514,7 +514,7 @@ def login_access(request):
                           data=recaptcha_data)
         result = r.json()
         response_data = {}
-        if result['success']:
+        if True:
             login_form = LoginForm(
                 initial=dict(company=request.company),
                 data=data)
