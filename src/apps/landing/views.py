@@ -149,7 +149,7 @@ def validate_register(request):
         result = r.json()
         print(r.text)
         response_data = {}
-        if True:
+        if result['success']:
             register_form = RegisterForm(
                 initial=dict(domain=request.META['HTTP_HOST'],
                              company=request.company),
@@ -513,8 +513,9 @@ def login_access(request):
         r = requests.post('https://www.google.com/recaptcha/api/siteverify',
                           data=recaptcha_data)
         result = r.json()
+        print(result, 'RESULT')
         response_data = {}
-        if True:
+        if result['success']:
             login_form = LoginForm(
                 initial=dict(company=request.company),
                 data=data)
@@ -538,6 +539,7 @@ def login_access(request):
             else:
                 response_data['success'] = 0
                 response_data['message'] = login_form.errors['message'].as_data()[0].args[0] # noqa
+                print(response_data, 'RESPONSE DATA')
         else:
             response_data['success'] = 0
             response_data['message'] = 'reCAPTCHA Inválido, Por favor inténtelo nuevamente.' # noqa
