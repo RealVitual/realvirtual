@@ -59,7 +59,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(TicketSettings)
 class TicketSettingsAdmin(admin.ModelAdmin):
-    list_display = ('event_name', 'company')
+    list_display = ('company', 'event_name', )
     list_filter = ('company', )
 
 
