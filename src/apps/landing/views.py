@@ -139,7 +139,6 @@ def validate_register(request):
     if request.method == 'POST' and is_ajax(request=request):
         data = request.POST.dict()
         recaptcha_response = data.pop('g-recaptcha-response')
-        print(recaptcha_response)
         recaptcha_data = {
             'secret': settings.RECAPTCHA_SECRET_KEY,
             'response': recaptcha_response
@@ -147,9 +146,9 @@ def validate_register(request):
         r = requests.post('https://www.google.com/recaptcha/api/siteverify',
                           data=recaptcha_data)
         result = r.json()
-        print(r.text)
         response_data = {}
-        if result['success']:
+        if result['success'] or request.session.get('used_recaptcha', None):
+            request.session['used_recaptcha'] = 1
             register_form = RegisterForm(
                 initial=dict(domain=request.META['HTTP_HOST'],
                              company=request.company),
@@ -172,6 +171,7 @@ def validate_register(request):
                         url = "select_preferences"
                     response_data['success'] = 1
                     response_data['redirect_url'] = reverse('landing:%s' % url)
+                del request.session['used_recaptcha']
             else:
                 response_data['success'] = 0
                 response_data['message'] = register_form.errors['message'].as_data()[0].args[0] # noqa
@@ -513,9 +513,9 @@ def login_access(request):
         r = requests.post('https://www.google.com/recaptcha/api/siteverify',
                           data=recaptcha_data)
         result = r.json()
-        print(result, 'RESULT')
         response_data = {}
-        if result['success']:
+        if result['success'] or request.session.get('used_recaptcha', None):
+            request.session['used_recaptcha'] = 1
             login_form = LoginForm(
                 initial=dict(company=request.company),
                 data=data)
@@ -536,6 +536,7 @@ def login_access(request):
                 response_data['redirect_url'] = reverse('landing:%s' % url)
                 response_data['success'] = 1
                 response_data['message'] = 'Acceso exitoso'
+                del request.session['used_recaptcha']
             else:
                 response_data['success'] = 0
                 response_data['message'] = login_form.errors['message'].as_data()[0].args[0] # noqa

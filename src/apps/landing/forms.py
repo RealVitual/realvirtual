@@ -56,7 +56,6 @@ class RegisterForm(forms.ModelForm):
         data.pop('can_confirm', None)
         data.pop('message', None)
         print(data, 'DATA')
-        data['company'] = self.company
         data['in_person'] = self.in_person
         data['virtual'] = self.virtual
         password = data.pop('password', None)
@@ -162,7 +161,7 @@ class LoginForm(forms.Form):
         password = data.get("password")
         email = data.get("email")
         try:
-            user = Customer.objects.get(email=email, company=self.company)
+            user = Customer.objects.get(email=email)
         except Customer.DoesNotExist:
             message = "Error de Credenciales"
             raise forms.ValidationError(dict(message=message))

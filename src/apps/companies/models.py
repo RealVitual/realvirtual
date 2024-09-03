@@ -8,6 +8,8 @@ from .constants import AccessType
 from django.conf import settings
 from .constants import (
     EmailType, )
+from django.contrib.auth.hashers import make_password, check_password
+from src.apps.users.models import User
 
 
 def get_upload_path(internal_folder):
@@ -345,3 +347,23 @@ class EmailTemplate(BaseModel):
 
     def __str__(self):
         return f'{self.email_type} - {self.company}'
+
+
+class UserCompany(models.Model):
+    email = models.EmailField()
+    company = models.ForeignKey(Company, related_name="company_users",
+                                on_delete=models.CASCADE)
+    password = models.CharField(max_length=128)
+    user = models.ForeignKey(
+        User, related_name="user_companies",
+        on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        unique_together = ('company', 'email')
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+        self.save()
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)

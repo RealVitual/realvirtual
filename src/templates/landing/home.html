@@ -262,8 +262,18 @@
                                             data-bandera=""
                                             {% endif %}
                                             >
-                                            <h6><img src="/static/web/img/expositor.png" alt="" width="16">
-                                                {{exhibitor.name_on_list}}</h6>
+                                            {% if exhibitor.flag_image %}
+                                                <h6>
+                                                    <img src="{{exhibitor.flag_image.url}}" alt="" width="16">
+                                                    {{exhibitor.name_on_list}}
+                                                </h6>
+                                            {% else %}
+                                                <h6>
+                                                    <img src="/static/web/img/expositor.png" alt="" width="16">
+                                                    {{exhibitor.name_on_list}}
+                                                </h6>
+                                            {% endif %}
+
                                             {% comment %} <span> - {{exhibitor.organization}}</span> {% endcomment %}
                                         </a>
                                     </li>

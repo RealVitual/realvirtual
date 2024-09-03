@@ -13,7 +13,6 @@ from model_utils.models import TimeStampedModel
 from django.conf import settings
 from src.contrib.db.models import BaseModel
 from src.apps.conf.models import DocumentType, AgeRange, Country
-from src.apps.companies.models import Company
 
 
 def get_upload_path(internal_folder):
@@ -243,9 +242,6 @@ class User(BaseModel, PermissionsMixin, AbstractBaseUser):
         null=True, blank=True)
     virtual = models.BooleanField(_('Virtual'), default=False)
     in_person = models.BooleanField(_('In Person'), default=False)
-    company = models.ForeignKey(Company, related_name="company_users",
-                                null=True, blank=True,
-                                on_delete=models.DO_NOTHING)
     allow_networking = models.BooleanField(
         _('Allow Networking'), default=False)
 

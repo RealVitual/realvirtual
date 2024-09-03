@@ -46,6 +46,7 @@ DATABASES['default']['CONN_MAX_AGE'] = 3600
 ROOT_URLCONF = 'config.urls'
 
 WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = "config.asgi.application"
 
 # Application definition
 
@@ -62,7 +63,9 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'ckeditor',
     'storages',
-    'mptt'
+    'mptt',
+    'prettyjson',
+    'channels',
     ]
 
 LOCAL_APPS = [
@@ -186,3 +189,15 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME  # noqa 5
 AWS_S3_SECURE_URLS = True
 BUCKET_FOLDER_NAME = env.get_value('BUCKET_FOLDER_NAME', str, "")
 AWS_DEFAULT_ACL = 'public-read'
+REDIS_HOST = env.get_value('REDIS_HOST', str, "")
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(REDIS_HOST, 6379)],
+            "capacity": 2000,
+            "expiry": 10,
+        },
+    },
+}
