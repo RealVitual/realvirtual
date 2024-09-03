@@ -15,6 +15,7 @@
             <div class="b10Left scrollItem">
                 <h3 class="gTitle">{{credential_settings.first_text_message|default:""}} </h3>
                 <label for="" class="gParrafo">{{credential_settings.second_text_message|default:""}}</label>
+                <a href="#" onclick="history.back()"  class="b10Atras"><i class="icon-arrowLeft"></i>Ir atrás</a>
                 <div class="b10Links f aic jcfs">
                     <a class="b10DownloadCredencial" href="{% url 'landing:download_credential' instance.code%}">Descargar credencial <img src="/static/web/img/download.svg" alt="" width="22"></a>
                     <a href="{% url 'landing:event' %}" class="b10VerEvento">Ver evento</a>
