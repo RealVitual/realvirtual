@@ -139,6 +139,7 @@ def validate_register(request):
     if request.method == 'POST' and is_ajax(request=request):
         data = request.POST.dict()
         recaptcha_response = data.pop('g-recaptcha-response')
+        access_type = data.pop('access_type', None)
         recaptcha_data = {
             'secret': settings.RECAPTCHA_SECRET_KEY,
             'response': recaptcha_response
@@ -151,7 +152,8 @@ def validate_register(request):
             request.session['used_recaptcha'] = 1
             register_form = RegisterForm(
                 initial=dict(domain=request.META['HTTP_HOST'],
-                             company=request.company),
+                             company=request.company,
+                             access_type=access_type),
                 data=data,
                 prefix="register"
                 )
@@ -213,7 +215,6 @@ def confirm_register(request):
             response_data['success'] = 0
             response_data['message'] = register_form.errors['message'].as_data()[0].args[0] # noqa
             response_data['can_confirm'] = register_form.errors['can_confirm'].as_data()[0].args[0] # noqa
-        print(response_data, 'RESPONSE DATA')
         return HttpResponse(
             json.dumps(response_data), content_type="application/json")
 

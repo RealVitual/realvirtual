@@ -17,7 +17,7 @@ class CustomerAdmin(UA):
             'fields': ('email', 'password', 'uuid_hash')
         }),
         (_('Personal info'), {
-            'fields': ('generated_credential', 'company', 'names', 'last_name',
+            'fields': ('generated_credential', 'names', 'last_name',
                        'full_name', 'occupation', 'jon_company',
                        'company_position',
                        'age_range', 'country', 'speciality',

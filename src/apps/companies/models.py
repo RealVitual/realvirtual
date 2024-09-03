@@ -357,6 +357,9 @@ class UserCompany(models.Model):
     user = models.ForeignKey(
         User, related_name="user_companies",
         on_delete=models.SET_NULL, null=True, blank=True)
+    confirmed = models.BooleanField(
+        _('email confirmed?'),
+        default=True)
 
     class Meta:
         unique_together = ('company', 'email')

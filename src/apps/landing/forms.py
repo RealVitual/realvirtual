@@ -25,6 +25,7 @@ class RegisterForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.domain = kwargs["initial"].get("domain")
         self.company = kwargs["initial"].get("company")
+        self.access_type = kwargs["initial"].get("access_type", None)
         self.is_confirmartion = kwargs["initial"].get('is_confirmation', False)
         self.in_person = None
         self.virtual = None
@@ -86,7 +87,7 @@ class RegisterForm(forms.ModelForm):
                 message = "No estás en la base de datos de invitados"
                 return False, message, False
         elif access_type in [
-                "HYBRID", "IN_PERSON"]:
+                "HYBRID", "IN_PERSON"] and (not self.access_type or self.access_type == "in_person"):
             if self.company.current_quantity < self.company.capacity:
                 self.in_person = True
                 self.virtual = False
@@ -99,6 +100,10 @@ class RegisterForm(forms.ModelForm):
                 self.virtual = True
                 message = "Sólo Podrás acceder al evento de forma virtual. ¿Deseas continuar?" # noqa
                 return False, message, True
+        elif self.access_type == "virtual":
+            self.in_person = False
+            self.virtual = True
+            return True, message, False
         else:
             message = ""
             self.in_person = False

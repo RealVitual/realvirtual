@@ -290,7 +290,9 @@ class TicketSettings(BaseModel):
         verbose_name_plural = _('Configuraciones de Ticket')
 
     def __str__(self):
-        return self.event_name
+        if self.event_name:
+            return self.event_name
+        return self.company.name
 
 
 class SurveryQuestion(BaseModel):

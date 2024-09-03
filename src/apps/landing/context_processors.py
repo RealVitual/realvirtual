@@ -14,21 +14,25 @@ def main_info(request, **kwargs):
     user_url = ""
     company_exists = hasattr(request, 'company')
     if company_exists:
+        company = request.company
         is_live = False
         now = datetime.now().replace(microsecond=0)
         now = now.astimezone(pytz.utc)
         events = Event.objects.filter(is_active=True,
-                                      company=request.company)
+                                      company=company)
         footer, f_created = Footer.objects.get_or_create(
-            company=request.company)
+            company=company)
         header_section, h_created = Header.objects.get_or_create(
-            company=request.company)
+            company=company)
         for event in events:
             start_date = event.start_datetime
             end_date = event.end_datetime
             if now >= start_date and end_date > now:
                 is_live = event
                 break
+        choose_access_type = False
+        if company.access_type == "HYBRID" and company.capacity > company.current_quantity:
+            choose_access_type = True
         user = request.user
         data = {
             'countries': Country.objects.all(),
@@ -38,26 +42,27 @@ def main_info(request, **kwargs):
             "footer": footer,
             'user_schedules_quantity': 0,
             'user_schedules': [],
-            'recaptcha_site_key': settings.RECAPTCHA_SITE_KEY
+            'recaptcha_site_key': settings.RECAPTCHA_SITE_KEY,
+            'choose_access_type': choose_access_type
         }
         if user.is_authenticated:
             if user.in_person:
                 user_url = reverse(
                     'landing:select_preferences')
-                if user.user_tickets.filter(company=request.company):
+                if user.user_tickets.filter(company=company):
                     user_url = reverse(
                         'landing:ticket_view')
             else:
                 user_url = reverse(
                     'landing:generate_credential')
-                if user.credentials.filter(company=request.company):
+                if user.credentials.filter(company=company):
                     cred = user.credentials.filter(
-                        company=request.company).last()
+                        company=company).last()
                     user_url = reverse(
                         'landing:credential_generated',
                         kwargs=dict(uid=cred.code))
             user_schedules = ScheduleCustomerEvent.objects.filter(
-                company=request.company, user=user).values_list(
+                company=company, user=user).values_list(
                     'schedule__id', flat=True)
             data['user_url'] = user_url
             data['is_live'] = is_live

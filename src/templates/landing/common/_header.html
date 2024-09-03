@@ -137,6 +137,23 @@
         <form action="" method="POST" class="form-register">
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
             {% csrf_token %}
+            {% if choose_access_type %}
+                <div class="g8GroupInput two">
+                    <span>Tipo de Asistencia</span>
+                    <div class="g8Checkbox">
+                        <input id="pres" type="radio" checked class="validate[required]" name="access_type" value="in_person">
+                        <label for="pres">
+                            Presencial
+                        </label>
+                    </div>
+                    <div class="g8Checkbox">
+                        <input id="virt" type="radio" class="validate[required]" name="access_type" value="virtual">
+                        <label for="virt">
+                            Virtual
+                        </label>
+                    </div>
+                </div>
+            {% endif %}
             <div class="g8GroupInput two">
                 <div class="g8Input">
                     <span>Nombres *</span>
