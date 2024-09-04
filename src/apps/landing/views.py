@@ -180,6 +180,7 @@ def validate_register(request):
                 response_data['can_confirm'] = register_form.errors['can_confirm'].as_data()[0].args[0] # noqa
         else:
             response_data['success'] = 0
+            response_data['captcha_error'] = 1
             response_data['message'] = 'reCAPTCHA Inválido, Por favor inténtelo nuevamente.' # noqa
         return HttpResponse(
             json.dumps(response_data), content_type="application/json")
@@ -515,7 +516,7 @@ def login_access(request):
                           data=recaptcha_data)
         result = r.json()
         response_data = {}
-        if result['success'] or request.session.get('used_recaptcha', None):
+        if result['success']:
             request.session['used_recaptcha'] = 1
             login_form = LoginForm(
                 initial=dict(company=request.company),
@@ -544,6 +545,7 @@ def login_access(request):
                 print(response_data, 'RESPONSE DATA')
         else:
             response_data['success'] = 0
+            response_data['captcha_error'] = 1
             response_data['message'] = 'reCAPTCHA Inválido, Por favor inténtelo nuevamente.' # noqa
         return HttpResponse(
             json.dumps(response_data), content_type="application/json")

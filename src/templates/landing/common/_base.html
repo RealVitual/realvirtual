@@ -23,11 +23,23 @@
 <div class="videoPopupContent">
     <!-- mp4 - youtube - vimeo -->
 </div>
+{% if company.cookies_policy %}
+<div class="coockies" id="elCoockie">
+    <div class="grilla">
+        <div class="gParrafo">
+            <p>Utilizamos cookies para proporcionarte una mejor experiencia.  Conoce nuestra <a target="_blank" href="{{company.cookies_policy.url}}">política de cookies</a></p>
+        </div>
+        <a href="#" class="gButton " id="buttonCookie">Aceptar</a>
+    </div>
+</div>
+{% endif %}
 <body class="{% block classbody %}{% endblock %}">
     <div class="contentWrapper">
+
         {% include "landing/common/_header.html" %}
         <div class="wrapper">
-            {% block content %}{% endblock %}
+            {% block content %}
+            {% endblock %}
         </div>
         {% include "landing/common/_footer.html" %}
     </div>
@@ -48,6 +60,7 @@
                     document.getElementById('g-recaptcha-response_login').value = token;
                 });
             });
+            setInterval(function(){ grecaptcha.reset(); }, 2 * 60 * 1000 );
     </script>
     <script>
         'use strict';
@@ -89,6 +102,11 @@
                                 msg.html("<p>" + data.message + "</p>")
                                 login_warning_form.show();
                                 $('.g8SumitLogin').removeClass('isLoading')
+                                if(data.captcha_error == 1){
+                                    setTimeout(()=>{
+                                        location.reload();
+                                    }, 3000)
+                                }
                             }
                         });
                 }
@@ -168,7 +186,7 @@
                 let inputCode = e.keyCode || e.charCode;
                 if(inputCode!=8 && inputCode!=37 && inputCode!=39 && inputCode!=46){
                     var charStr = String.fromCharCode(inputCode);
-                    !getTypeValue.test(charStr) ? event.preventDefault() : console.log("correcto")	
+                    !getTypeValue.test(charStr) ? event.preventDefault() : console.log("correcto")
                 }
             })
         }
@@ -180,7 +198,7 @@
             inputBox.addEventListener('focusout',function() {
                 if(this.value === ""){
                     this.parentNode.classList.remove('active')
-                }  	
+                }
             })
         }
         if(document.getElementsByClassName('headerButtonLogin')[0] || document.getElementsByClassName('headerButtonRegistrate')[0]){
@@ -193,6 +211,19 @@
                     });
                 }
             }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const buttonCookie = document.getElementById('buttonCookie');
+                const elCoockie = document.getElementById('elCoockie');
+                if (localStorage.getItem('ocultarElemento') === 'true') {
+                    elCoockie.style.display = 'none';
+                }
+                buttonCookie.addEventListener('click', function() {
+                    elCoockie.style.display = 'none';
+                    localStorage.setItem('ocultarElemento', 'true');
+                });
+            });
+
     </script>
 </body>
 </html>

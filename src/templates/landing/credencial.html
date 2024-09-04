@@ -14,7 +14,7 @@
             <div class="b10Left scrollItem">
                 <h3 class="gTitle">Crea tu credencial</h3>
                 <label for="" class="gParrafo">Ingresa tu nombre, apellido y sube tu foto.</label>
-                <form action="" clas="g8Form" method="POST">
+                <form action="" class="g8Form" method="POST">
                     {% csrf_token %}
                     <input type="hidden" id="uploadText" name="{{form.profile_image.html_name}}">
                     <div class="g8Input b10InputText">
