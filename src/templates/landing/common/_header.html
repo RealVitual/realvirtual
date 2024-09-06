@@ -220,36 +220,36 @@
                         <label for="check1">
                             {% if company.privacy_policy and not company.protection_data_policy and not company.terms_and_conditions %}
                             He leído y acepto las
-                            <strong><a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a></strong>
+                            <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
                             {% endif %}
                             {% if company.privacy_policy and company.protection_data_policy and not company.terms_and_conditions %}
                             He leído y acepto las
-                            <strong><a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a></strong>
-                            y <strong><a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a></strong>
+                            <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            y <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
                             {% endif %}
                             {% if company.privacy_policy and not company.protection_data_policy and company.terms_and_conditions %}
                             He leído y acepto las
-                            <strong><a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a></strong>
-                            y <strong><a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a></strong>
+                            <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            y <a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a>
                             {% endif %}
                             {% if company.privacy_policy and company.protection_data_policy and company.terms_and_conditions %}
                             He leído y acepto las
-                            <strong><a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a></strong>
-                            , <strong><a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a></strong>
-                            y <strong><a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a></strong>
+                            <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            , <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
+                            y <a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a>
                             {% endif %}
                             {% if not company.privacy_policy and company.protection_data_policy and not company.terms_and_conditions %}
                             He leído y acepto la
-                            <strong><a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a></strong>
+                            <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
                             {% endif %}
                             {% if not company.privacy_policy and company.protection_data_policy and company.terms_and_conditions %}
                             He leído y acepto la
-                            <strong><a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a></strong>
-                            y <strong><a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a></strong>
+                            <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
+                            y <a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a>
                             {% endif %}
                             {% if not company.privacy_policy and not company.protection_data_policy and company.terms_and_conditions %}
                             He leído y acepto los
-                            <strong><a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a></strong>
+                            <a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a>
                             {% endif %}
                         </label>
 				    </div>
