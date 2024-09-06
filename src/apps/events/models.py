@@ -252,6 +252,10 @@ class Schedule(BaseModel):
     shift = models.ForeignKey(
         Shift, related_name="shift_schedules",
         on_delete=models.DO_NOTHING, null=True, blank=True)
+    ics_file = models.FileField(
+        'ICS File', upload_to=get_upload_path("ics_files"), null=True,
+        blank=True
+    )
 
     class Meta:
         verbose_name = _('Horario')

@@ -51,7 +51,7 @@ class EmailTemplateAdmin(admin.ModelAdmin):
     # inlines = [MailingMediaTabular]
     # actions = [test_mail_templates]
     fields = (
-        'company', 'name', 'from_email', 'from_name', 'subject',
+        'company', 'email_type', 'name', 'from_email', 'from_name', 'subject',
         'html_code', 'html_preview')
     list_display = ('name', 'subject', 'is_active', 'from_email')
     readonly_fields = (

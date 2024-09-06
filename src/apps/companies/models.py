@@ -333,6 +333,7 @@ class EmailTemplate(BaseModel):
     name = models.CharField(
         'Nombre', max_length=200, null=True)
     subject = models.CharField("Asunto", max_length=128)
+    description = models.TextField("Descripción", blank=True, null=True)
     html_code = models.TextField('Código HTML', blank=True)
     from_email = models.EmailField(
         _('Email Emisor'), null=True, blank=True)
