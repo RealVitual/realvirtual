@@ -175,6 +175,7 @@ def validate_register(request):
                     response_data['redirect_url'] = reverse('landing:%s' % url)
                 del request.session['used_recaptcha']
             else:
+                print(register_form.errors)
                 response_data['success'] = 0
                 response_data['message'] = register_form.errors['message'].as_data()[0].args[0] # noqa
                 response_data['can_confirm'] = register_form.errors['can_confirm'].as_data()[0].args[0] # noqa

@@ -5,6 +5,7 @@ from .models import CustomerInvitedLanding, CredentialCustomer
 from .utils import decode_base64_file, generate_credential
 from uuid import uuid4
 from src.apps.users.models import User
+from src.apps.companies.models import UserCompany
 
 
 class RegisterForm(forms.ModelForm):
@@ -32,7 +33,6 @@ class RegisterForm(forms.ModelForm):
         super(RegisterForm, self).__init__(*args, **kwargs)
 
     def clean(self):
-        super().clean()
         data = self.cleaned_data
         email = data.get('email')
         allow_register, message, can_confirm = self.allow_register(data)
@@ -41,17 +41,18 @@ class RegisterForm(forms.ModelForm):
                                              can_confirm=can_confirm))
         if (can_confirm and self.is_confirmartion) or allow_register:
             try:
-                Customer.objects.get(email=email)
+                UserCompany.objects.get(email=email, company=self.company)
                 message = "Ya existe una cuenta con el email ingresado."
                 raise forms.ValidationError(dict(message=message,
                                                  can_confirm=False))
-            except Customer.DoesNotExist:
-                print('customer does not exist')
+            except UserCompany.DoesNotExist:
+                print('UserCompany does not exist')
                 pass
         return data
 
     def save(self):
         data = self.cleaned_data
+        print(data, 'DATA')
         data.pop('confirm_email', None)
         data.pop('confirm_password', None)
         data.pop('can_confirm', None)
@@ -60,9 +61,23 @@ class RegisterForm(forms.ModelForm):
         data['in_person'] = self.in_person
         data['virtual'] = self.virtual
         password = data.pop('password', None)
-        customer = Customer.objects.create(**data)
+        customers = Customer.objects.filter(email=data.get('email'))
+        print(customers, 'CUSTOMERS')
+        if customers:
+            customer = customers.last()
+        else:
+            customer = Customer.objects.create(**data)
         customer.set_password(password)
         customer.save()
+        user_company = UserCompany.objects.create(
+            email=data.get('email'),
+            company=self.company,
+            user=User.objects.get(email=customer.email),
+            virtual=self.virtual,
+            in_person=self.in_person
+        )
+        user_company.set_password(password)
+        user_company.save()
         user = authenticate(username=customer.email,
                             password=password)
         return dict(user=user, message="")
@@ -166,7 +181,7 @@ class LoginForm(forms.Form):
         password = data.get("password")
         email = data.get("email")
         try:
-            user = Customer.objects.get(email=email)
+            user = UserCompany.objects.get(email=email, company=self.company)
         except Customer.DoesNotExist:
             message = "Error de Credenciales"
             raise forms.ValidationError(dict(message=message))
@@ -180,9 +195,10 @@ class LoginForm(forms.Form):
         password = data.get("password")
         email = data.get("email")
         credentials = dict(email=email, password=password)
-        # Authenticate and return user
-        user = authenticate(username=email,
-                            password=password)
+        user = User.objects.get(email=email)
+        # # Authenticate and return user
+        # user = authenticate(username=email,
+        #                     password=password)
         user_access = data.get('user_access', True)
         message = data.get('message', None)
         return dict(

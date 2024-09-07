@@ -361,9 +361,15 @@ class UserCompany(models.Model):
     confirmed = models.BooleanField(
         _('email confirmed?'),
         default=True)
+    virtual = models.BooleanField(_('Virtual'), default=False)
+    in_person = models.BooleanField(_('In Person'), default=False)
+    allow_networking = models.BooleanField(
+        _('Allow Networking'), default=False)
 
     class Meta:
         unique_together = ('company', 'email')
+        verbose_name = _('Usuario de Compañía')
+        verbose_name_plural = _('Usuarios de Compañías')
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)

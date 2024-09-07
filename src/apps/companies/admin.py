@@ -3,7 +3,8 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django import forms
 from .models import (
     Company, HomePage, ItemMainEvent, Header,
-    Footer, EmailSettings, EmailTemplate)
+    Footer, EmailSettings, EmailTemplate,
+    UserCompany)
 from prettyjson import PrettyJSONWidget
 from django.utils.safestring import mark_safe
 
@@ -27,6 +28,7 @@ class HomeAdmin(admin.ModelAdmin):
 admin.site.register(Header)
 admin.site.register(Footer)
 admin.site.register(EmailSettings)
+admin.site.register(UserCompany)
 
 
 class FixedPrettyJSONWidget(PrettyJSONWidget):
