@@ -117,9 +117,25 @@
             <img src="{{home_page.main_event_image.url}}" width="1920" height="713"  alt="Myimage">
         </picture>
         {% if home_page.main_event_video_url %}
+        <div class="b3CenterVideo">
+            {% if "youtube.com" in home_page.main_event_video_url %}
+                <iframe width="560" height="315" src="{{home_page.main_event_video_url}}"
+                        title="YouTube video player" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                </iframe>
+            {% endif %}
+
+            {% if "vimeo.com" in home_page.main_event_video_url %}
+            <iframe src="{{home_page.main_event_video_url}}"
+                    width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
+            </iframe>
+            {% endif %}
+            <!-- MP4 -->
+            {% comment %} <video width="640" height="360" autoplay muted loop>
+                <source src="video.mp4" type="video/mp4">
+            </video> {% endcomment %}
+        </div>
         <a href="#" class="clickVideo popup " data-urlvideo="{{home_page.main_event_video_url}}">
             <span style="color:{{home_page.text_buttons_color}};">Ver video</span>
-            <!-- linea circular animada administrable -->
             <div class="lineCircleAnimate" style="border:2px solid {{home_page.buttons_color}};"></div>
         </a>
         {% endif %}
@@ -291,7 +307,7 @@
         </div>
     </div>
 </section>
-
+{% endif %}
 <div class="b4Popup">
     <a href="#" class="b4ClosePopup icon-close"></a>
     <div class="b4PopupImage">
@@ -312,7 +328,6 @@
         </div>
     </div>
 </div>
-{% endif %}
 {% if header_section.show_exhibitors_section %}
     <section class="b21 scrollWrap anclaBlock" id="expositor">
         <div class="grilla">
@@ -731,41 +746,46 @@
         eventClickAccordion("b4FilterItemClick")
 
         let elb4OpenPopupPerson = document.getElementsByClassName("b4OpenPopupPerson")
-        let elb4PopupName = document.getElementsByClassName("b4PopupName")[0];
-        let elb4Popupimg = document.getElementsByClassName("b4Popupimg")[0];
-        let elb4PopupCargo = document.getElementsByClassName("b4PopupCargo")[0];
-        let elb4PopupText = document.getElementsByClassName("b4PopupText")[0];
-        let elb4linkedin = document.getElementsByClassName("b4linkedin")[0];
-        let elb4Popup = document.getElementsByClassName("b4Popup")[0];
-        let elb4ClosePopup = document.getElementsByClassName("b4ClosePopup")[0];
-        let elb4PopupBandera = document.getElementsByClassName("b4PopupBandera")[0];
-        for(const b4OpenPopupPerson of elb4OpenPopupPerson){
-            b4OpenPopupPerson.addEventListener("click",function(e){
-                e.preventDefault();
-                elb4Popup.classList.add('active');
-                OVERLAY.classList.add('active');
-                OVERLAY.style.zIndex = 500
-                let getName = this.dataset.name;
-                let getCargo = this.dataset.cargo;
-                let getInfo = this.dataset.info;
-                let getUrl = this.dataset.url;
-                let getImg = this.dataset.img;
-                let getBander = this.dataset.bandera;
-                elb4PopupName.innerText = getName;
-                elb4PopupCargo.innerText = getCargo;
-                elb4Popupimg.setAttribute('src',getImg);
-                elb4PopupText.innerHTML = getInfo;
-                elb4linkedin.setAttribute("value",getUrl);
-                elb4PopupBandera.setAttribute("src",getBander);
-            });
+        if (elb4OpenPopupPerson){
+            let elb4PopupName = document.getElementsByClassName("b4PopupName")[0];
+            let elb4Popupimg = document.getElementsByClassName("b4Popupimg")[0];
+            let elb4PopupCargo = document.getElementsByClassName("b4PopupCargo")[0];
+            let elb4PopupText = document.getElementsByClassName("b4PopupText")[0];
+            let elb4linkedin = document.getElementsByClassName("b4linkedin")[0];
+            let elb4Popup = document.getElementsByClassName("b4Popup")[0];
+            let elb4PopupBandera = document.getElementsByClassName("b4PopupBandera")[0];
+            for(const b4OpenPopupPerson of elb4OpenPopupPerson){
+                b4OpenPopupPerson.addEventListener("click",function(e){
+                    e.preventDefault();
+                    elb4Popup.classList.add('active');
+                    OVERLAY.classList.add('active');
+                    OVERLAY.style.zIndex = 500
+                    let getName = this.dataset.name;
+                    let getCargo = this.dataset.cargo;
+                    let getInfo = this.dataset.info;
+                    let getUrl = this.dataset.url;
+                    let getImg = this.dataset.img;
+                    let getBander = this.dataset.bandera;
+                    elb4PopupName.innerText = getName;
+                    elb4PopupCargo.innerText = getCargo;
+                    elb4Popupimg.setAttribute('src',getImg);
+                    elb4PopupText.innerHTML = getInfo;
+                    elb4linkedin.setAttribute("value",getUrl);
+                    elb4PopupBandera.setAttribute("src",getBander);
+                });
+            }
+            let elb4ClosePopup = document.getElementsByClassName("b4ClosePopup")[0];
+            if (elb4ClosePopup){
+                elb4ClosePopup.addEventListener("click",function(e){
+                    e.preventDefault();
+                    this.parentNode.classList.remove('active')
+                    OVERLAY.removeAttribute("style");
+                    OVERLAY.classList.remove('active')
+                });
+            }
+
         }
 
-        elb4ClosePopup.addEventListener("click",function(e){
-            e.preventDefault();
-            this.parentNode.classList.remove('active')
-            OVERLAY.removeAttribute("style");
-            OVERLAY.classList.remove('active')
-        });
 
     if(document.getElementsByClassName('b5')[0]){
         let elSwiperb5 = document.getElementsByClassName('b5Swiper')[0].dataset.initial
