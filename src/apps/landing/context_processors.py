@@ -70,7 +70,9 @@ def main_info(request, **kwargs):
             data['logged_user'] = user
             data['user_schedules'] = list(user_schedules)
             data['user_schedules_quantity'] = len(user_schedules)
-            data['company_user'] = company.company_users.filter(user=user)[0]
+            if (company.company_users.filter(user=user)):
+                data['company_user'] = company.company_users.filter(
+                    user=user)[0]
         return data
     return {
         'countries': Country.objects.all(),
