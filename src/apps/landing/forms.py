@@ -164,7 +164,7 @@ class CredentialCustomerForm(forms.ModelForm):
         user.generated_credential = True
         user.credential_code = instance.code
         user.save()
-        generate_credential(instance, full_credential_name)
+        generate_credential(instance, self.company, full_credential_name)
 
         return dict(credential=instance, message="Success")
 

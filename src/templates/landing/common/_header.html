@@ -67,11 +67,11 @@
                         <div class="headerMenuList pa t100">
                             {% if company_user.confirmed %}
                                 <ul>
-                                    {% if logged_user.in_person %}
-                                        <li><a href="{{user_url}}">Mi Ticket</a></li>
+                                    {% if company_user.in_person %}
+                                        <li><a href="{{ticket_url}}">Mi Ticket</a></li>
                                     {% endif %}
-                                    {% if logged_user.virtual or request.company.enable_credentials %}
-                                        <li><a href="{{user_url}}">Mi credencial</a></li>
+                                    {% if company_user.virtual or request.company.enable_credentials %}
+                                        <li><a href="{{credential_url}}">Mi credencial</a></li>
                                     {% endif %}
                                 </ul>
                             {% endif %}

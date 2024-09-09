@@ -57,8 +57,8 @@ def hasherStr(texto):
     return str(hex_dig)[10:35:2]
 
 
-def generate_credential(instance, full_credential_name):
-    template_object = CredentialSettings.objects.last()
+def generate_credential(instance, company, full_credential_name):
+    template_object = CredentialSettings.objects.get(company=company)
     template = Template(mark_safe(template_object.html_code))
     context = dict(customer=instance)
     html_content = template.render(Context(context))

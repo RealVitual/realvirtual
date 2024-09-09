@@ -7,6 +7,7 @@ from django.urls import reverse
 from datetime import datetime
 import pytz
 from django.conf import settings
+from src.apps.companies.models import UserCompany
 
 
 def main_info(request, **kwargs):
@@ -47,32 +48,39 @@ def main_info(request, **kwargs):
             'company': company
         }
         if user.is_authenticated:
-            if user.in_person:
-                user_url = reverse(
-                    'landing:select_preferences')
-                if user.user_tickets.filter(company=company):
-                    user_url = reverse(
-                        'landing:ticket_view')
-            else:
-                user_url = reverse(
-                    'landing:generate_credential')
-                if user.credentials.filter(company=company):
-                    cred = user.credentials.filter(
-                        company=company).last()
-                    user_url = reverse(
-                        'landing:credential_generated',
-                        kwargs=dict(uid=cred.code))
+            ticket_url = ""
+            credential_url = ""
+            company_user = None
+            if (UserCompany.objects.filter(user=user, company=company)):
+                company_user = UserCompany.objects.get(
+                    user=user, company=company)
+                print(company_user.email, 'COMPANY USER')
+                if company_user.in_person:
+                    ticket_url = reverse(
+                        'landing:select_preferences')
+                    if user.user_tickets.filter(company=company):
+                        ticket_url = reverse(
+                            'landing:ticket_view')
+                credential_url = ""
+                if company.enable_credentials:
+                    credential_url = reverse(
+                        'landing:generate_credential')
+                    if user.credentials.filter(company=company):
+                        cred = user.credentials.filter(
+                            company=company).last()
+                        credential_url = reverse(
+                            'landing:credential_generated',
+                            kwargs=dict(uid=cred.code))
             user_schedules = ScheduleCustomerEvent.objects.filter(
                 company=company, user=user).values_list(
                     'schedule__id', flat=True)
-            data['user_url'] = user_url
+            data['ticket_url'] = ticket_url
+            data['credential_url'] = credential_url
             data['is_live'] = is_live
             data['logged_user'] = user
             data['user_schedules'] = list(user_schedules)
             data['user_schedules_quantity'] = len(user_schedules)
-            if (company.company_users.filter(user=user)):
-                data['company_user'] = company.company_users.filter(
-                    user=user)[0]
+            data['company_user'] = company_user
         return data
     return {
         'countries': Country.objects.all(),
