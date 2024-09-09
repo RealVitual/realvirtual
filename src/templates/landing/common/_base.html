@@ -52,6 +52,7 @@
     <!-- JSADD START -->
     {% block jsfinal %}{% endblock %}
     <!-- JSADD END -->
+    {% if not logged_user %}
     <script src="https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}"></script>
     <script>
             grecaptcha.ready(function() {
@@ -62,6 +63,8 @@
             });
             setInterval(function(){ grecaptcha.reset(); }, 2 * 60 * 1000 );
     </script>
+    {% endif %}
+
     <script>
         'use strict';
         var register_data = "";

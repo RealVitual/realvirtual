@@ -553,11 +553,11 @@ def login_access(request):
                 user_access = form_object.get('user_access')
                 if user_access:
                     login(request, user)
-                    if user.in_person:
+                    if user.in_person and request.company.enable_preferences:
                         url = "select_preferences"
                         if user.user_tickets.filter(company=request.company):
                             url = "event"
-                    else:
+                    if user.virtual and request.company.enable_credentials:
                         url = "generate_credential"
                         if user.credentials.filter(company=request.company):
                             url = "event"

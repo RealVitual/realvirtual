@@ -238,9 +238,9 @@
                             {% else %}
                             {% endif %}
                             <div class="b4Info">
-                                {% if logged_user %}
+                                {% if logged_user and company_user.confirmed%}
                                     {% if schedule.get_current_status == 'upcoming' %}
-                                        <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a>
+                                        {% comment %} <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a> {% endcomment %}
                                     {% endif %}
                                     {% if schedule.get_current_status == 'is_live' %}
                                         <a href="{% url 'landing:transmission'  schedule.event.slug %}" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
@@ -544,9 +544,8 @@
 {% endblock %}
 
 {% block jsfinal %}
+{% if not logged_user %}
 <script src="https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}"></script>
-
-<script src="/static/web/js/swiper/swiper-bundle.min.js"></script>
 <script>
         grecaptcha.ready(function() {
             grecaptcha.execute('{{recaptcha_site_key}}', {action: "/"}).then(function(token) {
@@ -554,7 +553,9 @@
                 document.getElementById('g-recaptcha-response_login').value = token;
             });
         });
+        setInterval(function(){ grecaptcha.reset(); }, 2 * 60 * 1000 );
 </script>
+{% endif %}
 <script>
     function onClick(e) {
       e.preventDefault();
