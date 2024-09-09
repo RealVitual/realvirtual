@@ -69,12 +69,16 @@ class RegisterForm(forms.ModelForm):
             customer = Customer.objects.create(**data)
         customer.set_password(password)
         customer.save()
+        confirmed = True
+        if self.company.confirm_user:
+            confirmed = False
         user_company = UserCompany.objects.create(
             email=data.get('email'),
             company=self.company,
             user=User.objects.get(email=customer.email),
             virtual=self.virtual,
-            in_person=self.in_person
+            in_person=self.in_person,
+            confirmed=confirmed
         )
         user_company.set_password(password)
         user_company.save()

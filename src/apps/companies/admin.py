@@ -25,10 +25,16 @@ class HomeAdmin(admin.ModelAdmin):
     inlines = [ItemMainEventTabular]
 
 
+@admin.register(UserCompany)
+class UserCompanyAdmin(admin.ModelAdmin):
+    list_display = ('email', 'company')
+    list_filter = ('company', )
+    search_fields = ('email', 'company')
+
+
 admin.site.register(Header)
 admin.site.register(Footer)
 admin.site.register(EmailSettings)
-admin.site.register(UserCompany)
 
 
 class FixedPrettyJSONWidget(PrettyJSONWidget):
