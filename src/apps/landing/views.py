@@ -5,6 +5,7 @@ from django.views.generic import CreateView, View
 from django.http import HttpResponse
 from rest_framework.views import APIView
 import requests
+from src.apps.companies.models import UserCompany
 from src.apps.events.models import (
     Event, Exhibitor, Filter, Schedule, Shift, ScheduleCustomerEvent)
 from .models import (
@@ -171,6 +172,12 @@ def validate_register(request):
                         company.save()
                         company.refresh_from_db()
                         url = "select_preferences"
+                        if not request.company.enable_preferences:
+                            generate_ticket_code(user, request.company)
+                            record_to_pdf(
+                                user, domain=request.build_absolute_uri('/')[:-1], # noqa
+                                company=request.company)
+                            url = "ticket_view"
                     response_data['success'] = 1
                     response_data['redirect_url'] = reverse('landing:%s' % url)
                 del request.session['used_recaptcha']
@@ -226,9 +233,11 @@ class EventsView(CreateView):
     form_class = RegisterForm
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect(reverse('landing:home'))
+        company = self.request.company
         self.user = request.user
+        user_company = UserCompany.objects.get(company=company, user=self.user)
+        if not request.user.is_authenticated or not user_company.confirmed:
+            return redirect(reverse('landing:home'))
         return super(EventsView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self, **kwargs):
@@ -334,9 +343,11 @@ class SelectPreferencesView(View):
     template_name = "landing/ayudanos.html"
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect(reverse('landing:home'))
+        company = self.request.company
         self.user = request.user
+        user_company = UserCompany.objects.get(company=company, user=self.user)
+        if not request.user.is_authenticated or not user_company.confirmed:
+            return redirect(reverse('landing:home'))
         return super(SelectPreferencesView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, **kwargs):
@@ -389,9 +400,11 @@ class TicketView(View):
     user = None
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect(reverse('landing:home'))
+        company = self.request.company
         self.user = request.user
+        user_company = UserCompany.objects.get(company=company, user=self.user)
+        if not request.user.is_authenticated or not user_company.confirmed:
+            return redirect(reverse('landing:home'))
         return super(TicketView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, **kwargs):
@@ -426,8 +439,10 @@ class GenerateCredentialView(CreateView):
     slug = None
 
     def dispatch(self, request, *args, **kwargs):
+        company = self.request.company
         self.user = request.user
-        if not self.user.is_authenticated:
+        user_company = UserCompany.objects.get(company=company, user=self.user)
+        if not request.user.is_authenticated or not user_company.confirmed:
             return redirect(reverse('landing:home'))
         if not request.company.enable_credentials:
             return redirect(reverse('landing:event'))
@@ -473,6 +488,16 @@ class GenerateCredentialView(CreateView):
 
 class AfterCreatedCredentialView(View):
     template_name = "landing/credencial-generada.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        company = self.request.company
+        self.user = request.user
+        user_company = UserCompany.objects.get(company=company, user=self.user)
+        if not request.user.is_authenticated or not user_company.confirmed:
+            return redirect(reverse('landing:home'))
+        if not request.company.enable_credentials:
+            return redirect(reverse('landing:event'))
+        return super(AfterCreatedCredentialView, self).dispatch(request, *args, **kwargs) # noqa
 
     def get(self, request, **kwargs):
         code = self.kwargs['uid']
@@ -556,9 +581,11 @@ class EventTransmissionView(View):
     template_name = "landing/chat.html"
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect(reverse('landing:home'))
+        company = self.request.company
         self.user = request.user
+        user_company = UserCompany.objects.get(company=company, user=self.user)
+        if not request.user.is_authenticated or not user_company.confirmed:
+            return redirect(reverse('landing:home'))
         return super(EventTransmissionView, self).dispatch(request, *args, **kwargs) # noqa
 
     def get(self, request, **kwargs):
@@ -624,9 +651,11 @@ class SurveyView(View):
     template_name = "landing/encuesta.html"
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect(reverse('landing:home'))
+        company = self.request.company
         self.user = request.user
+        user_company = UserCompany.objects.get(company=company, user=self.user)
+        if not request.user.is_authenticated or not user_company.confirmed:
+            return redirect(reverse('landing:home'))
         return super(SurveyView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, **kwargs):
@@ -678,9 +707,11 @@ class NetworkingView(View):
     template_name = "landing/networking.html"
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect(reverse('landing:home'))
+        company = self.request.company
         self.user = request.user
+        user_company = UserCompany.objects.get(company=company, user=self.user)
+        if not request.user.is_authenticated or not user_company.confirmed:
+            return redirect(reverse('landing:home'))
         return super(NetworkingView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, **kwargs):
@@ -689,7 +720,6 @@ class NetworkingView(View):
         preferences = UserNetworkingPreference.objects.filter(
             user=request.user, company=request.company
         ).values_list('networking_option__id', flat=True)
-        print(preferences, 'PREFERENCES')
         home_page = HomePage.objects.get(company=request.company)
         context = {
             "options": options,
@@ -746,9 +776,11 @@ class NetworkingUsersView(View):
     template_name = "landing/networking-si-continuar.html"
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect(reverse('landing:home'))
+        company = self.request.company
         self.user = request.user
+        user_company = UserCompany.objects.get(company=company, user=self.user)
+        if not request.user.is_authenticated or not user_company.confirmed:
+            return redirect(reverse('landing:home'))
         return super(NetworkingUsersView, self).dispatch(
             request, *args, **kwargs)
 
@@ -814,9 +846,11 @@ class ScheduledEventsView(View):
     template_name = "landing/eventos-agendados.html"
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect(reverse('landing:home'))
+        company = self.request.company
         self.user = request.user
+        user_company = UserCompany.objects.get(company=company, user=self.user)
+        if not request.user.is_authenticated or not user_company.confirmed:
+            return redirect(reverse('landing:home'))
         return super(ScheduledEventsView, self).dispatch(
             request, *args, **kwargs)
 

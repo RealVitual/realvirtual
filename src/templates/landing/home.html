@@ -238,9 +238,9 @@
                             {% else %}
                             {% endif %}
                             <div class="b4Info">
-                                {% if logged_user %}
+                                {% if logged_user and company_user.confirmed%}
                                     {% if schedule.get_current_status == 'upcoming' %}
-                                        <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a>
+                                        {% comment %} <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a> {% endcomment %}
                                     {% endif %}
                                     {% if schedule.get_current_status == 'is_live' %}
                                         <a href="{% url 'landing:transmission'  schedule.event.slug %}" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>

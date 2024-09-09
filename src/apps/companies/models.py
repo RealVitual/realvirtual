@@ -51,8 +51,11 @@ class Company(BaseModel):
     use_rooms = models.BooleanField(_('Usa salas en lista'), default=False)
     use_shifts = models.BooleanField(_('Usa turnos'), default=False)
     use_dates = models.BooleanField(_('Usa fecha en lista'), default=False)
+    confirm_user = models.BooleanField(_('Confirmar Usuarios'), default=False)
     enable_credentials = models.BooleanField(_('Habilitar credenciales'),
                                              default=False)
+    enable_preferences = models.BooleanField(_(
+        'Habilitar selección de preferencias'), default=False)
     privacy_policy = models.FileField(
             _('Políticas de privacidad'),
             upload_to=get_upload_path('documents'),

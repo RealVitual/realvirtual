@@ -45,9 +45,6 @@ DATABASES['default']['CONN_MAX_AGE'] = 3600
 
 ROOT_URLCONF = 'config.urls'
 
-WSGI_APPLICATION = 'config.wsgi.application'
-ASGI_APPLICATION = "config.asgi.application"
-
 # Application definition
 
 DJANGO_APPS = [
@@ -61,11 +58,11 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'channels',
     'ckeditor',
     'storages',
     'mptt',
     'prettyjson',
-    'channels',
     ]
 
 LOCAL_APPS = [
@@ -75,10 +72,14 @@ LOCAL_APPS = [
     'src.apps.companies',
     'src.apps.landing',
     'src.apps.events',
-    'src.apps.tickets'
+    'src.apps.tickets',
+    'src.apps.chat'
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
+
+WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = "config.asgi.application"
 
 MIDDLEWARE = [
     'src.apps.core.middleware.MySubdomainMiddleware',
@@ -189,7 +190,7 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME  # noqa 5
 AWS_S3_SECURE_URLS = True
 BUCKET_FOLDER_NAME = env.get_value('BUCKET_FOLDER_NAME', str, "")
 AWS_DEFAULT_ACL = 'public-read'
-REDIS_HOST = env.get_value('REDIS_HOST', str, "")
+REDIS_HOST = env.get_value('REDIS_HOST', str, [])
 
 CHANNEL_LAYERS = {
     'default': {

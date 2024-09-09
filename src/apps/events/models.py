@@ -162,7 +162,7 @@ class Event(BaseModel):
         verbose_name_plural = _("Events")
 
     def __str__(self):
-        return f'home for {self.company}'
+        return f'{self.name}'
 
     def save(self, *args, **kwargs):
         if not self.slug:

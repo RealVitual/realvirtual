@@ -43,7 +43,8 @@ def main_info(request, **kwargs):
             'user_schedules_quantity': 0,
             'user_schedules': [],
             'recaptcha_site_key': settings.RECAPTCHA_SITE_KEY,
-            'choose_access_type': choose_access_type
+            'choose_access_type': choose_access_type,
+            'company': company
         }
         if user.is_authenticated:
             if user.in_person:
@@ -69,6 +70,7 @@ def main_info(request, **kwargs):
             data['logged_user'] = user
             data['user_schedules'] = list(user_schedules)
             data['user_schedules_quantity'] = len(user_schedules)
+            data['company_user'] = company.company_users.filter(user=user)[0]
         return data
     return {
         'countries': Country.objects.all(),

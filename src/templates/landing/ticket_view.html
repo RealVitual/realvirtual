@@ -50,6 +50,9 @@
                 </div>
                 <div class="b15Buttons">
                     <a href="{% url 'landing:download_customer_ticket' %}" class="gButton">Descargar E-Ticket</a>
+                    {% if company.enable_credentials %}
+                    <a href="{% url 'landing:generate_credential' %}" class="gButton">Genera tu Credencial</a>
+                    {% endif %}
                     <a href="{% url 'landing:event' %}" class="link">Ver evento</a>
                 </div>
             </div>

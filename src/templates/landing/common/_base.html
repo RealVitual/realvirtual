@@ -132,6 +132,11 @@
                             type : "post",
                             data: register_data,
                         }).done(function(data) {
+                            if(data.captcha_error == 1){
+                                setTimeout(()=>{
+                                    location.reload();
+                                }, 3000)
+                            }
                             if(data.success){
                                 $('.parrafo-register').show();
                                 $('.warning-form').hide();

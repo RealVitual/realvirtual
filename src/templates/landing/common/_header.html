@@ -40,7 +40,7 @@
             {% endif %}
         </div>
         <div class="headerRight f aic jcfe">
-            {% if logged_user %}
+            {% if logged_user and company_user.confirmed %}
                 {% if user_schedules_quantity > 0 %}
                     <a href="{% url 'landing:scheduled_events' %}" class="headerEventos">
                         <img src="/static/web/img/icon-calendar.svg" alt="" width="20">
@@ -65,15 +65,16 @@
                     <div class="headerMenu pr f aic jcc" style="display: flex;">
                         <a class="headerIconMenu icon-menu"></a>
                         <div class="headerMenuList pa t100">
-                            <ul>
-                                {% if logged_user.in_person %}
-                                    <li><a href="{{user_url}}">Mi Ticket</a></li>
-                                {% else %}
-                                    {% if request.company.enable_credentials %}
+                            {% if company_user.confirmed %}
+                                <ul>
+                                    {% if logged_user.in_person %}
+                                        <li><a href="{{user_url}}">Mi Ticket</a></li>
+                                    {% endif %}
+                                    {% if logged_user.virtual or request.company.enable_credentials %}
                                         <li><a href="{{user_url}}">Mi credencial</a></li>
                                     {% endif %}
-                                {% endif %}
-                            </ul>
+                                </ul>
+                            {% endif %}
                             <a href="{% url 'landing:logout' %}" class="logout">Cerrar Sesión</a>
                         </div>
                     </div>
@@ -141,7 +142,7 @@
                 <div class="g8GroupChecbox g8GroupInput two" style="">
                     <span>Tipo de Asistencia: </span>
                     <div class="g8Checkbox">
-                        <input id="pres" type="radio" checked="" class="validate[required]" name="access_type" value="in_person">
+                        <input id="pres" type="radio" class="validate[required]" name="access_type" value="in_person">
                         <label for="pres">
                             Presencial
                         </label>

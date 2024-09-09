@@ -16,7 +16,7 @@
                 <h2>{{event.subtitle}}</h2>
             </div>
             <div class="b14TopRight">
-                <h3><img src="{{STATIC_URL}}img/calendar-chat.svg" alt="" width="20">{{start_date}}</h3>
+                <h3><img src="/static/web/img/calendar-chat.svg" alt="" width="20">{{start_date}}</h3>
                 <h3>{{start_time}} a {{end_time}}</h3>
             </div>
         </div>
@@ -26,11 +26,11 @@
                 <!-- OPCIÒN CAMPO IMAGEN -->
                 <picture class="imgCover">
                     <!-- imagen mobile -->
-                    <source srcset="{{STATIC_URL}}img/img-banner-chat.png" media="(max-width: 767px)">
+                    <source srcset="/static/web/img/img-banner-chat.png" media="(max-width: 767px)">
                     <!-- imagen desktop -->
-                    <source srcset="{{STATIC_URL}}img/img-banner-chat.png" media="(max-width: 768px)">
+                    <source srcset="/static/web/img/img-banner-chat.png" media="(max-width: 768px)">
                     <!-- imagen desktop -->
-                    <img src="{{STATIC_URL}}img/img-banner-chat.png" width="1920" height="713"  alt="Myimage">
+                    <img src="/static/web/img/img-banner-chat.png" width="1920" height="713"  alt="Myimage">
                 </picture>
                 <!-- OPCIÒN CAMPO VIDEO -->
                 <iframe src="{{event.video_url}}" frameborder="0"></iframe>
@@ -55,7 +55,7 @@
                     </div>
                     <form action="">
                         <textarea name="" id="boxMessage" placeholder="Escribir"></textarea>
-                        <button id="sendMessage"><img src="{{STATIC_URL}}img/icon-arrow-button.svg" alt="" width="24"></button>
+                        <button id="sendMessage"><img src="/static/web/img/icon-arrow-button.svg" alt="" width="24"></button>
                     </form>
                 </div>
             </div>
@@ -66,7 +66,16 @@
 {% endblock %}
 
 {% block jsfinal %}
+<script src="/static/chat/reconnecting-websocket.js"></script>
 <script type="text/javascript">
+
+    var roomId = "chat1";
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var roomName = "chat1";
+
+    var chatSocket = new ReconnectingWebSocket(
+        ws_scheme + '://' + "localhost:9500" +
+        '/ws/chat/' + roomName + '/');
 
     var video = document.getElementById("videoTransmision");
     document.addEventListener('touchstart', function() {

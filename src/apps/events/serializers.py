@@ -6,6 +6,7 @@ from django.template import Context, Template
 from django.core.mail import EmailMessage
 import threading
 from django.conf import settings
+from django.core.mail import get_connection
 
 
 def send_html_mail(subject, html_content, e_mail, receptors,
@@ -28,24 +29,46 @@ class EmailThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        msg = EmailMessage(
-            self.subject, self.html_content, self.e_mail, self.receptors)
         rules_email, created = EmailSettings.objects.get_or_create(
             company=self.company)
-        msg.content_subtype = "html"
+        print(rules_email.username, 'rules_email.username')
+        print(rules_email.host, 'rules_email.host')
+        # connection = get_connection(
+        #     host=rules_email.host,
+        #     port=rules_email.port,
+        #     username=rules_email.username,
+        #     password=rules_email.password,
+        #     use_tls=rules_email.use_tls
+        # )
+        # connection.open()
+        # msg = EmailMessage(
+        #     self.subject, self.html_content, self.e_mail, self.receptors,
+        #     connection)
+        # msg.content_subtype = "html"
+
         if self.a_file:
+            print(self.a_file, 'A FILE')
+            # msg = EmailMessage(
+            #     subject=self.subject,
+            #     body=self.html_content,
+            #     from_email=rules_email.username,
+            #     to=self.receptors,
+            #     connection=connection)
             msg = EmailMessage(
-                self.subject, self.html_content, rules_email.username,
-                self.receptors)
+                subject=self.subject,
+                body=self.html_content,
+                from_email=rules_email.username,
+                to=self.receptors)
             msg.content_subtype = "html"
             msg.attach(self.a_file[1], self.a_file[0], self.a_file[2])
-        settings.EMAIL_HOST = rules_email.host
-        settings.EMAIL_PORT = rules_email.port
-        settings.EMAIL_HOST_USER = rules_email.username
-        settings.EMAIL_HOST_PASSWORD = rules_email.password
-        settings.EMAIL_USE_TLS = rules_email.use_tls
+            msg.send()
+        # settings.EMAIL_HOST = rules_email.host
+        # settings.EMAIL_PORT = rules_email.port
+        # settings.EMAIL_HOST_USER = rules_email.username
+        # settings.EMAIL_HOST_PASSWORD = rules_email.password
+        # settings.EMAIL_USE_TLS = rules_email.use_tls
 
-        msg.send()
+        # connection.close()
         print('SE ENVIÓ CORREO EXITOSAMENTE PARA ==>' + self.receptors[0])
         # if "Regi" in self.subject:
         #     User.objects.filter(email=self.receptors[0]).update(
