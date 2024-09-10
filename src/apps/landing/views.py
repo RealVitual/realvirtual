@@ -386,13 +386,13 @@ def save_preferences_answers(request):
             json.dumps(response_data), content_type="application/json")
 
 
-# class TicketView(View):
-#     template_name = "landing/ticket.html"
+class TicketViewPDF(View):
+    template_name = "landing/ticket.html"
 
-#     def get(self, request, **kwargs):
-#         context = {
-#         }
-#         return render(request, self.template_name, context)
+    def get(self, request, **kwargs):
+        context = {
+        }
+        return render(request, self.template_name, context)
 
 
 class TicketView(View):

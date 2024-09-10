@@ -6,7 +6,7 @@ from .views import (
     login_access, EventTransmissionView, CustomerTicket, SuccessSurveyView,
     SurveyView, save_survey_answers, allow_networking_user, NetworkingView,
     save_networking_preferences, NetworkingUsersView, RecoverPasswordView,
-    ScheduledEventsView)
+    ScheduledEventsView, TicketViewPDF)
 
 app_name = 'landing'
 
@@ -50,4 +50,6 @@ urlpatterns = [
           RecoverPasswordView.as_view(), name="recover_password"),
      path('agendados/',
           ScheduledEventsView.as_view(), name='scheduled_events'),
+     # path('ticket-pdf/',
+     #      TicketViewPDF.as_view(), name='ticket_view_pdf'),
 ]
