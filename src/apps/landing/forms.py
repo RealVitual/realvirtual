@@ -6,6 +6,52 @@ from .utils import decode_base64_file, generate_credential
 from uuid import uuid4
 from src.apps.users.models import User
 from src.apps.companies.models import UserCompany
+from src.apps.companies.models import EmailTemplate, EmailSettings
+from django.template import Context, Template
+import threading
+from django.core.mail import EmailMessage
+from django.core.mail import get_connection
+
+
+def send_html_mail(subject, html_content, e_mail, receptors,
+                   customer, company):
+    EmailThread(
+        subject, html_content, e_mail, receptors,
+        customer, company).start()
+
+
+class EmailThread(threading.Thread):
+    def __init__(self, subject, html_content,
+                 e_mail, receptors, customer, company):
+        self.subject = subject
+        self.e_mail = e_mail
+        self.html_content = html_content
+        self.receptors = receptors
+        self.customer = customer
+        self.company = company
+        threading.Thread.__init__(self)
+
+    def run(self):
+        rules_email, created = EmailSettings.objects.get_or_create(
+            company=self.company)
+        connection = get_connection(
+            host=rules_email.host,
+            port=rules_email.port,
+            username=rules_email.username,
+            password=rules_email.password,
+            use_tls=rules_email.use_tls
+        )
+        # connection.open()
+        msg = EmailMessage(
+            subject=self.subject,
+            body=self.html_content,
+            from_email=rules_email.username,
+            to=self.receptors,
+            connection=connection)
+        msg.content_subtype = "html"
+        msg.send()
+        # connection.close()
+        print('SE ENVIÓ CORREO EXITOSAMENTE PARA ==>' + self.receptors[0])
 
 
 class RegisterForm(forms.ModelForm):
@@ -82,6 +128,30 @@ class RegisterForm(forms.ModelForm):
         )
         user_company.set_password(password)
         user_company.save()
+
+        # Send Email
+        mailing = EmailTemplate.objects.get(company=self.company,
+                                            email_type="REGISTER")
+        if mailing.from_email:
+            context = dict()
+            context["names"] = customer.names
+            context["first_name"] = customer.names.split(" ")[0]
+            context["email"] = customer.email
+            context["company"] = self.company
+
+            template = Template(mailing.html_code)
+            html_content = template.render(Context(context))
+            subject = mailing.subject
+            e_mail = u'{0}<{1}>'.format(
+                mailing.from_name, mailing.from_email)
+            msg = EmailMessage(
+                subject, html_content, e_mail, [customer.email, ])
+            msg.content_subtype = "html"
+            print("ENVIAR CORREO ")
+            send_html_mail(
+                subject, html_content, e_mail, [customer.email, ],
+                customer, self.company)
+
         user = authenticate(username=customer.email,
                             password=password)
         return dict(user=user, message="")
