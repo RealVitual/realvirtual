@@ -130,8 +130,8 @@ class RegisterForm(forms.ModelForm):
         user_company.save()
 
         # Send Email
-        mailing = EmailTemplate.objects.get(company=self.company,
-                                            email_type="REGISTER")
+        mailing, created = EmailTemplate.objects.get_or_create(
+            company=self.company, email_type="REGISTER")
         if mailing.from_email:
             context = dict()
             context["names"] = customer.names
