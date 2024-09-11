@@ -285,6 +285,7 @@ class EmailPasswordForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.domain = kwargs['initial'].get('domain')
+        self.company = kwargs['initial'].get('company')
         super(EmailPasswordForm, self).__init__(*args, **kwargs)
         self.fields['email'].widget.attrs['placeholder'] = "E-mail"
 
@@ -298,8 +299,33 @@ class EmailPasswordForm(forms.Form):
 
     def save(self, commit=True):
         email = self.cleaned_data.get('email')
+        customer = Customer.objects.get(email=email)
         uuid_hash = str(uuid4())
-        customer = User.objects.get(email=email)
-        customer.uuid_hash = uuid_hash
-        customer.save()
+        user_company = UserCompany.objects.get(
+            email=email, company=self.company)
+        user_company.uuid_hash = uuid_hash
+        user_company.save()
         url = "%s/reset-password/%s" % (self.domain, uuid_hash)
+
+        # Send Email
+        mailing = EmailTemplate.objects.get(company=self.company,
+                                            email_type="PASSWORD")
+        if mailing.from_email:
+            context = dict()
+            context["names"] = customer.names
+            context["first_name"] = customer.names.split(" ")[0]
+            context["email"] = customer.email
+            context["company"] = self.company
+            context["url"] = url
+
+            template = Template(mailing.html_code)
+            html_content = template.render(Context(context))
+            subject = mailing.subject
+            e_mail = u'{0}<{1}>'.format(
+                mailing.from_name, mailing.from_email)
+            msg = EmailMessage(
+                subject, html_content, e_mail, [customer.email, ])
+            msg.content_subtype = "html"
+            send_html_mail(
+                subject, html_content, e_mail, [customer.email, ],
+                customer, self.company)

@@ -811,7 +811,9 @@ class RecoverPasswordView(CreateView):
     def get_form_kwargs(self, **kwargs):
         form_kwargs = super(
             RecoverPasswordView, self).get_form_kwargs(**kwargs)
-        form_kwargs["initial"] = dict(domain=self.request.build_absolute_uri('/')[:-1])
+        form_kwargs["initial"] = dict(
+            domain=self.request.build_absolute_uri('/')[:-1],
+            company=self.request.company)
         return form_kwargs
 
     def get(self, request, *args, **kwargs):
