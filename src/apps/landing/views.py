@@ -163,6 +163,7 @@ def validate_register(request):
                 response_data['message'] = 'OK'
                 form_object = register_form.save()
                 user = form_object.get('user', None)
+                user_company = form_object.get('user_company', None)
                 if user:
                     login(request, user)
                     url = "generate_credential"
@@ -179,6 +180,8 @@ def validate_register(request):
                                 company=request.company)
                             url = "ticket_view"
                     response_data['success'] = 1
+                    response_data['confirmed'] = user_company.confirmed
+                    response_data['confirmed_message'] = request.company.message_confirm_user # noqa
                     response_data['redirect_url'] = reverse('landing:%s' % url)
                 del request.session['used_recaptcha']
             else:
@@ -209,6 +212,7 @@ def confirm_register(request):
         if register_form.is_valid():
             form_object = register_form.save()
             user = form_object.get('user', None)
+            user_company = form_object.get('user_company', None)
             if user:
                 login(request, user)
                 url = "generate_credential"
@@ -218,8 +222,16 @@ def confirm_register(request):
                     company.save()
                     company.refresh_from_db()
                     url = "select_preferences"
+                    if not request.company.enable_preferences:
+                        generate_ticket_code(user, request.company)
+                        record_to_pdf(
+                            user, domain=request.build_absolute_uri('/')[:-1], # noqa
+                            company=request.company)
+                        url = "ticket_view"
                 response_data['success'] = 1
+                response_data['confirmed'] = user_company.confirmed
                 response_data['redirect_url'] = reverse('landing:%s' % url)
+                response_data['confirmed_message'] = request.company.message_confirm_user # noqa
         else:
             response_data['success'] = 0
             response_data['message'] = register_form.errors['message'].as_data()[0].args[0] # noqa

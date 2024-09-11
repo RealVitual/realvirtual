@@ -154,7 +154,7 @@ class RegisterForm(forms.ModelForm):
 
         user = authenticate(username=customer.email,
                             password=password)
-        return dict(user=user, message="")
+        return dict(user=user, message="", user_company=user_company)
 
     def allow_register(self, data):
         message = ""

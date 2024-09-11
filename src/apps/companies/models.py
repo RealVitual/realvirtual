@@ -53,6 +53,8 @@ class Company(BaseModel):
     use_shifts = models.BooleanField(_('Usa turnos'), default=False)
     use_dates = models.BooleanField(_('Usa fecha en lista'), default=False)
     confirm_user = models.BooleanField(_('Confirmar Usuarios'), default=False)
+    message_confirm_user = RichTextField(
+        _('Mensaje confirmación'), null=True, blank=True)
     enable_credentials = models.BooleanField(_('Habilitar credenciales'),
                                              default=False)
     enable_preferences = models.BooleanField(_(
