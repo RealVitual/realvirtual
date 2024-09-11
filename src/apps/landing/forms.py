@@ -329,3 +329,28 @@ class EmailPasswordForm(forms.Form):
             send_html_mail(
                 subject, html_content, e_mail, [customer.email, ],
                 customer, self.company)
+
+
+class ResetPasswordForm(forms.Form):
+    new_password1 = forms.CharField(widget=forms.PasswordInput())
+    new_password2 = forms.CharField(widget=forms.PasswordInput())
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs['initial'].get('user')
+        super(ResetPasswordForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        data = self.cleaned_data
+        new_password = data['new_password1']
+        new_password_2 = data['new_password2']
+        if not new_password == new_password_2:
+            mensaje = "Las contraseñas no coinciden"
+            raise forms.ValidationError(mensaje)
+        return data
+
+    def save(self, commit=True):
+        password = self.cleaned_data["new_password1"]
+        self.user.set_password(password)
+        self.user.uuid_hash = ""
+        self.user.save()
+        return self.user

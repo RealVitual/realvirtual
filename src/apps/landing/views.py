@@ -1,5 +1,4 @@
 import pytz
-from django.shortcuts import render
 from src.apps.companies.models import HomePage
 from django.views.generic import CreateView, View
 from django.http import HttpResponse
@@ -13,7 +12,8 @@ from .models import (
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
     NetworkingOption, UserNetworkingPreference)
 from .forms import (
-    RegisterForm, CredentialCustomerForm, LoginForm, EmailPasswordForm)
+    RegisterForm, CredentialCustomerForm, LoginForm, EmailPasswordForm,
+    ResetPasswordForm)
 from django.contrib.auth import login, logout
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -947,3 +947,43 @@ class ScheduledEventsView(View):
                 'filtered_shift': filtered_shift.name if filtered_shift else None
             }
         return render(request, self.template_name, context)
+
+
+class ResetPasswordView(CreateView):
+    form_class = ResetPasswordForm
+    template_name = "landing/reset-password.html"
+    uuid = None
+    user = None
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        self.uuid = self.kwargs['uuid']
+        self.user = get_object_or_404(
+            UserCompany, uuid_hash=self.uuid)
+        return super(ResetPasswordView, self).dispatch(
+            request, *args, **kwargs)
+
+    def get_form_kwargs(self, **kwargs):
+        form_kwargs = super(
+            ResetPasswordView, self).get_form_kwargs(**kwargs)
+        form_kwargs["initial"] = dict(user=self.user)
+        return form_kwargs
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'form': self.get_form()
+            }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        data = request.POST
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form, request)
+        else:
+            return self.form_invalid(form, request)
+
+    def form_valid(self, form, request):
+        form.save()
+        return redirect(reverse('landing:home'))
