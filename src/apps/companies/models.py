@@ -10,6 +10,7 @@ from .constants import (
     EmailType, )
 from django.contrib.auth.hashers import make_password, check_password
 from src.apps.users.models import User
+from uuid import uuid4
 
 
 def get_upload_path(internal_folder):
@@ -368,6 +369,12 @@ class UserCompany(models.Model):
     in_person = models.BooleanField(_('In Person'), default=False)
     allow_networking = models.BooleanField(
         _('Allow Networking'), default=False)
+    uuid_hash = models.CharField(
+        'UUID',
+        max_length=36,
+        default='',
+        blank=True,
+        help_text=_('Random UUID hash to recover password.'))
 
     class Meta:
         unique_together = ('company', 'email')
@@ -380,3 +387,9 @@ class UserCompany(models.Model):
 
     def check_password(self, raw_password):
         return check_password(raw_password, self.password)
+
+    def save(self, *args, **kwargs):
+
+        if not self.uuid_hash:
+            self.uuid_hash = str(uuid4())
+        super(UserCompany, self).save(*args, **kwargs)
