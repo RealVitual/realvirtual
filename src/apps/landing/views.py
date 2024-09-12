@@ -166,8 +166,10 @@ def validate_register(request):
                 user_company = form_object.get('user_company', None)
                 if user:
                     login(request, user)
-                    url = "generate_credential"
-                    if user.in_person:
+                    url = 'event'
+                    if request.company.enable_credentials:
+                        url = "generate_credential"
+                    if user_company.in_person:
                         company = request.company
                         company.current_quantity += 1
                         company.save()
@@ -215,8 +217,10 @@ def confirm_register(request):
             user_company = form_object.get('user_company', None)
             if user:
                 login(request, user)
-                url = "generate_credential"
-                if user.in_person:
+                url = 'event'
+                if request.company.enable_credentials:
+                    url = "generate_credential"
+                if user_company.in_person:
                     company = request.company
                     company.current_quantity += 1
                     company.save()
