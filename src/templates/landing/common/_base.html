@@ -52,19 +52,6 @@
     <!-- JSADD START -->
     {% block jsfinal %}{% endblock %}
     <!-- JSADD END -->
-    {% if not logged_user %}
-    <script src="https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}"></script>
-    <script>
-            grecaptcha.ready(function() {
-                grecaptcha.execute('{{recaptcha_site_key}}', {action: "/"}).then(function(token) {
-                    document.getElementById('g-recaptcha-response').value = token;
-                    document.getElementById('g-recaptcha-response_login').value = token;
-                });
-            });
-            setInterval(function(){ grecaptcha.reset(); }, 2 * 60 * 1000 );
-    </script>
-    {% endif %}
-
     <script>
         'use strict';
         var register_data = "";
