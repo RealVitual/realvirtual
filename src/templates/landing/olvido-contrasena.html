@@ -11,25 +11,34 @@
 <section class="b2 scrollWrap">
     <div class="grilla">
         <div class="b2Info">
-            <h1 class="gTitle scrollItem">Olvidé mi contraseña</h1>
-            <div class="gParrafo scrollItem">
-                {% if messages %}
-                {% for message in messages %}
-                    <p>{{message}}</p>
-                {% endfor %}
-                {% else %}
-                <p>Ingresa el email que tienes asociado a tu cuenta. Te enviaremos un correo de confirmación.</p>
-                {% endif %}
-            </div>
-            <form action="" class="g8Form scrollItem" method="POST">
-                {% csrf_token %}
-                <div class="g8Input">
-					<span>Email</span>
-					<input type="text" class="g8Box validate[required,custom[email]]" name="{{form.email.html_name}}">
-				</div>
-                <button type="submit">Enviar</button>
-                <a href="{% url 'landing:home' %}" class="g8LinkForm">Cancelar</a>
-            </form>
+            {% if messages %}
+                <div class="gParrafo scrollItem">
+                    {% if messages %}
+                    {% for message in messages %}
+                        <p style="text-align: center;">{{message}}</p>
+                    {% endfor %}
+                    {% else %}
+                    <p>Ingresa el email que tienes asociado a tu cuenta. Te enviaremos un correo de confirmación.</p>
+                    {% endif %}
+                </div>
+                <form action="" class="g8Form scrollItem" method="POST">
+                    <a href="{% url 'landing:home' %}" class="g8LinkForm">Regresar</a>
+                </form>
+            {% else %}
+                <h1 class="gTitle scrollItem">Olvidé mi contraseña</h1>
+                <div class="gParrafo scrollItem">
+                    <p>Ingresa el email que tienes asociado a tu cuenta. Te enviaremos un correo de confirmación.</p>
+                </div>
+                <form action="" class="g8Form scrollItem" method="POST">
+                    {% csrf_token %}
+                    <div class="g8Input">
+                        <span>Email</span>
+                        <input type="text" class="g8Box validate[required,custom[email]]" name="{{form.email.html_name}}">
+                    </div>
+                    <button type="submit">Enviar</button>
+                    <a href="{% url 'landing:home' %}" class="g8LinkForm">Cancelar</a>
+                </form>
+            {% endif %}
         </div>
     </div>
 </section>
