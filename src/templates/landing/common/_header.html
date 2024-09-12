@@ -34,7 +34,10 @@
                 {% if header_section.show_sponsors_section %}
                     <a href="#auspiciador" class="headerAnclaBlock" style="color:{{header_section.header_text_color}};">{{header_section.sponsors_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
-                {% if logged_user and is_live %}
+                {% if header_section.show_contact %}
+                    <a href="#contact" class="headerAnclaBlock" style="color:{{header_section.header_text_color}};">{{header_section.contact_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
+                {% endif %}
+                {% if logged_user and is_live and company_user.confirmed %}
                     <a href="{% url 'landing:transmission' is_live.slug %}" class=" headerEnVivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
                 {% endif %}
             {% endif %}
@@ -263,7 +266,7 @@
 				    </div>
                 {% endif %}
 				<button class="g8SumitRegistro save-register">Enviar</button>
-                <h4>Ya tengo una cuenta <a href="#" id="openIniciaSesion">Inicial sesión</a></h4>
+                <h4>Ya tengo una cuenta <a href="#" id="openIniciaSesion">Iniciar sesión</a></h4>
 			</div>
         </form>
     </div>

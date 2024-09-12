@@ -163,8 +163,21 @@ class Header(TimeStampedModel):
     show_exhibitors_section = models.BooleanField(
         _('Mostrar Expositores'), default=True
     )
+    show_contact = models.BooleanField(
+        _('Mostrar Contacto en Header'), default=False
+    )
+    contact_header_name = models.CharField(
+        _('Nombre Contacto Header'), max_length=50, default="Contacto"
+    )
     register_title = models.CharField(
-        _('Título Registro'), max_length=20, default="Regístrate"
+        _('Título Registro'), max_length=50, default="Regístrate"
+    )
+    register_form_title = models.CharField(
+        _('Título Registro Formulario'), max_length=255, default="Crear cuenta"
+    )
+    register_form_text = models.TextField(
+        _('Texto Registro Formulario'),
+        default="Completa el siguiente formulario para poder registrar tus datos." # noqa
     )
     login_title = models.CharField(
         _('Título Login'), max_length=20, default="Inicia Sesión"
