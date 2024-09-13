@@ -4,7 +4,7 @@ from django import forms
 from .models import (
     Company, HomePage, ItemMainEvent, Header,
     Footer, EmailSettings, EmailTemplate,
-    UserCompany)
+    UserCompany, Font)
 from prettyjson import PrettyJSONWidget
 from django.utils.safestring import mark_safe
 
@@ -35,6 +35,7 @@ class UserCompanyAdmin(admin.ModelAdmin):
 admin.site.register(Header)
 admin.site.register(Footer)
 admin.site.register(EmailSettings)
+admin.site.register(Font)
 
 
 class FixedPrettyJSONWidget(PrettyJSONWidget):

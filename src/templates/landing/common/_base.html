@@ -13,7 +13,11 @@
     {% endif %}
     {% block cssadicional %}
     {% endblock %}
-    <link rel="stylesheet" type="text/css" href="/static/web/css/styles.css?v=1{{ BUILD_ID }}"/>
+    {% if company.font %}
+        <link rel="stylesheet" type="text/css" href="/static/web/{{company.font.name}}/css/styles.css?v=1{{ BUILD_ID }}"/>
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="/static/web/css-DMSans/css/styles.css?v=1{{ BUILD_ID }}"/>
+    {% endif %}
     <link rel="stylesheet" href="/static/web/js/validationform/validationEngine.jquery.css">
     <!-- <link rel="stylesheet" type="text/css" href="/static/web/css/blocks_styl.css?v=2{{ BUILD_ID }}"/> -->
 </head>

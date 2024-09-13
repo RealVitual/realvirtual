@@ -18,6 +18,17 @@ def get_upload_path(internal_folder):
       "%s/%s/" % (settings.BUCKET_FOLDER_NAME, internal_folder))
 
 
+class Font(models.Model):
+    name = models.CharField(_('Nombre carpeta Font'), max_length=255)
+
+    class Meta:
+        verbose_name = _("Font")
+        verbose_name_plural = _("Fonts")
+
+    def __str__(self):
+        return self.name
+
+
 class Company(BaseModel):
     name = models.CharField(_('Nombre compañia'), max_length=255)
     main_event_name = models.CharField(_('Nombre principal del evento'),
@@ -35,6 +46,9 @@ class Company(BaseModel):
     favicon = models.ImageField(
             _('Favicon'), upload_to=get_upload_path("favicon"),
             null=True, blank=True)
+    font = models.ForeignKey(
+        Font, related_name="css_font_companies",
+        on_delete=models.SET_NULL, null=True, blank=True)
     banner = models.ImageField(
             _('Banner'), upload_to=get_upload_path('banner'),
             null=True, blank=True)

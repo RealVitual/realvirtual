@@ -19,3 +19,12 @@ class EmailType(Enum):
     @classmethod
     def choices(cls):
         return [(choice.name, choice.value) for choice in cls]
+
+
+class FontType(Enum):
+    CSS_DMSANS = 'css-DMSans'
+    CSS_INTERTIGHT = 'css-Intertight'
+
+    @classmethod
+    def choices(cls):
+        return [(choice.name, choice.value) for choice in cls]
