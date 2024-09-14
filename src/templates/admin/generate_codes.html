@@ -1,0 +1,17 @@
+{% load rest_framework %}
+{% load static %}
+<html>
+    <head>
+        <strong>Envío de Invitaciones</strong>
+        <link rel="stylesheet" href="{{STATIC_URL}}bootstrap/bootstrap.min.css">
+    </head>    
+    <body>
+        <div>
+            <form action="{% url 'customers:generate_codes' %}" method="POST">
+                {% csrf_token %}
+                {% render_form serializer template_pack='rest_framework/vertical' %}
+                <input type="submit" class="btn btn-primary" value="save">
+            </form>
+        </div>
+    </body>
+</html>

@@ -12,7 +12,6 @@ from src.apps.companies.models import UserCompany
 
 def main_info(request, **kwargs):
     current_url = resolve(request.path_info).url_name
-    user_url = ""
     company_exists = hasattr(request, 'company')
     if company_exists:
         company = request.company
@@ -54,7 +53,6 @@ def main_info(request, **kwargs):
             if (UserCompany.objects.filter(user=user, company=company)):
                 company_user = UserCompany.objects.get(
                     user=user, company=company)
-                print(company_user.email, 'COMPANY USER')
                 if company_user.in_person:
                     ticket_url = reverse(
                         'landing:select_preferences')
@@ -72,7 +70,7 @@ def main_info(request, **kwargs):
                             'landing:credential_generated',
                             kwargs=dict(uid=cred.code))
             user_schedules = ScheduleCustomerEvent.objects.filter(
-                company=company, user=user).values_list(
+                company=company, company_user=company_user).values_list(
                     'schedule__id', flat=True)
             data['ticket_url'] = ticket_url
             data['credential_url'] = credential_url

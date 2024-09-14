@@ -48,7 +48,7 @@ class FilterAdmin(admin.ModelAdmin):
 
 @admin.register(ScheduleCustomerEvent)
 class ScheduleCustomerEventAdmin(admin.ModelAdmin):
-    list_display = ('user', 'company', 'event', 'schedule')
+    list_display = ('company_user', 'company', 'event', 'schedule')
     list_filter = ('company', 'event', 'schedule')
 
 

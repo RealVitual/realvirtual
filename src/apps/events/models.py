@@ -3,7 +3,7 @@ import pytz
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from src.contrib.db.models import BaseModel
-from src.apps.companies.models import Company
+from src.apps.companies.models import Company, UserCompany
 from ckeditor.fields import RichTextField
 from django.template.defaultfilters import slugify
 from django.conf import settings
@@ -313,16 +313,16 @@ class Schedule(BaseModel):
 class ScheduleCustomerEvent(BaseModel):
     company = models.ForeignKey(
         Company, related_name="company_customer_schedules",
-        on_delete=models.CASCADE,)
-    user = models.ForeignKey(
-        User, related_name="customer_schedules",
         on_delete=models.CASCADE)
+    company_user = models.ForeignKey(
+        UserCompany, related_name="company_user_schedules",
+        on_delete=models.CASCADE, null=True, blank=True)
     event = models.ForeignKey(
-        Event, related_name="event_customers",
+        Event, related_name="schedule_event_company_users",
         verbose_name=_('Evento'),
         on_delete=models.CASCADE)
     schedule = models.ForeignKey(
-        Schedule, related_name="schedule_customers",
+        Schedule, related_name="schedule_company_users",
         verbose_name=_('Schedule'),
         on_delete=models.CASCADE)
 
@@ -332,4 +332,23 @@ class ScheduleCustomerEvent(BaseModel):
         ordering = ['-modified']
 
     def __str__(self):
-        return self.user.email
+        return self.company_user.email
+
+
+class CustomerEvent(BaseModel):
+    company_user = models.ForeignKey(
+        UserCompany, related_name="company_user_events",
+        on_delete=models.CASCADE, null=True, blank=True)
+    event = models.ForeignKey(
+        Event, related_name="event_company_users", on_delete=models.DO_NOTHING,
+        blank=True, null=True
+    )
+
+    class Meta:
+        verbose_name = _('Asistencias de usuario')
+        verbose_name_plural = _('Asistencia de usuario')
+        ordering = ['-modified']
+
+    def __str__(self):
+        return '{} | {}'.format(
+            self.company_user.email, self.event.name)
