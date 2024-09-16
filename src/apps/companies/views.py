@@ -53,7 +53,7 @@ class AdminCustomerViewSet(ModelViewSet):
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
         columns = ['Nombre y Apellido', 'Email', 'País',
-                   'Profesión', 'Empresa', 'Cargo']
+                   'Profesión', 'Empresa', 'Cargo', 'Tipo']
         row_index = 0
         # Header
         for column_index, value in enumerate(columns):
@@ -77,6 +77,12 @@ class AdminCustomerViewSet(ModelViewSet):
             row.write(3, value)
             row.write(4, o.user.jon_company)
             row.write(5, o.user.company_position)
+            if o.virtual:
+                row.write(6, "Virtual")
+            elif o.in_person:
+                row.write(6, "Presencial")
+            else:
+                row.write(6, "-")
             # tz = pytz.timezone("America/Lima")
             # value = o.created.astimezone(tz).strftime(
             #     "%d/%m/%Y, %H:%M:%S")

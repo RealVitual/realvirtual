@@ -99,8 +99,9 @@
                                                 <tr>
                                                     <th>Nombres</th>
                                                     <th>Fecha de inscripción</th>
+                                                    <th>Tipo de asistencia</th>
                                                     <th>Generó credencial</th>
-                                                    <th>Agendó evento</th>
+                                                    {% comment %} <th>Agendó evento</th> {% endcomment %}
                                                     <th>Asistió a evento</th>
                                                 </tr>
                                             </thead>
@@ -117,10 +118,21 @@
                                                             <span class="font-weight-bolder mb-25">{{c.user.modified}}</span>
                                                         </div>
                                                     </td>
-                                                    <td>{% if c.generated_credential %}Sí{% else %}No{% endif %}</td>
-                                                    <td>
-                                                        {% if c.customer_schedules.all %}Sí{% else %}No{% endif %}
+                                                    <td class="text-nowrap">
+                                                        <div class="d-flex flex-column">
+                                                            {% if c.virtual %}
+                                                                <span class="font-weight-bolder mb-25">Virtual</span>
+                                                            {% elif c.in_person %}
+                                                                <span class="font-weight-bolder mb-25">Presencial</span>
+                                                            {% else %}
+                                                                <span class="font-weight-bolder mb-25">-</span>
+                                                            {% endif %}
+                                                        </div>
                                                     </td>
+                                                    <td>{% if c.generated_credential %}Sí{% else %}No{% endif %}</td>
+                                                    {% comment %} <td>
+                                                        {% if c.customer_schedules.all %}Sí{% else %}No{% endif %}
+                                                    </td> {% endcomment %}
                                                     <td>
                                                         {% if c.customer_events.all %}Sí{% else %}No{% endif %}
                                                     </td>
@@ -159,7 +171,7 @@
                                             <button type="button" class="btn btn-primary">Actualizar</button>
                                         </a>
                                     </div>
-                                    <br>
+                                    {% comment %} <br>
                                     <div class="card-body p-0">
                                         <div class="row border-top text-center mx-0">
                                             <div class="col-6 border-right py-1">
@@ -181,15 +193,22 @@
                                                 </a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> {% endcomment %}
                                     <br>
-                                    <p class="card-text text-muted mb-0">Asistentes</p>
+                                    <p class="card-text text-muted mb-0">Inscritos</p>
+                                    <h3 class="font-weight-bolder mb-0">{{customers_number}}</h3>
+                                    <div class="center col-12 budget-wrapper">
+                                        <a id="export_customers">
+                                            <button type="button" class="btn btn-warning">Descargar</button>
+                                        </a>
+                                    </div>
+                                    {% comment %} <p class="card-text text-muted mb-0">Asistentes</p>
                                     <h3 class="font-weight-bolder mb-0">{{asistants}}</h3>
                                     <div class="center col-12 budget-wrapper">
                                         <a id="export_customers_events" href="/credential-list/download-xlsx/">
                                             <button type="button" class="btn btn-warning">Descargar</button>
                                         </a>
-                                    </div>
+                                    </div> {% endcomment %}
                                 </div>
                             </div>
                         </div>
