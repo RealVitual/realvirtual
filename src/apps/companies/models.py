@@ -384,6 +384,7 @@ class EmailTemplate(BaseModel):
 
 
 class UserCompany(models.Model):
+    is_admin = models.BooleanField(_('Es admin'), default=False)
     email = models.EmailField()
     company = models.ForeignKey(Company, related_name="company_users",
                                 on_delete=models.CASCADE)

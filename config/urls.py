@@ -24,6 +24,8 @@ urlpatterns = [
     path('admin-django/', admin.site.urls),
     path('', include('src.apps.landing.urls', namespace='landing')),
     path('api/events/', include('src.apps.events.urls', namespace='events')),
+    path('api/companies/', include(
+        'src.apps.companies.urls', namespace='companies')),
     path('dashboard/', include('src.apps.dashboard.urls',
                                namespace='dashboard')),
 ]

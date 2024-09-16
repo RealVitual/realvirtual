@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.db.models import Count
 from datetime import datetime
 from src.apps.users.models import User
+from src.apps.companies.models import UserCompany
 
 
 class DashboardView(View):
@@ -22,10 +23,15 @@ class DashboardView(View):
         self.user = request.user
         if not self.user.is_authenticated:
             return redirect(reverse('dashboard:login'))
-        if not self.user.is_superuser:
-            logout(request)
+        company_users = UserCompany.objects.filter(
+            user=self.user, company=request.company)
+        if not company_users:
+            return redirect(reverse('dashboard:login'))
+        if self.user.is_superuser or company_users.last().is_admin:
+            pass
+        else:
             return redirect(reverse(
-                'dashboard:login'))
+                'landing:home'))
         return super(DashboardView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -33,22 +39,13 @@ class DashboardView(View):
         events = Event.objects.filter(
             is_active=True
         ).order_by('name')
-        customers = User.objects.exclude(is_superuser=True).order_by('-created')
-        schedules = ScheduleCustomerEvent.objects.select_related(
-            'event')
-        quantity_scheduled_events = schedules.values_list(
-            'event', flat=True).distinct().count()
-        events_quantity = events.count()
-        no_scheduled_events = events_quantity - quantity_scheduled_events
-        no_scheduled_events = no_scheduled_events if no_scheduled_events >= 0 else 0
-        events = events.annotate(num_schedules=Count('event_schedules'))
-        schduled_quantity = schedules.count()
+        customers = UserCompany.objects.filter(
+            company=request.company).exclude(
+                is_admin=True).order_by('-user__modified')
         context = {
             "events": events,
-            "schduled_quantity": schduled_quantity,
             "customers": customers[:10] if customers.count() >= 10 else customers,
             "customers_number": customers.count(),
-            "no_scheduled_events": no_scheduled_events,
             "asistants": CustomerEvent.objects.count(),
             'day': now.strftime("%d"),
             'month': now.strftime("%m"),
@@ -72,14 +69,14 @@ class LoginView(View):
 
     def get(self, request, *args, **kwargs):
         context = {
-            'form': LoginForm(),
+            'form': LoginForm(initial=dict(company=request.company)),
            }
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         self.object = None
         data = request.POST
-        form = LoginForm(data)
+        form = LoginForm(data, initial=dict(company=request.company))
         if form.is_valid():
             return self.form_valid(form, request)
         else:
