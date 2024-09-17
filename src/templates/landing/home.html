@@ -271,6 +271,7 @@
                                             data-cargo="{{exhibitor.title}}"
                                             data-info="{{exhibitor.description}}"
                                             data-url="{{exhibitor.link}}"
+                                            data-urltitle="{{exhibitor.link_title}}"
                                             data-img="{{exhibitor.image.url}}"
                                             {% if exhibitor.flag_image %}
                                             data-bandera="{{exhibitor.flag_image.url}}"
@@ -324,7 +325,7 @@
             <h4 class="b4PopupCargo"></h4>
             <div class="gParrafo b4PopupText">
             </div>
-            <a href="#" target="_blank" class="b4linkedin">Ver perfil en Linkedin <img src="/static/web/img/arrow.svg" alt="" width="12"></a>
+            <a href="#" target="_blank" class="b4linkedin"><img src="/static/web/img/arrow.svg" alt="" width="12"></a>
         </div>
     </div>
 </div>
@@ -339,6 +340,7 @@
                     data-cargo="{{ex.title}}"
                     data-info="{{ex.description}}"
                     data-url="{{ex.link}}"
+                    data-urltitle="{{ex.link_title}}"
                     data-img="{{ex.image.url}}"
                     {% if ex.flag_image %}
                     data-bandera="{{ex.flag_image.url}}"
@@ -769,13 +771,20 @@
                     let getCargo = this.dataset.cargo;
                     let getInfo = this.dataset.info;
                     let getUrl = this.dataset.url;
+                    let getUrlTitle = this.dataset.urltitle;
                     let getImg = this.dataset.img;
                     let getBander = this.dataset.bandera;
                     elb4PopupName.innerText = getName;
                     elb4PopupCargo.innerText = getCargo;
                     elb4Popupimg.setAttribute('src',getImg);
                     elb4PopupText.innerHTML = getInfo;
-                    elb4linkedin.setAttribute("href",getUrl);
+                    elb4linkedin.innerText = getUrlTitle;
+                    if(getUrl){
+                        elb4linkedin.setAttribute("href",getUrl);
+                        $('.b4linkedin').show();
+                    }else{
+                        $('.b4linkedin').hide();
+                    }
                     elb4PopupBandera.setAttribute("src",getBander);
                 });
             }
