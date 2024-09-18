@@ -76,9 +76,10 @@
                 var item = $(this);
                 var valid = item.closest('form').validationEngine('validate');
                 var form = $(this).closest('form');
-                $('.g8SumitLogin').addClass('isLoading');
                 if (!valid) {
                     } else {
+                        $('.g8SumitLogin').addClass('isLoading');
+                        $('.g8SumitLogin').disabled = true;
                         let login_data = form.serialize()
                         $.ajax({
                             url : "/login_access/",
@@ -88,6 +89,7 @@
                             if(data.success){
                                 window.location.href = data.redirect_url
                             }else{
+                                $('.g8SumitLogin').disabled = false;
                                 var msg = $('.login-message-warning')
                                 var login_form = $('.login-form')
                                 var login_warning_form = $('.login-warning-form')
@@ -116,9 +118,10 @@
                 var item = $(this);
                 var valid = item.closest('form').validationEngine('validate');
                 var form = $(this).closest('form');
-                $('.save-register').addClass('isLoading');
                 if (!valid) {
                     } else {
+                        $('.save-register').addClass('isLoading');
+                        $('.save-register').disabled = true;
                         register_data = form.serialize()
                         console.log(register_data, 'REGISTER DATA')
                         $.ajax({
@@ -132,6 +135,7 @@
                                 }, 3000)
                             }
                             if(data.success){
+                                $('.save-register').disabled = false;
                                 console.log(data, 'DATA')
                                 if(data.confirmed){
                                     $('.parrafo-register').show();
@@ -152,6 +156,7 @@
                                 }
 
                             }else{
+                                $('.save-register').disabled = false;
                                 $('.save-register').removeClass('isLoading');
                                 var parrafo_register = $('.parrafo-register')
                                 var msg = $('.message-warning')
