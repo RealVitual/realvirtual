@@ -357,6 +357,8 @@ class EmailSettings(BaseModel):
         verbose_name_plural = _('Reglas de correo')
 
     def __str__(self):
+        if self.username and self.company:
+            return f'{self.company.name} - {self.username}'
         return "Reglas de correo"
 
 
@@ -385,7 +387,9 @@ class EmailTemplate(BaseModel):
         verbose_name_plural = _('Plantillas Correo')
 
     def __str__(self):
-        return f'{self.email_type} - {self.company}'
+        if self.email_type and self.company:
+            return f'{self.email_type} - {self.company}'
+        return "Email template"
 
 
 class UserCompany(models.Model):
