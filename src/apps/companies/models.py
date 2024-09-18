@@ -230,6 +230,11 @@ class Footer(TimeStampedModel):
     def __str__(self):
         return f'Footer for {self.company}'
 
+    def mobile_link(self):
+        if self.mobile:
+            return self.mobile.replace(" ", "")
+        return ""
+
 
 class HomePage(TimeStampedModel):
     company = models.ForeignKey(
