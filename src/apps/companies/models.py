@@ -103,6 +103,35 @@ class Company(BaseModel):
     current_quantity = models.PositiveIntegerField(
         _('Current quantity'), default=0)
 
+    # campos formulario
+    names_field_title = models.CharField(
+        _('Título Nombres en Formulario'), max_length=100, default="Nombres"
+    )
+    last_names_field_title = models.CharField(
+        _('Título Apellidos en Formulario'), max_length=100,
+        default="Apellidos"
+    )
+    job_company_names_field_title = models.CharField(
+        _('Título Empresa en Formulario'), max_length=100, default="Empresa"
+    )
+    company_position_names_field_title = models.CharField(
+        _('Título Cargo en Formulario'), max_length=100, default="Cargo"
+    )
+    country_names_field_title = models.CharField(
+        _('Título País en Formulario'), max_length=100, default="País"
+    )
+    occupation_names_field_title = models.CharField(
+        _('Título Profesión en Formulario'), max_length=100,
+        default="Profesión"
+    )
+    email_names_field_title = models.CharField(
+        _('Título Email en Formulario'), max_length=100, default="Email"
+    )
+    confirm_email_names_field_title = models.CharField(
+        _('Título Confirmar Email en Formulario'), max_length=100,
+        default="Confirmar Email"
+    )
+
     class Meta:
         verbose_name = _("Company")
         verbose_name_plural = _("Companies")

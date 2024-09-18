@@ -167,27 +167,27 @@
             {% endif %}
             <div class="g8GroupInput two">
                 <div class="g8Input">
-                    <span>Nombres *</span>
+                    <span>{{company.names_field_title}} *</span>
                     <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]" name="{{form_register.names.html_name}}">
                 </div>
                 <div class="g8Input">
-                    <span>Apellidos *</span>
+                    <span>{{company.last_names_field_title}} *</span>
                     <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]" name="{{form_register.last_name.html_name}}">
                 </div>
             </div>
             <div class="g8GroupInput two">
                 <div class="g8Input">
-                    <span>Empresa *</span>
+                    <span>{{company.job_company_names_field_title}} *</span>
                     <input type="text" class="g8Box validate[required]" name="{{form_register.jon_company.html_name}}">
                 </div>
                 <div class="g8Input">
-                    <span>Cargo *</span>
+                    <span>{{company.company_position_names_field_title}} *</span>
                     <input type="text" class="g8Box validate[required]" name="{{form_register.company_position.html_name}}">
                 </div>
             </div>
             <div class="g8GroupInput two">
                 <div class="g8Input select">
-                    <span>Pais *</span>
+                    <span>{{company.country_names_field_title}} *</span>
                     <select name="{{form_register.country.html_name}}" id="" class="g8Box validate[required]">
                         <!-- <option value="">Selecciona un tipo</option> -->
                         <option value=""></option>
@@ -197,17 +197,17 @@
                     </select>
                 </div>
                 <div class="g8Input">
-                    <span>Profesión *</span>
+                    <span>{{company.occupation_names_field_title}} *</span>
                     <input type="text" class="g8Box validate[required]" name="{{form_register.occupation.html_name}}">
                 </div>
             </div>
             <div class="g8GroupInput two">
                 <div class="g8Input">
-                    <span>Email *</span>
+                    <span>{{company.email_names_field_title}} *</span>
                     <input type="text" id="email" class="g8Box validate[required,custom[email]]" name="{{form_register.email.html_name}}">
                 </div>
                 <div class="g8Input">
-                    <span>Confirmar Email *</span>
+                    <span>{{company.confirm_email_names_field_title}} *</span>
                     <input type="text" id="emailconfirm"  class="g8Box validate[required,custom[email],equals[email]]" name="confirm_email">
                 </div>
             </div>
