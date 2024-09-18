@@ -558,7 +558,7 @@ def login_access(request):
                           data=recaptcha_data)
         result = r.json()
         response_data = {}
-        if result['success']:
+        if result['success'] or request.session.get('used_recaptcha', None):
             request.session['used_recaptcha'] = 1
             login_form = LoginForm(
                 initial=dict(company=request.company),

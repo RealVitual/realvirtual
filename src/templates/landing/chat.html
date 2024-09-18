@@ -69,12 +69,12 @@
 <script src="/static/chat/reconnecting-websocket.js"></script>
 <script type="text/javascript">
 
-    var roomId = "chat1";
+    var roomId = "1";
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var roomName = "chat1";
+    var roomName = "cliente1";
 
     var chatSocket = new ReconnectingWebSocket(
-        ws_scheme + '://' + "localhost:9500" +
+        ws_scheme + '://' + "localhost:9600" +
         '/ws/chat/' + roomName + '/');
 
     var video = document.getElementById("videoTransmision");

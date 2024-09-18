@@ -255,8 +255,9 @@ class LoginForm(forms.Form):
         password = data.get("password")
         email = data.get("email")
         try:
-            user = UserCompany.objects.get(email=email, company=self.company)
-        except Customer.DoesNotExist:
+            user = UserCompany.objects.get(
+                email=email, company=self.company)
+        except UserCompany.DoesNotExist:
             message = "Error de Credenciales"
             raise forms.ValidationError(dict(message=message))
         if not user.check_password(password):
