@@ -199,6 +199,8 @@ class Question(BaseModel):
         on_delete=models.CASCADE, null=True)
     position = models.SmallIntegerField(_('Posición'), default=1)
     name = models.CharField(_('Nombre'), max_length=255)
+    title = models.CharField(_('Titulo'), max_length=255,
+                             default="Elige un regalo")
     image = models.FileField(
         _('Imagen icon'),
         upload_to=get_upload_path('icons'),

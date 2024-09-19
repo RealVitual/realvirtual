@@ -16,7 +16,7 @@
             {% csrf_token %}
             {% for question in questions %}
             <div class="b11Item">
-                <label class="b11NameOptions"><img src="{{question.image.url}}" alt="" width="20">Elige un regalo</label>
+                <label class="b11NameOptions"><img src="{{question.image.url}}" alt="" width="20">{{question.title}}</label>
                 <div class="b11ListOption">
                     {% for choice in question.get_choices %}
                         <div class="b11ItemOption">
