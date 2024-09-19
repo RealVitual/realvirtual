@@ -431,7 +431,7 @@ class TicketView(View):
         return super(TicketView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, **kwargs):
-        tickets = self.user.user_tickets.filter(company=request.company)
+        tickets = request.user.user_tickets.filter(company=request.company)
         if not tickets:
             return redirect(reverse('landing:home'))
         ticket = tickets.last()
@@ -441,7 +441,7 @@ class TicketView(View):
             'header': False,
             'ticket': ticket,
             'settings': ticket_settings,
-            'names': self.user.full_name,
+            'names': request.user.full_name,
             'domain': request.build_absolute_uri('/')[:-1]
         }
         return render(request, self.template_name, context)
