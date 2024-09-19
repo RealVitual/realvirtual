@@ -250,9 +250,11 @@ class EventsView(CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
-        self.user = request.user
-        user_company = UserCompany.objects.get(company=company, user=self.user)
-        if not request.user.is_authenticated or not user_company.confirmed:
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(EventsView, self).dispatch(request, *args, **kwargs)
 
@@ -360,11 +362,14 @@ class SelectPreferencesView(View):
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
-        self.user = request.user
-        user_company = UserCompany.objects.get(company=company, user=self.user)
-        if not request.user.is_authenticated or not user_company.confirmed:
+        if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
-        return super(SelectPreferencesView, self).dispatch(request, *args, **kwargs)
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
+            return redirect(reverse('landing:home'))
+        return super(SelectPreferencesView, self).dispatch(
+            request, *args, **kwargs)
 
     def get(self, request, **kwargs):
         questions = Question.objects.filter(
@@ -417,9 +422,11 @@ class TicketView(View):
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
-        self.user = request.user
-        user_company = UserCompany.objects.get(company=company, user=self.user)
-        if not request.user.is_authenticated or not user_company.confirmed:
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(TicketView, self).dispatch(request, *args, **kwargs)
 
@@ -456,9 +463,11 @@ class GenerateCredentialView(CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
-        self.user = request.user
-        user_company = UserCompany.objects.get(company=company, user=self.user)
-        if not request.user.is_authenticated or not user_company.confirmed:
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
             return redirect(reverse('landing:home'))
         if not request.company.enable_credentials:
             return redirect(reverse('landing:event'))
@@ -507,9 +516,11 @@ class AfterCreatedCredentialView(View):
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
-        self.user = request.user
-        user_company = UserCompany.objects.get(company=company, user=self.user)
-        if not request.user.is_authenticated or not user_company.confirmed:
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
             return redirect(reverse('landing:home'))
         if not request.company.enable_credentials:
             return redirect(reverse('landing:event'))
@@ -599,9 +610,11 @@ class EventTransmissionView(View):
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
-        self.user = request.user
-        user_company = UserCompany.objects.get(company=company, user=self.user)
-        if not request.user.is_authenticated or not user_company.confirmed:
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(EventTransmissionView, self).dispatch(request, *args, **kwargs) # noqa
 
@@ -669,9 +682,11 @@ class SurveyView(View):
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
-        self.user = request.user
-        user_company = UserCompany.objects.get(company=company, user=self.user)
-        if not request.user.is_authenticated or not user_company.confirmed:
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(SurveyView, self).dispatch(request, *args, **kwargs)
 
@@ -687,6 +702,17 @@ class SurveyView(View):
 
 class SuccessSurveyView(View):
     template_name = "landing/encuesta-gracias.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        company = self.request.company
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
+            return redirect(reverse('landing:home'))
+        return super(SuccessSurveyView, self).dispatch(
+            request, *args, **kwargs)
 
     def get(self, request, **kwargs):
         home_page = HomePage.objects.get(company=request.company)
@@ -725,9 +751,11 @@ class NetworkingView(View):
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
-        self.user = request.user
-        user_company = UserCompany.objects.get(company=company, user=self.user)
-        if not request.user.is_authenticated or not user_company.confirmed:
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(NetworkingView, self).dispatch(request, *args, **kwargs)
 
@@ -794,9 +822,11 @@ class NetworkingUsersView(View):
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
-        self.user = request.user
-        user_company = UserCompany.objects.get(company=company, user=self.user)
-        if not request.user.is_authenticated or not user_company.confirmed:
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(NetworkingUsersView, self).dispatch(
             request, *args, **kwargs)
@@ -866,9 +896,11 @@ class ScheduledEventsView(View):
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
-        self.user = request.user
-        user_company = UserCompany.objects.get(company=company, user=self.user)
-        if not request.user.is_authenticated or not user_company.confirmed:
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        user_company = UserCompany.objects.get(company=company,
+                                               user=request.user)
+        if not user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(ScheduledEventsView, self).dispatch(
             request, *args, **kwargs)
