@@ -460,11 +460,13 @@ class GenerateCredentialView(CreateView):
     template_name = "landing/credencial.html"
     landing_page = None
     slug = None
+    user = None
 
     def dispatch(self, request, *args, **kwargs):
         company = self.request.company
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
+        self.user = request.user
         user_company = UserCompany.objects.get(company=company,
                                                user=request.user)
         if not user_company.confirmed:
