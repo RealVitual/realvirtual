@@ -132,6 +132,14 @@ class Company(BaseModel):
         default="Confirmar Email"
     )
 
+    # codigos seguimiento
+    code_header = models.TextField(
+        _('Código seguimiento HEAD'), blank=True, null=True
+    )
+    code_body = models.TextField(
+        _('Código seguimiento BODY'), blank=True, null=True
+    )
+
     class Meta:
         verbose_name = _("Company")
         verbose_name_plural = _("Companies")
