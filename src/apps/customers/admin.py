@@ -18,7 +18,7 @@ class CustomerAdmin(UA):
         }),
         (_('Personal info'), {
             'fields': ('generated_credential', 'names', 'last_name',
-                       'full_name', 'occupation', 'jon_company',
+                       'full_name', 'occupation', 'job_company',
                        'company_position',
                        'age_range', 'country', 'speciality',
                        'allow_networking',

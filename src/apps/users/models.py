@@ -205,7 +205,7 @@ class User(BaseModel, PermissionsMixin, AbstractBaseUser):
     google_id = models.CharField(max_length=255, null=True, blank=True)
     occupation = models.CharField(
         'Profesion ', max_length=255, blank=True, null=True)
-    jon_company = models.CharField(
+    job_company = models.CharField(
         'Empresa / II.EE.', max_length=255, blank=True, null=True)
     company_position = models.CharField(
         'Cargo / Carrera', max_length=255, blank=True, null=True)

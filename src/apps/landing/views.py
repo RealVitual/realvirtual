@@ -784,7 +784,11 @@ def allow_networking_user(request):
         data.pop('csrfmiddlewaretoken', None)
         user = request.user
         networking = int(data.get('networking', 1))
+        company_user = UserCompany.objects.get(user=request.user,
+                                               company=request.company)
         user.allow_networking = networking
+        company_user.allow_networking = networking
+        company_user.save()
         user.save()
         response_data = {}
         url = "networking_preferences"

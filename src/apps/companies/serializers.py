@@ -4,7 +4,7 @@ from .models import UserCompany
 
 class CustomerListSerializer(serializers.ModelSerializer):
     company_position = serializers.SerializerMethodField()
-    jon_company = serializers.SerializerMethodField()
+    job_company = serializers.SerializerMethodField()
     country = serializers.SerializerMethodField()
     company_position = serializers.SerializerMethodField()
     occupation = serializers.SerializerMethodField()
@@ -13,7 +13,7 @@ class CustomerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserCompany
         fields = ('full_name', 'email',
-                  'occupation', 'company_position', 'country', 'jon_company')
+                  'occupation', 'company_position', 'country', 'job_company')
 
     def get_occupation(self, obj):
         return obj.user.occupation
@@ -29,8 +29,8 @@ class CustomerListSerializer(serializers.ModelSerializer):
     def get_company_position(self, obj):
         return obj.user.company_position
 
-    def get_jon_company(self, obj):
-        return obj.user.jon_company
+    def get_job_company(self, obj):
+        return obj.user.job_company
 
 
 class CustomerSerializer(serializers.ModelSerializer):

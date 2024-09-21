@@ -11,6 +11,7 @@ from .constants import (
 from django.contrib.auth.hashers import make_password, check_password
 from src.apps.users.models import User
 from uuid import uuid4
+from src.apps.conf.models import DocumentType, AgeRange, Country
 
 
 def get_upload_path(internal_folder):
@@ -445,6 +446,39 @@ class UserCompany(models.Model):
     in_person = models.BooleanField(_('In Person'), default=False)
     allow_networking = models.BooleanField(
         _('Allow Networking'), default=False)
+    names = models.CharField(
+        _('Names'), null=True, max_length=100, blank=True)
+    first_name = models.CharField(
+        _('First name'), null=True, max_length=100, blank=True)
+    last_name = models.CharField(
+        _('Last name'), null=True, max_length=100, blank=True)
+    first_surname = models.CharField(
+        _('First surname'), max_length=100, null=True, blank=True)
+    last_surname = models.CharField(
+        _('Last surname'), max_length=100, null=True, blank=True)
+    full_name = models.CharField(
+        _('Full name'), null=True, max_length=100, blank=True)
+    phone = models.CharField(_('phone'), max_length=50, null=True, blank=True)
+    mobile = models.CharField(
+        _('mobile'), max_length=50, null=True, blank=True)
+    document_type = models.ForeignKey(
+        DocumentType, related_name="%(class)s_set",
+        on_delete=models.CASCADE, null=True, blank=True)
+    document = models.CharField(
+        _("document"), max_length=120, null=True, blank=True)
+    occupation = models.CharField(
+        'Profesion ', max_length=255, blank=True, null=True)
+    job_company = models.CharField(
+        'Empresa / II.EE.', max_length=255, blank=True, null=True)
+    company_position = models.CharField(
+        'Cargo / Carrera', max_length=255, blank=True, null=True)
+    speciality = models.ForeignKey(
+        'conf.Speciality', related_name="specialities_company_users",
+        on_delete=models.DO_NOTHING, null=True, blank=True)
+    country = models.ForeignKey(
+        Country, related_name="country_company_users",
+        on_delete=models.SET_NULL, null=True, blank=True)
+
     uuid_hash = models.CharField(
         'UUID',
         max_length=36,
@@ -464,8 +498,28 @@ class UserCompany(models.Model):
     def check_password(self, raw_password):
         return check_password(raw_password, self.password)
 
-    def save(self, *args, **kwargs):
+    def get_full_name(self):
+        """
+        Returns the first_name plus the last_name, with a space in between.
+        """
+        full_name = [self.first_name, self.first_surname, self.last_surname]
+        full_name = [name for name in full_name if name and str(name).strip()]
+        full_name = ' '.join(full_name)
+        return full_name.strip()
 
+    def get_short_name(self):
+        "Returns the short name for the user."
+        return self.first_name
+
+    def name_only(self):
+        name = self.names.split(' ')
+        if len(name) > 1:
+            return name[0]
+        return name
+
+    def save(self, *args, **kwargs):
         if not self.uuid_hash:
             self.uuid_hash = str(uuid4())
+        if not self.full_name:
+            self.full_name = f'{self.names} {self.last_name}'
         super(UserCompany, self).save(*args, **kwargs)

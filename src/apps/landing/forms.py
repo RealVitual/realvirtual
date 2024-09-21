@@ -62,7 +62,7 @@ class RegisterForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = ('names', 'email', 'last_name', 'password', 'country',
-                  'occupation', 'jon_company', 'company_position',
+                  'occupation', 'job_company', 'company_position',
                   'confirm_password')
         widgets = {
             'password': forms.PasswordInput(),
@@ -98,17 +98,14 @@ class RegisterForm(forms.ModelForm):
 
     def save(self):
         data = self.cleaned_data
-        print(data, 'DATA')
         data.pop('confirm_email', None)
         data.pop('confirm_password', None)
         data.pop('can_confirm', None)
         data.pop('message', None)
-        print(data, 'DATA')
         data['in_person'] = self.in_person
         data['virtual'] = self.virtual
         password = data.pop('password', None)
         customers = Customer.objects.filter(email=data.get('email'))
-        print(customers, 'CUSTOMERS')
         if customers:
             customer = customers.last()
         else:
@@ -118,13 +115,11 @@ class RegisterForm(forms.ModelForm):
         confirmed = True
         if self.company.confirm_user:
             confirmed = False
+        data['confirmed'] = confirmed
+        data['user'] = User.objects.get(email=customer.email)
+        data['company'] = self.company
         user_company = UserCompany.objects.create(
-            email=data.get('email'),
-            company=self.company,
-            user=User.objects.get(email=customer.email),
-            virtual=self.virtual,
-            in_person=self.in_person,
-            confirmed=confirmed
+            **data
         )
         user_company.set_password(password)
         user_company.save()

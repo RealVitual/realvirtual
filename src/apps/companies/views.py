@@ -75,7 +75,7 @@ class AdminCustomerViewSet(ModelViewSet):
             row.write(2, value)
             value = o.user.occupation
             row.write(3, value)
-            row.write(4, o.user.jon_company)
+            row.write(4, o.user.job_company)
             row.write(5, o.user.company_position)
             if o.virtual:
                 row.write(6, "Virtual")
