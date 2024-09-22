@@ -9,8 +9,8 @@
 
 <section class="b14">
     <div class="grilla">
-        <a href="#" class="gReturn">Regresar</a>
-        <div class="b14Top">
+        <a href="##" onClick="history.go(-1); return false;" class="gReturn">Regresar</a>
+        <div class="b14Top" style="margin-bottom: 21px;">
             <div class="b14TopLeft">
                 <h1>{{event.name}}</h1>
                 <h2>{{event.subtitle}}</h2>
@@ -120,21 +120,35 @@
         var admin = data['admin']
         let li = document.createElement("li");
         let set_class= ""
-        if(email == email_user){
-            li.className = "posRight";
-            set_class = ""
-        }else{
+        if (admin){
             li.className = "posLeft";
-            set_class = "otherPersonMessage"
+            let ellistmessages = document.getElementById("listmessages");
+            var htmlString = `
+                        <h5 class="otherPersonMessage" style="color: #FF6666">${author}</h5>
+                        <h4 class="textMessage" style="background: #FF6666;color: #FFF;">${data.content}</h4>
+                        <span class="timeMessage">-</span>
+                    `;
+            li.innerHTML = htmlString
+            ellistmessages.appendChild(li);
+        }else{
+            if(email == email_user){
+                li.className = "posRight";
+                set_class = ""
+            }else{
+                li.className = "posLeft";
+                set_class = "otherPersonMessage"
+            }
+            let ellistmessages = document.getElementById("listmessages");
+            var htmlString = `
+                        <h5 class="${set_class}" >${author}</h5>
+                        <h4 class="textMessage">${data.content}</h4>
+                        <span class="timeMessage">-</span>
+                    `;
+            li.innerHTML = htmlString
+            ellistmessages.appendChild(li);
         }
-        let ellistmessages = document.getElementById("listmessages");
-        var htmlString = `
-                    <h5 class="${set_class}" >${author}</h5>
-                    <h4 class="textMessage">${data.content}</h4>
-                    <span class="timeMessage">-</span>
-                `;
-        li.innerHTML = htmlString
-        ellistmessages.appendChild(li);
+
+
     }
 
     var horaFormateada
