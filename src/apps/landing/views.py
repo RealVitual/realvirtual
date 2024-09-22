@@ -1,4 +1,5 @@
 import pytz
+from django.utils.safestring import mark_safe
 from src.apps.companies.models import HomePage
 from django.views.generic import CreateView, View
 from django.http import HttpResponse
@@ -660,6 +661,10 @@ class EventTransmissionView(View):
                 'end_time': end_time,
                 'company': company,
                 'event': event,
+                'chat_url': settings.CHAT_URL.split('/')[-1],
+                'room_name_json': mark_safe(json.dumps(
+                    event.chat_code)),
+                'room_id': mark_safe(json.dumps(event.chat_id)),
             }
         return render(request, self.template_name, context)
 

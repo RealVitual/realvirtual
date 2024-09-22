@@ -156,6 +156,15 @@ class Event(BaseModel):
         _('Url'),
         max_length=450,
         blank=True, editable=True)
+    chat_code = models.CharField(
+        _('Codigo de chat'), max_length=255, blank=True
+    )
+    chat_id = models.PositiveIntegerField(
+        _('Id de chat'), default=0
+    )
+    open_transmission = models.BooleanField(
+        _('Abrir transmision'), default=False
+    )
 
     class Meta:
         verbose_name = _("Event")

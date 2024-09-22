@@ -22,8 +22,6 @@
         </div>
         <div class="b14Wrap">
             <div class="b14Left">
-                <!-- CONDICIONAR SI ES IMAGEN O VIDEO -->
-                <!-- OPCIÒN CAMPO IMAGEN -->
                 <picture class="imgCover">
                     <!-- imagen mobile -->
                     <source srcset="/static/web/img/img-banner-chat.png" media="(max-width: 767px)">
@@ -32,7 +30,6 @@
                     <!-- imagen desktop -->
                     <img src="/static/web/img/img-banner-chat.png" width="1920" height="713"  alt="Myimage">
                 </picture>
-                <!-- OPCIÒN CAMPO VIDEO -->
                 <iframe src="{{event.video_url}}" frameborder="0"></iframe>
             </div>
             <div class="b14Right">
@@ -40,9 +37,7 @@
                 <div class="b14ContentChat">
                     <div class="b14ListChat">
                         <ul id="listmessages">
-                            <!-- posRight: es para el emisor -->
-                            <!-- posLeft: es para el remitente -->
-                            <li class="posRight">
+                            {% comment %} <li class="posRight">
                                 <h4 class="textMessage">Hello, how are you doing?</h4>
                                 <span class="timeMessage">08:15 AM</span>
                             </li>
@@ -50,7 +45,7 @@
                                 <h5 class="otherPersonMessage">Asistant</h5>
                                 <h4 class="textMessage">I'm doing wellI help you today?</h4>
                                 <span class="timeMessage">09:14 AM</span>
-                            </li>
+                            </li> {% endcomment %}
                         </ul>
                     </div>
                     <form action="">
@@ -69,12 +64,14 @@
 <script src="/static/chat/reconnecting-websocket.js"></script>
 <script type="text/javascript">
 
-    var roomId = "1";
+    var roomName = {{ room_name_json }};
+    var username = '{{logged_user.names}}';
+    var email_user = '{{logged_user.email}}';
+    var roomId = {{ room_id }};
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var roomName = "cliente1";
 
     var chatSocket = new ReconnectingWebSocket(
-        ws_scheme + '://' + "localhost:9600" +
+        ws_scheme + '://' + "{{chat_url}}" +
         '/ws/chat/' + roomName + '/');
 
     var video = document.getElementById("videoTransmision");
@@ -84,18 +81,57 @@
 
     let elsendMessage = document.getElementById("sendMessage");
     let elboxMessage = document.getElementById("boxMessage");
+    document.querySelector('#boxMessage').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#sendMessage').click();
+            }
+    };
 
-    const createLi = (text,time) => {
+    chatSocket.onopen = function(e) {
+        $('.b14ListChat ul').html('');
+        fetchMessages();
+      }
+
+    function fetchMessages() {
+    chatSocket.send(JSON.stringify(
+        {'command': 'fetch_messages',
+        'room': {{ room_id }}}));
+    }
+
+    chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        console.log(e.data, 'E DATA')
+        if (data['command'] === 'messages') {
+          for (let i=0; i<data['messages'].length; i++) {
+            createLi(data['messages'][i], "");
+          }
+        } else if (data['command'] === 'new_message'){
+          createLi(data['message'], "");
+        }
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    const createLi = (data, time) => {
+        var author = data['names'];
+        var email = data['author'];
+        var admin = data['admin']
         let li = document.createElement("li");
-        // posLeft --> receptor
-        // posRight --> emisor
-        li.className = "posRight";
+        let set_class= ""
+        if(email == email_user){
+            li.className = "posRight";
+            set_class = ""
+        }else{
+            li.className = "posLeft";
+            set_class = "otherPersonMessage"
+        }
         let ellistmessages = document.getElementById("listmessages");
-        
         var htmlString = `
-                    <h5>julio</h5>
-                    <h4 class="textMessage" style="background:blue;color:yellow">${text}</h4>
-                    <span class="timeMessage">${time}</span>
+                    <h5 class="${set_class}" >${author}</h5>
+                    <h4 class="textMessage">${data.content}</h4>
+                    <span class="timeMessage">-</span>
                 `;
         li.innerHTML = htmlString
         ellistmessages.appendChild(li);
@@ -126,24 +162,37 @@
     elsendMessage.addEventListener('click', function(e){
         e.preventDefault();
         let getMessage = elboxMessage.value;
-        cretateTime();
-        createLi(getMessage,horaFormateada)
+        console.log(getMessage, 'GET MESSAGE')
+        // cretateTime();
+        if (!getMessage.replace(/\s/g, '').length) {
+        }
+        else{
+            console.log('SEND DATA TO SOCKET')
+            chatSocket.send(JSON.stringify({
+                'command': 'new_message',
+                'message': getMessage,
+                'from': '{{logged_user.email}}',
+                'names': '{{logged_user.names}}',
+                'room': {{ room_id }}
+            }));
+        }
+        // createLi(getMessage, "")
         elboxMessage.value = ""
         elboxMessage.focus();
         scrollChatToBottom()
     });
 
-    elboxMessage.addEventListener("keydown", function(event) {
-        let getMessage = this.value;
-        if (event.keyCode === 13) { 
-            cretateTime();
-            createLi(getMessage,horaFormateada)
+    // elboxMessage.addEventListener("keydown", function(event) {
+    //     let getMessage = this.value;
+    //     if (event.keyCode === 13) { 
+    //         cretateTime();
+    //         createLi(getMessage,horaFormateada)
             
-            scrollChatToBottom()
-            setTimeout(()=>this.value = "",1)
+    //         scrollChatToBottom()
+    //         setTimeout(()=>this.value = "",1)
             
-        }
-    });
+    //     }
+    // });
 
 
 </script>   
