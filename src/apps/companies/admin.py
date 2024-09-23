@@ -4,14 +4,16 @@ from django import forms
 from .models import (
     Company, HomePage, ItemMainEvent, Header,
     Footer, EmailSettings, EmailTemplate,
-    UserCompany, Font)
+    UserCompany, Font, Enterprise)
 from prettyjson import PrettyJSONWidget
 from django.utils.safestring import mark_safe
 
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'domain')
+    list_display = ('name', 'domain', 'enterprise')
+    list_filter = ('enterprise', )
+    search_fields = ('name', 'enterprise', 'domain')
 
 
 class ItemMainEventTabular(admin.TabularInline):
@@ -28,14 +30,27 @@ class HomeAdmin(admin.ModelAdmin):
 @admin.register(UserCompany)
 class UserCompanyAdmin(admin.ModelAdmin):
     list_display = ('email', 'company')
-    list_filter = ('company', )
+    list_filter = ('company', 'company__enterprise')
     search_fields = ('email', 'company')
 
 
-admin.site.register(Header)
-admin.site.register(Footer)
+@admin.register(Header)
+class HeaderAdmin(admin.ModelAdmin):
+    list_display = ('company', )
+    list_filter = ('company__enterprise', )
+    search_fields = ('company__name', )
+
+
+@admin.register(Footer)
+class FooterAdmin(admin.ModelAdmin):
+    list_display = ('company', )
+    list_filter = ('company__enterprise', )
+    search_fields = ('company__name', )
+
+
 admin.site.register(EmailSettings)
 admin.site.register(Font)
+admin.site.register(Enterprise)
 
 
 class FixedPrettyJSONWidget(PrettyJSONWidget):
@@ -62,7 +77,10 @@ class EmailTemplateAdmin(admin.ModelAdmin):
     fields = (
         'company', 'email_type', 'name', 'from_email', 'from_name', 'subject',
         'html_code', 'html_preview')
-    list_display = ('name', 'subject', 'is_active', 'from_email')
+    list_display = ('name', 'subject', 'company',
+                    'is_active', 'from_email')
+    search_fields = ('company__name', )
+    list_filter = ('company__enterprise', 'company')
     readonly_fields = (
         'html_preview', )
 

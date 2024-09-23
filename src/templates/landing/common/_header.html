@@ -39,7 +39,7 @@
             {% endif %}
         </div>
         <div class="headerRight f aic jcfe">
-            {% if logged_user and company_user.confirmed %}
+            {% comment %} {% if logged_user and company_user.confirmed %}
                 {% if user_schedules_quantity > 0 %}
                     <a href="{% url 'landing:scheduled_events' %}" class="headerEventos">
                         <img src="/static/web/img/icon-calendar.svg" alt="" width="20">
@@ -51,7 +51,7 @@
                     <span class="countEvents" id="total-count">{{user_schedules_quantity}}</span>
                 </a>
                 {% endif %}
-            {% endif %}
+            {% endif %} {% endcomment %}
             <div class="headerOptionsSessions">
                 <div class="headerOptionLogout f aic jcfe">
                     <a href="" class="headerButtonLogin login">{{header_section.login_title}}</a>

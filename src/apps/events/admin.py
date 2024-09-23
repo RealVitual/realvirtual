@@ -25,7 +25,8 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_datetime',  'company')
     inlines = [ScheduleTabular]
     list_editable = ('company', )
-    list_filter = ('company', )
+    list_filter = ('company', 'company__enterprise')
+    search_fields = ('name', 'company__name')
 
     def get_inline_instances(self, request, obj=None):
         if obj:

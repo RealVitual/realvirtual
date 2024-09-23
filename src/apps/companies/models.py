@@ -30,7 +30,21 @@ class Font(models.Model):
         return self.name
 
 
+class Enterprise(models.Model):
+    name = models.CharField(_('Nombre Empresa'), max_length=255)
+
+    class Meta:
+        verbose_name = _("Empresa")
+        verbose_name_plural = _("Empresas")
+
+    def __str__(self):
+        return self.name
+
+
 class Company(BaseModel):
+    enterprise = models.ForeignKey(
+        Enterprise, related_name="companies",
+        on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(_('Nombre compañia'), max_length=255)
     main_event_name = models.CharField(_('Nombre principal del evento'),
                                        max_length=255, blank=True, null=True)
@@ -146,6 +160,8 @@ class Company(BaseModel):
         verbose_name_plural = _("Companies")
 
     def __str__(self):
+        if self.enterprise:
+            return f'{self.enterprise.name} / {self.name}'
         return self.name
 
     def set_counter_time(self):
