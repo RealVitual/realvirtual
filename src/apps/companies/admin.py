@@ -31,7 +31,7 @@ class HomeAdmin(admin.ModelAdmin):
 class UserCompanyAdmin(admin.ModelAdmin):
     list_display = ('email', 'company')
     list_filter = ('company', 'company__enterprise')
-    search_fields = ('email', 'company')
+    search_fields = ('email', 'company__name')
 
 
 @admin.register(Header)
