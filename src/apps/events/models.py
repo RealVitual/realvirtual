@@ -302,17 +302,27 @@ class Schedule(BaseModel):
         return date.strftime("%d de {}".format(month.lower()))
 
     def get_current_status(self):
-        start_date = self.event.start_datetime.date()
-        end_date = self.event.end_datetime.date()
+        start_date = self.event.start_datetime.astimezone(
+            pytz.timezone(settings.TIME_ZONE)).date()
+        print(self.event.end_datetime.astimezone(
+            pytz.timezone(settings.TIME_ZONE)), 'self.event.end_datetime')
+        end_date = self.event.end_datetime.astimezone(
+            pytz.timezone(settings.TIME_ZONE)).date()
         start_time = self.start_time
         end_time = self.end_time
         start_datetime = datetime.combine(
-            start_date, start_time).astimezone(pytz.utc)
+            start_date, start_time).astimezone(
+                pytz.timezone(settings.TIME_ZONE))
         end_datetime = datetime.combine(
-            end_date, end_time).astimezone(pytz.utc)
+            end_date, end_time).astimezone(
+                pytz.timezone(settings.TIME_ZONE))
         now = datetime.now().replace(microsecond=0)
-        now = now.astimezone(pytz.utc)
+        now = now.astimezone(
+            pytz.timezone(settings.TIME_ZONE))
         status = ''
+        print(self.name)
+        print(start_datetime)
+        print(end_datetime)
         if now >= start_datetime and end_datetime > now:
             status = 'is_live'
         if end_datetime < now:
