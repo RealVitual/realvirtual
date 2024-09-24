@@ -533,6 +533,9 @@ class UserCompany(models.Model):
             return name[0]
         return name
 
+    def __str__(self):
+        return self.email
+
     def save(self, *args, **kwargs):
         if not self.uuid_hash:
             self.uuid_hash = str(uuid4())

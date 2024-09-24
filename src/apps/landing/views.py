@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 import requests
 from src.apps.companies.models import UserCompany
 from src.apps.events.models import (
-    Event, Exhibitor, Filter, Schedule, Shift, ScheduleCustomerEvent)
+    Event, Exhibitor, Filter, Schedule, Shift, ScheduleCustomerEvent,
+    CustomerEvent)
 from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
@@ -615,9 +616,9 @@ class EventTransmissionView(View):
         company = self.request.company
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
-        user_company = UserCompany.objects.get(company=company,
+        self.user_company = UserCompany.objects.get(company=company,
                                                user=request.user)
-        if not user_company.confirmed:
+        if not self.user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(EventTransmissionView, self).dispatch(request, *args, **kwargs) # noqa
 
@@ -657,6 +658,7 @@ class EventTransmissionView(View):
             start_date = date.strftime("{} %d de {} %Y".format(day, month.lower())) # noqa
             start_time = date.strftime("%I:%M {}".format(h_code))
             end_time = end_date.strftime("%I:%M {}".format(end_h_code))
+            CustomerEvent.objects.get_or_create(event=event, company_user=self.user_company)
             context = {
                 'start_date': start_date,
                 'start_time': start_time,
