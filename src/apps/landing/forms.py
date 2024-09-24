@@ -87,7 +87,8 @@ class RegisterForm(forms.ModelForm):
                                              can_confirm=can_confirm))
         if (can_confirm and self.is_confirmartion) or allow_register:
             try:
-                UserCompany.objects.get(email=email, company=self.company)
+                UserCompany.objects.get(email=email.lower(),
+                                        company=self.company)
                 message = "Ya existe una cuenta con el email ingresado."
                 raise forms.ValidationError(dict(message=message,
                                                  can_confirm=False))
@@ -104,8 +105,9 @@ class RegisterForm(forms.ModelForm):
         data.pop('message', None)
         data['in_person'] = self.in_person
         data['virtual'] = self.virtual
+        data['email'] = data['email'].lower()
         password = data.pop('password', None)
-        customers = Customer.objects.filter(email=data.get('email'))
+        customers = Customer.objects.filter(email=data.get('email').lower())
         if customers:
             customer = customers.last()
         else:
@@ -212,6 +214,7 @@ class CredentialCustomerForm(forms.ModelForm):
         data = self.cleaned_data
         image_code = data.pop('profile_image')
         data['user'] = self.user
+        data['email'] = data['email'].lower()
         data['company'] = self.company
         instance = CredentialCustomer.objects.create(**data)
         names = data.get('names').replace(' ', '_')
@@ -251,7 +254,7 @@ class LoginForm(forms.Form):
         email = data.get("email")
         try:
             user = UserCompany.objects.get(
-                email=email, company=self.company)
+                email=email.lower(), company=self.company)
         except UserCompany.DoesNotExist:
             message = "Error de Credenciales"
             raise forms.ValidationError(dict(message=message))
@@ -264,8 +267,8 @@ class LoginForm(forms.Form):
         data = self.cleaned_data
         password = data.get("password")
         email = data.get("email")
-        credentials = dict(email=email, password=password)
-        user = User.objects.get(email=email)
+        credentials = dict(email=email.lower(), password=password)
+        user = User.objects.get(email=email.lower())
         # # Authenticate and return user
         # user = authenticate(username=email,
         #                     password=password)
