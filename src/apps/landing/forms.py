@@ -214,7 +214,6 @@ class CredentialCustomerForm(forms.ModelForm):
         data = self.cleaned_data
         image_code = data.pop('profile_image')
         data['user'] = self.user
-        data['email'] = data['email'].lower()
         data['company'] = self.company
         instance = CredentialCustomer.objects.create(**data)
         names = data.get('names').replace(' ', '_')
