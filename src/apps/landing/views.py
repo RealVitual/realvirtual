@@ -651,10 +651,12 @@ class EventTransmissionView(View):
             month = months.get(date.strftime("%B"))
             day = days.get(date.strftime("%A"))
             h_code = date.strftime("%p")
+            end_h_code = end_date.strftime("%p")
             h_code = hour_code.get(h_code)
+            end_h_code = hour_code.get(end_h_code)
             start_date = date.strftime("{} %d de {} %Y".format(day, month.lower())) # noqa
             start_time = date.strftime("%I:%M {}".format(h_code))
-            end_time = end_date.strftime("%I:%M {}".format(h_code))
+            end_time = end_date.strftime("%I:%M {}".format(end_h_code))
             context = {
                 'start_date': start_date,
                 'start_time': start_time,
