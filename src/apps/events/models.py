@@ -320,9 +320,6 @@ class Schedule(BaseModel):
         now = now.astimezone(
             pytz.timezone(settings.TIME_ZONE))
         status = ''
-        print(self.name)
-        print(start_datetime)
-        print(end_datetime)
         if now >= start_datetime and end_datetime > now:
             status = 'is_live'
         if end_datetime < now:

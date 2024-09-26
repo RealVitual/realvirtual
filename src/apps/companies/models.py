@@ -264,6 +264,8 @@ class Footer(TimeStampedModel):
         Company, related_name="footer",
         on_delete=models.CASCADE, null=True)
     text = models.CharField('Texto', max_length=255, blank=True, null=True)
+    background = models.CharField(
+        'Background Color', max_length=100, default="#333")
     mobile = models.CharField(
             _('Número teléfono'), max_length=255, null=True, blank=True)
     facebook = models.URLField(
