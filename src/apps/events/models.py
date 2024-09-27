@@ -304,8 +304,6 @@ class Schedule(BaseModel):
     def get_current_status(self):
         start_date = self.event.start_datetime.astimezone(
             pytz.timezone(settings.TIME_ZONE)).date()
-        print(self.event.end_datetime.astimezone(
-            pytz.timezone(settings.TIME_ZONE)), 'self.event.end_datetime')
         end_date = self.event.end_datetime.astimezone(
             pytz.timezone(settings.TIME_ZONE)).date()
         start_time = self.start_time
