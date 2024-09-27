@@ -111,12 +111,15 @@ class RegisterForm(forms.ModelForm):
         data['in_person'] = self.in_person
         data['virtual'] = self.virtual
         data['email'] = data['email'].lower()
+        register_data = data
+        register_data.pop('job_company_select', None)
+        register_data.pop('occupation_select', None)
         password = data.pop('password', None)
         customers = Customer.objects.filter(email=data.get('email').lower())
         if customers:
             customer = customers.last()
         else:
-            customer = Customer.objects.create(**data)
+            customer = Customer.objects.create(**register_data)
         customer.set_password(password)
         customer.save()
         confirmed = True
