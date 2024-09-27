@@ -4,7 +4,8 @@ from django import forms
 from .models import (
     Company, HomePage, ItemMainEvent, Header,
     Footer, EmailSettings, EmailTemplate,
-    UserCompany, Font, Enterprise)
+    UserCompany, Font, Enterprise, JobCompany,
+    Occupation)
 from prettyjson import PrettyJSONWidget
 from django.utils.safestring import mark_safe
 
@@ -47,6 +48,19 @@ class FooterAdmin(admin.ModelAdmin):
     list_filter = ('company__enterprise', )
     search_fields = ('company__name', )
 
+
+@admin.register(JobCompany)
+class JobCompanyAdmin(admin.ModelAdmin):
+    list_display = ('name', 'company', )
+    list_filter = ('company', )
+    search_fields = ('company__name', 'name')
+
+
+@admin.register(Occupation)
+class OccupationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'company', )
+    list_filter = ('company', )
+    search_fields = ('company__name', 'name')
 
 admin.site.register(EmailSettings)
 admin.site.register(Font)

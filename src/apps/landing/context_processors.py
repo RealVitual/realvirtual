@@ -7,7 +7,7 @@ from django.urls import reverse
 from datetime import datetime
 import pytz
 from django.conf import settings
-from src.apps.companies.models import UserCompany
+from src.apps.companies.models import UserCompany, JobCompany, Occupation
 
 
 def main_info(request, **kwargs):
@@ -35,7 +35,6 @@ def main_info(request, **kwargs):
             choose_access_type = True
         user = request.user
         data = {
-            'countries': Country.objects.all(),
             'STATIC_VERSION': settings.STATIC_VERSION,
             'current_url': current_url,
             "header_section": header_section,
@@ -44,7 +43,10 @@ def main_info(request, **kwargs):
             'user_schedules': [],
             'recaptcha_site_key': settings.RECAPTCHA_SITE_KEY,
             'choose_access_type': choose_access_type,
-            'company': company
+            'company': company,
+            'countries': Country.objects.all(),
+            'job_companies': JobCompany.objects.filter(company=company),
+            'occupations': Occupation.objects.filter(company=company)
         }
         if user.is_authenticated:
             ticket_url = ""
@@ -81,7 +83,6 @@ def main_info(request, **kwargs):
             data['company_user'] = company_user
         return data
     return {
-        'countries': Country.objects.all(),
         'STATIC_VERSION': settings.STATIC_VERSION,
         'current_url': current_url,
         'user_schedules_quantity': 0,

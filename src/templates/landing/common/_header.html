@@ -170,31 +170,67 @@
                 </div>
             </div>
             <div class="g8GroupInput two">
-                <div class="g8Input">
-                    <span>{{company.job_company_names_field_title}} *</span>
-                    <input type="text" class="g8Box validate[required]" name="{{form_register.job_company.html_name}}">
-                </div>
-                <div class="g8Input">
-                    <span>{{company.company_position_names_field_title}} *</span>
-                    <input type="text" class="g8Box validate[required]" name="{{form_register.company_position.html_name}}">
-                </div>
+                {% if company.job_company%}
+                    <div class="g8Input">
+                        <span>{{company.job_company_names_field_title}} *</span>
+                        <input type="text" class="g8Box validate[required]" name="{{form_register.job_company.html_name}}">
+                    </div>
+                {% endif %}
+                {% if company.job_company_select%}
+                    <div class="g8Input select">
+                        <span>{{company.job_company_names_field_title}} *</span>
+                        <select name="{{form_register.job_company_select.html_name}}" id="" class="g8Box validate[required]">
+                            <!-- <option value="">Selecciona un tipo</option> -->
+                            <option value=""></option>
+                            {% for job_company in job_companies %}
+                                <option value="{{job_company.id}}">{{job_company.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+                {% if company.company_position%}
+                    <div class="g8Input">
+                        <span>{{company.company_position_names_field_title}} *</span>
+                        <input type="text" class="g8Box validate[required]" name="{{form_register.company_position.html_name}}">
+                    </div>
+                {% endif %}
             </div>
             <div class="g8GroupInput two">
                 <div class="g8Input select">
                     <span>{{company.country_names_field_title}} *</span>
                     <select name="{{form_register.country.html_name}}" id="" class="g8Box validate[required]">
-                        <!-- <option value="">Selecciona un tipo</option> -->
                         <option value=""></option>
                         {% for country in countries %}
                             <option value="{{country.id}}">{{country.name}}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="g8Input">
-                    <span>{{company.occupation_names_field_title}} *</span>
-                    <input type="text" class="g8Box validate[required]" name="{{form_register.occupation.html_name}}">
-                </div>
+                {% if company.occupation %}
+                    <div class="g8Input">
+                        <span>{{company.occupation_names_field_title}} *</span>
+                        <input type="text" class="g8Box validate[required]" name="{{form_register.occupation.html_name}}">
+                    </div>
+                {% endif %}
+                {% if company.occupation_select%}
+                    <div class="g8Input select">
+                        <span>{{company.occupation_names_field_title}} *</span>
+                        <select name="{{form_register.occupation_select.html_name}}" id="" class="g8Box validate[required]">
+                            <option value=""></option>
+                            {% for occupation in occupations %}
+                                <option value="{{occupation.id}}">{{occupation.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
             </div>
+            {% if company.phone %}
+                <div class="g8GroupInput two">
+                    <div class="g8Input">
+                        <span>Teléfono *</span>
+                        <input type="text" data-type="number" maxlength="30" class="g8Box validKeypress validate[required]" name="{{form_register.phone.html_name}}">
+                    </div>
+                </div>
+            {% endif %}
             <div class="g8GroupInput two">
                 <div class="g8Input">
                     <span>{{company.email_names_field_title}} *</span>

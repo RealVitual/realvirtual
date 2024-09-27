@@ -11,6 +11,7 @@ from django.template import Context, Template
 import threading
 from django.core.mail import EmailMessage
 from django.core.mail import get_connection
+from .constants import forms_dict
 
 
 def send_html_mail(subject, html_content, e_mail, receptors,
@@ -60,10 +61,11 @@ class RegisterForm(forms.ModelForm):
     message = forms.CharField(required=False)
 
     class Meta:
-        model = Customer
-        fields = ('names', 'email', 'last_name', 'password', 'country',
-                  'occupation', 'job_company', 'company_position',
-                  'confirm_password')
+        model = UserCompany
+        # fields = ('names', 'email', 'last_name', 'password', 'country',
+        #           'occupation', 'job_company', 'company_position',
+        #           'confirm_password')
+        fields = ('email', 'password', 'confirm_password')
         widgets = {
             'password': forms.PasswordInput(),
             'confirm_password': forms.PasswordInput()
@@ -77,6 +79,9 @@ class RegisterForm(forms.ModelForm):
         self.in_person = None
         self.virtual = None
         super(RegisterForm, self).__init__(*args, **kwargs)
+        fields = self.company.get_form_fields_list()
+        for field in fields:
+            self.fields[field] = UserCompany._meta.get_field(field).formfield()
 
     def clean(self):
         data = self.cleaned_data

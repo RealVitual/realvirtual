@@ -11,7 +11,7 @@ from .constants import (
 from django.contrib.auth.hashers import make_password, check_password
 from src.apps.users.models import User
 from uuid import uuid4
-from src.apps.conf.models import DocumentType, AgeRange, Country
+from src.apps.conf.models import DocumentType, Country
 
 
 def get_upload_path(internal_folder):
@@ -155,6 +155,26 @@ class Company(BaseModel):
         _('Código seguimiento BODY'), blank=True, null=True
     )
 
+    # Campos Formulario
+    names = models.BooleanField(
+        _('Nombres'), default=True)
+    last_name = models.BooleanField(
+        _('Apellidos'), default=True)
+    job_company = models.BooleanField(
+        _('Empresa / II.EE.'), default=True)
+    job_company_select = models.BooleanField(
+        _('Empresa / II.EE. Select'), default=False)
+    company_position = models.BooleanField(
+        _('Cargo / Carrera'), default=True)
+    phone = models.BooleanField(
+        _('Teléfono'), default=False)
+    country = models.BooleanField(
+        _('País'), default=True)
+    occupation = models.BooleanField(
+        _('Profesión'), default=True)
+    occupation_select = models.BooleanField(
+        _('Profesión Select'), default=False)
+
     class Meta:
         verbose_name = _("Company")
         verbose_name_plural = _("Companies")
@@ -164,8 +184,29 @@ class Company(BaseModel):
             return f'{self.enterprise.name} / {self.name}'
         return self.name
 
+    def get_form_fields_list(self):
+        fields_list = []
+        if self.names:
+            fields_list.append('names')
+        if self.last_name:
+            fields_list.append('last_name')
+        if self.job_company:
+            fields_list.append('job_company')
+        if self.job_company_select:
+            fields_list.append('job_company_select')
+        if self.company_position:
+            fields_list.append('company_position')
+        if self.phone:
+            fields_list.append('phone')
+        if self.country:
+            fields_list.append('country')
+        if self.occupation:
+            fields_list.append('occupation')
+        if self.occupation_select:
+            fields_list.append('occupation_select')
+        return fields_list
+
     def set_counter_time(self):
-        print(self.counter_datetime.strftime('%d-%m-%Y %H:%M:%S'))
         return self.counter_datetime.strftime('%d-%m-%Y %H:%M:%S')
 
 
@@ -448,6 +489,42 @@ class EmailTemplate(BaseModel):
         return "Email template"
 
 
+class JobCompany(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="job_companies",
+        on_delete=models.CASCADE)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=0)
+    name = models.CharField(_('name'), max_length=255)
+
+    class Meta:
+        verbose_name = _("Empresa de trabajo")
+        verbose_name_plural = _("Empresas de trabajo")
+        ordering = ['position', 'name']
+
+    def __str__(self):
+        return self.name
+
+
+class Occupation(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="occupations",
+        on_delete=models.CASCADE)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=0)
+    name = models.CharField(_('name'), max_length=255)
+
+    class Meta:
+        verbose_name = _("Profesión")
+        verbose_name_plural = _("Profesiones")
+        ordering = ['position', 'name']
+
+    def __str__(self):
+        return self.name
+
+
 class UserCompany(models.Model):
     is_admin = models.BooleanField(_('Es admin'), default=False)
     email = models.EmailField()
@@ -486,8 +563,16 @@ class UserCompany(models.Model):
         _("document"), max_length=120, null=True, blank=True)
     occupation = models.CharField(
         'Profesion ', max_length=255, blank=True, null=True)
+    occupation_select = models.ForeignKey(
+        Occupation, verbose_name="Profesion",
+        related_name="occupation_company_users",
+        on_delete=models.SET_NULL, null=True, blank=True)
     job_company = models.CharField(
         'Empresa / II.EE.', max_length=255, blank=True, null=True)
+    job_company_select = models.ForeignKey(
+        JobCompany, verbose_name="Empresa",
+        related_name="job_company_company_users",
+        on_delete=models.SET_NULL, null=True, blank=True)
     company_position = models.CharField(
         'Cargo / Carrera', max_length=255, blank=True, null=True)
     speciality = models.ForeignKey(
