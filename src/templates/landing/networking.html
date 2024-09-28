@@ -29,12 +29,12 @@
                         <div class="b17Option">
                             {% if option.id in preferences %}
                             <input id="{{option.id}}"  type="checkbox" name="{{option.id}}" value="{{option.id}}" checked>
-                            <label for="{{option.id}}" class="b17TabItem {{option.id}}" checked class="active" data-color="#008AC9">
+                            <label for="{{option.id}}" class="b17TabItem {{option.id}}" checked data-color="#008AC9">
                                 <h3>{{option.name}}</h3>
                             </label>
                             {% else %}
                             <input id="{{option.id}}"  type="checkbox" name="{{option.id}}" value="{{option.id}}">
-                            <label for="{{option.id}}" class="b17TabItem {{option.id}}" class="active" data-color="#008AC9">
+                            <label for="{{option.id}}" class="b17TabItem {{option.id}}" data-color="#008AC9">
                                 <h3>{{option.name}}</h3>
                             </label>
                             {% endif %}
@@ -75,16 +75,12 @@
 
     setTimeout(() => {
         $('input[type=checkbox]').each(function () {
-            console.log('THIS')
             let check_id = this.id
             if (this.checked) {
-                console.log(check_id, 'CHECK ID')
-                console.log($("." + check_id))
-                $('.'+ check_id).addClass('activetab');
-                $('.'+ check_id).click();
+                $('label[for=' + check_id + ']').click();
             }
         });
-      }, 3000);
+      }, 500);
 
     for(const b17TabItem of elb17TabItem){
         let getColor = b17TabItem.dataset.color;

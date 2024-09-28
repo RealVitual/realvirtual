@@ -764,9 +764,9 @@ class NetworkingView(View):
         company = self.request.company
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
-        user_company = UserCompany.objects.get(company=company,
+        self.user_company = UserCompany.objects.get(company=company,
                                                user=request.user)
-        if not user_company.confirmed:
+        if not self.user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(NetworkingView, self).dispatch(request, *args, **kwargs)
 
@@ -774,7 +774,7 @@ class NetworkingView(View):
         options = NetworkingOption.objects.filter(
             company=request.company, is_active=True).order_by('name')
         preferences = UserNetworkingPreference.objects.filter(
-            user=request.user, company=request.company
+            user_company=self.user_company, company=request.company
         ).values_list('networking_option__id', flat=True)
         home_page = HomePage.objects.get(company=request.company)
         context = {
@@ -815,12 +815,14 @@ def save_networking_preferences(request):
         data = request.POST.dict()
         data.pop('csrfmiddlewaretoken', None)
         user = request.user
+        user_company = UserCompany.objects.get(
+            company=request.company, user=user)
         UserNetworkingPreference.objects.filter(
-            user=user, company=request.company
+            user_company=user_company, company=request.company
         ).delete()
         for key, value in data.items():
             answer = UserNetworkingPreference(
-                user=user, company=request.company)
+                user_company=user_company, company=request.company)
             answer.networking_option_id = int(key)
             answer.save()
 
@@ -839,26 +841,43 @@ class NetworkingUsersView(View):
         company = self.request.company
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
-        user_company = UserCompany.objects.get(company=company,
+        self.user_company = UserCompany.objects.get(company=company,
                                                user=request.user)
-        if not user_company.confirmed:
+        if not self.user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(NetworkingUsersView, self).dispatch(
             request, *args, **kwargs)
 
     def get(self, request, **kwargs):
         networking_users = UserNetworkingPreference.objects.filter(
-            company=request.company, user__allow_networking=True
-        ).exclude(user=request.user)
+            company=request.company, user_company__allow_networking=True
+        ).exclude(user_company=self.user_company)
+        options_id_ = networking_users.values_list(
+            'networking_option__id', flat=True)
+        selected_category = None
+        search_query = ""
+        query_filters = dict(request.GET)
+        for filter, value in query_filters.items():
+            if filter == "category":
+                selected_category = value[0]
+                networking_users = networking_users.filter(
+                    networking_option=selected_category
+                )
+            if filter == "search":
+                search_query = value[0]
+
+
         options = ['']
         options = NetworkingOption.objects.filter(
             company=request.company,
-            is_active=True).order_by('name')
+            is_active=True, id__in=options_id_).order_by('name')
         home_page = HomePage.objects.get(company=request.company)
         context = {
             "networking_users": networking_users,
             "options": options,
-            "home_page": home_page
+            "home_page": home_page,
+            "selected_category": int(selected_category) if selected_category else None,
+            "search_query": search_query
         }
         return render(request, self.template_name, context)
 

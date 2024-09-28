@@ -90,7 +90,7 @@ class NetworkingOptionAdmin(admin.ModelAdmin):
 
 @admin.register(UserNetworkingPreference)
 class UserNetworkingPreferenceAdmin(admin.ModelAdmin):
-    list_display = ('user', 'networking_option', 'company')
+    list_display = ('user_company', 'networking_option', 'company')
     list_filter = ('company', 'networking_option')
 
 

@@ -4,7 +4,7 @@ from django.db import models
 from uuid import uuid4
 from django.utils.translation import gettext_lazy as _
 from src.contrib.db.models import BaseModel
-from src.apps.companies.models import Company
+from src.apps.companies.models import Company, UserCompany
 from src.apps.users.models import User
 
 
@@ -405,10 +405,10 @@ class UserNetworkingPreference(BaseModel):
         on_delete=models.CASCADE,
         blank=True,
         null=True)
-    user = models.ForeignKey(
-        User,
+    user_company = models.ForeignKey(
+        UserCompany,
         related_name='networkin_preferences',
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name = _('Preferencia en Networking')
@@ -416,7 +416,9 @@ class UserNetworkingPreference(BaseModel):
         ordering = ['-modified']
 
     def __str__(self):
-        return "{}-{}".format(self.user.email, self.networking_option.name)
+        if self.user_company:
+            return "{}-{}".format(self.user_company.email, self.networking_option.name)
+        return self.networking_option.name
 
 
 class FreeImage(models.Model):

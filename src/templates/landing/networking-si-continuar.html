@@ -26,14 +26,22 @@
                <div class="b18Select">
                     <a href="#" class="b18ClickSelect"></a>
                     <ul>
-                        <li><a href="#" class="b18ItemOption active">Todos</a></li>
+                        {% if not selected_category %}
+                            <li><a href="#" class="b18ItemOption active" data-option=0>Todos</a></li>
+                        {% else %}
+                            <li><a href="#" class="b18ItemOption" data-option=0>Todos</a></li>
+                        {% endif %}
                         {% for option in options %}
-                        <li><a href="#" class="b18ItemOption">{{option.name}}</a></li>
+                            {% if option.id == selected_category %}
+                                <li><a href="#" class="b18ItemOption active" data-option={{option.id}}>{{option.name}}</a></li>
+                            {% else %}
+                                <li><a href="#" class="b18ItemOption" data-option={{option.id}}>{{option.name}}</a></li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                </div>
                <div class="b18Buscador">
-                    <input type="text" placeholder="Buscar">
+                    <input type="text" value="{{search_query}}" id="searchInput" placeholder="Buscar">
                </div>
             </div>
             <div class="b18ContentWrap">
@@ -42,21 +50,30 @@
                         <table>
                             <tr>
                                 <th>Nombre</th>
-                                <th>Rubro</th>
+                                <th>Empresa</th>
+                                <th>Cargo</th>
                                 <th>Email</th>
-                                {% comment %}
                                 <th>Teléfono</th>
-                                {% endcomment %}
                             </tr>
                             {% for contact  in networking_users %}
+                                {% with user_company=contact.user_company %}
                                 <tr>
-                                    <td>{{contact.user.full_name}}</td>
-                                    <td>{{contact.networking_option.name}} </td>
-                                    <td><a href="mailto:{{contact.user.email}}">{{contact.user.email}}</a></td>
-                                    {% if contact.user.phone %}
-                                        <td><a href="https://wa.me/{{contact.user.phone}}?hola"><i class="icon-whatsapp"></i>Chat</a></td>
+                                    <td>{{user_company.full_name}}</td>
+                                    {% if user_company.job_company_select %}
+                                        <td>{{user_company.job_company_select.name}}</td>
                                     {% endif %}
+                                    {% if user_company.job_company %}
+                                        <td>{{user_company.job_company}}</td>
+                                    {% endif %}
+                                    <td>{{user_company.company_position}}</td>
+                                    <td><a href="mailto:{{user_company.email}}">{{user_company.email}}</a></td>
+                                    <td>
+                                        {% if user_company.phone %}
+                                            <a href="https://wa.me/{{user_company.phone}}?hola"><i class="icon-whatsapp"></i>Chat</a>
+                                        {% endif %}
+                                    </td>
                                 </tr>
+                                {% endwith %}
                             {% endfor %}
                         </table>
                     </div>
@@ -73,18 +90,44 @@
     eventGrilla("b11Left","left")
     eventGrilla("b11Right","right")
      let elb18ClickSelect = document.getElementsByClassName("b18ClickSelect")[0];
+     let elb18Select = document.getElementsByClassName("b18Select")[0];
      let elb18ItemOption = document.getElementsByClassName("b18ItemOption");
      elb18ClickSelect.addEventListener("click", function(e) {
-        console.log(e, 'E')
+        console.log('click!')
         e.preventDefault();
+        e.stopPropagation();
         this.parentElement.classList.toggle('active');
      });
-
      for(const b18ItemOption of elb18ItemOption){
         if(b18ItemOption.classList.contains('active')){
             let getText = b18ItemOption.textContent;
             elb18ClickSelect.innerText = getText
         }
      }
+     $('.b18ItemOption').click(function(e){
+        const option_id = $(this).attr('data-option')
+        let url = new URL(window.location.origin + "{% url 'landing:networking' %}");
+        if(option_id > 0){
+            url.searchParams.set('category', option_id)
+        }
+        if ($('#searchInput').val()){
+            url.searchParams.set('search', $('#searchInput').val())
+        }
+        window.location.href = url.toString();
+    });
+     $('#searchInput').keydown(function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const query = $('#searchInput').val();
+            let url = new URL(window.location.origin + "{% url 'landing:networking' %}");
+            if("{{selected_category}}"){
+                url.searchParams.set('category', "{{selected_category}}")
+            }
+            url.searchParams.set('search', query)
+        }
+    });
+     window.addEventListener("click", function(e) {
+        elb18Select.classList.remove('active');
+     });
 </script>
 {% endblock %}
