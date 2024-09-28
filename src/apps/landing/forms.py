@@ -111,15 +111,14 @@ class RegisterForm(forms.ModelForm):
         data['in_person'] = self.in_person
         data['virtual'] = self.virtual
         data['email'] = data['email'].lower()
-        register_data = data
-        register_data.pop('job_company_select', None)
-        register_data.pop('occupation_select', None)
+        job_company_select = data.pop('job_company_select', None)
+        occupation_select = data.pop('occupation_select', None)
         password = data.pop('password', None)
         customers = Customer.objects.filter(email=data.get('email').lower())
         if customers:
             customer = customers.last()
         else:
-            customer = Customer.objects.create(**register_data)
+            customer = Customer.objects.create(**data)
         customer.set_password(password)
         customer.save()
         confirmed = True
@@ -128,6 +127,8 @@ class RegisterForm(forms.ModelForm):
         data['confirmed'] = confirmed
         data['user'] = User.objects.get(email=customer.email)
         data['company'] = self.company
+        data['job_company_select'] = job_company_select
+        data['occupation_select'] = occupation_select
         user_company = UserCompany.objects.create(
             **data
         )

@@ -426,9 +426,9 @@ class TicketView(View):
         company = self.request.company
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
-        user_company = UserCompany.objects.get(company=company,
-                                               user=request.user)
-        if not user_company.confirmed:
+        self.user_company = UserCompany.objects.get(
+            company=company, user=request.user)
+        if not self.user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(TicketView, self).dispatch(request, *args, **kwargs)
 
@@ -443,7 +443,7 @@ class TicketView(View):
             'header': False,
             'ticket': ticket,
             'settings': ticket_settings,
-            'names': request.user.full_name,
+            'names': self.user_company.full_name,
             'domain': request.build_absolute_uri('/')[:-1]
         }
         return render(request, self.template_name, context)

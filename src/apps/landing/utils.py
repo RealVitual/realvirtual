@@ -5,7 +5,7 @@ from pyvirtualdisplay import Display
 import imgkit
 import base64
 import hashlib
-from src.apps.companies.models import Company
+from src.apps.companies.models import Company, UserCompany
 from django.template.loader import render_to_string
 from weasyprint import HTML, CSS
 from django.core.files import File
@@ -120,10 +120,11 @@ def generate_certificate_image(user, domain):
 def record_to_pdf(user, domain, company):
     settings = TicketSettings.objects.filter(company=company).last()
     ticket = user.user_tickets.filter(company=company).last()
+    user_company = UserCompany.objects.get(company=company, user=user)
     filename = '%s.pdf' % ticket.code
     ticket_pdf = render_to_string(
         'landing/ticket.html',
-        {'user': user,
+        {'user': user_company,
          'domain': domain,
          'settings': settings,
          'ticket': ticket})

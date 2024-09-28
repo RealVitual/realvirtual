@@ -14,7 +14,7 @@ from django.utils.safestring import mark_safe
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ('name', 'domain', 'enterprise')
     list_filter = ('enterprise', )
-    search_fields = ('name', 'enterprise', 'domain')
+    search_fields = ('name', 'enterprise__name', 'domain')
 
 
 class ItemMainEventTabular(admin.TabularInline):
@@ -30,7 +30,7 @@ class HomeAdmin(admin.ModelAdmin):
 
 @admin.register(UserCompany)
 class UserCompanyAdmin(admin.ModelAdmin):
-    list_display = ('email', 'company')
+    list_display = ('email', 'company', 'created')
     list_filter = ('company', 'company__enterprise')
     search_fields = ('email', 'company__name')
 

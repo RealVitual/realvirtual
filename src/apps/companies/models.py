@@ -525,7 +525,7 @@ class Occupation(BaseModel):
         return self.name
 
 
-class UserCompany(models.Model):
+class UserCompany(BaseModel):
     is_admin = models.BooleanField(_('Es admin'), default=False)
     email = models.EmailField()
     company = models.ForeignKey(Company, related_name="company_users",
