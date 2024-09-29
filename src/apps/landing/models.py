@@ -449,8 +449,8 @@ class CerficateSettings(BaseModel):
         null=True, blank=True)
 
     class Meta:
-        verbose_name = _('Certicate settings')
-        verbose_name_plural = _('Certicate settings')
+        verbose_name = _('Configuración de Certificado')
+        verbose_name_plural = _('Configuraciones de Certificado')
 
     def __str__(self):
         return self.company.name
