@@ -1069,3 +1069,13 @@ class ResetPasswordView(CreateView):
     def form_valid(self, form, request):
         form.save()
         return redirect(reverse('landing:home'))
+
+
+class CertificateView(View):
+    template_name = "landing/certificate.html"
+    user = None
+
+    def get(self, request, **kwargs):
+        context = {
+        }
+        return render(request, self.template_name, context)

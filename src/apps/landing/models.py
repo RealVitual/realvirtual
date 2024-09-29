@@ -433,3 +433,24 @@ class FreeImage(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CerficateSettings(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_certifiate_settings",
+        on_delete=models.CASCADE, unique=True)
+    image = models.FileField(
+        _('Imagen Fondo'),
+        upload_to=get_upload_path('credentials_backgrounds'),
+        null=True, blank=True)
+    fonts = models.FileField(
+        _('Tipo Fuente'),
+        upload_to=get_upload_path('certificate_fonts'),
+        null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Certicate settings')
+        verbose_name_plural = _('Certicate settings')
+
+    def __str__(self):
+        return self.company.name

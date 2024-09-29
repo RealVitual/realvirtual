@@ -581,6 +581,11 @@ class UserCompany(BaseModel):
     country = models.ForeignKey(
         Country, related_name="country_company_users",
         on_delete=models.SET_NULL, null=True, blank=True)
+    certificate = models.FileField(
+        _('certificate'),
+        upload_to=get_upload_path('certificates'),
+        null=True, blank=True)
+
 
     uuid_hash = models.CharField(
         'UUID',

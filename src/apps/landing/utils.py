@@ -6,10 +6,12 @@ import imgkit
 import base64
 import hashlib
 from src.apps.companies.models import Company, UserCompany
+from src.apps.landing.models import CerficateSettings
 from django.template.loader import render_to_string
 from weasyprint import HTML, CSS
 from django.core.files import File
 from io import BytesIO
+from weasyprint.text.fonts import FontConfiguration
 
 
 def decode_base64_file(data, file_name):
@@ -137,3 +139,31 @@ def record_to_pdf(user, domain, company):
     user.generated_ticket = True
     user.save()
     return user
+
+
+def generate_certificate_pdf(user_company):
+    # user_company = UserCompany.objects.get(company=company, user=user)
+    company = user_company.company
+    c_settings, created = CerficateSettings.objects.get_or_create(
+        company=company)
+    filename = '%s.pdf' % user_company.full_name
+    certificate_pdf = render_to_string(
+        'landing/certificate.html',
+        {'user': user_company, 'c_settings': c_settings}
+        )
+    font_config = FontConfiguration()
+    html = HTML(string=certificate_pdf)
+    css = CSS(string='''
+            @page { size: 859mm 500mm; margin: 1cm;}
+            @font-face {
+            font-family: "InterTight";
+            src: url(https://testrealv.s3.amazonaws.com/media/realvirtual/free_images/InterTight-VariableFont_wght.ttf);
+            }
+              ''')
+    pdf = html.write_pdf(stylesheets=[css], font_config=font_config)
+    file_data = File(BytesIO(pdf))
+    user_company.certificate.save(filename, file_data)
+    user_company.save()
+    return user_company
+
+
