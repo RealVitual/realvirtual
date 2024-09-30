@@ -66,10 +66,10 @@
                                         <td>{{user_company.job_company}}</td>
                                     {% endif %}
                                     <td>{{user_company.company_position}}</td>
-                                    <td><a href="mailto:{{user_company.email}}">{{user_company.email}}</a></td>
+                                    <td><a href="mailto:{{user_company.email}}"><img src="/static/web/img/email-svgrepo-com.svg" width="25" alt=""></a></td>
                                     <td>
                                         {% if user_company.phone %}
-                                            <a href="https://wa.me/{{user_company.phone}}?hola"><i class="icon-whatsapp"></i>Chat</a>
+                                            <a href="https://wa.me/{{user_company.phone}}?hola" target="_blank"><img src="/static/web/img/whatsapp-svgrepo-com.svg" width="25" alt=""></a>
                                         {% endif %}
                                     </td>
                                 </tr>

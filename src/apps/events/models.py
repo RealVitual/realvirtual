@@ -268,6 +268,9 @@ class Schedule(BaseModel):
         'ICS File', upload_to=get_upload_path("ics_files"), null=True,
         blank=True
     )
+    schedule_file = models.FileField(
+        _('File'), upload_to=get_upload_path("schedule_files"),
+        blank=True, null=True)
 
     class Meta:
         verbose_name = _('Horario')

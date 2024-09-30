@@ -239,6 +239,9 @@
                             {% endif %}
                             <div class="b4Info">
                                 {% if logged_user and company_user.confirmed%}
+                                    {% if schedule.schedule_file %}
+                                        <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a>
+                                    {% endif %}
                                     {% if schedule.get_current_status == 'upcoming' %}
                                         {% comment %} <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a> {% endcomment %}
                                     {% endif %}
