@@ -72,6 +72,9 @@
                                     {% if company_user.virtual or request.company.enable_credentials %}
                                         <li><a href="{{credential_url}}">Mi credencial</a></li>
                                     {% endif %}
+                                    {% if company_user.certificate %}
+                                        <li><a target="_blank" href="{{company_user.certificate.url}}">Mi certificado</a></li>
+                                    {% endif %}
                                 </ul>
                             {% endif %}
                             <a href="{% url 'landing:logout' %}" class="logout">Cerrar Sesión</a>
