@@ -7,6 +7,8 @@ from .serializers import (
     CustomerListSerializer)
 import xlwt
 from .models import UserCompany
+from src.apps.customers.models import Customer
+import pytz
 
 
 class AdminCustomerViewSet(ModelViewSet):
@@ -53,7 +55,7 @@ class AdminCustomerViewSet(ModelViewSet):
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
         columns = ['Nombre y Apellido', 'Email', 'País',
-                   'Profesión', 'Empresa', 'Cargo', 'Tipo']
+                   'Profesión', 'Empresa', 'Cargo', 'Tipo', 'Creado']
         row_index = 0
         # Header
         for column_index, value in enumerate(columns):
@@ -67,26 +69,32 @@ class AdminCustomerViewSet(ModelViewSet):
         for idx, o in enumerate(queryset):
             c += 1
             row = ws.row(c)
-            value = o.user.full_name
+            value = o.full_name
             row.write(0, value)
-            value = o.user.email
+            value = o.email
             row.write(1, value)
-            value = o.user.country.name if o.user.country else ""
+            value = o.country.name if o.country else ""
             row.write(2, value)
-            value = o.user.occupation
+            if o.occupation_select:
+                value = o.occupation_select.name
+            else:
+                value = o.occupation
             row.write(3, value)
-            row.write(4, o.user.job_company)
-            row.write(5, o.user.company_position)
+            if o.job_company_select:
+                row.write(4, o.job_company_select.name)
+            else:
+                row.write(4, o.job_company)
+            row.write(5, o.company_position)
             if o.virtual:
                 row.write(6, "Virtual")
             elif o.in_person:
                 row.write(6, "Presencial")
             else:
                 row.write(6, "-")
-            # tz = pytz.timezone("America/Lima")
-            # value = o.created.astimezone(tz).strftime(
-            #     "%d/%m/%Y, %H:%M:%S")
-            # row.write(8, value)
+            tz = pytz.timezone("America/Lima")
+            value = o.created.astimezone(tz).strftime(
+                "%d/%m/%Y, %H:%M:%S")
+            row.write(8, value)
         wb.save(response)
         return response
 
@@ -96,11 +104,11 @@ class AdminCustomerViewSet(ModelViewSet):
         url_path='download-files-xlsx',
         url_name='download-xlsx-files')
     def download_xlsx_files(self, request, pk=None):
-        queryset = Customer.objects.exclude(profile_image="").order_by('names')
+        queryset = Customer.objects.exclude(
+            profile_image="").order_by('names')
         return self.download_files_list(queryset)
 
     def download_files_list(self, queryset):
-        import pytz
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename="customers.xls"'  # noqa
 
