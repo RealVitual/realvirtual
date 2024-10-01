@@ -239,6 +239,9 @@
                             {% endif %}
                             <div class="b4Info">
                                 {% if logged_user and company_user.confirmed%}
+                                    {% if schedule.schedule_file %}
+                                        <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar only"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a>
+                                    {% endif %}
                                     {% if schedule.get_current_status == 'upcoming' %}
                                         {% comment %} <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a> {% endcomment %}
                                     {% endif %}
@@ -648,50 +651,53 @@
         }
 
         let elb4ClickSelect = document.getElementsByClassName("b4ClickSelect")
-        for(const b4ClickSelect of elb4ClickSelect){
-            if(b4ClickSelect.nextElementSibling){
-                let eloptioItem = b4ClickSelect.nextElementSibling.children;
-                for(const optioItem of eloptioItem){
-                    optioItem.addEventListener("click",function(e){
-                        e.preventDefault();
-                        e.stopPropagation();
-                        let getTextNameOption = this.getAttribute('data-option');
-                        let filter_type = this.getAttribute('data-type');
-                        let currentUrl = window.location.href;
-                        if(getTextNameOption == 'all'){
-                            if(!currentUrl.includes('#')){
-                                let url = new URL(currentUrl + '#agenda');
-                                url.searchParams.delete(filter_type);
-                                window.location.href = url.toString();
+        if(elb4ClickSelect){
+            for(const b4ClickSelect of elb4ClickSelect){
+                if(b4ClickSelect.nextElementSibling){
+                    let eloptioItem = b4ClickSelect.nextElementSibling.children;
+                    for(const optioItem of eloptioItem){
+                        optioItem.addEventListener("click",function(e){
+                            e.preventDefault();
+                            e.stopPropagation();
+                            let getTextNameOption = this.getAttribute('data-option');
+                            let filter_type = this.getAttribute('data-type');
+                            let currentUrl = window.location.href;
+                            if(getTextNameOption == 'all'){
+                                if(!currentUrl.includes('#')){
+                                    let url = new URL(currentUrl + '#agenda');
+                                    url.searchParams.delete(filter_type);
+                                    window.location.href = url.toString();
+                                }else{
+                                    let url = new URL(currentUrl);
+                                    url.searchParams.delete(filter_type);
+                                    window.location.href = url.toString();
+                                }
                             }else{
-                                let url = new URL(currentUrl);
-                                url.searchParams.delete(filter_type);
-                                window.location.href = url.toString();
+                                if(!currentUrl.includes('#')){
+                                    let url = new URL(currentUrl + '#agenda');
+                                    url.searchParams.set(filter_type, getTextNameOption);
+                                    window.location.href = url.toString();
+                                }else{
+                                    let url = new URL(currentUrl);
+                                    url.searchParams.set(filter_type, getTextNameOption);
+                                    window.location.href = url.toString();
+                                }
                             }
-                        }else{
-                            if(!currentUrl.includes('#')){
-                                let url = new URL(currentUrl + '#agenda');
-                                url.searchParams.set(filter_type, getTextNameOption);
-                                window.location.href = url.toString();
-                            }else{
-                                let url = new URL(currentUrl);
-                                url.searchParams.set(filter_type, getTextNameOption);
-                                window.location.href = url.toString();
-                            }
-                        }
-                        this.parentNode.previousElementSibling.children[1].innerText = getTextNameOption
-                        this.parentNode.parentNode.classList.remove('active')
-                    });
+                            this.parentNode.previousElementSibling.children[1].innerText = getTextNameOption
+                            this.parentNode.parentNode.classList.remove('active')
+                        });
+                    }
                 }
+                else{
+                }
+                b4ClickSelect.addEventListener('click',function(e) {
+                    e.preventDefault()
+                    e.stopPropagation();
+                    this.parentNode.classList.toggle('active');
+                })
             }
-            else{
-            }
-            b4ClickSelect.addEventListener('click',function(e) {
-                e.preventDefault()
-                e.stopPropagation();
-                this.parentNode.classList.toggle('active');
-            })
         }
+
 
         window.addEventListener("click",function(){
             for(const b4ClickSelect of elb4ClickSelect){
