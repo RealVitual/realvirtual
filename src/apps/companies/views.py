@@ -94,7 +94,7 @@ class AdminCustomerViewSet(ModelViewSet):
             tz = pytz.timezone("America/Lima")
             value = o.created.astimezone(tz).strftime(
                 "%d/%m/%Y, %H:%M:%S")
-            row.write(8, value)
+            row.write(7, value)
         wb.save(response)
         return response
 
