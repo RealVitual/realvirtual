@@ -202,6 +202,13 @@
                                             <button type="button" class="btn btn-warning">Descargar</button>
                                         </a>
                                     </div>
+                                    <br>
+                                    <p class="card-text text-muted mb-0">Preferencias</p>
+                                    <div class="center col-12 budget-wrapper">
+                                        <a id="export_preferences">
+                                            <button type="button" class="btn btn-warning">Descargar</button>
+                                        </a>
+                                    </div>
                                     {% comment %} <p class="card-text text-muted mb-0">Asistentes</p>
                                     <h3 class="font-weight-bolder mb-0">{{asistants}}</h3>
                                     <div class="center col-12 budget-wrapper">
@@ -239,6 +246,10 @@
                 e.preventDefault();
                 window.location = "/api/companies/customers_list/download-xlsx/"
         });
+        $('#export_preferences').click(function(e) {
+            e.preventDefault();
+            window.location = "/api/companies/customers_list/download-preferences/"
+    });
         {% comment %} $('#export_schedules').click(function(e) {
                 e.preventDefault();
                 window.location = "/api/events/scheduled_list/download-xlsx/"

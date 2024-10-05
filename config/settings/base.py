@@ -63,6 +63,7 @@ THIRD_PARTY_APPS = [
     'storages',
     'mptt',
     'prettyjson',
+    'rest_framework',
     ]
 
 LOCAL_APPS = [

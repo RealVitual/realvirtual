@@ -9,6 +9,9 @@ import xlwt
 from .models import UserCompany
 from src.apps.customers.models import Customer
 import pytz
+from src.apps.landing.models import UserAnswer
+from itertools import groupby
+from operator import itemgetter
 
 
 class AdminCustomerViewSet(ModelViewSet):
@@ -44,6 +47,18 @@ class AdminCustomerViewSet(ModelViewSet):
             company=request.company, is_admin=False)
         return self.download_xlsx(queryset)
 
+    @action(
+        detail=False,
+        methods=['get'],
+        url_path='download-preferences',
+        url_name='download-preferences-list')
+    def download_preferences_list(self, request, pk=None):
+        questions = request.company.company_questions.filter(
+            is_active=True).order_by('position')
+        user_answers = UserAnswer.objects.filter(question__in=questions).order_by('question__position')
+        return self.download_preferences_xlsx(user_answers, questions, request.company)
+
+
     def download_xlsx(self, queryset):
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename="customers.xls"'  # noqa
@@ -55,7 +70,7 @@ class AdminCustomerViewSet(ModelViewSet):
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
         columns = ['Nombre y Apellido', 'Email', 'País',
-                   'Profesión', 'Empresa', 'Cargo', 'Tipo', 'Creado']
+                   'Profesión', 'Empresa', 'Cargo', 'Tipo', 'Telefono', 'Creado']
         row_index = 0
         # Header
         for column_index, value in enumerate(columns):
@@ -92,9 +107,10 @@ class AdminCustomerViewSet(ModelViewSet):
             else:
                 row.write(6, "-")
             tz = pytz.timezone("America/Lima")
+            row.write(7, o.phone)
             value = o.created.astimezone(tz).strftime(
                 "%d/%m/%Y, %H:%M:%S")
-            row.write(7, value)
+            row.write(8, value)
         wb.save(response)
         return response
 
@@ -139,5 +155,54 @@ class AdminCustomerViewSet(ModelViewSet):
             value = o.profile_image.name.split('/')[-1]
             row.write(2, value)
 
+        wb.save(response)
+        return response
+
+    def download_preferences_xlsx(self, queryset, questions, company):
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="preferencias.xls"'  # noqa
+
+        wb = xlwt.Workbook(encoding='utf-8')
+
+        # Sheet for attributes
+        ws = wb.add_sheet('Preferencias')
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        columns = ['email']
+        for question in questions:
+            columns.append(question.name)
+        queryset = queryset.values("user__email", "question__name", "choice_question__name")
+        grouped_answers = {}
+        for item in queryset:
+            user = item["user__email"]
+            if user not in grouped_answers:
+                grouped_answers[user] = {
+                    "user": user,
+                    "answers": []
+                }
+            grouped_answers[user]["answers"].append({
+                "question": item["question__name"],
+                "choice_question": item["choice_question__name"]
+            })
+        print(grouped_answers)
+
+        row_index = 0
+        # Header
+        for column_index, value in enumerate(columns):
+            ws.write(row_index, column_index, value, font_style)
+
+        for column_index in range(0, len(columns)):
+            ws.col(column_index).width = 2962*3
+
+        font_style = xlwt.XFStyle()
+        c = 0
+        for user, values in grouped_answers.items():
+            c += 1
+            f = 0
+            row = ws.row(c)
+            row.write(f, user)
+            for answer in values['answers']:
+                f += 1
+                row.write(f, answer['choice_question'])
         wb.save(response)
         return response
