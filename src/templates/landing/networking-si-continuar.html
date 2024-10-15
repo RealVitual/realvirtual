@@ -117,14 +117,14 @@
     });
      $('#searchInput').keydown(function(event) {
         if (event.keyCode === 13) {
-            event.preventDefault();
             const query = $('#searchInput').val();
             let url = new URL(window.location.origin + "{% url 'landing:networking' %}");
-            if("{{selected_category}}"){
+            if("{{selected_category}}" != "None"){
                 url.searchParams.set('category', "{{selected_category}}")
             }
             url.searchParams.set('search', query)
-        }
+            window.location.href = url.toString();
+    }
     });
      window.addEventListener("click", function(e) {
         elb18Select.classList.remove('active');
