@@ -64,13 +64,14 @@ class HomeView(CreateView):
             filtered_shift = None
             schedules = []
             for filter, value in query_filters.items():
-                if filter == "date":
-                    filtered_date = value[0]
-                elif filter == "shift":
-                    filtered_shift = value[0]
-                else:
-                    filtered_filters.append(filter)
-                    filtered_categories.append(value[0])
+                if 'fbclid' not in filter:
+                    if filter == "date":
+                        filtered_date = value[0]
+                    elif filter == "shift":
+                        filtered_shift = value[0]
+                    else:
+                        filtered_filters.append(filter)
+                        filtered_categories.append(value[0])
             schedules_query = Schedule.objects.filter(
                 event__is_active=True,
                 event__company=company,
@@ -290,13 +291,14 @@ class EventsView(CreateView):
             filtered_shift = None
             schedules = []
             for filter, value in query_filters.items():
-                if filter == "date":
-                    filtered_date = value[0]
-                elif filter == "shift":
-                    filtered_shift = value[0]
-                else:
-                    filtered_filters.append(filter)
-                    filtered_categories.append(value[0])
+                if 'fbclid' not in filter:
+                    if filter == "date":
+                        filtered_date = value[0]
+                    elif filter == "shift":
+                        filtered_shift = value[0]
+                    else:
+                        filtered_filters.append(filter)
+                        filtered_categories.append(value[0])
             schedules_query = Schedule.objects.filter(
                 event__is_active=True,
                 event__company=company,
