@@ -28,6 +28,7 @@ from src.apps.tickets.utils import generate_ticket_code
 from django.conf import settings
 from src.apps.users.permissions import (
     AuthenticatedPermission, )
+from django.db.models import Q
 
 
 class HomeView(CreateView):
@@ -849,10 +850,13 @@ class NetworkingUsersView(View):
             request, *args, **kwargs)
 
     def get(self, request, **kwargs):
-        networking_users = UserNetworkingPreference.objects.filter(
+        networking_users = UserCompany.objects.filter(
+            company=request.company, allow_networking=True
+        ).exclude(email=self.user_company.email)
+        networking_preferences = UserNetworkingPreference.objects.filter(
             company=request.company, user_company__allow_networking=True
         ).exclude(user_company=self.user_company)
-        options_id_ = networking_users.values_list(
+        options_id = networking_preferences.values_list(
             'networking_option__id', flat=True)
         selected_category = None
         search_query = ""
@@ -860,17 +864,23 @@ class NetworkingUsersView(View):
         for filter, value in query_filters.items():
             if filter == "category":
                 selected_category = value[0]
-                networking_users = networking_users.filter(
+                networking_preferences = networking_preferences.filter(
                     networking_option=selected_category
                 )
+                user_companies_id = networking_preferences.values_list('user_company__id', flat=True)
+                networking_users = networking_users.filter(id__in=user_companies_id)
             if filter == "search":
+                networking_users = networking_users.filter(
+                    Q(job_company_select__name__icontains=value[0]) |
+                    Q(job_company__icontains=value[0]) |
+                    Q(company_position__icontains=value[0])
+                )
                 search_query = value[0]
-
 
         options = ['']
         options = NetworkingOption.objects.filter(
             company=request.company,
-            is_active=True, id__in=options_id_).order_by('name')
+            is_active=True, id__in=options_id).order_by('name')
         home_page = HomePage.objects.get(company=request.company)
         context = {
             "networking_users": networking_users,

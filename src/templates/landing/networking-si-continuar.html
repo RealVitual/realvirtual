@@ -10,7 +10,7 @@
 <section class="b11 pageEncuesta scrollWrap">
     <div class="b11Left scrollItem">
         <div class="b11LeftContent">
-            <a href="##" onClick="history.go(-1); return false;" class="gReturn">Regresar</a>
+            <a href="{% url 'landing:networking_preferences' %}"class="gReturn">Regresar</a>
             <h1 class="gTitle">Networking</h1>
             <div class="gParrafo">
                 <p>{{home_page.main_title}}</p>
@@ -56,24 +56,22 @@
                                 <th>Teléfono</th>
                             </tr>
                             {% for contact  in networking_users %}
-                                {% with user_company=contact.user_company %}
                                 <tr>
-                                    <td>{{user_company.full_name}}</td>
-                                    {% if user_company.job_company_select %}
-                                        <td>{{user_company.job_company_select.name}}</td>
+                                    <td>{{contact.full_name}}</td>
+                                    {% if contact.job_company_select %}
+                                        <td>{{contact.job_company_select.name}}</td>
                                     {% endif %}
-                                    {% if user_company.job_company %}
-                                        <td>{{user_company.job_company}}</td>
+                                    {% if contact.job_company %}
+                                        <td>{{contact.job_company}}</td>
                                     {% endif %}
-                                    <td>{{user_company.company_position}}</td>
-                                    <td><a href="mailto:{{user_company.email}}"><img src="/static/web/img/email-svgrepo-com.svg" width="25" alt=""></a></td>
+                                    <td>{{contact.company_position}}</td>
+                                    <td><a href="mailto:{{contact.email}}"><img src="/static/web/img/email-svgrepo-com.svg" width="25" alt=""></a></td>
                                     <td>
-                                        {% if user_company.phone %}
-                                            <a href="https://wa.me/{{user_company.phone}}?hola" target="_blank"><img src="/static/web/img/whatsapp-svgrepo-com.svg" width="25" alt=""></a>
+                                        {% if contact.phone %}
+                                            <a href="https://wa.me/{{contact.phone}}?hola" target="_blank"><img src="/static/web/img/whatsapp-svgrepo-com.svg" width="25" alt=""></a>
                                         {% endif %}
                                     </td>
                                 </tr>
-                                {% endwith %}
                             {% endfor %}
                         </table>
                     </div>

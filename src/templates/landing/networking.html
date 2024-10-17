@@ -12,9 +12,9 @@
         <div class="b11LeftContent">
             <a href="##" onClick="history.go(-1); return false;" class="gReturn">Regresar</a>
             <h1 class="gTitle">Networking</h1>
-            <div class="gParrafo">
+            {% comment %} <div class="gParrafo">
                 <p>{{home_page.main_title|default:""}}</p>
-            </div>
+            </div> {% endcomment %}
         </div>
     </div>
     <div class="b11Right scrollItem">
@@ -29,7 +29,7 @@
                         <div class="b17Option">
                             {% if option.id in preferences %}
                             <input id="{{option.id}}"  type="checkbox" name="{{option.id}}" value="{{option.id}}" checked>
-                            <label for="{{option.id}}" class="b17TabItem {{option.id}}" checked data-color="#008AC9">
+                            <label for="{{option.id}}" class="b17TabItem {{option.id}}" data-color="#008AC9">
                                 <h3>{{option.name}}</h3>
                             </label>
                             {% else %}
@@ -77,7 +77,8 @@
         $('input[type=checkbox]').each(function () {
             let check_id = this.id
             if (this.checked) {
-                $('label[for=' + check_id + ']').click();
+                $('label[for=' + check_id + ']').trigger( "click" );
+                $(this).trigger( "click" );
             }
         });
       }, 500);
