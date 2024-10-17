@@ -10,7 +10,7 @@
 <section class="b11 pageEncuesta scrollWrap">
     <div class="b11Left scrollItem">
         <div class="b11LeftContent">
-            <a href="##" onClick="history.go(-1); return false;" class="gReturn">Regresar</a>
+            <a href="{% url 'landing:home' %}"class="gReturn">Regresar</a>
             <h1 class="gTitle">Networking</h1>
              <div class="gParrafo">
                 <p>{{home_page.main_title|default:""}}</p>
