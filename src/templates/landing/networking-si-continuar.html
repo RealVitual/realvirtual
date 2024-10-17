@@ -13,7 +13,7 @@
             <a href="{% url 'landing:networking_preferences' %}"class="gReturn">Regresar</a>
             <h1 class="gTitle">Networking</h1>
             <div class="gParrafo">
-                <p>{{home_page.main_title}}</p>
+                <p>{{home_page.main_title|default:""}}</p>
             </div>
         </div>
     </div>
