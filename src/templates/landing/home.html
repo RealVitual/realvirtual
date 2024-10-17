@@ -377,8 +377,8 @@
 {% if header_section.show_gallery_section %}
 <section class="b5 scrollWrap anclaBlock" id="galeria">
     <div class="grilla">
-        <h4>Conoce más</h4>
-        <h3 class="gTitle white">Galería del evento</h3>
+        <h4>{{home_page.gallery_section_name}}</h4>
+        <h3 class="gTitle white">{{home_page.gallery_section_text}}</h3>
         <div class="b5Swiper swiper-container scrollItem swiper" data-initial="3">
             <div class="b5Wrap swiper-wrapper">
                 {% for video in videos %}

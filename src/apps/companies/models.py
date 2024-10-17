@@ -385,6 +385,12 @@ class HomePage(TimeStampedModel):
     sponsors_section_text = models.CharField(
         _('Auspiciadores texto'), max_length=255,
         blank=True, default="Con la participación de")
+    gallery_section_name = models.CharField(
+        _('Galería nombre Sección'), max_length=255,
+        blank=True, default="Empresa")
+    gallery_section_text = models.CharField(
+        _('Galería texto'), max_length=255,
+        blank=True, default="Con la participación de")
     networking_section_name = models.CharField(
         _('Networking nombre Sección'), max_length=255,
         blank=True, default="Networking")

@@ -67,7 +67,8 @@
                 scroll: false,
                 validateNonVisibleFields: true
             });
-
+            window.dataLayer = window.dataLayer || [];
+            console.log(window.dataLayer, 'DATA LAYER')
             $('.g8SumitLogin').click(function(e){
                 e.preventDefault();
                 var item = $(this);
@@ -132,6 +133,13 @@
                                 }, 3000)
                             }
                             if(data.success){
+                                window.dataLayer.push({
+                                    'event': 'formulario',
+                                    'email': register_data['email'],
+                                    'nombres': register_data['names'],
+                                    'apellidos': register_data['last_name']
+                                 });
+                                console.log(window.dataLayer, 'DATALAYER')
                                 $('.save-register').disabled = false;
                                 console.log(data, 'DATA')
                                 if(data.confirmed){
