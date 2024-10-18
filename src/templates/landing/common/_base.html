@@ -36,6 +36,15 @@
     </div>
 </div>
 {% endif %}
+{% if company.warning_img%}
+<div class="popUpInfo">
+    <a href="" class="icon-close cerrarPopup"></a>
+    <figure>
+        <img src="{{company.warning_img.url}}" alt="">
+    </figure>
+</div>
+{% endif %}
+
 <body class="{% block classbody %}{% endblock %}">
     {{company.code_body|safe}}
     <div class="contentWrapper">
@@ -260,7 +269,21 @@
                     localStorage.setItem('ocultarElemento', 'true');
                 });
             });
-
+            document.addEventListener("DOMContentLoaded", function () {
+                const popup = document.getElementsByClassName("popUpInfo")[0];
+                const cerrarPopup = document.getElementsByClassName("cerrarPopup")[0];
+                if (!localStorage.getItem("popupShown")) {
+                    popup.classList.add("active"); // Muestra el popup
+                    OVERLAY.classList.add("active");
+                    OVERLAY.style.zIndex = 1900
+                }
+                cerrarPopup.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    popup.classList.remove("active");
+                    localStorage.setItem("popupShown", "true");
+                    OVERLAY.classList.remove("active");
+                });
+            });
     </script>
 </body>
 </html>

@@ -58,6 +58,9 @@ class Company(BaseModel):
     logo = models.ImageField(
             _('Logo'), upload_to=get_upload_path("company"),
             null=True, blank=True)
+    warning_img = models.ImageField(
+            _('Imagen aviso'), upload_to=get_upload_path("warning_img"),
+            null=True, blank=True)
     favicon = models.ImageField(
             _('Favicon'), upload_to=get_upload_path("favicon"),
             null=True, blank=True)
