@@ -873,6 +873,7 @@ class NetworkingUsersView(View):
                 networking_users = networking_users.filter(id__in=user_companies_id)
             if filter == "search":
                 networking_users = networking_users.filter(
+                    Q(full_name__icontains=value[0]) |
                     Q(job_company_select__name__icontains=value[0]) |
                     Q(job_company__icontains=value[0]) |
                     Q(company_position__icontains=value[0])

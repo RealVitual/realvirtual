@@ -108,9 +108,9 @@
         if(option_id > 0){
             url.searchParams.set('category', option_id)
         }
-        if ($('#searchInput').val()){
-            url.searchParams.set('search', $('#searchInput').val())
-        }
+        //if ($('#searchInput').val()){
+        //    url.searchParams.set('search', $('#searchInput').val())
+        //}
         window.location.href = url.toString();
     });
      $('#searchInput').keydown(function(event) {
