@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    {% block cssadicional %}
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="/static/web/css-DMSans/css/styles.css?v=1{{ BUILD_ID }}"/>
+    <link rel="stylesheet" href="/static/web/js/validationform/validationEngine.jquery.css">
+</head>
+
+<body class="{% block classbody %}{% endblock %}">
+    <div class="contentWrapper">
+        <div class="wrapper">
+            <section class="b1 scrollWrap">
+                <picture class="imgCover">
+                    <source srcset="{{company.mobile_banner.url}}" media="(max-width: 767px)">
+                    <source srcset="{{company.banner.url}}" media="(max-width: 768px)">
+                    <img src="{{company.banner.url}}" width="1920" height="713"  alt="Myimage">
+                </picture>
+                <div class="grilla f center jcfs">
+                    <div class="b1Info top">
+                        <h2 class="scrollItem">{{home_page.first_title|default:""}}</h2>
+                        <h1 class="scrollItem">{{home_page.main_title|default:""}}</h1>
+                        <h3 class="scrollItem">{{home_page.secondary_title|default:""}}</h3>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    {% block jsfinal %}{% endblock %}
+    <script>
+    </script>
+</body>
+</html>

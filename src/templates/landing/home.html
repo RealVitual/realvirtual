@@ -757,7 +757,6 @@
                 }
             }
         }
-        eventClickAccordion("b4FilterItemClick")
 
         let elb4OpenPopupPerson = document.getElementsByClassName("b4OpenPopupPerson")
         if (elb4OpenPopupPerson){
@@ -988,5 +987,8 @@
         }
         setInterval(actualizarContador, 1000);
     }
+    if(document.getElementsByClassName("b4FilterItemClick")[0]){
+        eventClickAccordion("b4FilterItemClick")
+     }
 </script>
 {% endblock %}
