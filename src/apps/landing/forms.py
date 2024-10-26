@@ -299,17 +299,16 @@ class EmailPasswordForm(forms.Form):
     def clean(self):
         data = self.cleaned_data
         email = data.get("email")
-        if not User.objects.filter(email=email):
+        if not User.objects.filter(email=email.lower()):
             mensaje = "Error de Credenciales"
             raise forms.ValidationError(mensaje)
         return data
 
     def save(self, commit=True):
         email = self.cleaned_data.get('email')
-        customer = Customer.objects.get(email=email)
         uuid_hash = str(uuid4())
         user_company = UserCompany.objects.get(
-            email=email, company=self.company)
+            email=email.lower(), company=self.company)
         user_company.uuid_hash = uuid_hash
         user_company.save()
         url = "%s/reset-password/%s" % (self.domain, uuid_hash)
@@ -319,9 +318,9 @@ class EmailPasswordForm(forms.Form):
                                             email_type="PASSWORD")
         if mailing.from_email:
             context = dict()
-            context["names"] = customer.names
-            context["first_name"] = customer.names.split(" ")[0]
-            context["email"] = customer.email
+            context["names"] = user_company.names
+            context["first_name"] = user_company.names.split(" ")[0]
+            context["email"] = user_company.email.lower()
             context["company"] = self.company
             context["url"] = url
 
@@ -331,11 +330,11 @@ class EmailPasswordForm(forms.Form):
             e_mail = u'{0}<{1}>'.format(
                 mailing.from_name, mailing.from_email)
             msg = EmailMessage(
-                subject, html_content, e_mail, [customer.email, ])
+                subject, html_content, e_mail, [user_company.email, ])
             msg.content_subtype = "html"
             send_html_mail(
-                subject, html_content, e_mail, [customer.email, ],
-                customer, self.company)
+                subject, html_content, e_mail, [user_company.email, ],
+                user_company, self.company)
 
 
 class ResetPasswordForm(forms.Form):
