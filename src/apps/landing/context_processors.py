@@ -31,8 +31,11 @@ def main_info(request, **kwargs):
                 is_live = event
                 break
         choose_access_type = False
+        allow_register =  True
         if company.access_type == "HYBRID" and company.capacity > company.current_quantity:
             choose_access_type = True
+        if company.capacity <= company.current_quantity:
+            allow_register = False
         user = request.user
         data = {
             'STATIC_VERSION': settings.STATIC_VERSION,
@@ -43,6 +46,7 @@ def main_info(request, **kwargs):
             'user_schedules': [],
             'recaptcha_site_key': settings.RECAPTCHA_SITE_KEY,
             'choose_access_type': choose_access_type,
+            'allow_register': allow_register,
             'company': company,
             'countries': Country.objects.all(),
             'job_companies': JobCompany.objects.filter(company=company),

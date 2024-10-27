@@ -87,6 +87,10 @@ class Company(BaseModel):
     confirm_user = models.BooleanField(_('Confirmar Usuarios'), default=False)
     message_confirm_user = RichTextField(
         _('Mensaje confirmación'), null=True, blank=True)
+    title_closed_in_person_register = models.CharField(
+        _('Titulo Cierre registro presencial'), max_length=255, null=True, blank=True)
+    message_closed_in_person_register = models.TextField(
+        _('Mensaje Cierre registro presencial'), null=True, blank=True)
     enable_credentials = models.BooleanField(_('Habilitar credenciales'),
                                              default=False)
     enable_preferences = models.BooleanField(_(
