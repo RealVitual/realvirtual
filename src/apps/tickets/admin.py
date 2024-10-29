@@ -12,7 +12,7 @@ class TicketUseInline(admin.TabularInline):
 
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ('code', 'company', 'user')
+    list_display = ('code', 'company', 'user', 'created')
     search_fields = ('email', 'code', 'full_name')
     # actions = [export_as_excel_action(), ]
     inlines = [TicketUseInline, ]

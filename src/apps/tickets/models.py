@@ -86,6 +86,11 @@ class Ticket(UidMixin, BaseModel):
     def __str__(self):
         return self.code
 
+    class Meta:
+        verbose_name = "Ticket"
+        verbose_name_plural = "Tickets"
+        ordering = ['-created']
+
 
 class TicketUse(models.Model):
     ticket = models.ForeignKey(
