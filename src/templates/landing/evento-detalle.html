@@ -557,7 +557,9 @@
     function getReCaptcha(){
         grecaptcha.ready(function() {
             grecaptcha.execute('{{recaptcha_site_key}}', {action: "/"}).then(function(token) {
-                document.getElementById('g-recaptcha-response').value = token;
+                if(captcha_register){
+                    document.getElementById('g-recaptcha-response').value = token;
+                }
                 document.getElementById('g-recaptcha-response_login').value = token;
             });
         });
