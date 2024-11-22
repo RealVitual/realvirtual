@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    {% block cssadicional %}
+    {% endblock %}
+    {% if company.font %}
+        <link rel="stylesheet" type="text/css" href="/static/web/{{company.font.name}}/css/styles.css?v=1{{ BUILD_ID }}"/>
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="/static/web/css-DMSans/css/styles.css?v=1{{ BUILD_ID }}"/>
+    {% endif %}
+    <link rel="stylesheet" href="/static/web/js/validationform/validationEngine.jquery.css">
+</head>
+
+
+<body class="{% block classbody %}{% endblock %}">
+    <div class="contentWrapper">
+        <div class="wrapper">
+            <section class="b1 scrollWrap" style="position: static;">
+                <picture class="imgCover">
+                    <source srcset="{{company.close_mobile_banner.url}}" media="(max-width: 767px)">
+                    <source srcset="{{company.close_banner.url}}" media="(max-width: 768px)">
+                    <img src="{{company.close_banner.url}}" width="1920" height="713"  alt="Myimage">
+                </picture>
+            </section>
+        </div>
+    </div>
+    <script src="/static/web/js/jquery-3.7.1.min.js" type="text/javascript"></script>
+    <script src="/static/web/js/main.js" type="text/javascript"></script>
+    <script src="/static/web/js/validationform/jquery.validationEngine.js"></script>
+
+    <!-- JSADD START -->
+    {% block jsfinal %}{% endblock %}
+    <!-- JSADD END -->
+    <script>
+    </script>
+ 
+</body>
+</html>

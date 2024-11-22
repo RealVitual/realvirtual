@@ -52,6 +52,13 @@ class Company(BaseModel):
     counter_datetime = models.DateTimeField(_('Fecha y Hora de contador'),
                                             null=True, blank=True)
     use_counter = models.BooleanField(_('Usa Contador'), default=False)
+    close_landing = models.BooleanField(_('Cerrar Landing'), default=False)
+    close_banner = models.ImageField(
+            _('Closed Banner'), upload_to=get_upload_path('banner'),
+            null=True, blank=True)
+    close_mobile_banner = models.ImageField(
+            _('Closed Mobile Banner'), upload_to=get_upload_path('mobile_banner'),
+            null=True, blank=True)
     counter_text = models.CharField(
         _('Texto contador'), max_length=255, blank=True,
         null=True, default="Evento disponible en")

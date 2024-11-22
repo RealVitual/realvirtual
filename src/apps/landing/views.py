@@ -1092,3 +1092,12 @@ class CertificateView(View):
         context = {
         }
         return render(request, self.template_name, context)
+
+
+class CloseLandingView(View):
+    template_name = "landing/closed_event.html"
+
+    def get(self, request, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
