@@ -2,14 +2,19 @@ from io import BytesIO
 import qrcode
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from .models import Ticket
+from src.apps.companies.models import UserCompany
 
 
 def generate_ticket_code(user=None, company=None):
     ticket = Ticket()
     if user:
+        user_company = UserCompany.objects.get(user=user, company=company)
         existing_tickets = Ticket.objects.filter(user=user, company=company) # noqa
         if existing_tickets:
-            return existing_tickets.last()
+            ticket = existing_tickets.last()
+            ticket.full_name = user_company.full_name
+            ticket.save()
+            return ticket
         ticket.user = user
         ticket.email = user.email
         ticket.full_name = user.full_name
