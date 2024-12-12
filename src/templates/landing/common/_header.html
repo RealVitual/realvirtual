@@ -34,7 +34,11 @@
                     <a href="#contact" class="headerAnclaBlock" style="color:{{header_section.header_text_color}};">{{header_section.contact_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
                 {% if logged_user and is_live and company_user.confirmed %}
-                    <a href="{% url 'landing:transmission' is_live.slug %}" class="headerEnVivo" style="background: #eb5757;">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+                    {% if company.access_type == "IN_PERSON" %}
+                        <a class="headerEnVivo" style="background: #eb5757;">En vivo<img src="/static/web/img/live.svg" alt=""></a>
+                    {% else %}
+                        <a href="{% url 'landing:transmission' is_live.slug %}" class="headerEnVivo" style="background: #eb5757;">En vivo<img src="/static/web/img/live.svg" alt=""></a>
+                    {% endif %}
                 {% endif %}
             {% endif %}
         </div>
