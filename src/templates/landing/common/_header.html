@@ -78,6 +78,8 @@
                                     {% endif %}
                                     {% if company_user.certificate %}
                                         <li><a target="_blank" href="{{company_user.certificate.url}}">Mi certificado</a></li>
+                                    {% elif company_user.allow_certificate %}
+                                        <li><a href="{% url 'landing:generate_certificate' %}">Mi certificado</a></li>
                                     {% endif %}
                                 </ul>
                             {% endif %}

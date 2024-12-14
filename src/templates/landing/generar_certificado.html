@@ -1,0 +1,55 @@
+{% extends "landing/common/_base.html" %}
+
+{% block cssadicional %}
+
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b2 scrollWrap">
+    <div class="grilla">
+        <div class="b2Info">
+            {% if messages %}
+                <div class="gParrafo scrollItem">
+                    {% if messages %}
+                    {% for message in messages %}
+                        <p style="text-align: center;">{{message}}</p>
+                    {% endfor %}
+                    {% else %}
+                    <p>Certificado Generado.</p>
+                    {% endif %}
+                </div>
+                <div class="b2Info scrollItem">
+                    <a target="_blank" href="{{company_user.certificate.url}}" class="b10DownloadCredencial">Descargar certificado<i class="icon-arrowRight"></i></a>
+                </div>
+                <form action="" class="g8Form scrollItem" method="POST">
+                    <a href="{% url 'landing:home' %}" class="g8LinkForm">Regresar</a>
+                </form>
+            {% else %}
+                <h1 class="gTitle scrollItem">Genera tu certificado</h1>
+                <div class="gParrafo scrollItem">
+                    <p>Ingresa su nombre completo que se usará para generar su certificado.</p>
+                </div>
+                <form action="" class="g8Form scrollItem" method="POST">
+                    {% csrf_token %}
+                    <div class="g8Input">
+                        <span>Nombre completo</span>
+                        <input type="text" class="g8Box validate[required]" name="full_name">
+                    </div>
+                    <button type="submit">Generar</button>
+                    <a href="{% url 'landing:home' %}" class="g8LinkForm">Cancelar</a>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}

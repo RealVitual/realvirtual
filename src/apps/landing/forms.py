@@ -12,6 +12,7 @@ import threading
 from django.core.mail import EmailMessage
 from django.core.mail import get_connection
 from .constants import forms_dict
+from src.apps.landing.utils import generate_certificate_pdf
 
 
 def send_html_mail(subject, html_content, e_mail, receptors,
@@ -360,3 +361,20 @@ class ResetPasswordForm(forms.Form):
         self.user.uuid_hash = ""
         self.user.save()
         return self.user
+
+
+class CertificateForm(forms.Form):
+    full_name = forms.CharField()
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs['initial'].get('user')
+        self.company_id = kwargs['initial'].get('company_id')
+        super(CertificateForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        full_name = self.cleaned_data["full_name"]
+        user_company = UserCompany.objects.get(
+            user__email=self.user, company_id=self.company_id)
+        generate_certificate_pdf(user_company, full_name)
+        return self.user
+

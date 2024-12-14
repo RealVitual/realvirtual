@@ -601,6 +601,7 @@ class UserCompany(BaseModel):
     country = models.ForeignKey(
         Country, related_name="country_company_users",
         on_delete=models.SET_NULL, null=True, blank=True)
+    allow_certificate = models.BooleanField(_('Permitir certificado'), default=False)
     certificate = models.FileField(
         _('certificate'),
         upload_to=get_upload_path('certificates'),

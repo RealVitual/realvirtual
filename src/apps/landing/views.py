@@ -15,7 +15,7 @@ from .models import (
     NetworkingOption, UserNetworkingPreference)
 from .forms import (
     RegisterForm, CredentialCustomerForm, LoginForm, EmailPasswordForm,
-    ResetPasswordForm)
+    ResetPasswordForm, CertificateForm)
 from django.contrib.auth import login, logout
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -1101,3 +1101,56 @@ class CloseLandingView(View):
         context = {}
         return render(request, self.template_name, context)
 
+
+class GenerateCertificateView(CreateView):
+    form_class = CertificateForm
+    template_name = "landing/generar_certificado.html"
+    uuid = None
+    user = None
+
+    def dispatch(self, request, *args, **kwargs):
+        company = self.request.company
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        self.user_company = UserCompany.objects.get(
+            company=company,
+            user=request.user)
+        if not self.user_company.confirmed:
+            return redirect(reverse('landing:home'))
+        return super(GenerateCertificateView, self).dispatch(
+            request, *args, **kwargs)
+
+    def get_form_kwargs(self, **kwargs):
+        form_kwargs = super(
+            GenerateCertificateView, self).get_form_kwargs(**kwargs)
+        form_kwargs["initial"] = dict(user=self.user_company, company_id=self.request.company.id)
+        return form_kwargs
+
+    def get(self, request, *args, **kwargs):
+        if self.user_company.certificate and not request.session.get('download_certificate_view'):
+            return redirect(reverse('landing:home'))
+        if request.session.get('download_certificate_view'):
+            del request.session['download_certificate_view']
+        context = {
+            'form': self.get_form()
+            }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form, request)
+        else:
+            return self.form_invalid(form, request)
+
+    def form_valid(self, form, request):
+        messages.info(request, "Certificado generado con éxito")
+        request.session['download_certificate_view'] = 1
+        form.save()
+        return redirect(reverse('landing:generate_certificate'))
+
+    def form_invalid(self, form, request):
+        messages.error(
+                request, form.non_field_errors())
+        return redirect(reverse(
+            'landing:generate_certificate'))
