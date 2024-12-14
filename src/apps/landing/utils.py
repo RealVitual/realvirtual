@@ -141,11 +141,13 @@ def record_to_pdf(user, domain, company):
     return user
 
 
-def generate_certificate_pdf(user_company):
+def generate_certificate_pdf(user_company, names=None):
     # user_company = UserCompany.objects.get(company=company, user=user)
     company = user_company.company
     c_settings, created = CerficateSettings.objects.get_or_create(
         company=company)
+    if names:
+        user_company.full_name = names
     filename = '%s.pdf' % user_company.full_name
     certificate_pdf = render_to_string(
         'landing/certificate.html',
