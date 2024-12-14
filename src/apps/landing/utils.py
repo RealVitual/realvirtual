@@ -147,7 +147,7 @@ def generate_certificate_pdf(user_company, names=None):
     c_settings, created = CerficateSettings.objects.get_or_create(
         company=company)
     if names:
-        user_company.full_name = names
+        user_company.full_name = names.title()
     filename = '%s.pdf' % user_company.full_name
     certificate_pdf = render_to_string(
         'landing/certificate.html',
