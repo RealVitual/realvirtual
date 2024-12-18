@@ -238,25 +238,6 @@
                             {% else %}
                             {% endif %}
                             <div class="b4Info">
-                                {% if logged_user and company_user.confirmed%}
-                                    {% if schedule.schedule_file %}
-                                        {% comment %} <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar only"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a> {% endcomment %}
-                                        <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a>
-                                    {% endif %}
-                                    {% if schedule.get_current_status == 'upcoming' %}
-                                        {% comment %} <a href="#" class="b4Agendar agregarCalendario" data-item-id="{{schedule.id}}"><span>Agendar</span></a> {% endcomment %}
-                                    {% endif %}
-                                    {% if schedule.get_current_status == 'is_live' %}
-                                        {% if company.access_type == "IN_PERSON" %}
-                                            <a class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
-                                        {% else %}
-                                            <a href="{% url 'landing:transmission'  schedule.event.slug %}" class="b4Envivo">En vivo <img src="/static/web/img/live.svg" alt=""></a>
-                                        {% endif %}
-                                    {% endif %}
-                                    {% if schedule.get_current_status == 'past' and schedule.video_url %}
-                                        <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
-                                    {% endif %}
-                                {% endif %}
                                 {% if company.use_rooms %}
                                     <p class="sala"><img src="/static/web/img/sala.svg" alt="" width="13">{{schedule.room.name}}</p>
                                 {% endif %}
@@ -268,6 +249,28 @@
                                 <div class="gParrafo">
                                     <p>{{schedule.description}}</p>
                                 </div>
+                                <div class="b4Buttons f aifs jcfs">
+                                {% if logged_user and company_user.confirmed%}
+                                    {% if schedule.schedule_file %}
+                                        {% comment %} <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar only"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a> {% endcomment %}
+                                        <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar only b4ButtonRelative"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a>
+                                    {% endif %}
+                                    {% if schedule.get_current_status == 'upcoming' %}
+                                        {% comment %} <a href="#" class="b4Agendar agregarCalendario b4ButtonRelative" data-item-id="2"><span>Agendar</span></a> {% endcomment %}
+                                    {% endif %}
+                                    {% if schedule.get_current_status == 'is_live' %}
+                                        {% if company.access_type == "IN_PERSON" %}
+                                            <a class="b4Envivo b4ButtonRelative">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+                                        {% else %}
+                                            <a href="{% url 'landing:transmission'  schedule.event.slug %}" class="b4Envivo b4ButtonRelative">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if schedule.get_current_status == 'past' and schedule.video_url %}
+                                        <a href="#" class="b4VolverVer a ver clickVideo popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
+                                    {% endif %}
+                                {% endif %}
+                               </div>
+
                             </div>
                         </div>
                         <div class="b4ItemRight">
