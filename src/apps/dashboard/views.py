@@ -46,7 +46,8 @@ class DashboardView(View):
             "events": events,
             "customers": customers[:10] if customers.count() >= 10 else customers,
             "customers_number": customers.count(),
-            "asistants": CustomerEvent.objects.count(),
+            "asistants": CustomerEvent.objects.filter(
+                company_user__company=request.company).count(),
             'day': now.strftime("%d"),
             'month': now.strftime("%m"),
             'current': now.strftime("%I:%M %p")

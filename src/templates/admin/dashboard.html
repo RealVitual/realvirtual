@@ -203,9 +203,16 @@
                                         </a>
                                     </div>
                                     <br>
-                                    <p class="card-text text-muted mb-0">Preferencias</p>
+                                    {% comment %} <p class="card-text text-muted mb-0">Preferencias</p>
                                     <div class="center col-12 budget-wrapper">
                                         <a id="export_preferences">
+                                            <button type="button" class="btn btn-warning">Descargar</button>
+                                        </a>
+                                    </div> {% endcomment %}
+                                    <p class="card-text text-muted mb-0">Asistencias</p>
+                                    <h3 class="font-weight-bolder mb-0">{{asistants}}</h3>
+                                    <div class="center col-12 budget-wrapper">
+                                        <a id="export_asistants">
                                             <button type="button" class="btn btn-warning">Descargar</button>
                                         </a>
                                     </div>
@@ -249,7 +256,11 @@
         $('#export_preferences').click(function(e) {
             e.preventDefault();
             window.location = "/api/companies/customers_list/download-preferences/"
-    });
+        });
+        $('#export_asistants').click(function(e) {
+            e.preventDefault();
+            window.location = "/api/companies/customers_list/download-asistants/"
+        });
         {% comment %} $('#export_schedules').click(function(e) {
                 e.preventDefault();
                 window.location = "/api/events/scheduled_list/download-xlsx/"
