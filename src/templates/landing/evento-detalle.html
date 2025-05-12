@@ -584,6 +584,27 @@
       });
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var iframe = document.querySelector('iframe[src*="vimeo.com/event"]');
+      if (!iframe) return;
+      iframe.setAttribute('referrerpolicy', 'origin-when-cross-origin');
+
+      var contenedor = document.createElement('div');
+      contenedor.id = 'vimeo-container-secure';
+      contenedor.style.cssText = iframe.parentNode.style.cssText;
+
+      var nuevoIframe = iframe.cloneNode(true);
+
+      iframe.parentNode.parentNode.replaceChild(contenedor, iframe.parentNode);
+      contenedor.appendChild(nuevoIframe);
+
+      var metaReferrer = document.createElement('meta');
+      metaReferrer.name = 'referrer';
+      metaReferrer.content = 'origin';
+      document.head.appendChild(metaReferrer);
+    });
+</script>
 <script type="text/javascript">
     if(document.getElementsByClassName("b3")[0]){
         eventGrilla("b3Left","left")
