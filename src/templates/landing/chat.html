@@ -64,18 +64,11 @@
 <script src="/static/chat/reconnecting-websocket.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var iframe = document.querySelector('iframe[src*="vimeo.com/event"]');
+      var iframe = document.querySelector('iframe[src*="vimeo.com"]');
       if (!iframe) return;
       iframe.setAttribute('referrerpolicy', 'origin-when-cross-origin');
 
-      var contenedor = document.createElement('div');
-      contenedor.id = 'vimeo-container-secure';
-      contenedor.style.cssText = iframe.parentNode.style.cssText;
 
-      var nuevoIframe = iframe.cloneNode(true);
-
-      iframe.parentNode.parentNode.replaceChild(contenedor, iframe.parentNode);
-      contenedor.appendChild(nuevoIframe);
 
       var metaReferrer = document.createElement('meta');
       metaReferrer.name = 'referrer';
