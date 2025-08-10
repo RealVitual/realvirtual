@@ -56,6 +56,11 @@ class HomeView(CreateView):
         }
         if request.company:
             company = request.company
+            if company.version and company.version != 1:
+                internal_view = self.template_name.split('/')[-1]
+                self.template_name = (
+                    f"landing_{company.version}/{internal_view}"
+                )
             home_page = HomePage.objects.get(company=company)
             filtered_date = None
             query_filters = dict(request.GET)

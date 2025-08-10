@@ -1,0 +1,244 @@
+<!--
+    1: sessionOn
+    2: sessionOff
+-->
+<header class="header sessionOff">
+    <div class="grilla f aic jcsb">
+        <div class="headerLeft">
+            <a href="#" class="headerLogo">
+                <figure>
+                    <img src="static/web_2/img/credicorp/logoHeader.svg" alt="">
+                </figure>
+            </a>
+        </div>
+        <div class="headerAnclas f aic jcc">
+            <!-- la clase "lineActive" es la barra qeu se activa cuando se da click , 
+                el color deberìa ser administrable segun el color de la web 
+            -->
+            <a href="#acerca" class="headerAnclaBlock">Acerca de <span class="lineActive" style="background:#008ac9;"></span></a>
+            <a href="#agenda" class="headerAnclaBlock">Agenda <span class="lineActive" style="background:#008ac9;"></span></a>
+            <a href="#expositor" class="headerAnclaBlock">Expositor <span class="lineActive" style="background:#008ac9;"></span></a>
+            <a href="#blog" class="headerAnclaBlock">Blog <span class="lineActive" style="background:#008ac9;"></span></a>
+            <a href="#empresa" class="headerAnclaBlock">Empresas <span class="lineActive" style="background:#008ac9;"></span></a>
+        </div>
+        <div class="headerRight f aic jcfe">
+            <div class="headerOptionsSessions">
+                <!-- OPCIÒN CUANDO NO ESTA LOGEADO -->
+                <div class="headerOptionLogout f aic jcfe">
+                    <a href="" class="headerButtonLogin login">Iniciar Sesión</a>
+                    <a href="" class="headerButtonRegistrate">Regístrate</a>
+                </div>
+                <!-- OPCIÒN CUANDO ESTA LOGEADO -->
+                <!-- download-user -->
+                <!-- user-icon -->
+                <div class="headerOptionLogin f aic jcfe">
+                    <a href="#" class="headerNameUser arrowClick">Hola leslie</a>
+                    <ul>
+                        <li>
+                            <a href="#" class="link">Mi Ticket</a>
+                        </li>
+                        <li>
+                            <a href="#" class="link">Mi Certificado</a>
+                        </li>
+                        <li>
+                            <a href="#">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- OPCIÒN CUANDO ESTAS EN LA PAGINA DE CHAT EN VIVO -->
+            <!-- <a href="#" class="returnChat">Regresar</a> -->
+        </div>
+    </div>
+</header>
+
+<!-- POPUP LOGIN -->
+<div class="g8PopupForm formLogin pr">
+    <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a>
+    <h3>Iniciar Sesión</h3>
+    <div class="g8Form">
+        <form action="">
+            <div class="g8GroupInput one">
+                <div class="g8Input">
+                    <span>Nombre</span>
+                    <input type="text"  maxlength="30" class="g8Box  validate[required]">
+                    
+                </div>
+                <div class="g8Input password">
+                    <span>Password</span>
+                    <input type="password" maxlength="30" class="g8Box validate[required]">
+                    <a href="#" class="show-hide-pass"></a>
+                </div>
+            </div>
+            <button class="g8SumitLogin isLoading">Ingresar</button>
+        </form>
+    </div>
+    <div class="g8Bottom tac">
+        <a href="" class="losePassword">Olvidé mi contraseña</a>
+        <h4>No tengo una cuenta <a href="#" id="openRegistrarme">Registrarme</a></h4>
+    </div>
+</div>
+
+
+
+<!-- POPUP FORM VERIFICACIÓN CORREO ELECTRONICO-->
+<div class="g8PopupForm formCorreoVerificacion pr ">
+    <!-- <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a> -->
+    <div class="g8PopupContent">
+        <h3>Obtenga un correo de verificación
+        </h3>
+        <div class="gParrafo">
+            <p>Para obtener un código de verificación, primero confirma la dirección de correo electrónico de recuperación que agregaste a tu cuenta lui••••••@gm•••••.com</p>
+        </div>
+        <div class="g8Form">
+            <form action="">
+                <div class="g8GroupInput one">
+                    <div class="g8Input">
+                        <span>Ingrese correo electrónico *</span>
+                        <input type="text" id="email" class="g8Box validate[required,custom[email]]">
+                    </div>
+                </div>
+                <button class="g8SubmitCorreoVerificacion isLoading">Enviar</button>
+                <p class="messageError">El correo no existe</p>
+            </form>
+        </div>
+        <a href="#" class="buttonClosePopup linkCancelar">Cancelar</a>
+    </div>
+</div>
+
+
+<!-- POPUP FORM ACTUALIZAR CONTRASEÑA-->
+<div class="g8PopupForm formCorreoVerificacion pr ">
+    <!-- <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a> -->
+    <div class="g8PopupContent">
+        <h3>Actualiza tu contraseña</h3>
+        <div class="g8Form">
+            <form action="">
+                <div class="g8GroupInput one">
+                    <div class="g8Input">
+                        <span>Contraseña nueva *</span>
+                        <input type="password" id="email" class="g8Box validate[required,custom[email]]">
+                    </div>
+                    <div class="g8Input">
+                        <span>Confirmar contraseña nueva *</span>
+                        <input type="password" id="emailconfirm"  class="g8Box validate[required,custom[email],equals[email]]">
+                    </div>
+                </div>
+                <button class="g8SubmitActualizarPassword isLoading">Actualizar</button>
+            </form>
+        </div>
+        <a href="#" class="buttonClosePopup linkCancelar">Cancelar</a>
+    </div>
+</div>
+
+
+<!-- POPUP REGISTRO -->
+<div class="g8PopupForm formRegistro pr">
+    <a href="#" class="g8ClosePopup icon-close pa closeRegistro"></a>
+    <h3>Crear cuenta</h3>
+    <div class="gParrafo">
+        <p>Completa el siguiente formulario para poder registrar tus datos.</p>
+    </div>
+    <div class="g8Form">
+        <form action="">
+            <div class="g8GroupChecbox g8GroupInput two" style="">
+                <span>Tipo de Asistencia:</span>
+                <div class="g8Checkbox">
+                    <input id="pres" type="radio" checked="" class="validate[required]" name="access_type" value="in_person">
+                    <label for="pres">
+                        Presencial
+                    </label>
+                </div>
+                <div class="g8Checkbox">
+                    <input id="virt" type="radio" class="validate[required]" name="access_type" value="virtual">
+                    <label for="virt">
+                        Virtual
+                    </label>
+                </div>
+            </div>
+            <div class="g8GroupInput two">
+                <div class="g8Input">
+                    <span>Nombre *</span>
+                    <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]">
+                </div>
+                <div class="g8Input">
+                    <span>Apellido *</span>
+                    <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]" >
+                </div>
+            </div>
+            <div class="g8GroupInput two">
+                <div class="g8Input">
+                    <span>Empresa *</span>
+                    <input type="text" class="g8Box validate[required]">
+                </div>
+                <div class="g8Input">
+                    <span>Cargo *</span>
+                    <input type="text" class="g8Box validate[required]">
+                </div>
+            </div>
+            <div class="g8GroupInput two">
+                <div class="g8Input select">
+                    <span>Pais *</span>
+                    <select name="" id="" class="g8Box validate[required]">
+                        <!-- <option value="">Selecciona un tipo</option> -->
+                        <option value=""></option>
+                        <option value="10">Opcion 10</option>
+                        <option value="11">Opcion 11</option>
+                        <option value="12">Opcion 12</option>
+                        <option value="13">Opcion 13</option>
+                    </select>
+                </div>
+                <div class="g8Input">
+                    <span>Profesión *</span>
+                    <input type="text" class="g8Box validate[required]">
+                </div>
+            </div>
+            <div class="g8GroupInput two">
+                <div class="g8Input">
+                    <span>Email *</span>
+                    <input type="password" id="email" class="g8Box validate[required,custom[email]]">
+                </div>
+                <div class="g8Input">
+                    <span>Confirmar Email *</span>
+                    <input type="password" id="emailconfirm"  class="g8Box validate[required,custom[email],equals[email]]">
+                </div>
+            </div>
+            <div class="g8GroupInput two">
+                <div class="g8Input password">
+                    <span>Contraseña *</span>
+                    <input type="password" id="password" autocomplete="true" class="g8Box validate[required]">
+                    <a href="#" class="show-hide-pass"></a>
+                </div>
+                <div class="g8Input password">
+                    <span>Confirmar Contraseña *</span>
+                    <input type="password" id="passwordconfirm" autocomplete="true"  class="g8Box validate[required,equals[password]]">
+                    <a href="#" class="show-hide-pass"></a>
+                </div>
+            </div>
+            <div class="g8Confirm fdc aifs">
+                <p>(*) Campos obligatorios</p>
+				<div class="g8Checkbox">
+					<input id="check1" type="checkbox" checked class="validate[required]" name="checkbox1" value="checkbox1">
+					<label for="check1">Acepto las <a href="#">Políticas de Privacidad</a> y <a href="#">Protección de Datos Personales.</a></label>
+				</div>
+				<a href="#" target="blanck" class="g8Cookies">Conoce nuestraspolitucas de coockies</a>
+				<button class="g8SumitRegistro">Enviar</button>
+                <h4>Ya tengo una cuenta <a href="#" id="openIniciaSesion">Inicial sesión</a></h4>
+			</div>
+        </form>
+    </div>
+</div>
+
+
+<!-- POPUP REGISTRO EXITOSO-->
+<div class="g8PopupForm formRegistroExitoso pr">
+    <!-- <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a> -->
+    <div class="g8PopupContent">
+        <h3>Registro exitoso</h3>
+        <div class="gParrafo">
+            <p>La preinscripción se ha realizado correctamente. 
+                Dado que este evento cuenta con aforo limitado, en las próximas semanas te informaremos vía correo electrónico si tu solicitud fue aceptada.</p>
+        </div>
+        <a href="#" class="gButton buttonClosePopup">Ok</a>
+    </div>
+</div>

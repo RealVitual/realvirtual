@@ -30,6 +30,17 @@ class Font(models.Model):
         return self.name
 
 
+class TemplateVersion(models.Model):
+    version = models.PositiveIntegerField(_('Version de plantilla'), default=1)
+
+    class Meta:
+        verbose_name = _("Version de plantilla")
+        verbose_name_plural = _("Versions de plantilla")
+
+    def __str__(self):
+        return str(self.version)
+
+
 class Enterprise(models.Model):
     name = models.CharField(_('Nombre Empresa'), max_length=255)
 
@@ -45,63 +56,117 @@ class Company(BaseModel):
     enterprise = models.ForeignKey(
         Enterprise, related_name="companies",
         on_delete=models.SET_NULL, null=True, blank=True)
+    domain = models.CharField(_('dominio'), max_length=255, unique=True)
     name = models.CharField(_('Nombre compañia'), max_length=255)
     main_event_name = models.CharField(_('Nombre principal del evento'),
                                        max_length=255, blank=True, null=True)
-    domain = models.CharField(_('dominio'), max_length=255, unique=True)
+    logo = models.ImageField(
+        _('Logo'), upload_to=get_upload_path("company"),
+        null=True, blank=True
+    )
+    favicon = models.ImageField(
+        _('Favicon'), upload_to=get_upload_path("favicon"),
+        null=True, blank=True
+    )
+
+    use_counter = models.BooleanField(_('Usa Contador'), default=False)
     counter_datetime = models.DateTimeField(_('Fecha y Hora de contador'),
                                             null=True, blank=True)
-    use_counter = models.BooleanField(_('Usa Contador'), default=False)
-    close_landing = models.BooleanField(_('Cerrar Landing'), default=False)
-    close_banner = models.ImageField(
-            _('Closed Banner'), upload_to=get_upload_path('banner'),
-            null=True, blank=True)
-    close_mobile_banner = models.ImageField(
-            _('Closed Mobile Banner'), upload_to=get_upload_path('mobile_banner'),
-            null=True, blank=True)
     counter_text = models.CharField(
         _('Texto contador'), max_length=255, blank=True,
-        null=True, default="Evento disponible en")
-    logo = models.ImageField(
-            _('Logo'), upload_to=get_upload_path("company"),
-            null=True, blank=True)
+        null=True, default="Evento disponible en"
+    )
+    close_landing = models.BooleanField(_('Cerrar Landing'), default=False)
+    close_banner = models.ImageField(
+        _('Banner de cierre'), upload_to=get_upload_path('banner'),
+        null=True, blank=True
+    )
+    close_mobile_banner = models.ImageField(
+        _('Banner Mobile de cierre'),
+        upload_to=get_upload_path('mobile_banner'),
+        null=True, blank=True
+    )
+
     warning_img = models.ImageField(
-            _('Imagen aviso'), upload_to=get_upload_path("warning_img"),
-            null=True, blank=True)
-    favicon = models.ImageField(
-            _('Favicon'), upload_to=get_upload_path("favicon"),
-            null=True, blank=True)
+        _('Imagen aviso'), upload_to=get_upload_path("warning_img"),
+        null=True, blank=True
+    )
+
+    version = models.ForeignKey(
+        TemplateVersion, related_name="template_versions",
+        on_delete=models.SET_NULL, null=True, blank=True
+    )
     font = models.ForeignKey(
         Font, related_name="css_font_companies",
-        on_delete=models.SET_NULL, null=True, blank=True)
+        on_delete=models.SET_NULL, null=True, blank=True
+    )
+
     banner = models.ImageField(
-            _('Banner'), upload_to=get_upload_path('banner'),
-            null=True, blank=True)
+        _('Banner'), upload_to=get_upload_path('banner'),
+        null=True, blank=True
+    )
     mobile_banner = models.ImageField(
-            _('Mobile Banner'), upload_to=get_upload_path('mobile_banner'),
-            null=True, blank=True)
+        _('Mobile Banner'), upload_to=get_upload_path('mobile_banner'),
+        null=True, blank=True
+    )
+    image_banner = models.ImageField(
+        _('Image Banner'), upload_to=get_upload_path('image_banner'),
+        null=True, blank=True
+    )
+
+    banner_second_section = models.CharField(
+        _('Sección Secundaria'), max_length=255, blank=True,
+        null=True
+    )
+    banner_second_section_image = models.ImageField(
+        _('Imagen de Sección Secundaria'),
+        upload_to=get_upload_path('image_banner'),
+        null=True, blank=True
+    )
+    banner_second_section_internal_title = models.CharField(
+        _('Título interno de Sección Secundaria'), max_length=255, blank=True,
+        null=True
+    )
+    banner_second_section_internal_text = models.CharField(
+        _('Texto interno de Sección Secundaria'), max_length=255, blank=True,
+        null=True
+    )
+    banner_second_section_internal_image = models.ImageField(
+        _('Imagen de Sección Secundaria'),
+        upload_to=get_upload_path('image_banner'),
+        null=True, blank=True
+    )
+
     video_file = models.FileField(
-            _('Video File Banner'), upload_to=get_upload_path('video_banner'),
-            null=True, blank=True)
+        _('Video File Banner'), upload_to=get_upload_path('video_banner'),
+        null=True, blank=True
+    )
+
     main_event_datetime = models.DateTimeField(_('Main event datetime'),
                                                null=True, blank=True)
     main_event_end_datetime = models.DateTimeField(_('Main event datetime'),
                                                    null=True, blank=True)
+
     use_filters = models.BooleanField(_('Usa filtros'), default=False)
     use_rooms = models.BooleanField(_('Usa salas en lista'), default=False)
     use_shifts = models.BooleanField(_('Usa turnos'), default=False)
     use_dates = models.BooleanField(_('Usa fecha en lista'), default=False)
+
     confirm_user = models.BooleanField(_('Confirmar Usuarios'), default=False)
     message_confirm_user = RichTextField(
         _('Mensaje confirmación'), null=True, blank=True)
     title_closed_in_person_register = models.CharField(
-        _('Titulo Cierre registro presencial'), max_length=255, null=True, blank=True)
+        _('Titulo Cierre registro presencial'),
+        max_length=255, null=True, blank=True
+    )
     message_closed_in_person_register = models.TextField(
         _('Mensaje Cierre registro presencial'), null=True, blank=True)
+
     enable_credentials = models.BooleanField(_('Habilitar credenciales'),
                                              default=False)
     enable_preferences = models.BooleanField(_(
         'Habilitar selección de preferencias'), default=False)
+
     privacy_policy = models.FileField(
             _('Políticas de privacidad'),
             upload_to=get_upload_path('documents'),
@@ -118,6 +183,7 @@ class Company(BaseModel):
             _('Términos y condiciones'),
             upload_to=get_upload_path('documents'),
             null=True, blank=True)
+
     is_virtual = models.BooleanField(_('Is virtual'), default=True)
     in_person = models.BooleanField(_('In Person'), default=False)
     is_private = models.BooleanField(_('Is Private'), default=False)
@@ -128,6 +194,7 @@ class Company(BaseModel):
         default=AccessType.VIRTUAL)
     allow_virtual_access = models.BooleanField(
         _('Allow virtual access'), default=True)
+
     capacity = models.PositiveIntegerField(_('Capacity'), default=500)
     current_quantity = models.PositiveIntegerField(
         _('Current quantity'), default=0)
@@ -245,6 +312,12 @@ class Header(TimeStampedModel):
     )
     show_about_section = models.BooleanField(
         _('Mostrar Acerca de'), default=True
+    )
+    modules_section_header_name = models.CharField(
+        _('Nombre Módulos Header'), max_length=20, default="Módulos"
+    )
+    show_modules_section = models.BooleanField(
+        _('Mostrar Módulos'), default=True
     )
     schecule_header_name = models.CharField(
         _('Nombre Horario Header'), max_length=20, default="Agenda"
@@ -368,6 +441,9 @@ class HomePage(TimeStampedModel):
             _('Main Title'), max_length=255, null=True, blank=True)
     secondary_title = models.CharField(
             _('Secondary Title'), max_length=255, null=True, blank=True)
+    address_description = models.CharField(
+        _('Address description'), max_length=50, blank=True, null=True
+    )
     date_description = models.CharField(
         _('Date description'), max_length=50, blank=True, null=True
     )
@@ -390,6 +466,14 @@ class HomePage(TimeStampedModel):
     schedule_section_title = models.CharField(
         _('Agenda título Sección'), max_length=255,
         blank=True, default="Programas y Ponentes")
+    module_section_name = models.CharField(
+        _('Módulos nombre Sección'), max_length=255,
+        blank=True, default="Módulos")
+    module_section_title = models.CharField(
+        _('Módulos título Sección'), max_length=255,
+        blank=True, default="Programas y Ponentes")
+    module_section_text = models.TextField(
+        _('Módulos texto Sección'), blank=True)
     exhibitors_section_name = models.CharField(
         _('Expositores nombre Sección'), max_length=255,
         blank=True, default="Expositores")
@@ -449,6 +533,31 @@ class ItemMainEvent(BaseModel):
 
     def __str__(self):
         return f'item for {self.home_page}'
+
+
+class ItemModule(BaseModel):
+    home_page = models.ForeignKey(
+        HomePage, related_name="items_modules",
+        on_delete=models.CASCADE)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1)
+    title = models.CharField(
+            _('Title'), max_length=255, null=True, blank=True)
+    description = models.TextField(
+        _('Description'), null=True, blank=True)
+    image = models.ImageField(
+            _('Imagen'), upload_to=get_upload_path("module"),
+            null=True, blank=True
+        )
+
+    class Meta:
+        verbose_name = _('Item Module')
+        verbose_name_plural = _('Items Modules')
+        ordering = ('position', )
+
+    def __str__(self):
+        return f'item module for {self.home_page}'
 
 
 class EmailSettings(BaseModel):

@@ -1,0 +1,78 @@
+.swiper-container,
+.swiper,
+.swiper-wrapper,
+.swiper-slide
+	height 100%
+	&.swiper-fade
+		.swiper-slide
+			opacity 0 !important
+			&.swiper-slide-active
+				opacity 1 !important
+	&.swiper-container-initialized
+		.swiper-wrapper
+			justify-content flex-start
+
+.gPagination,
+.gNav
+	display none
+
+.swiperActive
+	.gPagination,
+	.gNav
+		display flex
+				
+.gPagination
+	flexg(center,center)
+	pointer-events: none
+	position absolute
+	z-index 50
+	.swiper-pagination-bullet
+		circle(34,transparent)
+		pointer-events: all
+		margin 0
+		opacity 1
+		border 1px solid transparent
+		position relative
+		box-sizing border-box
+		&:before
+			content ''
+			centerXY()
+			circle(7,#fff)
+		&.swiper-pagination-bullet-active
+			border 1px solid #fff
+.gNav
+	centerXY()
+	width 100%
+	pointer-events: none
+	z-index 50
+	flexg(center,space-between)
+.gPrev
+.gNext
+	position relative
+	circle(60,#fff)
+	pointer-events: all
+	cursor pointer
+	transition: all 400ms ease
+	&.swiper-button-disabled
+		opacity 0.3
+		pointer-events: none
+	&:hover
+		@media screen and (min-width: 1024px)
+			background #000
+			transition: all 400ms ease
+			&:before
+				color #fff
+				transition: all 400ms ease
+	&:before
+		font-family: icomoon
+		font-size 25px
+		color #000
+		transition: all 400ms ease
+.gPrev	
+	&:before
+		content '\e902'
+		display inline-block
+		transform rotate(180deg)
+.gNext	
+	&:before
+		content '\e902'

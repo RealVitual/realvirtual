@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from src.contrib.db.models import BaseModel
 from src.apps.companies.models import Company, UserCompany
 from src.apps.users.models import User
+from ckeditor.fields import RichTextField
 
 
 def get_upload_path(internal_folder):
@@ -454,3 +455,63 @@ class CerficateSettings(BaseModel):
 
     def __str__(self):
         return self.company.name
+
+
+class BlogPost(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="blog_posts",
+        on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(_('Nombre'), max_length=255)
+    image = models.FileField(
+        verbose_name=_('Imagen'),
+        upload_to=get_upload_path('blog_image'))
+
+    class Meta:
+        verbose_name = _('Publicación para blog')
+        verbose_name_plural = _('Publicaciones para blog')
+
+    def __str__(self):
+        return self.name
+
+
+class BlogPostItem(BaseModel):
+    blog_post = models.ForeignKey(
+        BlogPost, related_name="blog_post_items",
+        on_delete=models.CASCADE, null=True, blank=True)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1
+    )
+    content = RichTextField(
+        _('Contenido'), null=True, blank=True)
+    image = models.FileField(
+        _('Imagen'),
+        upload_to=get_upload_path('blog_image'),
+        null=True, blank=True)
+    url_video = models.URLField(
+        _('URL Video'), max_length=255, null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Item para publicación')
+        verbose_name_plural = _('Items para publicación')
+
+    def __str__(self):
+        return str(self.position)
+
+
+class BlogPostItemContent(BaseModel):
+    blog_post = models.ForeignKey(
+        BlogPost, related_name="blog_post_contents",
+        on_delete=models.CASCADE, null=True, blank=True)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1
+    )
+    name = models.CharField(_('Nombre'), max_length=255)
+
+    class Meta:
+        verbose_name = _('Contenido para publicación')
+        verbose_name_plural = _('Contenidos para publicación')
+
+    def __str__(self):
+        return str(self.name)

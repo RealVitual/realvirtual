@@ -1,0 +1,57 @@
+.b17Content
+    .gParrafo
+        font-size 18px
+        textg(t-500,normal,#17181B)
+        margin-bottom 30px
+    .gButton
+        
+        pointer-events: none
+        opacity 0.5
+        &.active
+            opacity 1
+            pointer-events all
+
+.b17Buttons
+    margin-top 70px
+    flexg(center,flex-start)
+    a
+        font-size 16px
+        textg(t-800,normal,#262626)
+        margin-right 30px
+.b17Option
+    height 52px
+    margin-right 16px
+    flexg(center,center)
+    width fit-content
+    margin-bottom 16px
+    position relative
+    label
+        width 100%
+        height 100%
+        flexg(center,center)
+        padding 0px 24px
+        border-radius 100px
+        h3
+            font-size 16px
+            textg(t-800,normal,#008AC9)
+    input
+        opacity 0
+        position absolute
+        top 0
+        left 0
+    &:last-child
+        margin-right 0px
+
+
+@media screen and (max-width 480px)
+    .b17Option
+        height 42px
+        margin-right 10px
+        margin-bottom 10px
+        label
+            padding 0px 16px
+            h3
+                font-size 14px
+
+    .b17Buttons
+        margin-top 40px

@@ -1,0 +1,82 @@
+.b8
+    margin 96px 0px
+    .gButton
+        background #17181B
+        color #fff
+
+.b8SwiperContent
+    position relative
+    .gPrev,
+    .gNext
+        box-shadow 0px 0px 10px 2px rgba(#000,0.2)
+        &:hover
+            background #000
+    .gPrev
+        left -70px
+    .gNext
+        right -70px
+
+.b8Top
+    margin-bottom 30px
+.b8Item
+    width 32%
+    margin-right 2%
+    &:nth-child(3n)
+        margin-right 0
+
+.b8Date
+    width calc(100% - 60px)
+    padding-right 20px
+
+.b8Img
+    height 340px
+    position relative
+    width 100%
+
+.b8Info
+    padding-top 22px
+    h2
+        font-size 22px
+        textg(t-700,normal,#008AC9)
+        margin-bottom 10px
+    figure
+        img
+            transform initial !important
+
+.b8DateItem
+    margin-bottom 10px
+    img
+        margin-right 10px
+    h4
+        font-size 16px
+        textg(t-500,normal,#202121)
+        span
+            display block
+            width 100%
+            color #202121
+            font-size 16px
+
+@media screen and (max-width 1280px)
+    .b8SwiperContent
+        .gPrev
+            left -20px
+        .gNext
+            right -20px
+
+@media screen and (max-width 480px)
+    .b8
+        margin 70px 0px
+@media screen and (max-width 480px)
+    .b8Item
+        width 100%
+        margin-right 0
+        margin-bottom 32px
+    .b8InfoWrap
+        figure
+            img
+                width 60px
+    .b8Date
+        width calc(100% - 60px)
+        padding-right 20px
+    .b8Info h2
+        font-size 20px

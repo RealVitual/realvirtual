@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from django.contrib import admin
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django import forms
@@ -5,7 +6,7 @@ from .models import (
     Company, HomePage, ItemMainEvent, Header,
     Footer, EmailSettings, EmailTemplate,
     UserCompany, Font, Enterprise, JobCompany,
-    Occupation)
+    Occupation, TemplateVersion, ItemModule)
 from prettyjson import PrettyJSONWidget
 from django.utils.safestring import mark_safe
 
@@ -15,6 +16,70 @@ class CompanyAdmin(admin.ModelAdmin):
     list_display = ('name', 'domain', 'enterprise')
     list_filter = ('enterprise', )
     search_fields = ('name', 'enterprise__name', 'domain')
+    fieldsets = (
+        (None, {
+            'fields': ('enterprise', 'domain', 'name', 'main_event_name')
+        }),
+        (_('Contador, Comunicado y Cierre de landing'), {
+            'fields': (
+                'use_counter', 'counter_datetime', 'counter_text',
+                'close_landing', 'close_banner',
+                'close_mobile_banner', 'warning_img'
+            )
+        }),
+        (_('Version y formato'), {
+            'fields': ('version', 'font')
+        }),
+        (_('Banner Principal'), {
+            'fields': (
+                'banner', 'mobile_banner', 'image_banner',
+                'banner_second_section', 'banner_second_section_image',
+                'banner_second_section_internal_title',
+                'banner_second_section_internal_text',
+                'banner_second_section_internal_image',
+                'video_file'
+            )
+        }),
+        (_('Confirmación de usuarios'), {
+            'fields': (
+                'confirm_user', 'message_confirm_user'
+            )
+        }),
+        (_('Filtros'), {
+            'fields': (
+                'use_filters', 'use_rooms', 'use_shifts', 'use_dates'
+            )
+        }),
+        (_('Cierre de registro'), {
+            'fields': (
+                'title_closed_in_person_register',
+                'message_closed_in_person_register'
+            )
+        }),
+        (_('Forma de Acceso'), {
+            'fields': (
+                'is_virtual',
+                'in_person',
+                'is_private',
+                'access_type',
+                'allow_virtual_access'
+            )
+        }),
+        (_('Capacidad'), {
+            'fields': (
+                'capacity',
+                'current_quantity'
+            )
+        }),
+        (_('Documentos para Políticas'), {
+            'fields': (
+                'privacy_policy',
+                'protection_data_policy',
+                'cookies_policy',
+                'terms_and_conditions'
+            )
+        }),
+    )
 
 
 class ItemMainEventTabular(admin.TabularInline):
@@ -22,10 +87,15 @@ class ItemMainEventTabular(admin.TabularInline):
     extra = 0
 
 
+class ItemModuleTabular(admin.TabularInline):
+    model = ItemModule
+    extra = 0
+
+
 @admin.register(HomePage)
 class HomeAdmin(admin.ModelAdmin):
     list_display = ('company', )
-    inlines = [ItemMainEventTabular]
+    inlines = [ItemMainEventTabular, ItemModuleTabular]
 
 
 @admin.register(UserCompany)
@@ -62,7 +132,9 @@ class OccupationAdmin(admin.ModelAdmin):
     list_filter = ('company', )
     search_fields = ('company__name', 'name')
 
+
 admin.site.register(EmailSettings)
+admin.site.register(TemplateVersion)
 admin.site.register(Font)
 admin.site.register(Enterprise)
 

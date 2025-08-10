@@ -1,0 +1,179 @@
+.b14
+    padding 96px 0px
+    padding-top 32px
+    .gReturn
+        margin-bottom 20px
+        margin-bottom 13px
+        color #fff
+        margin-bottom 30px
+        &:before
+            display none
+    .gTitle
+        margin-bottom 40px
+
+.b14Top
+    flexg(center,space-between)
+    margin-bottom 42px
+    
+.b14TopLeft
+    h1
+        font-size 16px
+        textg(t-500,normal,#17181B)
+    h2
+        font-size 22px
+        textg(t-500,normal,#17181B)
+
+.b14TopRight
+    h3
+        font-size 16px
+        textg(t-500,normal,#17181B)
+        flexg(center,flex-start)
+        position relative
+        padding-left 30px
+        img
+            centerY()
+            left 0
+
+.b14Wrap
+    height 100%
+    flexg(center,space-between)
+    height 550px
+
+.b14Left
+    width calc(70% - 20px)
+    height 100%
+    position relative
+    border-radius 8px
+    overflow hidden
+    iframe
+        full()
+        background #000
+
+.b14Right
+    width 30%
+    height 100%
+    background #fff
+    border-radius 8px
+    h3
+        height 60px
+        flexg(center,flex-start)
+        padding 0px 24px
+        box-sizing: border-box
+        font-size 18px
+        textg(t-800,normal,#17181B)
+
+.b14ContentChat
+    height calc(100% - 60px)
+    form
+        height 80px
+        position relative
+        border-top 1px solid #EFEFF3
+        padding-bottom 10px
+        box-sizing border-box
+        textarea
+            height 100%
+            padding 24px
+            box-sizing: border-box
+            border 0px
+            font-size 14px
+            textg(t-400,normal,#0D082C)
+            width 100%
+            padding-right 60px
+        button
+            centerY()
+            right 10px
+            circle(40,#008AC9)
+            border 0px
+            &:before
+                display inline-block
+                transform rotate(-90deg)
+                color #fff
+                font-size 25px
+
+.b14ListChat
+    position relative
+    height calc(100% - 80px)
+    // &:before
+    //     content ''
+    //     background linear-gradient(0deg, #fff, transparent)
+    //     width 100%
+    //     centerX()
+    //     height 15%
+    //     z-index 10
+    //     pointer-events none
+    //     bottom 0
+    ul
+        padding 0px 24px
+        padding-bottom 40px
+        box-sizing: border-box
+        overflow-y auto
+        height 100%
+        li
+            width fit-content
+            margin-bottom 8px
+            h5
+                font-size 16px
+                textg(t-600,norma,#0D082C)
+                width 100%
+                margin-bottom 6px
+            h4
+                height auto
+                width fit-content
+                padding 10px
+                font-size 14px
+                textg(t-400,normal,#fff)
+            span
+                font-size 12px
+                textg(t-400,normal,#0D082C66)
+                width 100%
+                margin-top 2px
+            &.posRight
+                margin 0 0 0 auto
+                margin-bottom 8px
+                h5
+                    display: none
+                h4
+                    background #008AC9
+                    border-radius 10px 0px 10px 0px
+                    
+                span
+                    text-align left
+
+            &.posLeft
+                margin 0
+                margin-bottom 14px
+                h5
+                    text-align left
+                h4
+                    border-radius 0px 10px 10px 0px
+                    background #F1F7FF
+                    color #0D082C
+                span
+                    text-align right
+
+
+@media screen and (max-width 1024px)
+    .b14
+        padding 48px 0px
+        .grilla
+            height auto
+    .b14Wrap
+        flex-direction: column
+
+    .b14Left
+        height auto
+        padding-top 60%
+        width 100%
+    .b14Right
+        width 100%
+        margin-top 32px
+        height 400px
+
+@media screen and (max-width 480px)
+    .b14Top
+        flex-direction column
+    .b14TopLeft,
+    .b14TopRight
+        width 100%
+    .b14TopLeft
+        margin-bottom 20px

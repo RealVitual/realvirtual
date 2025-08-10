@@ -1,0 +1,204 @@
+.b11
+    flexg(flex-start,flex-start)
+    background #fff
+    margin auto
+    min-height calc(100vh - 240px)
+    &.pageNoSticky
+        flex-direction column
+        padding 30px 0px
+        background #F1F7FF
+        min-height 100vh
+        .b11Left
+            padding 0px !important
+            position relative
+            max-width 1440px
+            width 94%
+            top 0
+            margin-bottom 0px
+        .b11Right
+            padding 0px !important
+            max-width 1440px
+            width 94%
+            margin 30px auto
+    form
+        .gButton
+            max-width: 290px
+            width 100%
+    &.pageEncuesta
+        .b11Left
+            padding-top 0px
+        .b11ListOption
+            flexg(center,flex-start)
+        .b11NameOptions
+            font-size 18px
+            textg(t-500,normal,#17181B)
+        .b11ItemOption
+            width 64px
+            height 64px
+            flexg(center,center)
+            flex-direction: column
+            background #fff
+            border-radius 4px
+            margin-right 8px
+            margin-bottom 0px
+            label
+                full()
+                z-index 5
+            h3
+                font-size 16px
+                textg(t-400,normal,#262626)
+                opacity: 0.6
+                margin-top 4px
+            &:last-child
+                margin-right 0px
+            &.active
+                label
+                    color #262626
+                    opacity 1
+                .divBorderCheckActive
+                    pointer-events: none
+                    opacity1()
+        .divBorderCheckActive
+            full()
+            opacity0()
+            border-radius 4px
+            pointer-events: none
+
+.b11Left
+    width 100%
+    padding-right 100px
+    height 100%
+    padding-bottom 40px
+    margin auto
+    margin-bottom 60px
+    position sticky
+    top 120px
+    margin-top 0px
+    width 35%
+    .gTitle
+        font-size 45px
+    .gReturn
+        font-size 16px
+        textg(t-500,normal,#52626F)
+        position relative
+        left 0
+        margin-bottom 30px
+        &:before
+            color #52626F
+            display none
+    .gParrafo
+        margin-top 16px
+        font-size 24px
+        textg(t-600,normal,#26262ps4.6)
+
+.b11LeftContent
+    position relative
+
+.b11Right
+    width 100%
+    padding-top 90px
+    padding-left 100px
+    padding-bottom 100px
+    height 100%
+    background #F1F7FF
+    margin auto
+    width 65%
+
+.b11NameOptions
+    flexg(center,flex-start)
+    font-size 16px
+    textg(t-500,normal,#4F4F4F)
+    margin-bottom 12px
+    img
+        margin-right 10px
+
+.b11Item
+    margin-bottom 32px
+    &:last-child
+        margin-bottom 0px
+
+.b11ItemOption
+    margin-bottom 8px
+    position relative
+    .divCircleRadio
+        margin-right 10px
+        circle(18,transparent)
+        pointer-events none
+    .checKRadio
+        circle(11,#008AC9)
+        centerXY()
+        opacity0()
+    &.active
+        .checKRadio
+            opacity1()
+
+
+    input
+        opacity 0
+        position absolute
+        top 0
+        left 0
+    .formError
+        left 0 !important
+    label
+        font-size 16px
+        textg(t-400,normal,#17181B)
+    &:last-child
+        margin-bottom 0px
+
+.b11ItemOption
+    flexg(center,flex-start)
+    input
+        width 24px
+        height 24px
+
+@media screen and (max-width 1024px)
+    .b11
+        padding 60px 0px
+    .b11Left
+        padding-right 50px
+        width 30%
+        .gParrafo
+            font-size 18px
+        .gTitle
+            font-size 32px
+    .b11Right
+        padding-left 50px
+        width 70%
+
+@media screen and (max-width 768px)
+    .b11
+        padding 48px 0px
+        &.pageNoSticky
+            min-height intiial
+    .b11
+        flex-direction column
+        min-height initial
+    .b11Left,
+    .b11Right
+        padding 0px 20px !important
+        width 100%
+        top 0
+        position relative
+        .gReturn
+            top 20px
+            margin-bottom 32px
+        .gParrafo
+            font-size 16px
+    .b11Left
+        margin-bottom 32px
+        .gTitle
+            font-size 24px
+    .b11
+        form
+            .gButton
+                max-width: 100%
+                width 100%
+        &.pageEncuesta
+            .b11Left
+                padding-top 0px !important
+    .b11Right
+        min-height initial
+        padding 0px 20px !important
+    .b11.pageEncuesta .b11NameOptions
+        font-size 16px

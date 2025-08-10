@@ -1,0 +1,502 @@
+body
+	height: fit-content
+	background #0A0A0A
+	&.noScroll
+		overflow: hidden
+
+
+
+.grilla
+	width 94%
+	max-width 1320px
+	margin auto
+
+section,figure,img,h1,h2,h3,h4,h5,h6,label,strong,
+span,i,input,select,textarea,span,picture,a,
+div,em,a,nav,ul,li,ol,img
+	margin 0
+	box-sizing border-box
+	display block
+	font-weight initial
+
+.f100
+	font-family t-100
+.f100i
+	font-family t-100-i
+.f200
+	font-family t-200
+.f200i
+	font-family t-200-i
+.f300
+	font-family t-300
+.f300i
+	font-family t-300-i
+.f400
+	font-family t-400
+.f400i
+	font-family t-400-i
+.f500
+	font-family t-500
+.f500i
+	font-family t-400-i
+.f600
+	font-family t-600
+.f600i
+	font-family t-600-i
+.f700
+	font-family t-700
+.f700i
+	font-family t-700-i
+.f800
+	font-family t-800
+.f800i
+	font-family t-800-i
+.f900
+	font-family t-900
+.f900i
+	font-family t-900-i
+
+.pr
+	position relative
+.pa
+	position absolute
+.t100
+	top 100%
+.b100
+	bottom 100%	
+.l100
+	left 100%
+.r100
+	right 100%
+
+figure
+	font-size 0
+	display block
+	img
+		margin 0
+		max-width 100%
+		height auto
+
+img
+	max-width 100%
+	height: auto
+
+.wspFixed
+	circle(72,#0ACFC9)
+	color #fff
+	font-size: 40px
+	position fixed
+	bottom 20px
+	right 20px
+	z-index: 500
+
+.overlay
+	position: fixed
+	top: 0
+	left: 0
+	background rgba(#000,0.8)
+	height 100vh
+	width 100%
+	opacity0()
+	transition: inherit
+	backdrop-filter blur(0px)
+	transition all 0.8s ease
+	&.active
+		opacity1()
+		backdrop-filter blur(5px)
+		transition all 0.8s ease
+
+.zoomImageHover
+	overflow hidden
+	position relative
+	picture,figure
+		overflow hidden
+		position relative
+	img
+		transform scale(1)
+		transition: all 400ms ease
+	@media screen and (min-width 1025px) 
+		&:hover
+			img
+				transform scale(1.05)
+				transition: all 400ms ease
+
+.gReturn
+	flexg(center,flex-start)
+	position relative
+	font-size 16px
+	textg(t-500,normal,#52626F)
+	&:before
+		content '\e609'
+		font-family icomoon
+		font-size 20px
+		color #000
+		margin-right 10px
+		display inline-block
+		transform rotate(-90deg)
+
+.gMiga
+	li
+		&:last-child
+			a
+				&:after
+					display none
+	a
+		font-size 14px
+		textg(t-1,normal,#000)
+		padding-right 15px
+		position relative
+		font-size 14px
+		textg(t-400,normal,#000)
+		&:after
+			content '/'
+			position absolute
+			centerY()
+			right 4px
+
+.arrowClick
+	position: relative
+	&.white
+		&:before
+			color #fff
+	&.black
+		&:before
+			color #000
+	&:after
+		content: '\e608'
+		font-family icomoon
+		font-size 20px
+		transform: rotateX(0deg)
+		right 20px
+		transition: all 400ms ease
+		margin-left 10px
+	&.active
+		&:after
+			transform: rotateX(180deg)
+			transition: all 400ms ease
+
+
+.activeHoverDefault
+	position relative
+	.elDefault
+		position relative
+		opacity1()
+	.elHover
+		position absolute
+		opacity0()
+		top 0
+		left 0
+
+.contentActiveHoverDefault
+	&:hover
+		@media screen and (min-width 1025px) 
+			.activeHoverDefault
+				.elDefault
+					position absolute
+					opacity0()
+				.elHover
+					position relative
+					opacity1()
+	&.active
+		.activeHoverDefault
+			.elDefault
+				position absolute
+				opacity0()
+				top 0
+				left 0
+			.elHover
+				position relative
+				opacity1()
+
+picture,figure
+	&.imgCover
+		position: absolute
+		width 100%
+		height 100%
+		display block
+		top 0
+		left 0
+		img
+			position: absolute
+			top 0
+			left 0
+			object-fit cover
+			width 100%
+			height 100%
+
+a
+	&:focus
+		outline none
+		
+.gTitle
+	font-size 56px
+	textg(t-600,normal,#fff)
+	span
+		font-size 18px
+		font-family t-300
+		text-transform: uppercase
+	&.big
+		font-size 70px
+	&.medium
+		font-size 50px
+	&.small
+		font-size 30px
+		
+.gParrafo
+	font-size 18px
+	textg(t-400,1.5,#fff)
+	text-align: justify
+	p
+		margin-bottom 0px
+		em
+			font-style italic
+		a
+			color #17181B
+			text-decoration: underline
+			display inline
+	ul
+		margin 20px 0px
+		li
+			position relative
+			padding-left 20px
+			em
+				font-style italic
+			a
+				text-decoration: underline
+				display inline
+			&:before
+				content ''
+				circle(6,#000)
+				top 10px
+				left 0
+				position absolute
+	ol
+		counter-reset number
+		list-type none
+		li
+			counter-increment number
+			position relative
+			padding-left 20px
+			em
+				font-style italic
+			a
+				text-decoration: underline
+				display inline
+			&:before
+				content: counter(number)
+				margin-right 10px
+				position absolute
+				left 0
+				top 0
+
+.gButton
+	width fit-content
+	height 52px
+	background #17181b
+	border-radius 100px
+	flexg(center,center)
+	font-size 16px
+	textg(t-800,normal,#fff)
+	transition all 400ms ease
+	padding 0px 24px
+	border 0px
+	&.border
+		background transparent
+		border 1px solid #52626F
+		color #17181b
+
+.g
+	display grid
+.f
+	display flex
+
+.aifs,.top
+	align-items flex-start
+.aic,.center
+	align-items center
+.aife,.bottom
+	align-items flex-end
+
+.fdc
+	flex-direction column
+.fdr
+	flex-direction row
+
+.jcsb
+	justify-content space-between
+.jcfs
+	justify-content flex-start
+.jcc
+	justify-content center
+.jcfe
+	justify-content flex-end
+
+.ffrw
+	flex-flow row wrap
+.ffnw
+	flex-flow no wrap
+
+.fdc-1024
+	@media screen and (max-width 1024px)
+		flex-direction column
+.fdc-768
+	@media screen and (max-width 768px)
+		flex-direction column
+.fdc-480
+	@media screen and (max-width 480px)
+		flex-direction column
+
+
+.oh
+	overflow hidden
+
+.tac
+	text-align center
+.tal
+	text-align left
+.tar
+	text-align right
+.taj
+	text-align justify
+
+.ma
+	margin auto
+.m0
+	margin 0
+
+.white
+	color #fff
+.black
+	color #000
+
+for $i in (1..6)
+	.column{$i}
+		display grid
+		grid-template-columns: repeat($i, 1fr)
+for $j in (1..50)
+	.gg{$j}
+		grid-gap 0px 1px * $j
+	
+
+for $i in (1..6)
+	.column{$i}-1440
+		@media screen and (max-width 1440px)
+			display grid
+			grid-template-columns: repeat($i, 1fr)
+
+for $j in (1..50)
+	.gg{$j}-1440
+		@media screen and (max-width 1440px)
+			grid-gap 0px 1px * $j
+
+for $i in (1..6)
+	.column{$i}-1366
+		@media screen and (max-width 1366px)
+			display grid
+			grid-template-columns: repeat($i, 1fr)
+for $j in (1..50)
+	.gg{$j}-1366
+		@media screen and (max-width 1366px)
+			grid-gap 0px 1px * $j
+		
+
+for $i in (1..6)
+	.column{$i}-1280
+		@media screen and (max-width 1280px)
+			display grid
+			grid-template-columns: repeat($i, 1fr)
+
+for $j in (1..50)
+	.gg{$j}-1280
+		@media screen and (max-width 1280px)
+			grid-gap 0px 1px * $j
+					
+for $i in (1..6)
+	.column{$i}-1024
+		@media screen and (max-width 1024px)
+			display grid
+			grid-template-columns: repeat($i, 1fr)
+for $j in (1..50)
+	.gg{$j}-1024
+		@media screen and (max-width 1024px)
+			grid-gap 0px 1px * $j
+			
+for $i in (1..6)
+	.column{$i}-768
+		@media screen and (max-width 768px)
+			display grid
+			grid-template-columns: repeat($i, 1fr)
+for $j in (1..50)
+	.gg{$j}-768
+		@media screen and (max-width 768px)
+			grid-gap 0px 1px * $j
+			
+for $i in (1..6)
+	.column{$i}-480
+		@media screen and (max-width 480px)
+			display grid
+			grid-template-columns: repeat($i, 1fr)
+
+for $j in (1..50)
+	.gg{$j}-480
+		@media screen and (max-width 480px)
+			grid-gap 0px 1px * $j
+			
+for $i in (1..6)
+	.column{$i}-450
+		@media screen and (max-height 450px)
+			display grid
+			grid-template-columns: repeat($i, 1fr)
+			
+for $j in (1..50)
+	.gg{$j}-450
+		@media screen and (max-height 450px)
+			grid-gap 0px 1px * $j
+
+
+.mY
+	margin 96px 0px
+.pY
+	padding 96px 0px
+
+@media screen and (max-width 1366px)
+	.gTitle
+		font-size 30px
+	.mY
+		margin 70px 0px
+	.pY
+		padding 70px 0px
+	.grilla
+		padding 0px 40px
+	.wspFixed
+		width 60px
+		height 60px
+		font-size 35px
+
+@media screen and (max-width 1024px)
+	.grilla
+		width calc(100% - 40px)
+	.gTitle
+		font-size 28px
+	.gParrafo
+		font-size 15px
+	.mY
+		margin 60px 0px
+	.pY
+		padding 60px 0px
+	.grilla
+		padding 0px
+
+@media screen and (max-width 480px)
+	.gParrafo
+		font-size 16px
+	.gTitle
+		font-size 28px
+		span
+			font-size 14px
+	.grilla
+		width calc(100% - 40px)
+	.mY
+		margin 50px 0px
+	.pY
+		padding 50px 0px

@@ -4,7 +4,8 @@ from .models import (Video, Sponsor, CredentialCustomer,
                      Question, TicketSettings, ExternalEvent,
                      SurveryChoiceQuestion, SurveryQuestion,
                      UserSurveyAnswer, NetworkingOption,
-                     UserNetworkingPreference, FreeImage, CerficateSettings)
+                     UserNetworkingPreference, FreeImage, CerficateSettings,
+                     BlogPost, BlogPostItem, BlogPostItemContent)
 
 
 @admin.register(Video)
@@ -74,6 +75,23 @@ class SurveyQuestionAdmin(admin.ModelAdmin):
     list_display = ('name', 'company')
     list_filter = ('company', )
     inlines = [SurveyChoiceQuestionTabular]
+
+
+class BlogPostItemTabular(admin.TabularInline):
+    model = BlogPostItem
+    extra = 0
+
+
+class BlogPostItemContentTabular(admin.TabularInline):
+    model = BlogPostItemContent
+    extra = 0
+
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ('name', 'company')
+    list_filter = ('company', )
+    inlines = BlogPostItemContentTabular, BlogPostItemTabular
 
 
 @admin.register(UserSurveyAnswer)

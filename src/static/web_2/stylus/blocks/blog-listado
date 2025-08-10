@@ -1,0 +1,97 @@
+.b26
+    border-radius 24px
+    overflow hidden
+    position relative
+    height 480px
+    margin-top 100px
+    margin-bottom 100px
+    .grilla
+        height 100%
+        flexg(flex-end,flex-start)
+        padding-bottom 35px
+        position relative
+        z-index 10
+        position relative
+        max-width 1440px
+        border-radius 24px
+        overflow hidden
+        &:before
+            content ''
+            background: linear-gradient(180deg, rgba(22, 22, 22, 0) 0%, #161616 100%)
+            position absolute
+            width 100%
+            height 20%
+            bottom 0
+            left 0
+    .gTitle
+        max-width 900px
+        width 100%
+    figure
+        full()
+        img
+            full()
+            object-fit cover
+
+.b26Info
+    position relative
+    z-index 30
+.b26Wrap
+    margin-top 60px
+    margin-bottom 100px
+    .grilla
+        position relative
+
+.b26Left
+    width calc(100% - 490px)
+    padding-right 80px
+    figure
+        margin 30px 0px
+    .gParrafo
+        h2,h3,h4,h5,h6
+            margin 30px 0px
+            fontg(18,20)
+            font-family t-600
+    p
+        font-size 16px
+        textg(t-400,normal,#E9E9E9)
+        margin-bottom 0%
+        &:last-child
+            margin-bottom 0%
+
+.b26Right
+    width 490px
+    position sticky
+    top 120px
+    background #111111
+    padding 65px 50px
+    border-radius 16px
+    h4
+        font-size 20px
+        textg(t-500,normal,#989898)
+        padding-bottom 16px
+        border-bottom 1px solid #989898
+        margin-bottom 24px
+    ul
+        display grid
+        grid-gap 14px
+        li
+            font-size 18px
+            textg(t-400,normal,#989898)
+
+// @media screen and (max-width 1440px)
+// @media screen and (max-width 1366px)
+// @media screen and (max-width 1280px)
+@media screen and (max-width 1024px)
+    .b26Wrap
+        margin-bottom 60px
+        .grilla
+            flex-direction column-reverse
+            grid-gap 40px
+    .b26Left,
+    .b26Right
+        width 100%
+        position relative
+        top 0
+        
+// @media screen and (max-width 768px)
+// @media screen and (max-width 480px)

@@ -1,0 +1,226 @@
+// .b1
+// 	position relative
+// 	padding-top 160px
+// 	padding-bottom 120px
+// 	background #000
+// 	&:before
+// 		content: ''
+// 		background: linear-gradient(0deg, #0D0D0D, transparent)
+// 		position: absolute
+// 		width: 100%
+// 		height: 30%
+// 		bottom: 0
+// 		left: 0
+// 		z-index: 30
+// 	h1
+// 		fontg(32,88)
+// 		textg(t-600,normal,#fff)
+// 		margin-bottom 48px
+// 		text-align center
+// 	img
+// 		pointer-events none
+// 		&.imgFull
+// 			full()
+// 			object-fit cover
+// 			&.bottom
+// 				width 100%
+// 				height auto
+// 				z-index 10
+// 				top initial
+// 				bottom 0
+// 				left 0
+// 	.gParrafo
+// 		max-width 890px
+// 		width 100%
+// 		text-align center
+// 		margin auto
+// 		margin-bottom 24px
+// 		color #fff
+// 	figure
+// 		max-width 690px
+// 		width 100%
+// 		margin auto
+// 		img
+// 			width 100%
+// 	.gButton
+// 		height 65px
+// 		padding 0px 48px
+// 		border-radius 100px
+// 		font-size 16px
+// 		textg(t-500,normal,#0D0D0D)
+// 		background #fff
+// 		margin auto
+// 		margin-top 48px
+// 		margin-bottom 76px
+// 	.grilla
+// 		position relative
+// 		z-index 20
+
+// .b1Data
+// 	flexg(center,center)
+// 	grid-gap 100px
+
+// .b1DataItem
+// 	flexg(center,flex-start)
+// 	grid-gap 10px
+// 	position relative
+// 	&:after
+// 		content ''
+// 		background #fff
+// 		height 10px
+// 		width 1px
+// 		centerY()
+// 		right -50px
+// 	&:last-child
+// 		&:after
+// 			display none
+// 	img
+// 		width 20px
+// 	p
+// 		font-size 16px
+// 		textg(t-400,normal,#fff)
+// 		margin-bottom 0px
+
+
+// @media screen and (max-width 480px)
+// 	.b1
+// 		padding-bottom 60px
+// 	.b1Data
+// 		flex-direction column
+// 		grid-gap 32px
+// 	.b1DataItem
+// 		&:after
+// 			display none
+
+
+
+.b1
+	height 100vh
+	position relative
+	picture
+		position absolute
+		width 100%
+		height 100%
+		top 0
+		left 0
+
+		img
+			position absolute
+			width 100%
+			height 100%
+			object-fit cover
+	&:before
+		content ''
+		position absolute
+		width 100%
+		height 25%
+		bottom 0
+		left 0
+		background: linear-gradient(180deg, rgba(13, 13, 13, 0) 0%, #0D0D0D 100%)
+		z-index 2
+	.grilla
+		height 100%
+		position relative
+		z-index 5
+		flexg(flex-end,space-between)
+		padding-bottom 22vh
+
+.b1Info
+	h4
+		margin 25px 0px
+		fontg(22,28)
+		textg(t-400,normal,#FFFFFFF2)
+	ul
+		margin-top 60px
+		li
+			margin-bottom 13px
+			flexg(center,flex-start)
+			grid-gap 15px
+			&:last-child
+				margin-bottom 0px
+		p
+			margin-bottom 0px
+			font-size 14px
+			textg(t-400,normal,#FFFFFF)
+	.gButton
+		height 56px
+		background #0ACFC9
+		font-size 20px
+		textg(t-500,normal,#0D0D0D)
+		padding 0px 55px
+
+.b1Bottom
+	cursor pointer
+	p
+		margin-bottom 14px
+		font-size 18px
+		textg(t-300,normal,#FFFFFF)
+	img
+		width 280px
+	
+.b1PopupInfo
+	centerXY()
+	position fixed
+	z-index 400
+	max-width 900px
+	width 100%
+	margin auto
+	padding 80px
+	background #000
+	border-radius 8px
+	opacity0()
+	&.active
+		opacity1()
+	h3
+		fontg(24,36)
+		textg(t-600,normal,#FFFFFF)
+		text-align center
+		margin-bottom 20px
+		span
+			display block
+			width 100%
+			fontg(14,16)
+			textg(t-500,normal,#FFFFFF)
+			margin-top 10px
+	figure
+		width 100%
+		img
+			width 100%
+
+.b1CloseMapa
+	position absolute
+	top 15px
+	right 15px
+	circle(35,#fff)
+	color #000
+	font-size 22px
+
+@media screen and (max-width 1366px)
+	.b1
+		.grilla
+			padding-bottom 10vh
+	.b1Info
+		.imgLogo
+			width 450px
+			
+@media screen and (max-width 1024px)
+	.b1
+		.grilla
+			padding-bottom 15vh
+	.b1Info
+		.imgLogo
+			width 450px
+
+@media screen and (max-width 480px)
+	.b1
+		min-height 680px
+		.grilla
+			padding-bottom 5vh
+			flex-direction column
+			grid-gap 40px
+			justify-content flex-end
+			align-items flex-start
+	.b1Info
+		.imgLogo
+			width 80%
+	

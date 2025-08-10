@@ -1,0 +1,59 @@
+.b2
+    .gTitle
+        color #fff
+        max-width 510px
+        width 100%
+        margin-bottom 48px
+
+.b2Img
+    width 490px
+    position relative
+    height auto
+    border-radius 30px
+    overflow hidden
+    padding-top 26%
+
+.b2Info
+    width calc(100% - 490px)
+    padding-left 110px
+    .gParrafo
+        margin-bottom 48px
+
+.b2ListNumber
+    grid-gap 40px
+.b2ItemNUmber
+    p
+        fontg(32,56)
+        textg(t-500,normal,#fff)
+        flexg(center,flex-start)
+        margin-bottom 0px
+        &.info
+            font-size 14px
+
+@media screen and (max-width 1024px)
+    .b2Img
+        width 450px
+    .b2Info
+        width calc(100% - 450px)
+        padding-left 40px
+        
+@media screen and (max-width 768px)
+    .b2Wrap
+        flex-direction column
+    .b2Img,
+    .b2Info
+        width 100%
+    .b2Img
+        padding-top 55%
+        margin-bottom 30px
+    .b2Info
+        padding-left 0
+
+@media screen and (max-width 480px)
+    .b2ItemNUmber
+        width 100%
+        text-align center
+        p
+            width 100%
+            text-align center
+            flexg(center,center)

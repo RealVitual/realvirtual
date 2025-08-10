@@ -1,0 +1,44 @@
+.b12
+    margin 96px 0px
+    .gTitle
+        margin-bottom 32px
+        font-size 64px
+    .b8Wrap
+        flex-flow row wrap
+    .b8Item
+        margin-bottom 32px
+
+@media screen and (max-width 1366px)
+    .b12
+        .gTitle
+            font-size 55px
+
+
+@media screen and (max-width 1024px)
+    .b12
+        margin 72px 0px
+        .gTitle
+            font-size 40px
+
+@media screen and (max-width 768px)
+    .b12
+        margin 48px 0px
+        .b8Item
+            width 48%
+            margin-right 4%
+            &:nth-child(3n)
+                margin-right 4%
+            &:nth-child(2n)
+                margin-right 0
+
+@media screen and (max-width 480px)
+    .b12
+        .gTitle
+            font-size 32px
+        .b8Item
+            width 100%
+            margin-right 0%
+            &:nth-child(3n)
+                margin-right 0%
+            &:nth-child(2n)
+                margin-right 0

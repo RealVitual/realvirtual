@@ -1,0 +1,117 @@
+.b5
+    position relative
+    z-index 40
+    &.noSwiper
+        .b5Wrap
+            flexg(center,center)
+        .b5Item
+            margin-right 30px
+            width 250px
+            &:last-child
+                margin-right 0
+        .gNav
+            display none
+    .gTitle
+        margin auto
+        margin-bottom 40px
+        max-width: 700px
+        width 100%
+    .gSwiperContent
+        position relative
+        &:before
+            content ''
+            position absolute
+            height 100%
+            width 35%
+            top 0
+            left 0
+            background: linear-gradient(-90deg, rgba(8,8,8,0) 49.59%, rgba(8,8,8,0.75) 99.94%)
+            z-index 40
+            pointer-events none
+        &:after
+            content ''
+            position absolute
+            height 100%
+            width 35%
+            top 0
+            right 0
+            z-index 40
+            background: linear-gradient(90deg, rgba(8,8,8,0) 49.59%, rgba(8,8,8,0.75) 99.94%)
+            pointer-events none
+    .gNav
+        padding 0px 20px
+
+.b5Item
+    width 280px
+    border-radius 16px
+    overflow hidden
+    border 1px solid transparent
+    transition all 400ms ease
+    position relative
+    .tag
+        height 20px
+        width fit-content
+        flexg(center,center)
+        background #CD3A94
+        font-size 10px
+        textg(t-300,normal,#FFFFFF)
+        padding 0px 10px
+        position absolute
+        top 10px
+        right 10px
+        z-index 10
+        border-radius 100px
+    figure
+        width 100%
+        position relative
+        &:before
+            content ''
+            content: '';
+            background: linear-gradient(0deg, black, transparent);
+            position: absolute;
+            width: 100%;
+            height: 47%;
+            bottom: 0;
+            left: 0;
+            z-index: 2;
+        img
+            width 100%
+    @media screen and (min-width 1025px)
+        &:hover
+            border 1px solid #fff
+            transition all 400ms ease
+            .b5Text
+                span
+                    background #fff
+                    color c-black
+                    transition all 400ms ease
+
+.b5Text
+    position absolute
+    bottom 0px
+    left 0px
+    z-index 10
+    padding 18px
+    h4
+        font-size 20px
+        textg(t-400,normal,#fff)
+        margin-bottom 5px
+    h5
+        font-size 12px
+        textg(t-300,normal,#fff)
+
+@media screen and (max-width 1440px)
+    .b5Item
+        width 280px
+
+@media screen and (max-width 1366px)
+    .b5CenterItem h4
+        font-size 20px
+
+@media screen and (max-width 480px)
+    .b5Item
+        width 50%
+    .b5 .gNav
+        display none
+    .b5Text h4
+        font-size 16px

@@ -1,0 +1,76 @@
+.b16
+    margin 96px 0px
+    .gParrafo
+        color #404040
+    .gTitle
+        margin-bottom 10px
+    .grilla
+        padding 60px 80px
+        background #EFEFF3
+        border-radius 16px
+        transition all 400ms ease
+    h4
+        font-size 14px
+        textg(t-400,normal,#262626)
+        font-style italic
+        margin-top 15px
+        display none
+        &.active
+            display block
+    .gButton
+        margin-top 16px
+        &:last-child
+            margin-right 0
+
+.b16Buttons
+    margin-top 16px
+    flexg(center,center)
+
+
+.b16Popup
+    width 545px
+    background #fff
+    border-radius 8px
+    centerXY()
+    position fixed
+    z-index 500
+    padding 60px
+    text-align center
+    opacity0()
+    .gTitle
+        font-size 28px
+    &.active
+        opacity1()
+    .icon-close
+        position absolute
+        top 20px
+        right 20px
+        font-size 30px
+        &:before
+            color #52626F
+    .gButton
+        margin auto
+    .gParrafo
+        color #202121
+        margin-top 16px
+        margin-bottom 32px
+
+@media screen and (max-width 1024px)
+    .b16
+        margin 72px 0px
+
+@media screen and (max-width 768px)
+    .b16
+        .grilla
+            padding 40px
+
+@media screen and (max-width 480px)
+    .b16
+        margin 48px 0px
+        .grilla
+            padding 30px 20px
+    .b16Popup
+        padding 30px 20px
+        width 95%
+        .gTitle
+            font-size 22px

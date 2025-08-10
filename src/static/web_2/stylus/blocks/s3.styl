@@ -1,0 +1,69 @@
+.b3Wrap
+    position relative
+
+.b3Left
+    width 510px
+    position sticky
+    top 120px
+    .gTitle
+        margin-bottom 32px
+
+.b3Right
+    width calc(100% - 510px)
+    padding-left 90px
+    grid-gap 80px
+
+.b3Item
+    p.name
+        fontg(18,24)
+        margin-bottom 0px
+        textg(t-600,normal,#E9E9E9)
+    figure
+        border-radius 20px
+        overflow: hidden
+        width 240px
+        img
+            width 100%
+
+.b3Info
+    width calc(100% - 240px)
+    padding-left 25px
+    .gParrafo
+        font-size 16px
+        margin-top 16px
+
+@media screen and (max-width 1366px)
+    .b3Left
+        width 450px
+    .b3Right
+        width calc(100% - 450px)
+
+@media screen and (max-width 1024px)
+    .b3Left
+        width 400px
+    .b3Right
+        width calc(100% - 400px)
+        padding-left 40px
+
+@media screen and (max-width 1024px)
+    .b3Wrap
+        flex-direction column
+    .b3Left,
+    .b3Right
+        width 100%
+        padding 0
+    .b3Left
+        position relative
+        top 0
+        margin-bottom 30px
+    .b3Right
+        grid-gap 40px
+    .b3Item
+        grid-gap 20px
+@media screen and (max-width 480px)
+    .b3Item
+        figure
+            width 100%
+    .b3Info
+        width 100%
+        padding 0
