@@ -7,7 +7,7 @@ from .views import (
     SurveyView, save_survey_answers, allow_networking_user, NetworkingView,
     save_networking_preferences, NetworkingUsersView, RecoverPasswordView,
     ScheduledEventsView, TicketViewPDF, ResetPasswordView, CertificateView,
-    CloseLandingView, GenerateCertificateView)
+    CloseLandingView, GenerateCertificateView, BlogListView, BlogDetailView)
 
 app_name = 'landing'
 
@@ -60,4 +60,8 @@ urlpatterns = [
      path('fin/', CloseLandingView.as_view(), name='closed'),
      path('generar-certificado/',
           GenerateCertificateView.as_view(), name="generate_certificate"),
+     path('blog/',
+          BlogListView.as_view(), name="blog"),
+     path('blog-detail/<slug>/',
+          BlogDetailView.as_view(), name='blog_detail'),
 ]

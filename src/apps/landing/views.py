@@ -12,7 +12,7 @@ from src.apps.events.models import (
 from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
-    NetworkingOption, UserNetworkingPreference)
+    NetworkingOption, UserNetworkingPreference, BlogPost)
 from .forms import (
     RegisterForm, CredentialCustomerForm, LoginForm, EmailPasswordForm,
     ResetPasswordForm, CertificateForm)
@@ -114,6 +114,14 @@ class HomeView(CreateView):
                 is_active=True, company=company).order_by('position')
             sponsors = Sponsor.objects.filter(
                 is_active=True, company=company).order_by('position')
+            sponsors = Sponsor.objects.filter(
+                is_active=True, company=company).order_by('position')
+            blog_posts = []
+            found_posts = BlogPost.objects.filter(
+                is_active=True, company=company).order_by('-publish_date')
+            if len(found_posts) >= 3:
+                blog_posts = found_posts[:3]
+
             filters = []
             if company.use_filters:
                 filters = Filter.objects.filter(
@@ -136,7 +144,8 @@ class HomeView(CreateView):
                 'filtered_categories': filtered_categories,
                 'filtered_filters': filtered_filters,
                 'shifts':  shifts,
-                'filtered_shift': filtered_shift.name if filtered_shift else None
+                'filtered_shift': filtered_shift.name if filtered_shift else None,
+                'blog_posts': blog_posts
             }
         return render(request, self.template_name, context)
 
@@ -1159,3 +1168,50 @@ class GenerateCertificateView(CreateView):
                 request, form.non_field_errors())
         return redirect(reverse(
             'landing:generate_certificate'))
+
+
+class BlogListView(View):
+    template_name = "landing/blog-listado.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(BlogListView, self).dispatch(
+            request, *args, **kwargs)
+
+    def get(self, request, **kwargs):
+        company = self.request.company
+        home_page = HomePage.objects.get(company=company)
+        if company.version and company.version != 1:
+            internal_view = self.template_name.split('/')[-1]
+            self.template_name = (
+                f"landing_{company.version}/{internal_view}"
+            )
+        blog_posts = BlogPost.objects.filter(
+            company=request.company, is_active=True).order_by(
+                '-publish_date'
+            )
+        context = {
+            "blog_posts": blog_posts,
+            'home_page': home_page,
+            'header': False,
+        }
+        return render(request, self.template_name, context)
+
+
+class BlogDetailView(View):
+    template_name = "landing/blog-detalle.html"
+
+    def get(self, request, **kwargs):
+        company = self.request.company
+        slug = self.kwargs['slug']
+        if company.version and company.version != 1:
+            internal_view = self.template_name.split('/')[-1]
+            self.template_name = (
+                f"landing_{company.version}/{internal_view}"
+            )
+        blog_post = get_object_or_404(
+            BlogPost, slug=slug)
+        context = {
+            "blog_post": blog_post,
+            'header': False,
+        }
+        return render(request, self.template_name, context)

@@ -6,7 +6,7 @@ from .models import (
     Company, HomePage, ItemMainEvent, Header,
     Footer, EmailSettings, EmailTemplate,
     UserCompany, Font, Enterprise, JobCompany,
-    Occupation, TemplateVersion, ItemModule)
+    Occupation, TemplateVersion, ItemModule, IndicatorsMainEvent)
 from prettyjson import PrettyJSONWidget
 from django.utils.safestring import mark_safe
 
@@ -92,10 +92,225 @@ class ItemModuleTabular(admin.TabularInline):
     extra = 0
 
 
+class IndicatorsMainEventTabular(admin.TabularInline):
+    model = IndicatorsMainEvent
+    extra = 0
+
+
 @admin.register(HomePage)
-class HomeAdmin(admin.ModelAdmin):
+class HomePageAdmin(admin.ModelAdmin):
     list_display = ('company', )
-    inlines = [ItemMainEventTabular, ItemModuleTabular]
+
+    def get_inlines(self, request, obj=None):
+        version_obj = obj.company.version
+        version = 1
+        if version_obj:
+            version = version_obj.version
+        if version == 1:
+            return [ItemMainEventTabular, ]
+        elif version == 2:
+            return [IndicatorsMainEventTabular, ItemModuleTabular]
+
+    def get_fieldsets(self, request, obj=None):
+        fielsets_version = []
+        if obj is None:
+            return (
+                ("Seleccione la Compañía", {
+                    "fields": ("company",),
+                    "description": "Debe seleccionar una compañía antes de continuar."
+                }),
+            )
+        else:
+            version_obj = obj.company.version
+            version = 1
+            if version_obj:
+                version = version_obj.version
+            fieldsets = [
+                ("Información principal", {
+                    "fields": ("company", ),
+                    "description":
+                        f"Empresa seleccionada: {obj.company} (Versión {str(version)})"
+                })
+            ]
+
+        if version == 1:
+            fielsets_version = [
+                (
+                    "Sección Banner Inicial", {
+                        "fields": (
+                            'buttons_color',
+                            'text_buttons_color',
+                            'first_title',
+                            'main_title',
+                            'banner',
+                            'mobile_banner',
+                            'image_banner',
+                            'home_video_url',
+                            'video_file',
+                            'secondary_title',
+                            'date_description',
+                            'time_description',
+                        ),
+                        "description": "Campos disponibles para la versión 1."
+                    }
+                ),
+                (
+                    "Sección Detalle de evento", {
+                        "fields": (
+                            'main_event_title',
+                            'main_event_description',
+                            'main_event_image',
+                            'main_event_video_url',
+                        ),
+                        "description": "Campos disponibles para la versión 1."
+                    }
+                ),
+                (
+                    "Sección Agenda y Programación", {
+                        "fields": (
+                            'schedule_section_name',
+                            'schedule_section_title',
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Expositores", {
+                        "fields": (
+                            'exhibitors_section_name',
+                            'exhibitors_section_title',
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Auspiciadores", {
+                        "fields": (
+                            'sponsors_section_name',
+                            'sponsors_section_text'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Galería", {
+                        "fields": (
+                            'gallery_section_name',
+                            'gallery_section_text'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Networking", {
+                        "fields": (
+                            'networking_section_name',
+                            'networking_description_text'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Encuesta", {
+                        "fields": (
+                            'survey_section_name',
+                            'survey_description_text'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                )
+            ]
+        elif version == 2:
+            fielsets_version = [
+                (
+                    "Sección Banner Principal", {
+                        "fields": (
+                            'main_title',
+                            'date_description',
+                            'time_description',
+                            'address_description',
+                            'banner',
+                            'mobile_banner',
+                            'image_banner'
+                        ),
+                        "description": f"Campos disponibles para la versión {version}."
+                    }
+                ),
+                (
+                    "Sección Secundaria Banner", {
+                        "fields": (
+                            'banner_second_section',
+                            'banner_second_section_image',
+                            'banner_second_section_internal_title',
+                            'banner_second_section_internal_text',
+                            'banner_second_section_internal_image'
+                        ),
+                        "description": f"Campos disponibles para la versión {version}."
+                    }
+                ),
+                (
+                    "Sección Detalle de evento", {
+                        "fields": (
+                            'main_event_title',
+                            'main_event_sub_title',
+                            'main_event_description',
+                            'main_event_image',
+                            'main_event_video_url'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Módulos", {
+                        "fields": (
+                            'module_section_name',
+                            'module_section_title',
+                            'module_section_text'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Agenda y Programación", {
+                        "fields": (
+                            'schedule_section_name',
+                            'schedule_section_title'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Expositores", {
+                        "fields": (
+                            'exhibitors_section_name',
+                            'exhibitors_section_title'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Blog", {
+                        "fields": (
+                            'blog_section_name',
+                            'blog_section_title',
+                            "blog_button_title"
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Auspiciadores", {
+                        "fields": (
+                            'sponsors_section_name',
+                            'sponsors_section_text'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                )
+            ]
+        for fieldset in fielsets_version:
+            fieldsets.append(fieldset)
+        return fieldsets
 
 
 @admin.register(UserCompany)

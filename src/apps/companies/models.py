@@ -307,64 +307,82 @@ class Header(TimeStampedModel):
     button_text_color = models.CharField(
         _('Header texto botón color'), max_length=20, default="#FFFFF"
     )
+
+    show_about_section = models.BooleanField(
+        _('Mostrar Acerca de'), default=True
+    )
     about_section_header_name = models.CharField(
         _('Nombre Acerca De Header'), max_length=20, default="Acerca de"
     )
-    show_about_section = models.BooleanField(
-        _('Mostrar Acerca de'), default=True
+
+    show_modules_section = models.BooleanField(
+        _('Mostrar Módulos'), default=True
     )
     modules_section_header_name = models.CharField(
         _('Nombre Módulos Header'), max_length=20, default="Módulos"
     )
-    show_modules_section = models.BooleanField(
-        _('Mostrar Módulos'), default=True
-    )
+
     schecule_header_name = models.CharField(
         _('Nombre Horario Header'), max_length=20, default="Agenda"
     )
     show_schedule_section = models.BooleanField(
         _('Mostrar Agenda'), default=True
     )
+
+    show_gallery_section = models.BooleanField(
+        _('Mostrar Galería'), default=True
+    )
     gallery_header_name = models.CharField(
         _('Nombre Galería Header'), max_length=20, default="Galería"
     )
-    show_gallery_section = models.BooleanField(
-        _('Mostrar Galería'), default=True
+
+    show_sponsors_section = models.BooleanField(
+        _('Mostrar Auspiciadores'), default=True
     )
     sponsors_header_name = models.CharField(
         _('Nombre Auspiciadores Header'), max_length=20,
         default="Auspiciadores"
     )
-    show_sponsors_section = models.BooleanField(
-        _('Mostrar Auspiciadores'), default=True
+
+    show_networking_section = models.BooleanField(
+        _('Mostrar Networking'), default=True
     )
     networking_header_name = models.CharField(
         _('Nombre Networking Header'), max_length=20, default="Networking"
     )
-    show_networking_section = models.BooleanField(
-        _('Mostrar Networking'), default=True
+
+    show_survey_section = models.BooleanField(
+        _('Mostrar Encuesta'), default=True
     )
     survey_header_name = models.CharField(
         _('Nombre Encuesta Header'), max_length=20, default="Encuesta"
     )
-    show_survey_section = models.BooleanField(
-        _('Mostrar Encuesta'), default=True
-    )
+
     show_more_events = models.BooleanField(
         _('Mostrar Más eventos'), default=True
+    )
+
+    show_exhibitors_section = models.BooleanField(
+        _('Mostrar Expositores'), default=True
     )
     exhibitors_header_name = models.CharField(
         _('Nombre Expositores Header'), max_length=20, default="Expositores"
     )
-    show_exhibitors_section = models.BooleanField(
-        _('Mostrar Expositores'), default=True
+
+    show_blog_section = models.BooleanField(
+        _('Mostrar Blog'), default=True
     )
+    blog_header_name = models.CharField(
+        _('Nombre Blog Header'), max_length=20, default="Blog"
+    )
+
     show_contact = models.BooleanField(
         _('Mostrar Contacto en Header'), default=False
     )
     contact_header_name = models.CharField(
         _('Nombre Contacto Header'), max_length=50, default="Contacto"
     )
+
     register_title = models.CharField(
         _('Título Registro'), max_length=50, default="Regístrate"
     )
@@ -375,6 +393,7 @@ class Header(TimeStampedModel):
         _('Texto Registro Formulario'),
         default="Completa el siguiente formulario para poder registrar tus datos." # noqa
     )
+
     login_title = models.CharField(
         _('Título Login'), max_length=20, default="Inicia Sesión"
     )
@@ -430,11 +449,49 @@ class HomePage(TimeStampedModel):
     text_buttons_color = models.CharField(
         _('Texto en Botones color'), max_length=20, default="#FFFFFF"
     )
-    home_banner = models.ImageField(
-            _('Home Banner'), upload_to=get_upload_path('banner'),
-            null=True, blank=True)
+
     home_video_url = models.CharField(
             _('Home Video Url'), max_length=255, null=True, blank=True)
+    banner = models.ImageField(
+        _('Banner'), upload_to=get_upload_path('banner'),
+        null=True, blank=True
+    )
+    mobile_banner = models.ImageField(
+        _('Mobile Banner'), upload_to=get_upload_path('mobile_banner'),
+        null=True, blank=True
+    )
+    image_banner = models.ImageField(
+        _('Image Banner'), upload_to=get_upload_path('image_banner'),
+        null=True, blank=True
+    )
+
+    banner_second_section = models.CharField(
+        _('Sección Secundaria'), max_length=255, blank=True,
+        null=True
+    )
+    banner_second_section_image = models.ImageField(
+        _('Imagen de Sección Secundaria'),
+        upload_to=get_upload_path('image_banner'),
+        null=True, blank=True
+    )
+    banner_second_section_internal_title = models.CharField(
+        _('Título interno de Sección Secundaria'), max_length=255, blank=True,
+        null=True
+    )
+    banner_second_section_internal_text = models.CharField(
+        _('Texto interno de Sección Secundaria'), max_length=255, blank=True,
+        null=True
+    )
+    banner_second_section_internal_image = models.ImageField(
+        _('Imagen Interna de Sección Secundaria'),
+        upload_to=get_upload_path('image_banner'),
+        null=True, blank=True
+    )
+    video_file = models.FileField(
+        _('Video File Banner'), upload_to=get_upload_path('video_banner'),
+        null=True, blank=True
+    )
+
     first_title = models.CharField(
             _('First Title'), max_length=255, null=True, blank=True)
     main_title = models.CharField(
@@ -450,22 +507,20 @@ class HomePage(TimeStampedModel):
     time_description = models.CharField(
         _('Time description'), max_length=50, blank=True, null=True
     )
+
     main_event_title = models.CharField(
-        _('Main Event title'), max_length=255, blank=True)
+        _('Detalle Evento Título'), max_length=255, blank=True)
+    main_event_sub_title = models.CharField(
+        _('Detalle Evento Subtítulo'), max_length=255, blank=True)
     main_event_description = models.TextField(
-        _('Main Event Description'), blank=True)
+        _('Detalle Evento Description'), blank=True)
     main_event_video_url = models.CharField(
-            _('Main Event Video Url'), max_length=255, null=True, blank=True)
+            _('Detalle Evento Video Url'), max_length=255, null=True, blank=True)
     main_event_image = models.ImageField(
-            _('Main Event image'),
+            _('Detalle Evento image'),
             upload_to=get_upload_path('main_event_image'),
             null=True, blank=True)
-    schedule_section_name = models.CharField(
-        _('Agenda nombre Sección'), max_length=255,
-        blank=True, default="Agenda")
-    schedule_section_title = models.CharField(
-        _('Agenda título Sección'), max_length=255,
-        blank=True, default="Programas y Ponentes")
+
     module_section_name = models.CharField(
         _('Módulos nombre Sección'), max_length=255,
         blank=True, default="Módulos")
@@ -474,27 +529,52 @@ class HomePage(TimeStampedModel):
         blank=True, default="Programas y Ponentes")
     module_section_text = models.TextField(
         _('Módulos texto Sección'), blank=True)
+
+    schedule_section_name = models.CharField(
+        _('Agenda nombre Sección'), max_length=255,
+        blank=True, default="Agenda")
+    schedule_section_title = models.CharField(
+        _('Agenda título Sección'), max_length=255,
+        blank=True, default="Programas y Ponentes")
+
     exhibitors_section_name = models.CharField(
         _('Expositores nombre Sección'), max_length=255,
         blank=True, default="Expositores")
+    exhibitors_section_title = models.CharField(
+        _('Expositores título Sección'), max_length=255,
+        blank=True, default="Conoce a los expositores")
+
+    blog_section_name = models.CharField(
+        _('Blog nombre Sección'), max_length=255,
+        blank=True, default="NOVEDADES")
+    blog_section_title = models.CharField(
+        _('Blog título Sección'), max_length=255,
+        blank=True, null=True)
+    blog_button_title = models.CharField(
+        _('Blog título botón Sección'), max_length=255,
+        blank=True, default="Visitar Blog")
+
     sponsors_section_name = models.CharField(
         _('Auspiciadores nombre Sección'), max_length=255,
         blank=True, default="Empresa")
     sponsors_section_text = models.CharField(
         _('Auspiciadores texto'), max_length=255,
         blank=True, default="Con la participación de")
+
     gallery_section_name = models.CharField(
         _('Galería nombre Sección'), max_length=255,
         blank=True, default="Empresa")
     gallery_section_text = models.CharField(
         _('Galería texto'), max_length=255,
         blank=True, default="Con la participación de")
+
     networking_section_name = models.CharField(
         _('Networking nombre Sección'), max_length=255,
         blank=True, default="Networking")
     networking_description_text = models.CharField(
         _('Networking descripción texto'), max_length=255,
         blank=True, default="Conéctate con los demás usuarios.")
+
     survey_section_name = models.CharField(
         _('Encuesta nombre Sección'), max_length=255,
         blank=True, default="Tu opinión es importante")
@@ -512,6 +592,12 @@ class HomePage(TimeStampedModel):
 
     def get_items(self):
         return self.main_event_items.order_by('position')
+
+    def get_indicators(self):
+        return self.main_event_indicators.order_by('position')
+
+    def get_modules(self):
+        return self.items_modules.order_by('position')
 
 
 class ItemMainEvent(BaseModel):
@@ -533,6 +619,27 @@ class ItemMainEvent(BaseModel):
 
     def __str__(self):
         return f'item for {self.home_page}'
+
+
+class IndicatorsMainEvent(BaseModel):
+    home_page = models.ForeignKey(
+        HomePage, related_name="main_event_indicators",
+        on_delete=models.CASCADE)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1)
+    title = models.CharField(
+            _('Título'), max_length=255, null=True, blank=True)
+    number = models.CharField(
+            _('Número'), default=1, null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Indicador')
+        verbose_name_plural = _('Indicadores')
+        ordering = ('position', )
+
+    def __str__(self):
+        return f'Indicador for {self.home_page}'
 
 
 class ItemModule(BaseModel):

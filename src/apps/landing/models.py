@@ -7,6 +7,7 @@ from src.contrib.db.models import BaseModel
 from src.apps.companies.models import Company, UserCompany
 from src.apps.users.models import User
 from ckeditor.fields import RichTextField
+from django.template.defaultfilters import slugify
 
 
 def get_upload_path(internal_folder):
@@ -461,17 +462,46 @@ class BlogPost(BaseModel):
     company = models.ForeignKey(
         Company, related_name="blog_posts",
         on_delete=models.CASCADE, null=True, blank=True)
+    post_date = models.CharField(
+        _('Fecha'), max_length=255,
+        null=True, blank=True
+    )
+    publish_date = models.DateField(
+        _('Fecha de publicación'), max_length=255,
+        null=True, blank=True
+    )
     name = models.CharField(_('Nombre'), max_length=255)
-    image = models.FileField(
-        verbose_name=_('Imagen'),
-        upload_to=get_upload_path('blog_image'))
+    front_image = models.FileField(
+        verbose_name=_('Imagen portada'),
+        upload_to=get_upload_path('blog_image'),
+        null=True, blank=True)
+    banner_image = models.FileField(
+        verbose_name=_('Imagen banner'),
+        upload_to=get_upload_path('blog_image'),
+        null=True, blank=True)
+    slug = models.SlugField(
+        _('Url'),
+        max_length=450,
+        blank=True, editable=True)
 
     class Meta:
         verbose_name = _('Publicación para blog')
         verbose_name_plural = _('Publicaciones para blog')
+        ordering = ('publish_date', )
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(BlogPost, self).save(*args, **kwargs)
+
+    def get_contents(self):
+        return self.blog_post_contents.order_by('position')
+
+    def get_items(self):
+        return self.blog_post_items.order_by('position')
 
 
 class BlogPostItem(BaseModel):
@@ -490,6 +520,10 @@ class BlogPostItem(BaseModel):
         null=True, blank=True)
     url_video = models.URLField(
         _('URL Video'), max_length=255, null=True, blank=True)
+    image_video = models.FileField(
+        _('Imagen Video'),
+        upload_to=get_upload_path('blog_image'),
+        null=True, blank=True)
 
     class Meta:
         verbose_name = _('Item para publicación')

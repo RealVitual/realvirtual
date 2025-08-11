@@ -52,7 +52,7 @@
             {% if company.image_banner %}
                 <img src="{{company.image_banner.url}}" alt="" width="650" class="imgLogo">
             {% endif %}
-            <h4>El encuentro de agilidad más esperado del Perú</h4>
+            <h4>{{home_page.main_title}}</h4>
             <a href="#" class="gButton" id="b1ButtonRegister">Regístrate</a>
             <ul>
                 <li>
@@ -70,10 +70,10 @@
             </ul>
         </div>
         <div class="b1Bottom">
-            <p>{{company.banner_second_section|default:""}}</p>
-            {% if company.banner_second_section_image %}
+            <p>{{home_page.banner_second_section|default:""}}</p>
+            {% if home_page.banner_second_section_image %}
                 <figure>
-                    <img src="{{company.banner_second_section_image.url}}" alt="">
+                    <img src="{{home_page.banner_second_section_image.url}}" alt="">
                 </figure>
             {% endif %}
         </div>
@@ -84,12 +84,12 @@
 <div class="b1PopupInfo">
     <a href="#" class="b1CloseMapa icon-close"></a>
     <h3>
-        {{company.banner_second_section_internal_title|default:""}}
-        <span>{{company.banner_second_section_internal_text|default:""}}</span>
+        {{home_page.banner_second_section_internal_title|default:""}}
+        <span>{{home_page.banner_second_section_internal_text|default:""}}</span>
     </h3>
-    {% if company.banner_second_section_internal_image %}
+    {% if home_page.banner_second_section_internal_image %}
         <figure>
-            <img src="{{company.banner_second_section_internal_image.url}}" alt="">
+            <img src="{{home_page.banner_second_section_internal_image.url}}" alt="">
         </figure>
     {% endif %}
 </div>
@@ -122,31 +122,28 @@
 
 <section class="b2 pY scrollWrap anclaBlock" id="acerca">
     <div class="grilla scrollItem" id="elb2">
-        <h2 class="gTitle"><span>CONOCE MÁS DEL</span>Agility Summit Credicorp 2024</h2>
+        <h2 class="gTitle">
+            <span>{{home_page.main_event_title}}</span>
+            {{home_page.main_event_sub_title}}
+        </h2>
         <div class="b2Wrap f aic jcsb">
             <div class="b2Img videoBoxContent">
                 <figure class="imgCover">
-                    <img src="static/web_2/img/credicorp/home-b2-img1.png" alt="">
+                    <img src="{{home_page.main_event_image.url}}" alt="">
                 </figure>
-                <a href="#" class="clickVideo box clickVideoBox " data-urlvideo="https://www.youtube.com/watch?v=l6_nRqIz_9o"><i class="icon-play"></i></a>
+                <a href="#" class="clickVideo box clickVideoBox " data-urlvideo="{{home_page.main_event_video_url}}"><i class="icon-play"></i></a>
             </div>
             <div class="b2Info">
                 <div class="gParrafo">
-                    <p>El evento contará con charlas y talleres enfocados en casos prácticos y soluciones probadas, cubriendo temas como agilidad, innovación, transformación digital e inteligencia artificial</p>
+                    <p>{{home_page.main_event_description}}</p>
                 </div>
                 <div class="b2ListNumber column3 column1-480">
-                    <div class="b2ItemNUmber">
-                        <p>+<span class="b2Number" data-num="48"></span></p>
-                        <p class="info">Ponentes internacionales</p>
-                    </div>
-                    <div class="b2ItemNUmber">
-                        <p>+<span class="b2Number" data-num="18"></span></p>
-                        <p class="info">De ponencias increíbles</p>
-                    </div>
-                    <div class="b2ItemNUmber">
-                        <p>+<span class="b2Number" data-num="320"></span></p>
-                        <p class="info">Participantes registrados</p>
-                    </div>
+                    {% for row in home_page.get_indicators %}
+                        <div class="b2ItemNUmber">
+                            <p>+<span class="b2Number" data-num="{{row.number}}"></span></p>
+                            <p class="info">{{row.title}}</p>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -157,57 +154,28 @@
     <div class="grilla scrollItem">
         <div class="b3Wrap f aifs jcsb fdc-1024">
             <div class="b3Left">
-                <h3 class="gTitle"><span>MODULOS</span>Impulsando la
-                    Agilidad Regional</h3>
+                <h3 class="gTitle">
+                    <span>{{home_page.module_section_name}}</span>
+                    {{home_page.module_section_title}}
+                </h3>
                 <div class="gParrafo">
-                    <p>Embárcate en una jornada excepcional, dedicada a desvelar los secretos de la agilidad que impulsa el progreso.</p>
+                    <p>{{home_page.module_section_text}}</p>
                 </div>
             </div>
             <div class="b3Right g">
-                <div class="b3Item f aic jcfs fdc-480">
-                    <figure>
-                        <img src="static/web_2/img/credicorp/home-b3-img1.png" alt="">
-                    </figure>
-                    <div class="b3Info">
-                        <p class="name">Business Agility</p>
-                        <div class="gParrafo">
-                            <p>Experiencias en definición de estrategias de transformación, diseño organizacional y evolución de procesos transversales. ​</p>
+                {% for row in home_page.get_modules %}
+                    <div class="b3Item f aic jcfs fdc-480">
+                        <figure>
+                            <img src="{{row.image.url}}" alt="">
+                        </figure>
+                        <div class="b3Info">
+                            <p class="name">{{row.title}}</p>
+                            <div class="gParrafo">
+                                <p>{{row.description}}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="b3Item f aic jcfs fdc-480">
-                    <figure>
-                        <img src="static/web_2/img/credicorp/home-b3-img1.png" alt="">
-                    </figure>
-                    <div class="b3Info">
-                        <p class="name">Business Agility</p>
-                        <div class="gParrafo">
-                            <p>Experiencias en definición de estrategias de transformación, diseño organizacional y evolución de procesos transversales. ​</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="b3Item f aic jcfs fdc-480">
-                    <figure>
-                        <img src="static/web_2/img/credicorp/home-b3-img1.png" alt="">
-                    </figure>
-                    <div class="b3Info">
-                        <p class="name">Business Agility</p>
-                        <div class="gParrafo">
-                            <p>Experiencias en definición de estrategias de transformación, diseño organizacional y evolución de procesos transversales. ​</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="b3Item f aic jcfs fdc-480">
-                    <figure>
-                        <img src="static/web_2/img/credicorp/home-b3-img1.png" alt="">
-                    </figure>
-                    <div class="b3Info">
-                        <p class="name">Business Agility</p>
-                        <div class="gParrafo">
-                            <p>Experiencias en definición de estrategias de transformación, diseño organizacional y evolución de procesos transversales. ​</p>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -331,114 +299,32 @@
 
 <section class="b5 scrollWrap anclaBlock pY scrollWrap" id="expositor">
     <div class="wancho scrollItem">
-        <h3 class="gTitle white tac"><span>ponentes</span>Conoce a los expositores</h3>
+        <h3 class="gTitle white tac">
+            <span>{{home_page.exhibitors_section_name}}</span>
+            {{home_page.exhibitors_section_title}}
+        </h3>
     </div>
     <div class="gSwiperContent scrollItem">
         <div class="b5Swiper swiper-container scrollItem swiper" data-initial="3">
             <div class="b5Wrap swiper-wrapper">
-                
-                <a  href="#" class="b25OpenPopupPerson b5Item swiper-slide zoomImageHover swiper-slide"
-                    data-name="Rosa Bueno"
-                    data-cargo="Presidenta / Camara de Comercio de Lima"
-                    data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
-                    data-url="www.google.com.pe"
-                    data-bandera="static/web_2/img/credicorp/expositor-pais.svg"
-                    data-img="static/web_2/img/credicorp/imgericka1.png">
-                    <span class="tag">Keynote</span>
-                    <figure>
-                        <img src="static/web_2/img/credicorp/imgericka1.png" alt="" width="280">
-                    </figure>
-                    <div class="b5Text">
-                        <h4>Julia Ramos</h4>
-                        <h5>Servicios Forenses</h5>
-                    </div>
-                </a>
-                
-                <a  href="#" class="b25OpenPopupPerson b5Item swiper-slide zoomImageHover swiper-slide"
-                    data-name="Rosa Bueno"
-                    data-cargo="Presidenta / Camara de Comercio de Lima"
-                    data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
-                    data-url="www.google.com.pe"
-                    data-bandera="static/web_2/img/credicorp/expositor-pais.svg"
-                    data-img="static/web_2/img/credicorp/imgericka1.png">
-                    <span class="tag">Keynote</span>
-                    <figure>
-                        <img src="static/web_2/img/credicorp/imgericka1.png" alt="" width="280">
-                    </figure>
-                    <div class="b5Text">
-                        <h4>Julia Ramos</h4>
-                        <h5>Servicios Forenses</h5>
-                    </div>
-                </a>
-                
-                <a  href="#" class="b25OpenPopupPerson b5Item swiper-slide zoomImageHover swiper-slide"
-                    data-name="Rosa Bueno"
-                    data-cargo="Presidenta / Camara de Comercio de Lima"
-                    data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
-                    data-url="www.google.com.pe"
-                    data-bandera="static/web_2/img/credicorp/expositor-pais.svg"
-                    data-img="static/web_2/img/credicorp/imgericka1.png">
-                    <span class="tag">Keynote</span>
-                    <figure>
-                        <img src="static/web_2/img/credicorp/imgericka1.png" alt="" width="280">
-                    </figure>
-                    <div class="b5Text">
-                        <h4>Julia Ramos</h4>
-                        <h5>Servicios Forenses</h5>
-                    </div>
-                </a>
-                
-                <a  href="#" class="b25OpenPopupPerson b5Item swiper-slide zoomImageHover swiper-slide"
-                    data-name="Rosa Bueno"
-                    data-cargo="Presidenta / Camara de Comercio de Lima"
-                    data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
-                    data-url="www.google.com.pe"
-                    data-bandera="static/web_2/img/credicorp/expositor-pais.svg"
-                    data-img="static/web_2/img/credicorp/imgericka1.png">
-                    <span class="tag">Keynote</span>
-                    <figure>
-                        <img src="static/web_2/img/credicorp/imgericka1.png" alt="" width="280">
-                    </figure>
-                    <div class="b5Text">
-                        <h4>Julia Ramos</h4>
-                        <h5>Servicios Forenses</h5>
-                    </div>
-                </a>
-                
-                <a  href="#" class="b25OpenPopupPerson b5Item swiper-slide zoomImageHover swiper-slide"
-                    data-name="Rosa Bueno"
-                    data-cargo="Presidenta / Camara de Comercio de Lima"
-                    data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
-                    data-url="www.google.com.pe"
-                    data-bandera="static/web_2/img/credicorp/expositor-pais.svg"
-                    data-img="static/web_2/img/credicorp/imgericka1.png">
-                    <span class="tag">Keynote</span>
-                    <figure>
-                        <img src="static/web_2/img/credicorp/imgericka1.png" alt="" width="280">
-                    </figure>
-                    <div class="b5Text">
-                        <h4>Julia Ramos</h4>
-                        <h5>Servicios Forenses</h5>
-                    </div>
-                </a>
-                
-                <a  href="#" class="b25OpenPopupPerson b5Item swiper-slide zoomImageHover swiper-slide"
-                    data-name="Rosa Bueno"
-                    data-cargo="Presidenta / Camara de Comercio de Lima"
-                    data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
-                    data-url="www.google.com.pe"
-                    data-bandera="static/web_2/img/credicorp/expositor-pais.svg"
-                    data-img="static/web_2/img/credicorp/imgericka1.png">
-                    <span class="tag">Keynote</span>
-                    <figure>
-                        <img src="static/web_2/img/credicorp/imgericka1.png" alt="" width="280">
-                    </figure>
-                    <div class="b5Text">
-                        <h4>Julia Ramos</h4>
-                        <h5>Servicios Forenses</h5>
-                    </div>
-                </a>
-                
+                {% for ex in exhibitors %}
+                    <a  href="#" class="b25OpenPopupPerson b5Item swiper-slide zoomImageHover swiper-slide"
+                        data-name="{{ex.name}}"
+                        data-cargo="{{ex.title}}"
+                        data-info="<p>{{ex.description}}</p>"
+                        data-url="{{ex.link}}"
+                        data-bandera="{{ex.flag_image.url}}"
+                        data-img="{{ex.image.url}}">
+                        <span class="tag">-</span>
+                        <figure>
+                            <img src="{{ex.image.url}}" alt="" width="280">
+                        </figure>
+                        <div class="b5Text">
+                            <h4>{{ex.name}}</h4>
+                            <h5>{{ex.title}}</h5>
+                        </div>
+                    </a>
+                {% endfor %}
             </div>
         </div>
         <div class="b5Nav gNav">
@@ -458,11 +344,10 @@
     <div class="b25InfoPopup f aic jcfs">
         <div class="b25InfoPopupContent">
             <div class="b25TopName">
-                <h3 class="b25PopupName gTitle">Miguel Yagüe</h3>
+                <h3 class="b25PopupName gTitle"></h3>
                 <img  class="b25PopupBandera"  alt="">
             </div>
-            <h4 class="b25PopupCargo">Senior Advisor - Boston Consulting Group</h4>
-            <!-- Si la info crece se genera un scroll -->
+            <h4 class="b25PopupCargo"></h4>
             <div class="gParrafo b25PopupText white">
             </div>
             <a href="#" class="b25linkedin">Ver perfil en Linkedin <i class="icon-arrowRight"></i></a>
@@ -473,32 +358,35 @@
 <section class="b6 pY scrollWrap anclaBlock" id="blog">
     <div class="grilla scrollItem">
         <div class="b6Top f aic jcsb ">
-            <h4 class="gTitle"><span>NOVEDADES</span>Insights Ágiles: Blog de Agility Summit</h4>
-            <a href="#" class="gButton">Visitar blog</a>
+            <h4 class="gTitle">
+                <span>{{home_page.blog_section_name}}</span>
+                {{home_page.blog_section_title}}
+            </h4>
+            <a href="{% url 'landing:blog' %}" class="gButton">{{home_page.blog_button_title}}</a>
         </div>
         <div class="b6Wrap g column2 column1-768">
             <div class="b6Left">
                 <div class="b6Item zoomImageHover">
-                    <img src="static/web_2/img/credicorp/home-b2-img1.png" alt="">
+                    <img src="{{blog_posts.0.front_image.url}}" alt="">
                     <div class="b6Info">
-                        <p class="date">24 de Noviembre</p>
-                        <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
+                        <p class="date">{{blog_posts.0.publish_date}}</p>
+                        <p class="name">{{blog_posts.0.name}}</p>
                     </div>
                 </div>
             </div>
             <div class="b6Right g">
                 <div class="b6Item zoomImageHover">
-                    <img src="static/web_2/img/credicorp/home-b2-img1.png" alt="">
+                    <img src="{{blog_posts.1.front_image.url}}" alt="">
                     <div class="b6Info">
-                        <p class="date">24 de Noviembre</p>
-                        <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
+                        <p class="date">{{blog_posts.1.publish_date}}</p>
+                        <p class="name">{{blog_posts.1.name}}</p>
                     </div>
                 </div>
                 <div class="b6Item zoomImageHover">
-                    <img src="static/web_2/img/credicorp/home-b2-img1.png" alt="">
+                    <img src="{{blog_posts.2.front_image.url}}" alt="">
                     <div class="b6Info">
-                        <p class="date">24 de Noviembre</p>
-                        <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
+                        <p class="date">{{blog_posts.2.publish_date}}</p>
+                        <p class="name">{{blog_posts.2.name}}</p>
                     </div>
                 </div>
             </div>
@@ -507,58 +395,18 @@
 </section>
 <section class="b7 pY scrollWrap anclaBlock" id="empresa">
     <div class="grilla scrollItem">
-        <h4 class="gTitle tac"><span>EMPRESAS</span>Con la participación de</h4>
+        <h4 class="gTitle tac">
+            <span>{{home_page.sponsors_section_name}}</span>
+            {{home_page.sponsors_section_text}}
+        </h4>
         <div class="b7Wrap column5 column4-1024 column3-768 column2-480">
-            <div class="b7Item">
-                <figure>
-                    <img src="static/web_2/img/credicorp/home-b7-img1.png" alt="">
-                </figure>
-            </div>
-            <div class="b7Item">
-                <figure>
-                    <img src="static/web_2/img/credicorp/home-b7-img2.png" alt="">
-                </figure>
-            </div>
-            <div class="b7Item">
-                <figure>
-                    <img src="static/web_2/img/credicorp/home-b7-img3.png" alt="">
-                </figure>
-            </div>
-            <div class="b7Item">
-                <figure>
-                    <img src="static/web_2/img/credicorp/home-b7-img4.png" alt="">
-                </figure>
-            </div>
-            <div class="b7Item">
-                <figure>
-                    <img src="static/web_2/img/credicorp/home-b7-img5.png" alt="">
-                </figure>
-            </div>
-            <div class="b7Item">
-                <figure>
-                    <img src="static/web_2/img/credicorp/home-b7-img6.png" alt="">
-                </figure>
-            </div>
-            <div class="b7Item">
-                <figure>
-                    <img src="static/web_2/img/credicorp/home-b7-img7.png" alt="">
-                </figure>
-            </div>
-            <div class="b7Item">
-                <figure>
-                    <img src="static/web_2/img/credicorp/home-b7-img8.png" alt="">
-                </figure>
-            </div>
-            <div class="b7Item">
-                <figure>
-                    <img src="static/web_2/img/credicorp/home-b7-img9.png" alt="">
-                </figure>
-            </div>
-            <div class="b7Item">
-                <figure>
-                    <img src="static/web_2/img/credicorp/home-b7-img10.png" alt="">
-                </figure>
-            </div>
+            {% for sponsor in sponsors %}
+                <div class="b7Item">
+                    <figure>
+                        <img src="{{sponsor.image.url}}" alt="">
+                    </figure>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -579,7 +427,7 @@
     selects.forEach(clickSelect => {
         clickSelect.addEventListener('click', function (e) {
             e.preventDefault();
-            e.stopPropagation(); 
+            e.stopPropagation();
 
             document.querySelectorAll('.b4ItemSelect').forEach(item => {
                 item.classList.remove('active');

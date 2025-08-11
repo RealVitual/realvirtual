@@ -9,64 +9,20 @@
 
 <section class="b27 mY scrollWrap">
     <div class="grilla">
-        <h1 class="gTitle tac"><span>novedades</span>Insights Ágiles: El Blog del Agility Summit</h1>
+        <h1 class="gTitle tac">
+            <span>{{home_page.blog_section_name}}</span>
+            {{home_page.blog_section_title}}
+        </h1>
         <div class="b27Wrap column3 column1-480 column2-1024">
-            <a href="#" class="b6Item zoomImageHover">
-                <img src="static/web_2/credicorp/home-b2-img1.png" alt="">
-                <div class="b6Info">
-                    <p class="date">24 de Noviembre</p>
-                    <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
-                </div>
-            </a>
-            <a href="#" class="b6Item zoomImageHover">
-                <img src="static/web_2/credicorp/home-b2-img1.png" alt="">
-                <div class="b6Info">
-                    <p class="date">24 de Noviembre</p>
-                    <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
-                </div>
-            </a>
-            <a href="#" class="b6Item zoomImageHover">
-                <img src="static/web_2/credicorp/home-b2-img1.png" alt="">
-                <div class="b6Info">
-                    <p class="date">24 de Noviembre</p>
-                    <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
-                </div>
-            </a>
-            <a href="#" class="b6Item zoomImageHover">
-                <img src="static/web_2/credicorp/home-b2-img1.png" alt="">
-                <div class="b6Info">
-                    <p class="date">24 de Noviembre</p>
-                    <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
-                </div>
-            </a>
-            <a href="#" class="b6Item zoomImageHover">
-                <img src="static/web_2/credicorp/home-b2-img1.png" alt="">
-                <div class="b6Info">
-                    <p class="date">24 de Noviembre</p>
-                    <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
-                </div>
-            </a>
-            <a href="#" class="b6Item zoomImageHover">
-                <img src="static/web_2/credicorp/home-b2-img1.png" alt="">
-                <div class="b6Info">
-                    <p class="date"><span>Novedades</span> 24 de Noviembre</p>
-                    <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
-                </div>
-            </a>
-            <a href="#" class="b6Item zoomImageHover">
-                <img src="static/web_2/credicorp/home-b2-img1.png" alt="">
-                <div class="b6Info">
-                    <p class="date"><span>Novedades</span> 24 de Noviembre</p>
-                    <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
-                </div>
-            </a>
-            <a href="#" class="b6Item zoomImageHover">
-                <img src="static/web_2/credicorp/home-b2-img1.png" alt="">
-                <div class="b6Info">
-                    <p class="date"><span>Novedades</span> 24 de Noviembre</p>
-                    <p class="name">La Transformación Digital en 2025:Cómo la Agilidad Impulsa la Innovación</p>
-                </div>
-            </a>
+            {% for row in blog_posts %}
+                <a href="{% url 'landing:blog_detail' row.slug %}" class="b6Item zoomImageHover">
+                    <img src="{{row.front_image.url}}" alt="">
+                    <div class="b6Info">
+                        <p class="date">{{row.publish_date}}</p>
+                        <p class="name">{{row.name}}</p>
+                    </div>
+                </a>
+            {% endfor %}
         </div>
 
         <div class="b6Pagination">
@@ -87,5 +43,5 @@
 {% block jsfinal %}
 <script type="text/javascript">
 
-</script>   
+</script>
 {% endblock %}
