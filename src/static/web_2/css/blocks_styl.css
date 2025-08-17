@@ -5278,17 +5278,36 @@ a:focus {
   z-index: 30;
 }
 .b4Top .gTitle {
-  width: 500px;
+  width: 300px;
 }
 .b4SelectGroup {
   grid-gap: 15px;
-  width: 50%;
+  width: 60%;
+  position: relative;
+}
+.b4SelectGroup:before {
+  content: '';
+  background-image: url("../img/credicorp/icon-filter.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  width: 20px;
+  height: 15px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  position: absolute;
+  right: calc(100% + 24px);
 }
 .b4ItemSelect {
   position: relative;
   height: 56px;
   border-radius: 10px;
-  border: 1px solid #686868;
+  border: 1px solid #151515;
+  background: #151515;
 }
 .b4ItemSelect ::-webkit-scrollbar {
   width: 3px;

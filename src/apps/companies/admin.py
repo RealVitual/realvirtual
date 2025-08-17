@@ -102,24 +102,26 @@ class HomePageAdmin(admin.ModelAdmin):
     list_display = ('company', )
 
     def get_inlines(self, request, obj=None):
-        version_obj = obj.company.version
-        version = 1
-        if version_obj:
-            version = version_obj.version
-        if version == 1:
-            return [ItemMainEventTabular, ]
-        elif version == 2:
-            return [IndicatorsMainEventTabular, ItemModuleTabular]
+        if obj:
+            version_obj = obj.company.version
+            version = 1
+            if version_obj:
+                version = version_obj.version
+            if version == 1:
+                return [ItemMainEventTabular, ]
+            elif version == 2:
+                return [IndicatorsMainEventTabular, ItemModuleTabular]
 
     def get_fieldsets(self, request, obj=None):
         fielsets_version = []
+        print(obj, 'OJB')
         if obj is None:
-            return (
+            return [(
                 ("Seleccione la Compañía", {
-                    "fields": ("company",),
+                    "fields": ("company", ),
                     "description": "Debe seleccionar una compañía antes de continuar."
                 }),
-            )
+            )]
         else:
             version_obj = obj.company.version
             version = 1

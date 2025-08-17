@@ -8,7 +8,7 @@ import requests
 from src.apps.companies.models import UserCompany
 from src.apps.events.models import (
     Event, Exhibitor, Filter, Schedule, Shift, ScheduleCustomerEvent,
-    CustomerEvent)
+    CustomerEvent, Category)
 from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
@@ -68,6 +68,13 @@ class HomeView(CreateView):
             filtered_filters = []
             filtered_shift = None
             schedules = []
+            filtered = []
+            filters = []
+            if company.use_filters:
+                filters = Filter.objects.filter(
+                    company=request.company, is_active=True
+                ).order_by('position')
+
             for filter, value in query_filters.items():
                 if 'fbclid' not in filter:
                     if filter == "date":
@@ -77,6 +84,17 @@ class HomeView(CreateView):
                     else:
                         filtered_filters.append(filter)
                         filtered_categories.append(value[0])
+                        category_filter_name = Category.objects.get(
+                            filter__in=filters, filter_name=value[0]
+                        ).name
+                        filtered.append(
+                            dict(
+                                filter=filters.filter(filter_name=filter)[0].name,
+                                filter_name=filter,
+                                category=category_filter_name,
+                                category_filter_name=value[0],
+                                )
+                        )
             schedules_query = Schedule.objects.filter(
                 event__is_active=True,
                 event__company=company,
@@ -121,12 +139,6 @@ class HomeView(CreateView):
                 is_active=True, company=company).order_by('-publish_date')
             if len(found_posts) >= 3:
                 blog_posts = found_posts[:3]
-
-            filters = []
-            if company.use_filters:
-                filters = Filter.objects.filter(
-                    company=request.company, is_active=True
-                ).order_by('position')
             context = {
                 'company': company,
                 'header': True,
@@ -145,7 +157,8 @@ class HomeView(CreateView):
                 'filtered_filters': filtered_filters,
                 'shifts':  shifts,
                 'filtered_shift': filtered_shift.name if filtered_shift else None,
-                'blog_posts': blog_posts
+                'blog_posts': blog_posts,
+                'filtered': filtered
             }
         return render(request, self.template_name, context)
 

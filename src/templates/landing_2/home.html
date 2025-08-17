@@ -186,43 +186,65 @@
         <div class="b4Top f aife jcsb fdc-480">
             <h4 class="gTitle"><span>AGENDA</span>Explora el itinerario</h4>
             <div class="b4SelectGroup g column2 column1-480 f">
-                <div class="b4ItemSelect">
-                    <a href="#" class="b4ClickSelect arrowClick"><span>Fecha</span><p class="name">Cualquiera</p></a>
-                    <ul>
-                        <li><a href="#">19 de diciembr</a></li>
-                        <li><a href="#">20 de diciembr</a></li>
-                        <li><a href="#">21 de diciembr</a></li>
-                        <li><a href="#">22 de diciembr</a></li>
-                        <li><a href="#">23 de diciembr</a></li>
-                    </ul>
-                </div>
-                <div class="b4ItemSelect">
-                    <a href="#" class="b4ClickSelect arrowClick"><span>Tema</span><p class="name">Cualquiera</p></a>
-                    <ul>
-                        <li><a href="#">19 de diciembr</a></li>
-                        <li><a href="#">20 de diciembr</a></li>
-                        <li><a href="#">21 de diciembr</a></li>
-                        <li><a href="#">22 de diciembr</a></li>
-                        <li><a href="#">23 de diciembr</a></li>
-                    </ul>
-                </div>
+                {% for f in filters %}
+                    {% if f.filter_name in filtered_filters%}
+                        <div class="b4ItemSelect">
+                            <a href="#" class="b4ClickSelect arrowClick">
+                                {% for fi in filtered %}
+                                    {% if fi.filter_name == f.filter_name%}
+                                        <span>{{f.name}}</span>
+                                        <p class="name">{{fi.category}}</p>
+                                    {% endif %}
+                                {% endfor %}
+                            </a>
+                            <ul>
+                                {% for category in f.ordered_categories %}
+                                    {% if category.filter_name not in filtered_categories %}
+                                        <li>
+                                            <a data-category="{{category.filter_name}}" data-filter="{{f.filter_name}}" href="#">{{category.name}}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor  %}
+                                <li>
+                                    <a data-category="all" data-filter="{{f.filter_name}}" href="#">Todos</a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                    <div class="b4ItemSelect">
+                        <a href="#" class="b4ClickSelect arrowClick">
+                            <span>{{f.name}}</span>
+                            <p class="name">Todos</p>
+                        </a>
+                        <ul>
+                            {% for category in f.ordered_categories %}
+                                <li>
+                                    <a data-category="{{category.filter_name}}" data-filter="{{f.filter_name}}" href="#">{{category.name}}</a>
+                                </li>
+                            {% endfor  %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                {% endfor %}
             </div>
         </div>
         <div class="b4List g">
+            {% for schedule in schedules %}
             <div class="b4ItemList">
                 <div class="b4ItemCLick f aic jcsb arrowClick fdc-1024">
                     <div class="b4ItemListLeft f aic jcfs fdc-480">
                         <div class="live g">
-                            <p class="date f aic jcfs">12 de diciembre</p>
+                            <p class="date f aic jcfs">{{schedule.get_date}}</p>
                             <!-- CONDICIONAR SOLO UNO DE LOS BOTONES, REPRODUCIR O AGENDAR -->
                             <a href="#" class="reproducir">Reproducir <i class="icon-play"></i></a>
                             <!-- <a href="#" class="agendar">Agendar </a> -->
                         </div>
-                        <p class="name">Bienvenida al Evento</p>
+                        <p class="name">{{schedule.name}}</p>
                     </div>
                     <div class="b4ItemListRight column2 column1-480">
-                        <p class="hour">08:30 - 09:00 PM</p>
-                        <p class="theme">Ciberseguridad y Liderazgo</p>
+                        <p class="hour"> {{schedule.start_time}} - {{schedule.end_time}}</p>
+                        <p class="theme"> {{schedule.event.name}} </p>
                     </div>
                 </div>
                 <div class="b4ItemInfo">
@@ -231,26 +253,37 @@
                             <p class="message">Business Agility</p>
                             <p class="nameEvent">Bienvenida al Evento Bienvenida al Evento Bienvenida al Evento Bienvenida al Evento Bienvenida al Evento</p>
                             <div class="gParrafo">
-                                <p> Líderes en agilidad abordarán desafíos como la resistencia al cambio y la necesidad de adaptabilidad, ofreciendo estrategias exitosas.</p>
+                                <p>{{schedule.description}}</p>
                             </div>
                         </div>
                         <div class="b4ItemInfoRight">
-                            <div class="b4Expos g">
-                                <a href="#" class="f aic jcfs b25OpenPopupPerson"
-                                data-name="Rosa Bueno"
-                                data-cargo="Presidenta / Camara de Comercio de Lima"
-                                data-info="<p>Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.Abogada egresada de la Pontificia Universalidad Católica del Perú (PUCP), experta en Competencia, Compliance y Arbitraje. Además, es socia fundadora del estudio de abogados Bueno Lercari Consultores.</p>"
-                                data-url="www.google.com.pe"
-                                data-bandera="static/web_2/img/credicorp/expositor-pais.svg"
-                                data-img="static/web_2/img/credicorp/imgericka1.png">
-                                    <img src="static/web_2/img/credicorp/pais.svg" alt="">
-                                    <p class="">Cecilia Talaviña <samp>|</samp> Mi Banco</p>
-                                </a>
-                            </div>
+                            {% for exhibitor in schedule.get_exhibitors %}
+                                <div class="b4Expos g">
+                                    <a href="#" class="f aic jcfs b25OpenPopupPerson"
+                                    data-name="{{exhibitor.name}}"
+                                    data-cargo="{{exhibitor.title}}"
+                                    data-info="{{exhibitor.description}}"
+                                    data-url="{{exhibitor.link}}"
+                                    {% if exhibitor.flag_image %}
+                                    data-bandera="{{exhibitor.flag_image.url}}"
+                                    {% else %}
+                                    data-bandera=""
+                                    {% endif %}
+                                    data-img="{{exhibitor.image.url}}">
+                                        {% if exhibitor.flag_image %}
+                                            <img src="{{exhibitor.flag_image.url}}" alt="">
+                                        {% else %}
+                                            <img src="static/web_2/img/credicorp/pais.svg" alt="">
+                                        {% endif %}
+                                        <p class="">{{exhibitor.name_on_list}} <samp>|</samp>{{exhibitor.organization}}</p>
+                                    </a>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
             <div class="b4ItemList">
                 <div class="b4ItemCLick f aic jcsb arrowClick fdc-1024">
                     <div class="b4ItemListLeft f aic jcfs fdc-480">
@@ -315,7 +348,7 @@
                         data-url="{{ex.link}}"
                         data-bandera="{{ex.flag_image.url}}"
                         data-img="{{ex.image.url}}">
-                        <span class="tag">-</span>
+                        <span class="tag">{{ex.organization}}</span>
                         <figure>
                             <img src="{{ex.image.url}}" alt="" width="280">
                         </figure>
@@ -418,10 +451,10 @@
 <script src="static/web_2/js/swiper/swiper-bundle.min.js"></script>
 <script type="text/javascript">
 
-    //bloque 3 - js
-    eventCountAnimate("elb2","b2Number",3,1)
+//bloque 3 - js
+eventCountAnimate("elb2","b2Number",3,1)
 
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     const selects = document.querySelectorAll('.b4ClickSelect');
 
     selects.forEach(clickSelect => {
@@ -429,15 +462,19 @@
             e.preventDefault();
             e.stopPropagation();
 
+            const parent = this.closest('.b4ItemSelect');
+            const isActive = parent.classList.contains('active');
+
             document.querySelectorAll('.b4ItemSelect').forEach(item => {
                 item.classList.remove('active');
                 const link = item.querySelector('.b4ClickSelect');
                 if (link) link.classList.remove('active');
             });
 
-            const parent = this.closest('.b4ItemSelect');
-            if (parent) parent.classList.add('active');
-            this.classList.add('active');
+            if (!isActive) {
+                parent.classList.add('active');
+                this.classList.add('active');
+            }
         });
 
         const parent = clickSelect.closest('.b4ItemSelect');
@@ -448,9 +485,30 @@
             item.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-
+                let filter = this.getAttribute('data-filter')
+                let category = this.getAttribute('data-category')
+                console.log(filter)
+                console.log(category)
                 nameDisplay.textContent = this.textContent;
-                 // *********** AQUÍ PUEDES HACER AJAX *******
+                let currentUrl = window.location.href;
+                if (category == 'all'){
+                    let params = new URL(document.location.toString()).searchParams;
+                    params.delete(filter);
+                    let url = new URL(window.location.origin + "/#agenda");
+                    url.search = params.toString();
+                    window.location.href = url.toString();
+                }else{
+                    if(!currentUrl.includes('#')){
+                        let url = new URL(currentUrl + '#agenda');
+                        url.searchParams.set(filter, category);
+                        window.location.href = url.toString();
+                    }else{
+                        let url = new URL(currentUrl);
+                        url.searchParams.set(filter, category);
+                        window.location.href = url.toString();
+                    }
+
+                }
                 parent.classList.remove('active');
                 clickSelect.classList.remove('active');
             });
@@ -458,167 +516,165 @@
     });
 
     document.addEventListener('click', function () {
-            document.querySelectorAll('.b4ItemSelect').forEach(item => {
-                item.classList.remove('active');
-                const link = item.querySelector('.b4ClickSelect');
-                if (link) link.classList.remove('active');
-            });
+        document.querySelectorAll('.b4ItemSelect').forEach(item => {
+            item.classList.remove('active');
+            const link = item.querySelector('.b4ClickSelect');
+            if (link) link.classList.remove('active');
         });
     });
+});
 
 
-    eventClickAccordion('b4ItemCLick')
-    document.querySelectorAll('.reproducir, .agendar').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation(); 
-        });
+eventClickAccordion('b4ItemCLick')
+document.querySelectorAll('.reproducir, .agendar').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation();
     });
+});
 
 
-       //************b5-js*******************
-	let elSwiperb5 = document.getElementsByClassName('b5Swiper')[0].dataset.initial
-    const breakpoint = window.matchMedia('(max-width: 1024px)');
-    const breakpointChecker = () => {
-        let getCountItems = document.getElementsByClassName('b5Item').length;
-        console.log(getCountItems);
-        breakpoint.matches === true ? 
-            (getCountItems >= 2 ? enableSwiper(elSwiperb5) : destroySwiper()): 
-            (getCountItems > elSwiperb5 ? enableSwiper(elSwiperb5) : destroySwiper())
+   //************b5-js*******************
+let elSwiperb5 = document.getElementsByClassName('b5Swiper')[0].dataset.initial
+const breakpoint = window.matchMedia('(max-width: 1024px)');
+const breakpointChecker = () => {
+    let getCountItems = document.getElementsByClassName('b5Item').length;
+    console.log(getCountItems);
+    breakpoint.matches === true ?
+        (getCountItems >= 2 ? enableSwiper(elSwiperb5) : destroySwiper()):
+        (getCountItems > elSwiperb5 ? enableSwiper(elSwiperb5) : destroySwiper())
+}
+let mySwiper;
+let elWrapSwiperb5 = document.getElementsByClassName('b5')[0]
+const destroySwiper = () =>{
+    elWrapSwiperb5.classList.add('noSwiper')
+    elWrapSwiperb5.classList.remove('swiperActive')
+    if(mySwiper !== undefined) {
+        return mySwiper.destroy(true,true);
     }
-    let mySwiper;
-    let elWrapSwiperb5 = document.getElementsByClassName('b5')[0]
-    const destroySwiper = () =>{
-		elWrapSwiperb5.classList.add('noSwiper')
-		elWrapSwiperb5.classList.remove('swiperActive')
-        if(mySwiper !== undefined) {
-            return mySwiper.destroy(true,true);
-        }
-    }
-    const enableSwiper = (initial) => {
-		elWrapSwiperb5.classList.remove('noSwiper')
-		elWrapSwiperb5.classList.add('swiperActive')
-        mySwiper = new Swiper ('.b5Swiper', {
-            loop: true,
-            spaceBetween: 24,
-            centeredSlides: true,
-            disableOnInteraction: false,
-            pagination: {
-                el: '.b5Pagination',
-                type: 'bullets',
-                clickable: true
+}
+const enableSwiper = (initial) => {
+    elWrapSwiperb5.classList.remove('noSwiper')
+    elWrapSwiperb5.classList.add('swiperActive')
+    mySwiper = new Swiper ('.b5Swiper', {
+        loop: true,
+        spaceBetween: 24,
+        centeredSlides: true,
+        disableOnInteraction: false,
+        pagination: {
+            el: '.b5Pagination',
+            type: 'bullets',
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+        },
+        navigation: {
+            nextEl: '.b5Next',
+            prevEl: '.b5Prev',
+        },
+        breakpoints:{
+            1024:{
+               slidesPerView: 'auto',
+               spaceBetween: 24,
             },
-			autoplay: {
-				delay: 5000,
-			},
-            navigation: {
-                nextEl: '.b5Next',
-                prevEl: '.b5Prev',
+            768:{
+               slidesPerView: 'auto',
+               spaceBetween: 24,
             },
-            breakpoints:{
-                1024:{
-                   slidesPerView: 'auto',
-                   spaceBetween: 24,
-                },
-                768:{
-                   slidesPerView: 'auto',
-                   spaceBetween: 24,
-                },
-                320:{
-                   slidesPerView: 'auto',
-                   spaceBetween: 24,
-                }
-            }
-        });
-        
-    };
-    breakpoint.addListener(breakpointChecker);
-    breakpointChecker();
-
-
-    let elb25OpenPopupPerson = document.getElementsByClassName("b25OpenPopupPerson")
-    let elb25PopupName = document.getElementsByClassName("b25PopupName")[0];
-    let elb25Popupimg = document.getElementsByClassName("b25Popupimg")[0];
-    let elb25PopupCargo = document.getElementsByClassName("b25PopupCargo")[0];
-    let elb25PopupText = document.getElementsByClassName("b25PopupText")[0];
-    let elb25linkedin = document.getElementsByClassName("b25linkedin")[0];
-    let elb25Popup = document.getElementsByClassName("b25Popup")[0];
-    let elb25ClosePopup = document.getElementsByClassName("b25ClosePopup")[0];
-    let elb25PopupBandera = document.getElementsByClassName("b25PopupBandera")[0];
-
-    for(const b25OpenPopupPerson of elb25OpenPopupPerson){
-        b25OpenPopupPerson.addEventListener("click",function(e){
-            e.preventDefault();
-            elb25Popup.classList.add('active');
-            OVERLAY.classList.add('active');
-            OVERLAY.style.zIndex = 500
-            let getName = this.dataset.name;
-            let getCargo = this.dataset.cargo;
-            let getInfo = this.dataset.info;
-            let getUrl = this.dataset.url;
-            let getImg = this.dataset.img;
-            let getBander = this.dataset.bandera;
-
-            elb25PopupName.innerText = getName;
-            elb25PopupCargo.innerText = getCargo;
-            elb25Popupimg.setAttribute('src',getImg);
-            elb25PopupText.innerHTML = getInfo;
-            elb25linkedin.setAttribute("href",getUrl);
-            elb25PopupBandera.setAttribute("src",getBander);
-        });
-    }
-
-    elb25ClosePopup.addEventListener("click",function(e){
-        e.preventDefault();
-        this.parentNode.classList.remove('active')
-        OVERLAY.removeAttribute("style");
-        OVERLAY.classList.remove('active')
-    });
-
-
-    if(document.getElementsByClassName('b22')[0]){
-        function actualizarContador() {
-            const fechaObjetivoString = document.getElementById("contador").getAttribute("data-date");
-            const [fecha, hora] = fechaObjetivoString.split(' ');
-            const [dia, mes, año] = fecha.split('-');
-            const fechaObjetivoISO = `${año}-${mes}-${dia}T${hora}`;
-            const fechaObjetivo = new Date(fechaObjetivoISO);
-            const ahora = new Date();
-            const diferencia = fechaObjetivo - ahora;
-            if (diferencia > 0) {
-                const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-                const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-                const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
-                document.getElementById("dias").innerText = dias.toString().padStart(2, "0");
-                document.getElementById("horas").innerText = horas.toString().padStart(2, "0");
-                document.getElementById("minutos").innerText = minutos.toString().padStart(2, "0");
-                document.getElementById("segundos").innerText = segundos.toString().padStart(2, "0");
-            } else {
-                document.getElementById("dias").innerText = "00";
-                document.getElementById("horas").innerText = "00";
-                document.getElementById("minutos").innerText = "00";
-                document.getElementById("segundos").innerText = "00";
+            320:{
+               slidesPerView: 'auto',
+               spaceBetween: 24,
             }
         }
-        setInterval(actualizarContador, 1000);
-    }
-    
-    let elb1CloseMapa = document.getElementsByClassName('b1CloseMapa')[0]
-    let elb1Bottom = document.getElementsByClassName('b1Bottom')[0]
-    let elb1PopupInfo = document.getElementsByClassName('b1PopupInfo')[0]
+    });
+};
+breakpoint.addListener(breakpointChecker);
+breakpointChecker();
 
-    elb1Bottom.addEventListener('click',function(e){
+
+let elb25OpenPopupPerson = document.getElementsByClassName("b25OpenPopupPerson")
+let elb25PopupName = document.getElementsByClassName("b25PopupName")[0];
+let elb25Popupimg = document.getElementsByClassName("b25Popupimg")[0];
+let elb25PopupCargo = document.getElementsByClassName("b25PopupCargo")[0];
+let elb25PopupText = document.getElementsByClassName("b25PopupText")[0];
+let elb25linkedin = document.getElementsByClassName("b25linkedin")[0];
+let elb25Popup = document.getElementsByClassName("b25Popup")[0];
+let elb25ClosePopup = document.getElementsByClassName("b25ClosePopup")[0];
+let elb25PopupBandera = document.getElementsByClassName("b25PopupBandera")[0];
+
+for(const b25OpenPopupPerson of elb25OpenPopupPerson){
+    b25OpenPopupPerson.addEventListener("click",function(e){
         e.preventDefault();
-        elb1PopupInfo.classList.add('active')
-        OVERLAY.classList.add('active')
-        OVERLAY.style.zIndex = 100
-    })
-    elb1CloseMapa.addEventListener('click',function(e){
-        e.preventDefault();
-        elb1PopupInfo.classList.remove('active')
-        OVERLAY.classList.remove('active')
-        OVERLAY.removeAttribute('style')
-    })
-    
+        elb25Popup.classList.add('active');
+        OVERLAY.classList.add('active');
+        OVERLAY.style.zIndex = 500
+        let getName = this.dataset.name;
+        let getCargo = this.dataset.cargo;
+        let getInfo = this.dataset.info;
+        let getUrl = this.dataset.url;
+        let getImg = this.dataset.img;
+        let getBander = this.dataset.bandera;
+
+        elb25PopupName.innerText = getName;
+        elb25PopupCargo.innerText = getCargo;
+        elb25Popupimg.setAttribute('src',getImg);
+        elb25PopupText.innerHTML = getInfo;
+        elb25linkedin.setAttribute("href",getUrl);
+        elb25PopupBandera.setAttribute("src",getBander);
+    });
+}
+
+elb25ClosePopup.addEventListener("click",function(e){
+    e.preventDefault();
+    this.parentNode.classList.remove('active')
+    OVERLAY.removeAttribute("style");
+    OVERLAY.classList.remove('active')
+});
+
+
+if(document.getElementsByClassName('b22')[0]){
+    function actualizarContador() {
+        const fechaObjetivoString = document.getElementById("contador").getAttribute("data-date");
+        const [fecha, hora] = fechaObjetivoString.split(' ');
+        const [dia, mes, año] = fecha.split('-');
+        const fechaObjetivoISO = `${año}-${mes}-${dia}T${hora}`;
+        const fechaObjetivo = new Date(fechaObjetivoISO);
+        const ahora = new Date();
+        const diferencia = fechaObjetivo - ahora;
+        if (diferencia > 0) {
+            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+            document.getElementById("dias").innerText = dias.toString().padStart(2, "0");
+            document.getElementById("horas").innerText = horas.toString().padStart(2, "0");
+            document.getElementById("minutos").innerText = minutos.toString().padStart(2, "0");
+            document.getElementById("segundos").innerText = segundos.toString().padStart(2, "0");
+        } else {
+            document.getElementById("dias").innerText = "00";
+            document.getElementById("horas").innerText = "00";
+            document.getElementById("minutos").innerText = "00";
+            document.getElementById("segundos").innerText = "00";
+        }
+    }
+    setInterval(actualizarContador, 1000);
+}
+
+let elb1CloseMapa = document.getElementsByClassName('b1CloseMapa')[0]
+let elb1Bottom = document.getElementsByClassName('b1Bottom')[0]
+let elb1PopupInfo = document.getElementsByClassName('b1PopupInfo')[0]
+
+elb1Bottom.addEventListener('click',function(e){
+    e.preventDefault();
+    elb1PopupInfo.classList.add('active')
+    OVERLAY.classList.add('active')
+    OVERLAY.style.zIndex = 100
+})
+elb1CloseMapa.addEventListener('click',function(e){
+    e.preventDefault();
+    elb1PopupInfo.classList.remove('active')
+    OVERLAY.classList.remove('active')
+    OVERLAY.removeAttribute('style')
+})
 </script>
 {% endblock %}
