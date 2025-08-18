@@ -1,4 +1,4 @@
-<footer>
+<footer style="background: {{footer.background}};">
     <div class="grilla">
         <div class="fWrap  f aic jcc fdc-768">
             <div class="fMenu f aic jcc fItem">
@@ -9,10 +9,18 @@
                 <a href="#empresa" class="headerAnclaBlock">Empresas</a>
             </div>
             <div class="fRedes fItem f aic jcc">
-                <a href="#" class="icon-linkedin"></a>
-                <a href="#" class="icon-google"></a>
-                <a href="#" class="icon-instagram"></a>
-                <a href="#" class="icon-face"></a>
+                {% if footer.linkedin %}
+                    <a href="{{footer.linkedin}}" target="_blank" class="icon-linkedin"></a>
+                {% endif %}
+                {% if footer.twitter %}
+                    <a href="{{footer.instagram}}" target="_blank" class="icon-twitter"></a>
+                {% endif %}
+                {% if footer.instagram %}
+                    <a href="{{footer.twitter}}" target="_blank" class="icon-instagram"></a>
+                {% endif %}
+                {% if footer.facebook %}
+                    <a href="{{footer.facebook}}" target="_blank" class="icon-face"></a>
+                {% endif %}
             </div>
             <div class="fContact fItem">
                 <a>Powered by: RealVirtual</a>

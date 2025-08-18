@@ -60,7 +60,7 @@ class Company(BaseModel):
     name = models.CharField(_('Nombre compañia'), max_length=255)
     main_event_name = models.CharField(_('Nombre principal del evento'),
                                        max_length=255, blank=True, null=True)
-    logo = models.ImageField(
+    logo = models.FileField(
         _('Logo'), upload_to=get_upload_path("company"),
         null=True, blank=True
     )

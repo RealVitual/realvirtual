@@ -9,6 +9,8 @@ from .models import (
     Occupation, TemplateVersion, ItemModule, IndicatorsMainEvent)
 from prettyjson import PrettyJSONWidget
 from django.utils.safestring import mark_safe
+from django.utils.html import format_html
+import os
 
 
 @admin.register(Company)
@@ -16,9 +18,15 @@ class CompanyAdmin(admin.ModelAdmin):
     list_display = ('name', 'domain', 'enterprise')
     list_filter = ('enterprise', )
     search_fields = ('name', 'enterprise__name', 'domain')
+    readonly_fields = (
+        'logo_preview', 'banner_preview', 'mobile_banner_preview',
+        'image_banner_preview')
     fieldsets = (
         (None, {
-            'fields': ('enterprise', 'domain', 'name', 'main_event_name')
+            'fields': (
+                'enterprise', 'domain', 'name', 'logo', 'logo_preview',
+                'main_event_name'
+            )
         }),
         (_('Contador, Comunicado y Cierre de landing'), {
             'fields': (
@@ -32,7 +40,9 @@ class CompanyAdmin(admin.ModelAdmin):
         }),
         (_('Banner Principal'), {
             'fields': (
-                'banner', 'mobile_banner', 'image_banner',
+                'banner', 'banner_preview',
+                'mobile_banner', 'mobile_banner_preview',
+                'image_banner', 'image_banner_preview',
                 'banner_second_section', 'banner_second_section_image',
                 'banner_second_section_internal_title',
                 'banner_second_section_internal_text',
@@ -80,6 +90,68 @@ class CompanyAdmin(admin.ModelAdmin):
             )
         }),
     )
+
+    def logo_preview(self, obj):
+        IMAGE_FILE_TYPES = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg']
+        if obj.logo:
+            name, extension = os.path.splitext(obj.logo.name)
+            if extension.lower() in IMAGE_FILE_TYPES:
+                return format_html(
+                    '<img src="{}" width="100" height="auto" />',
+                    obj.logo.url
+                )
+            else:
+                return format_html(
+                    '<a href="{}">{}</a>', obj.logo.url, obj.logo.name)
+        return "No File"
+
+    def banner_preview(self, obj):
+        IMAGE_FILE_TYPES = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg']
+        if obj.banner:
+            name, extension = os.path.splitext(obj.banner.name)
+            if extension.lower() in IMAGE_FILE_TYPES:
+                return format_html(
+                    '<img src="{}" width="150" height="auto" />',
+                    obj.banner.url
+                )
+            else:
+                return format_html(
+                    '<a href="{}">{}</a>', obj.banner.url, obj.banner.name)
+        return "No File"
+
+    def mobile_banner_preview(self, obj):
+        IMAGE_FILE_TYPES = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg']
+        if obj.mobile_banner:
+            name, extension = os.path.splitext(obj.mobile_banner.name)
+            if extension.lower() in IMAGE_FILE_TYPES:
+                return format_html(
+                    '<img src="{}" width="150" height="auto" />',
+                    obj.mobile_banner.url
+                )
+            else:
+                return format_html(
+                    '<a href="{}">{}</a>',
+                    obj.mobile_banner.url,
+                    obj.mobile_banner.name
+                )
+        return "No File"
+
+    def image_banner_preview(self, obj):
+        IMAGE_FILE_TYPES = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg']
+        if obj.image_banner:
+            name, extension = os.path.splitext(obj.image_banner.name)
+            if extension.lower() in IMAGE_FILE_TYPES:
+                return format_html(
+                    '<img src="{}" width="150" height="auto" />',
+                    obj.image_banner.url
+                )
+            else:
+                return format_html(
+                    '<a href="{}">{}</a>',
+                    obj.image_banner.url,
+                    obj.image_banner.name
+                )
+        return "No File"
 
 
 class ItemMainEventTabular(admin.TabularInline):

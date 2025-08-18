@@ -6,6 +6,8 @@ from .models import (Video, Sponsor, CredentialCustomer,
                      UserSurveyAnswer, NetworkingOption,
                      UserNetworkingPreference, FreeImage, CerficateSettings,
                      BlogPost, BlogPostItem, BlogPostItemContent)
+from django.utils.html import format_html
+import os
 
 
 @admin.register(Video)
@@ -22,9 +24,37 @@ class ExternalEventAdmin(admin.ModelAdmin):
 
 @admin.register(Sponsor)
 class SponsorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'company')
-    # list_editable = ('name', 'company')
+    list_display = ('image_preview', 'position', 'company')
+    list_editable = ('position', 'company')
     list_filter = ('company', )
+    readonly_fields = ('image_preview', )
+
+    fieldsets = (
+        (None, {
+            'fields': (
+                'image_preview',
+            )
+        }),
+        (None, {
+            'fields': (
+                'company', 'position', 'name', 'image',
+            )
+        }),
+    )
+
+    def image_preview(self, obj):
+        IMAGE_FILE_TYPES = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg']
+        if obj.image:
+            name, extension = os.path.splitext(obj.image.name)
+            if extension.lower() in IMAGE_FILE_TYPES:
+                return format_html(
+                    '<img src="{}" width="100" height="auto" />',
+                    obj.image.url
+                )
+            else:
+                return format_html(
+                    '<a href="{}">{}</a>', obj.image.url, obj.image.name)
+        return "No File"
 
 
 @admin.register(CredentialCustomer)

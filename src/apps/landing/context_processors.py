@@ -31,8 +31,10 @@ def main_info(request, **kwargs):
                 is_live = event
                 break
         choose_access_type = False
-        allow_register =  True
-        if company.access_type == "HYBRID" and company.capacity > company.current_quantity:
+        allow_register = True
+        if company.access_type == "HYBRID" and (
+            company.capacity > company.current_quantity
+        ):
             choose_access_type = True
         if company.capacity <= company.current_quantity:
             allow_register = False

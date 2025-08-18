@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title></title>
-<!-- 	<link rel="icon" type="image/png" href="/static/web_2/img/favicon/256x256.png"/>
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/web_2/img/favicon/114x114.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/web_2/img/favicon/72x72.png">
-    <link rel="apple-touch-icon-precomposed" href="/static/web_2/img/favicon/57x57.png"> -->
+    {% if company.favicon %}
+        <link rel="icon" type="image/png" href="{{company.favicon.url}}"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{company.favicon.url}}">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{company.favicon.url}}">
+        <link rel="apple-touch-icon-precomposed" href="{{company.favicon.url}}">
+    {% endif %}
     {% block cssadicional %}
     {% endblock %}
     <link rel="stylesheet" type="text/css" href="/static/web_2/css/styles.css?v=1{{ BUILD_ID }}"/>
@@ -64,6 +66,7 @@
     <!-- JSADD END -->
     <script>
         'use strict';
+        var register_data = "";
         document.addEventListener('DOMContentLoaded', function() {
             const buttonCookie = document.getElementById('buttonCookie');
             const elCoockie = document.getElementById('elCoockie');
@@ -78,7 +81,6 @@
             });
         });
         $(function(){
-            //Configuraciòn general de plugin formulario
             $("form").validationEngine('attach', {
                 promptPosition : "topLeft",
                 autoHidePrompt: true,
@@ -87,32 +89,114 @@
                 scroll: false,
                 validateNonVisibleFields: true
             });
-
-            //Evento form LOGIN
+            window.dataLayer = window.dataLayer || [];
             $('.g8SumitLogin').click(function(e){
                 e.preventDefault();
                 var item = $(this);
                 var valid = item.closest('form').validationEngine('validate');
                 var form = $(this).closest('form');
                 if (!valid) {
-
                     } else {
+                        $('.g8SumitLogin').addClass('isLoading');
+                        $('.g8SumitLogin').disabled = true;
+                        let login_data = form.serialize()
+                        $.ajax({
+                            url : "/login_access/",
+                            type : "post",
+                            data: login_data,
+                        }).done(function(data) {
+                            if(data.success){
+                                window.location.href = data.redirect_url
+                            }else{
+                                $('.g8SumitLogin').disabled = false;
+                                var message = $('.message-warning-login')
+                                message.html(data.message)
+                                message.show();
+                                setTimeout(()=>{
+                                    message.fadeOut('slow')
+                                }, 2000)
+                                $('.g8SumitLogin').removeClass('isLoading')
+                                if(data.captcha_error == 1){
+                                    setTimeout(()=>{
+                                        location.reload();
+                                    }, 3000)
+                                }
+                            }
+                        });
                 }
             });
-            //Evento form REGISTRO
-            $('.g8SumitRegistro').click(function(e){
+            $('.save-register').click(function(e){
                 e.preventDefault();
                 var item = $(this);
                 var valid = item.closest('form').validationEngine('validate');
                 var form = $(this).closest('form');
+                console.log(form, 'form')
                 if (!valid) {
-
                     } else {
-                    //En caso de que el registro sea el correcto se activara el popup del mensaje de "registro exitoso"
-                    OVERLAY.classList.add('active')
-                    document.getElementsByClassName('formRegistroExitoso')[0]?.classList.add('active')
+                        $('.save-register').addClass('isLoading');
+                        $('.save-register').disabled = true;
+                        register_data = form.serialize()
+                        console.log(register_data, 'REGISTER DATA')
+                        $.ajax({
+                            url : "{% url 'landing:validate_register' %}",
+                            type : "post",
+                            data: register_data,
+                        }).done(function(data) {
+                            if(data.captcha_error == 1){
+                                setTimeout(()=>{
+                                    location.reload();
+                                }, 3000)
+                            }
+                            if(data.success){
+                                window.dataLayer.push({
+                                    'event': 'formulario',
+                                    'email': register_data['email'],
+                                    'nombres': register_data['names'],
+                                    'apellidos': register_data['last_name']
+                                 });
+                                console.log(window.dataLayer, 'DATALAYER')
+                                $('.save-register').disabled = false;
+                                console.log(data, 'DATA')
+                                if(data.confirmed){
+                                    $('.parrafo-register').show();
+                                    $('.warning-form').hide();
+                                    setTimeout(()=>{
+                                        window.location.href = data.redirect_url
+                                    }, 2000)
+                                }else{
+                                    var parrafo_register = $('.parrafo-register')
+                                    parrafo_register.hide();
+                                    var register_form = $('.register-form')
+                                    register_form.hide();
+                                    $('.message-waiting-confirmation').html(data.confirmed_message)
+                                    $('.waiting-confirmation-form').show();
+                                    setTimeout(()=>{
+                                        window.location.href = data.redirect_url
+                                    }, 20000)
+                                }
+
+                            }else{
+                                $('.save-register').disabled = false;
+                                $('.save-register').removeClass('isLoading');
+                                var parrafo_register = $('.parrafo-register')
+                                var msg = $('.message-warning')
+                                var register_form = $('.register-form')
+                                var warning_form = $('.warning-form')
+                                register_form.hide();
+                                parrafo_register.hide();
+                                msg.html(data.message)
+                                if(data.can_confirm){
+                                    $('.confirm-div').show()
+                                }
+                                else{
+                                    $('.confirm-div').hide()
+                                }
+                                warning_form.show();
+                            }
+                        });
                 }
             });
+
             //Evento form verificación correo electrónico
             $('.g8SubmitCorreoVerificacion').click(function(e){
                 e.preventDefault();

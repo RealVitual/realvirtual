@@ -449,6 +449,33 @@
 
 {% block jsfinal %}
 <script src="static/web_2/js/swiper/swiper-bundle.min.js"></script>
+{% if not logged_user %}
+<script src="https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}"></script>
+<script>
+    function getReCaptcha(){
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{recaptcha_site_key}}', {action: "/"}).then(function(token) {
+                let captcha_register = document.getElementById('g-recaptcha-response')
+                if(captcha_register){
+                    document.getElementById('g-recaptcha-response').value = token;
+                }
+                document.getElementById('g-recaptcha-response_login').value = token;
+            });
+        });
+    }
+    getReCaptcha();
+    setInterval(function(){getReCaptcha();}, 110000);
+</script>
+{% endif %}
+<script>
+    function onClick(e) {
+      e.preventDefault();
+      grecaptcha.ready(function() {
+        grecaptcha.execute('{{recaptcha_site_key}}', {action: 'submit'}).then(function(token) {
+        });
+      });
+    }
+</script>
 <script type="text/javascript">
 
 //bloque 3 - js
