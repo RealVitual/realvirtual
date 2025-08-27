@@ -184,6 +184,7 @@
     </div>
 </section>
 
+{% if header_section.show_schedule_section %}
 <section class="b4 pY scrollWrap anclaBlock" id="agenda">
     <div class="grilla scrollItem">
         <div class="b4Top f aife jcsb fdc-480">
@@ -332,7 +333,9 @@
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if header_section.show_exhibitors_section %}
 <section class="b5 scrollWrap anclaBlock pY scrollWrap" id="expositor">
     <div class="wancho scrollItem">
         <h3 class="gTitle white tac">
@@ -369,6 +372,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <div class="b25Popup">
     <a href="#" class="b25ClosePopup icon-close"></a>
@@ -391,6 +395,7 @@
     </div>
 </div>
 
+{% if header_section.show_blog_section %}
 <section class="b6 pY scrollWrap anclaBlock" id="blog">
     <div class="grilla scrollItem">
         <div class="b6Top f aic jcsb ">
@@ -429,6 +434,8 @@
         </div>
     </div>
 </section>
+{% endif %}
+{% if header_section.show_sponsors_section %}
 <section class="b7 pY scrollWrap anclaBlock" id="empresa">
     <div class="grilla scrollItem">
         <h4 class="gTitle tac">
@@ -446,6 +453,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 {% if home_page.final_image %}
     <section class="b31 pY scrollWrap">
         <div class="grilla scrollItm">
