@@ -372,8 +372,6 @@
         </div>
     </div>
 </section>
-{% endif %}
-
 <div class="b25Popup">
     <a href="#" class="b25ClosePopup icon-close"></a>
     <div class="b25PopupImage">
@@ -394,6 +392,9 @@
         </div>
     </div>
 </div>
+{% endif %}
+
+
 
 {% if header_section.show_blog_section %}
 <section class="b6 pY scrollWrap anclaBlock" id="blog">
@@ -578,104 +579,105 @@ document.querySelectorAll('.reproducir, .agendar').forEach(btn => {
     });
 });
 
-
+{% if header_section.show_exhibitors_section %}
    //************b5-js*******************
-let elSwiperb5 = document.getElementsByClassName('b5Swiper')[0].dataset.initial
-const breakpoint = window.matchMedia('(max-width: 1024px)');
-const breakpointChecker = () => {
-    let getCountItems = document.getElementsByClassName('b5Item').length;
-    console.log(getCountItems);
-    breakpoint.matches === true ?
-        (getCountItems >= 2 ? enableSwiper(elSwiperb5) : destroySwiper()):
-        (getCountItems > elSwiperb5 ? enableSwiper(elSwiperb5) : destroySwiper())
-}
-let mySwiper;
-let elWrapSwiperb5 = document.getElementsByClassName('b5')[0]
-const destroySwiper = () =>{
-    elWrapSwiperb5.classList.add('noSwiper')
-    elWrapSwiperb5.classList.remove('swiperActive')
-    if(mySwiper !== undefined) {
-        return mySwiper.destroy(true,true);
-    }
-}
-const enableSwiper = (initial) => {
-    elWrapSwiperb5.classList.remove('noSwiper')
-    elWrapSwiperb5.classList.add('swiperActive')
-    mySwiper = new Swiper ('.b5Swiper', {
-        loop: true,
-        spaceBetween: 24,
-        centeredSlides: true,
-        disableOnInteraction: false,
-        pagination: {
-            el: '.b5Pagination',
-            type: 'bullets',
-            clickable: true
-        },
-        autoplay: {
-            delay: 5000,
-        },
-        navigation: {
-            nextEl: '.b5Next',
-            prevEl: '.b5Prev',
-        },
-        breakpoints:{
-            1024:{
-               slidesPerView: 'auto',
-               spaceBetween: 24,
-            },
-            768:{
-               slidesPerView: 'auto',
-               spaceBetween: 24,
-            },
-            320:{
-               slidesPerView: 'auto',
-               spaceBetween: 24,
-            }
-        }
-    });
-};
-breakpoint.addListener(breakpointChecker);
-breakpointChecker();
+   let elSwiperb5 = document.getElementsByClassName('b5Swiper')[0].dataset.initial
+   const breakpoint = window.matchMedia('(max-width: 1024px)');
+   const breakpointChecker = () => {
+       let getCountItems = document.getElementsByClassName('b5Item').length;
+       console.log(getCountItems);
+       breakpoint.matches === true ?
+           (getCountItems >= 2 ? enableSwiper(elSwiperb5) : destroySwiper()):
+           (getCountItems > elSwiperb5 ? enableSwiper(elSwiperb5) : destroySwiper())
+   }
+   let mySwiper;
+   let elWrapSwiperb5 = document.getElementsByClassName('b5')[0]
+   const destroySwiper = () =>{
+       elWrapSwiperb5.classList.add('noSwiper')
+       elWrapSwiperb5.classList.remove('swiperActive')
+       if(mySwiper !== undefined) {
+           return mySwiper.destroy(true,true);
+       }
+   }
+   const enableSwiper = (initial) => {
+       elWrapSwiperb5.classList.remove('noSwiper')
+       elWrapSwiperb5.classList.add('swiperActive')
+       mySwiper = new Swiper ('.b5Swiper', {
+           loop: true,
+           spaceBetween: 24,
+           centeredSlides: true,
+           disableOnInteraction: false,
+           pagination: {
+               el: '.b5Pagination',
+               type: 'bullets',
+               clickable: true
+           },
+           autoplay: {
+               delay: 5000,
+           },
+           navigation: {
+               nextEl: '.b5Next',
+               prevEl: '.b5Prev',
+           },
+           breakpoints:{
+               1024:{
+                  slidesPerView: 'auto',
+                  spaceBetween: 24,
+               },
+               768:{
+                  slidesPerView: 'auto',
+                  spaceBetween: 24,
+               },
+               320:{
+                  slidesPerView: 'auto',
+                  spaceBetween: 24,
+               }
+           }
+       });
+   };
+   breakpoint.addListener(breakpointChecker);
+   breakpointChecker();
+   let elb25OpenPopupPerson = document.getElementsByClassName("b25OpenPopupPerson")
+   let elb25PopupName = document.getElementsByClassName("b25PopupName")[0];
+   let elb25Popupimg = document.getElementsByClassName("b25Popupimg")[0];
+   let elb25PopupCargo = document.getElementsByClassName("b25PopupCargo")[0];
+   let elb25PopupText = document.getElementsByClassName("b25PopupText")[0];
+   let elb25linkedin = document.getElementsByClassName("b25linkedin")[0];
+   let elb25Popup = document.getElementsByClassName("b25Popup")[0];
+   let elb25ClosePopup = document.getElementsByClassName("b25ClosePopup")[0];
+   let elb25PopupBandera = document.getElementsByClassName("b25PopupBandera")[0];
 
+   for(const b25OpenPopupPerson of elb25OpenPopupPerson){
+       b25OpenPopupPerson.addEventListener("click",function(e){
+           e.preventDefault();
+           elb25Popup.classList.add('active');
+           OVERLAY.classList.add('active');
+           OVERLAY.style.zIndex = 500
+           let getName = this.dataset.name;
+           let getCargo = this.dataset.cargo;
+           let getInfo = this.dataset.info;
+           let getUrl = this.dataset.url;
+           let getImg = this.dataset.img;
+           let getBander = this.dataset.bandera;
 
-let elb25OpenPopupPerson = document.getElementsByClassName("b25OpenPopupPerson")
-let elb25PopupName = document.getElementsByClassName("b25PopupName")[0];
-let elb25Popupimg = document.getElementsByClassName("b25Popupimg")[0];
-let elb25PopupCargo = document.getElementsByClassName("b25PopupCargo")[0];
-let elb25PopupText = document.getElementsByClassName("b25PopupText")[0];
-let elb25linkedin = document.getElementsByClassName("b25linkedin")[0];
-let elb25Popup = document.getElementsByClassName("b25Popup")[0];
-let elb25ClosePopup = document.getElementsByClassName("b25ClosePopup")[0];
-let elb25PopupBandera = document.getElementsByClassName("b25PopupBandera")[0];
-
-for(const b25OpenPopupPerson of elb25OpenPopupPerson){
-    b25OpenPopupPerson.addEventListener("click",function(e){
-        e.preventDefault();
-        elb25Popup.classList.add('active');
-        OVERLAY.classList.add('active');
-        OVERLAY.style.zIndex = 500
-        let getName = this.dataset.name;
-        let getCargo = this.dataset.cargo;
-        let getInfo = this.dataset.info;
-        let getUrl = this.dataset.url;
-        let getImg = this.dataset.img;
-        let getBander = this.dataset.bandera;
-
-        elb25PopupName.innerText = getName;
-        elb25PopupCargo.innerText = getCargo;
-        elb25Popupimg.setAttribute('src',getImg);
-        elb25PopupText.innerHTML = getInfo;
-        elb25linkedin.setAttribute("href",getUrl);
-        elb25PopupBandera.setAttribute("src",getBander);
-    });
-}
-
-elb25ClosePopup.addEventListener("click",function(e){
+           elb25PopupName.innerText = getName;
+           elb25PopupCargo.innerText = getCargo;
+           elb25Popupimg.setAttribute('src',getImg);
+           elb25PopupText.innerHTML = getInfo;
+           elb25linkedin.setAttribute("href",getUrl);
+           elb25PopupBandera.setAttribute("src",getBander);
+       });
+   }
+   elb25ClosePopup.addEventListener("click",function(e){
     e.preventDefault();
     this.parentNode.classList.remove('active')
     OVERLAY.removeAttribute("style");
     OVERLAY.classList.remove('active')
 });
+{% endif %}
+
+
+
 
 
 if(document.getElementsByClassName('b22')[0]){
