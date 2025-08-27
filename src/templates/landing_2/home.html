@@ -54,20 +54,23 @@
             {% endif %}
             <h4>{{home_page.main_title}}</h4>
             <a href="#" class="gButton" id="b1ButtonRegister">Regístrate</a>
-            <ul>
-                <li>
-                    <img src="static/web_2/img/credicorp/marker.svg" alt="">
+            <div class="b1List">
+                <div class="b1Item">
+                    <img src="{{STATIC_URL}}img/credicorp/marker-black.svg" alt="">
                     <p>{{home_page.address_description|default:""}}</p>
-                </li>
-                <li>
-                    <img src="static/web_2/img/credicorp/calendar2.svg" alt="">
-                    <p>{{home_page.date_description|default:""}}</p>
-                </li>
-                <li>
-                    <img src="static/web_2/img/credicorp/timer.svg" alt="">
-                    <p>{{home_page.time_description|default:""}}</p>
-                </li>
-            </ul>
+                </div>
+                <div class="b1Itemwrap f aic jcfs ffrw">
+                    <div class="b1Item">
+                        <img src="{{STATIC_URL}}img/credicorp/calendar2-black.svg" alt="">
+                        <p>{{home_page.date_description|default:""}}</p>
+                    </div>
+                    <div class="b1Item">
+                        <img src="{{STATIC_URL}}img/credicorp/timer-black.svg" alt="">
+                        <p>{{home_page.time_description|default:""}}</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="b1Bottom">
             <p>{{home_page.banner_second_section|default:""}}</p>
@@ -443,7 +446,15 @@
         </div>
     </div>
 </section>
-
+{% if home_page.final_image %}
+    <section class="b31 pY scrollWrap">
+        <div class="grilla scrollItm">
+            <figure>
+                <img src="{{home_page.final_image.url}}" alt="">
+            </figure>
+        </div>
+    </section>
+{% endif %}
 
 {% endblock %}
 

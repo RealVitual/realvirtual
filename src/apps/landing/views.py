@@ -89,7 +89,9 @@ class HomeView(CreateView):
                         ).name
                         filtered.append(
                             dict(
-                                filter=filters.filter(filter_name=filter)[0].name,
+                                filter=(
+                                    filters.filter(filter_name=filter)[0].name
+                                ),
                                 filter_name=filter,
                                 category=category_filter_name,
                                 category_filter_name=value[0],
@@ -156,7 +158,8 @@ class HomeView(CreateView):
                 'filtered_categories': filtered_categories,
                 'filtered_filters': filtered_filters,
                 'shifts':  shifts,
-                'filtered_shift': filtered_shift.name if filtered_shift else None,
+                'filtered_shift': (
+                    filtered_shift.name if filtered_shift else None),
                 'blog_posts': blog_posts,
                 'filtered': filtered
             }
@@ -346,7 +349,9 @@ class EventsView(CreateView):
                 events_list = [event for event in events_list if event.get_date() == filtered_date] # noqa
                 schedules_query = schedules_query.filter(event__in=events_list)
             if filtered_shift:
-                schedules_query = schedules_query.filter(shift__filter_name=filtered_shift)
+                schedules_query = schedules_query.filter(
+                    shift__filter_name=filtered_shift
+                )
                 filtered_shift = Shift.objects.get(filter_name=filtered_shift)
             for schedule in schedules_query:
                 if schedule not in schedules:
@@ -384,7 +389,9 @@ class EventsView(CreateView):
                 'filtered_categories': filtered_categories,
                 'filtered_filters': filtered_filters,
                 'shifts':  shifts,
-                'filtered_shift': filtered_shift.name if filtered_shift else None
+                'filtered_shift': (
+                    filtered_shift.name if filtered_shift else None
+                )
             }
         return render(request, self.template_name, context)
 
@@ -418,12 +425,10 @@ def save_preferences_answers(request):
     if request.method == 'POST' and is_ajax(request=request):
         data = request.POST.dict()
         data.pop('csrfmiddlewaretoken', None)
-        print(data, 'DATA')
         user = request.user
         UserAnswer.objects.filter(user=user, company=request.company).delete()
         response_data = {}
         for key, value in data.items():
-            print(key, value)
             answer = UserAnswer(user=user, company=request.company)
             answer.question_id = int(key)
             answer.choice_question_id = int(value)
@@ -646,8 +651,9 @@ class EventTransmissionView(View):
         company = self.request.company
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
-        self.user_company = UserCompany.objects.get(company=company,
-                                               user=request.user)
+        self.user_company = UserCompany.objects.get(
+            company=company, user=request.user
+        )
         if not self.user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(EventTransmissionView, self).dispatch(request, *args, **kwargs) # noqa
@@ -688,7 +694,9 @@ class EventTransmissionView(View):
             start_date = date.strftime("{} %d de {} %Y".format(day, month.lower())) # noqa
             start_time = date.strftime("%I:%M {}".format(h_code))
             end_time = end_date.strftime("%I:%M {}".format(end_h_code))
-            CustomerEvent.objects.get_or_create(event=event, company_user=self.user_company)
+            CustomerEvent.objects.get_or_create(
+                event=event, company_user=self.user_company
+            )
             context = {
                 'start_date': start_date,
                 'start_time': start_time,
@@ -773,8 +781,6 @@ def save_survey_answers(request):
             user=user, company=request.company).delete()
         response_data = {}
         for key, value in data.items():
-            print(key, 'KEY!')
-            print(value, 'VALUE!')
             answer = UserSurveyAnswer(
                 user=user, company=request.company)
             answer.question_id = int(key)
@@ -794,8 +800,9 @@ class NetworkingView(View):
         company = self.request.company
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
-        self.user_company = UserCompany.objects.get(company=company,
-                                               user=request.user)
+        self.user_company = UserCompany.objects.get(
+            company=company, user=request.user
+        )
         if not self.user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(NetworkingView, self).dispatch(request, *args, **kwargs)
@@ -871,8 +878,9 @@ class NetworkingUsersView(View):
         company = self.request.company
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
-        self.user_company = UserCompany.objects.get(company=company,
-                                               user=request.user)
+        self.user_company = UserCompany.objects.get(
+            company=company, user=request.user
+        )
         if not self.user_company.confirmed:
             return redirect(reverse('landing:home'))
         return super(NetworkingUsersView, self).dispatch(
@@ -896,8 +904,12 @@ class NetworkingUsersView(View):
                 networking_preferences = networking_preferences.filter(
                     networking_option=selected_category
                 )
-                user_companies_id = networking_preferences.values_list('user_company__id', flat=True)
-                networking_users = networking_users.filter(id__in=user_companies_id)
+                user_companies_id = networking_preferences.values_list(
+                    'user_company__id', flat=True
+                )
+                networking_users = networking_users.filter(
+                    id__in=user_companies_id
+                )
             if filter == "search":
                 networking_users = networking_users.filter(
                     Q(full_name__icontains=value[0]) |
@@ -916,7 +928,8 @@ class NetworkingUsersView(View):
             "networking_users": networking_users,
             "options": options,
             "home_page": home_page,
-            "selected_category": int(selected_category) if selected_category else None,
+            "selected_category": (
+                int(selected_category) if selected_category else None),
             "search_query": search_query
         }
         return render(request, self.template_name, context)
@@ -1030,7 +1043,9 @@ class ScheduledEventsView(View):
                 events_list = [event for event in events_list if event.get_date() == filtered_date] # noqa
                 schedules_query = schedules_query.filter(event__in=events_list)
             if filtered_shift:
-                schedules_query = schedules_query.filter(shift__filter_name=filtered_shift)
+                schedules_query = schedules_query.filter(
+                    shift__filter_name=filtered_shift
+                )
                 filtered_shift = Shift.objects.get(filter_name=filtered_shift)
             for schedule in schedules_query:
                 if schedule not in schedules:
@@ -1150,11 +1165,16 @@ class GenerateCertificateView(CreateView):
     def get_form_kwargs(self, **kwargs):
         form_kwargs = super(
             GenerateCertificateView, self).get_form_kwargs(**kwargs)
-        form_kwargs["initial"] = dict(user=self.user_company, company_id=self.request.company.id)
+        form_kwargs["initial"] = dict(
+            user=self.user_company,
+            company_id=self.request.company.id
+        )
         return form_kwargs
 
     def get(self, request, *args, **kwargs):
-        if self.user_company.certificate and not request.session.get('download_certificate_view'):
+        if self.user_company.certificate and not request.session.get(
+            'download_certificate_view'
+        ):
             return redirect(reverse('landing:home'))
         if request.session.get('download_certificate_view'):
             del request.session['download_certificate_view']

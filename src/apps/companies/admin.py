@@ -89,6 +89,33 @@ class CompanyAdmin(admin.ModelAdmin):
                 'terms_and_conditions'
             )
         }),
+        (_('Formulario'), {
+            'fields': (
+                'names',
+                'names_field_title',
+                'last_name',
+                'last_names_field_title',
+                'job_company',
+                'job_company_names_field_title',
+                'job_company_select',
+                'company_position',
+                'company_position_names_field_title',
+                'phone',
+                'country',
+                'country_names_field_title',
+                'occupation',
+                'occupation_select',
+                'occupation_names_field_title',
+                'email_names_field_title',
+                'confirm_email_names_field_title'
+            )
+        }),
+        (_('Codigos'), {
+            'fields': (
+                'code_header',
+                'code_body',
+            )
+        }),
     )
 
     def logo_preview(self, obj):
@@ -186,7 +213,6 @@ class HomePageAdmin(admin.ModelAdmin):
 
     def get_fieldsets(self, request, obj=None):
         fielsets_version = []
-        print(obj, 'OJB')
         if obj is None:
             return [(
                 ("Seleccione la Compañía", {
@@ -379,6 +405,13 @@ class HomePageAdmin(admin.ModelAdmin):
                             'sponsors_section_text'
                         ),
                         "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Final", {
+                        "fields": (
+                            'final_image',
+                        ),
                     }
                 )
             ]

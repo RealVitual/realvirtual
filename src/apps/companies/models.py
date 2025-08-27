@@ -582,6 +582,11 @@ class HomePage(TimeStampedModel):
         _('Encuesta descripción texto'), max_length=255,
         blank=True,
         default="Por favor, ayúdanos a mejorar nuestra atención completando la siguiente encuesta.") # noqa
+    final_image = models.ImageField(
+        _('Imagen Sección final'),
+        upload_to=get_upload_path('final_image'),
+        null=True, blank=True
+    )
 
     class Meta:
         verbose_name = _("Home Page")
