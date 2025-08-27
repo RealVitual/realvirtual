@@ -425,6 +425,8 @@ class Footer(TimeStampedModel):
     )
     linkedin = models.URLField(
         _('Linkedin'), max_length=255, blank=True)
+    youtube = models.URLField(
+        _('Youtube'), max_length=255, blank=True)
 
     class Meta:
         verbose_name = _("Footer")
