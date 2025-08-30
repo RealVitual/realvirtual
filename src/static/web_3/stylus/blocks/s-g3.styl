@@ -1,0 +1,73 @@
+.tabs
+	flexg(center,center)
+	a
+		margin 0
+		height 40px
+		padding 0px 30px
+		border-radius 5px
+		background #808080
+		font-size 13px
+		textg(t-0,normal,#ffff)
+		flexg(center,center)
+		margin-right 5px
+		&:last-child
+			margin-right 0px
+
+.tabInfo
+	position relative
+.tabInfoItem
+	opacity0()
+	position absolute
+	top 0
+	left 0
+	&.active
+		opacity1()
+		position relative
+
+.accordionItem
+	margin-bottom 20px
+	&:last-child
+		margin-bottom 0px
+.accordionClick
+	height 30px
+	padding 0px 30px
+	background #fff
+	border-radius 5px
+	flexg(center,flex-start)
+
+.accordionInfo
+	.gParrafo
+		padding 30px 20px
+	
+.tabSelectMobile
+	display none
+
+.tabSelectContent
+	&.activeSelect
+		position relative
+		height 50px
+		max-width 400px
+		width 100%
+		margin auto
+		z-index 100
+		.tabSelectMobile
+			flexg(center,center)
+			height 100%
+			background #535353
+			font-size 14px
+			textg(t-0,normal,#fff)
+		.tabs
+			position absolute
+			width 100%
+			top 100%
+			background #fff
+			display none
+			flex-direction column
+			a
+				border-radius 0px
+				width 100%
+				padding 10px
+				color #000
+				background #fff
+			&.active
+				display block

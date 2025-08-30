@@ -1,0 +1,116 @@
+{% extends "common/_base.html" %}
+
+{% block cssadicional %}
+{% endblock %}
+
+{% block classbody %}pageChat{% endblock %}
+
+{% block content %}
+
+
+
+<!-- POPUP FORM VERIFICACIÓN CORREO ELECTRONICO-->
+<section class="b30">
+    <div class="g8PopupForm formCorreoVerificacion pr active">
+        <!-- <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a> -->
+        <div class="g8PopupContent">
+            <h3>Obtenga un correo de verificación
+            </h3>
+            <div class="gParrafo">
+                <p>Para obtener un código de verificación, primero confirma la dirección de correo electrónico de recuperación que agregaste a tu cuenta lui••••••@gm•••••.com</p>
+            </div>
+            <div class="g8Form">
+                <form action="">
+                    <div class="g8GroupInput one">
+                        <div class="g8Input">
+                            <span>Ingrese correo electrónico *</span>
+                            <input type="text" id="email" class="g8Box validate[required,custom[email]]">
+                        </div>
+                    </div>
+                    <button class="g8SubmitCorreoVerificacion isLoading">Enviar</button>
+                    <p class="messageError">El correo no existe</p>
+                </form>
+            </div>
+            <a href="#" class="buttonClosePopup linkCancelar">Cancelar</a>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+
+    var video = document.getElementById("videoTransmision");
+    document.addEventListener('touchstart', function() {
+        video.play();
+    });
+
+    let elsendMessage = document.getElementById("sendMessage");
+    let elboxMessage = document.getElementById("boxMessage");
+
+    const createLi = (text,time) => {
+        let li = document.createElement("li");
+        // posLeft --> receptor
+        // posRight --> emisor
+        li.className = "posRight";
+        let ellistmessages = document.getElementById("listmessages");
+        
+        var htmlString = `
+                    <h5>julio</h5>
+                    <h4 class="textMessage" style="background:blue;color:yellow">${text}</h4>
+                    <span class="timeMessage">${time}</span>
+                `;
+        li.innerHTML = htmlString
+        ellistmessages.appendChild(li);
+    }
+
+    var horaFormateada
+    const cretateTime = () => {
+        var date = new Date();
+        var horas = date.getHours();
+        var minutos = date.getMinutes();
+        var ampm = horas >= 12 ? 'PM' : 'AM';
+        horas = horas % 12;
+        horas = horas ? horas : 12;
+        minutos = minutos < 10 ? '0' + minutos : minutos;
+        horaFormateada = horas + ':' + minutos + ' ' + ampm;
+    }
+
+    function scrollChatToBottom() {
+        var chatContainer = document.getElementById("listmessages");
+        var ultimoMensaje = chatContainer.lastElementChild;
+        var ultimoMensajeOffsetTop = ultimoMensaje.offsetTop;
+        chatContainer.scrollTo({
+            top: ultimoMensajeOffsetTop,
+            behavior: "smooth"
+        });
+    }
+
+    elsendMessage.addEventListener('click', function(e){
+        e.preventDefault();
+        let getMessage = elboxMessage.value;
+        cretateTime();
+        createLi(getMessage,horaFormateada)
+        elboxMessage.value = ""
+        elboxMessage.focus();
+        scrollChatToBottom()
+    });
+
+    elboxMessage.addEventListener("keydown", function(event) {
+        let getMessage = this.value;
+        if (event.keyCode === 13) { 
+            cretateTime();
+            createLi(getMessage,horaFormateada)
+            
+            scrollChatToBottom()
+            setTimeout(()=>this.value = "",1)
+            
+        }
+    });
+
+
+</script>   
+{% endblock %}

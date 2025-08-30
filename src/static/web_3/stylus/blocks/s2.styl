@@ -1,0 +1,76 @@
+.b2Wrap
+    position relative
+
+.b2Left
+    width 300px
+    position sticky
+    top 100px
+    h2
+        fontg(40,72)
+        textg(t-600,normal,#000)
+        width 300px
+
+.b2Wrap
+    width 100%
+
+.b2Right
+    width calc(100% - 300px)
+    padding-left 180px
+
+
+.b2ItemRight
+    padding 24px 0px
+    border-bottom 1px solid #E9E9E9
+
+.b2LeftInfo
+    width 45%
+    display grid
+    grid-gap 8px
+    h4
+        fontg(18,24)
+        textg(t-600,normal,#000000)
+    p
+        fontg(16,20)
+        textg(t-400,normal,#000000)
+        margin-bottom 0px
+
+.b2RightInfo
+    width 45%
+    display grid
+    grid-gap 8px
+    p
+        margin-bottom 0px
+    p.hour
+        fontg(16,20)
+        textg(t-400,normal,#000000)
+    img
+        border-radius 50%
+        width 64px
+
+.b2Name
+    display grid
+    grid-gap 8px
+    p.name
+        fontg(18,24)
+        textg(t-600,normal,#000000)
+    p.cargo
+        fontg(16,20)
+        textg(t-400,normal,#000000)
+
+@media screen and (max-width 1366px)
+    .b2Right
+        padding-left 100px
+
+@media screen and (max-width 768px)
+    .b2Right,
+    .b2Left
+        width 100%
+        position relative
+        top 0
+        padding 0
+
+@media screen and (max-width 480px)
+    .b2LeftInfo,
+    .b2RightInfo
+        width 100%
+    

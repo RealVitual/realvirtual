@@ -1,0 +1,310 @@
+.b25Popup
+    centerXY()
+    position fixed
+    border-radius 10px
+    overflow hidden
+    background c-black
+    max-width 1000px
+    width 100%
+    z-index 500
+    height auto
+    flexg(center,center)
+    opacity0()
+    scrollbar(#808080,#dbdbdb,4,3)
+    transform translateY(100%)
+    z-index 500
+    &.active
+        opacity1()
+        animation-delay 0.2s
+        transition-delay 0.2s
+        transform translateY(-50%)
+
+
+.b25ClosePopup
+    position absolute
+    top 20px
+    right 20px
+    font-size 30px
+    color #fff
+
+.b25PopupImage
+    width 320px
+    height 100%
+    position relative
+    figure
+        width 100%
+        img
+            width 100%
+
+.b25InfoPopup
+    width calc(100% - 300px)
+    padding-left 55px
+    padding-right 60px
+    height 100%
+
+.b25InfoPopupContent
+    h4
+        font-size 16px
+        textg(t-500,normal,#fff)
+    .gParrafo
+        margin 30px 0px
+        max-height: 200px
+        overflow-y auto
+        padding-bottom 20px
+        padding-right 10px
+.b25TopName
+    margin-bottom 12px
+    flexg(center,flex-starat)
+    h3
+        font-size 36px
+        textg(t-600,normal,#fff)
+    img
+        width 35px
+        margin-left 10px
+
+
+.b25linkedin
+    height 48px
+    border-radius 100px
+    flexg(center,center)
+    margin 0
+    font-size 14px
+    textg(t-500,normal,#fff)
+    padding 0px 24px
+    border 1px solid #fff
+    width fit-content
+    transition all 400ms ease
+    &:hover
+        background #fff
+        color c-black
+        transition all 400ms ease
+    img
+        margin-left 10px
+    i
+        font-size 20px
+        margin-left 10px
+
+@media screen and (max-width 1366px)
+    .b25Tabs
+        a
+            h5
+                span
+                    font-size 18px
+        
+@media screen and (max-width 1024px)
+    .b25
+        margin 70px 0px
+    .b25Info
+        padding 30px 20px
+        .sale,
+        .fecha,
+        .hora
+            font-size 14px
+        h3
+            font-size 14px
+    .b25Envivo
+        top 10px
+        right 20px
+        padding 0px 20px
+        font-size 14px
+    .b25Item
+        height auto
+        align-items flex-start
+        flex-direction column
+        padding 20px 0px
+        border-bottom 1px solid #dbdbdb
+        &.noImage
+            .b25Info
+                padding 0px
+    .b25ItemRight
+        width 100%
+        padding 0
+        &:before
+            display none
+    .b25ItemLeft
+        width 100%
+        align-items center
+        padding 0
+        margin-bottom 20px
+
+@media screen and (max-width 768px)
+    .b25Item
+        flex-direction column
+        height auto
+    .b25ItemLeft,
+    .b25ItemRight
+        height auto
+        width 100%
+        padding 0px
+    .b25ItemLeft
+        margin-bottom 30px
+    .b25ItemRight
+        &:before
+            display none
+        ul
+            flex-direction row
+            flex-flow row wrap
+            height auto
+            overflow-y inherit
+            padding-bottom 30px
+            justify-content flex-start
+            padding 0px
+            li
+                width 45%
+                margin-right 5%
+                &:nth-child(2n)
+                    margin-right 0
+        &.activeScrollList
+            ul
+                padding-bottom 30px
+            &:after
+                display none
+    .b25Top
+        flex-direction column
+        align-items flex-start
+    .b25FilterLeft
+        top 90px
+    .b25Title
+        width 100%
+        margin-right 0
+    .b25Tabs
+        flex-flow nowrap
+        overflow-x auto
+        justify-content flex-start
+        width 100%
+        height auto
+        a
+            flex 0 0 auto
+    .b25Title
+        margin-bottom 32px
+    .b25WrapList
+        width 100%
+        padding-left 20px
+    .b25PopupImage
+        width 300px
+    .b25Popup
+        justify-content space-between
+        width calc(100% - 40px)
+        
+    .b25InfoPopup
+        width calc(100% - 300px)
+        padding-left 30px
+        padding-right 40px
+    .b25Img
+        display none
+    .b25Info
+        width 100%
+        padding 0px
+        margin-top 0px
+
+@media screen and (max-width 480px)
+    .b25ItemRight ul li
+        width 100%
+        margin-right 0
+    .b25ItemLeft
+        flex-direction column
+        height auto
+    .b25Info,
+    .b25Img
+        width 100%
+    .b25Img
+        height auto
+        padding-top 65%
+    .b25Info
+        padding 0px
+        margin-top 0px
+    .b25Envivo
+        top -5px
+        right 0
+    .b25SelectWrap
+        justify-content space-between
+        width 100%
+    .b25Select
+        width 48%
+        margin-right 0
+    .b25ClickSelect
+        span.name
+            font-size 14px
+    .b25Popup
+        flex-direction column
+        height auto
+    .b25PopupImage
+        width 100%
+    .b25InfoPopup
+        width 100%
+        padding 40px 20px
+    .b25InfoPopupContent .gParrafo
+        height 200px
+    .b25PopupImage
+        display none
+    .b25ClickSelect
+        padding 0px 10px
+        padding-right 20px
+        &:after
+            right 5px
+    .b25FilterLeft
+        width 150px
+        padding 20px 10px
+    .b25FilterItemClick
+        font-size 14px
+        &:after
+            font-size 20px
+    .b25Item
+        padding 10px 0px
+        margin 0
+        &:first-child
+            padding-top 0px
+    .b25Info h4
+        font-size 17px
+    .b25Agendar,
+    .b25Envivo
+        top 0
+        right 0
+        font-size 12px
+        &.selected
+            padding-left 10px
+        img
+            width 17px
+    .b25Envivo
+        padding 0px 10px
+    .b25Agendar
+        padding-left 30px
+        &:before
+            width 14px
+            height 14px
+
+    .b25WrapList
+        width calc(100% - 150px)
+        padding-left 10px
+    .b25Info .gParrafo
+        font-size 12px
+    .b25Info
+        .sale,
+        .fecha,
+        .hora
+            font-size 12px
+    .b25ItemRight ul li h6
+        font-size 12px
+    .b25ItemLeft
+        margin-bottom 15px
+    .b25ItemRight ul li
+        margin-bottom 10px
+    .b25ItemOption h6
+        font-size 12px
+    .b25ItemOption
+        padding-left 18px
+    .b25Break h3
+        font-size 12px
+        span
+            font-size 14px
+    .b25ItemOption .optionRadio
+        width 15px
+        height 15px
+    .b25ItemOption .optionRadio span
+        width 9px
+        height 9px
+    .b25FilterLeft
+        opacity0()
+        display none
+    .b25WrapList
+        width 100%

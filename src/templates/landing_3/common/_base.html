@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+<!-- 	<link rel="icon" type="image/png" href="/static/web_3/img/favicon/256x256.png"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/web_3/img/favicon/114x114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/web_3/img/favicon/72x72.png">
+    <link rel="apple-touch-icon-precomposed" href="/static/web_3/img/favicon/57x57.png"> -->
+    {% block cssadicional %}
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="/static/web_3/css/styles.css?v=1{{ BUILD_ID }}"/>
+    <link rel="stylesheet" href="/static/web_3/js/validationform/validationEngine.jquery.css">
+    <!-- <link rel="stylesheet" type="text/css" href="/static/web_3/css/blocks_styl.css?v=2{{ BUILD_ID }}"/> -->
+</head>
+
+
+<div class="overlay"></div>
+<div class="videoPopupContent">
+    <!-- mp4 - youtube - vimeo -->
+</div>
+<body class="{% block classbody %}{% endblock %}">
+    <div class="contentWrapper">
+        {% include "landing_3/common/_header.html" %}
+        <div class="wrapper">
+            {% block content %}{% endblock %}
+        </div>
+        {% include "landing_3/common/_footer.html" %}
+    </div>
+    <a href="#" class="icon-whatsapp wspFixed"></a>
+    <!-- <a href="#" class="openSidebarMobile icon-menu"></a> -->
+    <!-- <div class="sidebarContentMobile"></div> -->
+    <!-- <script src="/static/web_3/js/jquery-3.2.1.min.js" type="text/javascript"></script> -->
+    <script src="/static/web_3/js/jquery-3.7.1.min.js" type="text/javascript"></script>
+    <script src="/static/web_3/js/main.js" type="text/javascript"></script>
+    <script src="{{STATIC_URL}}js/validationform/jquery.validationEngine.js"></script>
+
+    <div class="coockies" id="elCoockie">
+        <div class="grilla">
+            <div class="gParrafo">
+                <p>Utilizamos cookies para proporcionarte una mejor experiencia.  Conoce nuestra <a href="#">política de cookies</a></p>
+            </div>
+            <a href="#" class="gButton " id="buttonCookie">Aceptar</a>
+        </div>
+    </div>
+
+    <!-- <a href="" class="empresafx">
+        <img src="{{STATIC_URL}}img/logocallirgos.jpeg" alt="">
+    </a> -->
+    <div class="popUpInfo">
+        <a href="" class="icon-close cerrarPopup"></a>
+        <figure>
+            <img src="{{STATIC_URL}}img/pop-up-agility.png" alt="">
+        </figure>
+    </div>
+
+
+    <!-- JSADD START -->
+    {% block jsfinal %}{% endblock %}
+    <!-- JSADD END -->
+    <script>
+        'use strict';
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttonCookie = document.getElementById('buttonCookie');
+            const elCoockie = document.getElementById('elCoockie');
+
+            if (localStorage.getItem('ocultarElemento') === 'true') {
+                elCoockie.style.display = 'none';
+            }
+
+            buttonCookie.addEventListener('click', function() {
+                elCoockie.style.display = 'none';
+                localStorage.setItem('ocultarElemento', 'true');
+            });
+        });
+
+        $(function(){
+            //Configuraciòn general de plugin formulario
+            $("form").validationEngine('attach', {
+                promptPosition : "topLeft",
+                autoHidePrompt: true,
+                autoHideDelay: 2000,
+                binded: false,
+                scroll: false,
+                validateNonVisibleFields: true
+            });
+
+            //Evento form LOGIN
+            $('.g8SumitLogin').click(function(e){
+                e.preventDefault();
+                var item = $(this);
+                var valid = item.closest('form').validationEngine('validate');
+                var form = $(this).closest('form');
+                if (!valid) {
+
+                    } else {
+                }
+            });
+            //Evento form REGISTRO
+            $('.g8SumitRegistro').click(function(e){
+                e.preventDefault();
+                var item = $(this);
+                var valid = item.closest('form').validationEngine('validate');
+                var form = $(this).closest('form');
+                if (!valid) {
+
+                    } else {
+                    //En caso de que el registro sea el correcto se activara el popup del mensaje de "registro exitoso"
+                    OVERLAY.classList.add('active')
+                    document.getElementsByClassName('formRegistroExitoso')[0]?.classList.add('active')
+                }
+            });
+            //Evento form verificación correo electrónico
+            $('.g8SubmitCorreoVerificacion').click(function(e){
+                e.preventDefault();
+                var item = $(this);
+                var valid = item.closest('form').validationEngine('validate');
+                var form = $(this).closest('form');
+                if (!valid) {
+
+                    } else {
+
+                }
+            });
+            //Evento form actualizar contraseña
+            $('.g8SubmitActualizarPassword').click(function(e){
+                e.preventDefault();
+                var item = $(this);
+                var valid = item.closest('form').validationEngine('validate');
+                var form = $(this).closest('form');
+                if (!valid) {
+
+                    } else {
+
+                }
+            });
+        })
+
+        let elkeypress = document.getElementsByClassName('validKeypress')
+        for(const keypress of elkeypress) {
+            keypress.addEventListener('keypress',function(e){
+                let getTypeValue = this.dataset.type
+                getTypeValue == "number" ? getTypeValue = /\d{1,9}$/g : getTypeValue = /([A-Za-zñÑáéíóúÁÉÍÓÚ\s]+)/;
+                let inputCode = e.keyCode || e.charCode;
+                if(inputCode!=8 && inputCode!=37 && inputCode!=39 && inputCode!=46){
+                    var charStr = String.fromCharCode(inputCode);
+                    !getTypeValue.test(charStr) ? event.preventDefault() : console.log("correcto")
+                }
+            })
+        }
+        let elInputBox = document.getElementsByClassName('g8Box')
+        for(const inputBox of elInputBox) {
+            inputBox.addEventListener('focusin',function() {
+                this.parentNode.classList.add('active')
+            })
+            inputBox.addEventListener('focusout',function() {
+                if(this.value === ""){
+                    this.parentNode.classList.remove('active')
+                } 
+            })
+        }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const popup = document.getElementsByClassName("popUpInfo")[0];
+        const cerrarPopup = document.getElementsByClassName("cerrarPopup")[0];
+
+        // Revisa si el popup ya ha sido mostrado anteriormente
+        if (!localStorage.getItem("popupShown")) {
+            popup.classList.add("active"); // Muestra el popup
+            // OVERLAY.classList.add("active");
+            OVERLAY.style.zIndex = 1900
+        }
+
+        // Evento para cerrar el popup
+        cerrarPopup.addEventListener("click", function (e) {
+            e.preventDefault();
+            popup.classList.remove("active"); // Oculta el popup
+            localStorage.setItem("popupShown", "true"); // Guarda en localStorage que el popup ya se mostró
+            OVERLAY.classList.remove("active");
+        });
+    });
+    </script>
+</body>
+</html>

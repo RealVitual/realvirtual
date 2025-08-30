@@ -1,0 +1,56 @@
+footer
+    padding 40px 0px
+    a
+        transition all 400ms ease
+        &:hover
+            color #fff
+            transition all 400ms ease
+
+.fWrap
+    grid-gap 100px
+
+.fItem
+    position relative
+    &:after
+        content ''
+        height 32px
+        width 1px
+        background #6D6D6D
+        centerY()
+        right -50px
+    &:last-child
+        &:after
+            display none
+
+.fRedes
+    grid-gap 24px
+    a
+        font-size 25px
+        color #000
+        &:before
+            color #000
+
+.fMenu
+    grid-gap 24px
+    a
+        font-size 14px
+        textg(t-300,normal,#6D6D6D)
+        &:after
+            display none
+
+.fContact
+    flexg(center,center)
+    position relative
+    font-size 16px
+    textg(t-500,normal,#6D6D6D)
+    &:before
+        content ''
+        background-image url(../img/footer-contact.svg)
+        margin-right 10px
+
+@media screen and (max-width 768px)
+    .fWrap
+        grid-gap 32px
+    .fItem
+        &:after
+            display none

@@ -1,0 +1,103 @@
+.b4
+    .grilla
+        position relative
+    .buttonGradient
+        background-color #111111
+        width 100%
+        flexg(center,center)
+        border-radius 100px
+        height 40px
+        margin-bottom 20px
+    .button
+        background: linear-gradient(
+            90deg,
+            #ffffff,
+            #00dace,
+            #fa1fae,
+            #00dace,
+            #ffffff
+        )
+        background-size: 300% 300% 
+        background-clip: text
+        -webkit-background-clip: text
+        -webkit-text-fill-color: transparent
+        animation: gradientFlow 8s linear infinite
+
+@keyframes gradientFlow 
+    0%    
+        background-position: 0% 50% 
+    50%  
+        background-position: 100% 50% 
+    100%  
+        background-position: 0% 50% 
+
+.b4Left
+    position sticky
+    top 120px
+    width 320px
+
+.b4Right
+    width calc(100% - 320px)
+    display grid
+    padding-left 200px
+    grid-gap 32px
+
+.b4RighItem
+    height 290px
+    background #E9E9E9
+    border 1px solid #B9B9B9
+    border-radius 24px
+    overflow hidden
+
+.b4ItemInfo
+    padding 50px 24px
+    flexg(center,flex-start)
+    width 50%
+    p
+        fontg(18,24)
+        textg(t-600,normal,#000000)
+    p.info
+        fontg(26,40)
+        textg(t-500,normal,#000000)
+
+.b4ItemImage
+    height 100%
+    width 50%
+    position relative
+    img
+        full()
+        object-fit cover
+
+
+@media screen and (max-width 1366px)
+    .b4Right
+        padding-left 80px
+
+@media screen and (max-width 1024px)
+    .b4Right
+        padding-left 50px
+        padding-left 80px
+
+@media screen and (max-width 768px)
+    .b4
+        .grilla
+            grid-gap 30px
+    .b4Right,
+    .b4Left
+        width 100%
+        padding 0
+        position relative
+        top 0
+    
+@media screen and (max-width 480px)
+    .b4RighItem
+        height auto
+        flex-direction column
+    .b4ItemInfo,
+    .b4ItemImage
+        width 100% 
+        height auto
+    .b4ItemInfo
+        padding 40px 20px
+    .b4ItemImage
+        padding-top 60%

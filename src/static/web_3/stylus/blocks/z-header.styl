@@ -1,0 +1,462 @@
+body
+	&.pageHome
+		.header
+			background transparent
+		.contentWrapper
+			padding-top 0px !important
+	&.scrolling
+		.header
+			top 20px
+			transition all 400ms ease
+			.grilla
+				background-color: rgba(#000,0.6)
+				backdrop-filter: blur(5px);
+	&.pageChat,
+	&.pageBlogDetalle
+		.headerAnclas,
+		.headerOptionsSessions
+			display none
+
+.login-warning-form
+	.g8Bottom
+		margin-top 20px
+
+.headerLogo
+	width 180px
+	img
+		width 100%
+.coockies
+	position fixed
+	bottom 0
+	width 100%
+	background transparent
+	padding 40px 0px
+	z-index 1000
+	box-shadow 0px 10px 10px 2px rgba(#000,0.2)
+	.grilla
+		max-width 1000px
+		flexg(center,space-between)
+	.gParrafo
+		width calc(100% - 200px)
+		padding-right 30px
+	.gButton
+		width 200px
+
+.returnChat
+	font-size 14px
+	flexg(center,flex-end)
+	textg(t-500,normal,#FFFFFFE5)
+	grid-gap 12px
+	&:after
+		content ''
+		background-image url(../img/credicorp/icon-return.png)
+		width 15px
+		height 17px
+		backgroundsize()
+		diplay block
+
+.header
+	height 54px
+	position fixed
+	width 100%
+	z-index 102
+	top 10px
+	height 80px
+	left 0
+	transition all 400ms ease
+	.grilla
+		max-width 1440px
+		height 100%
+		flexg(center,space-between)
+		padding 0px 16px
+		border-radius 100px
+		background #0D0D0D
+		border-radius 100px
+		padding-left 20px
+.empresafx
+	position fixed
+	z-index 100
+	bottom 30px
+	left 20px
+	// border-radius 50%
+	overflow hidden
+	width 100px
+	box-shadow: 0px 15px 18.7px 0px #1C36424D
+	border 3px solid #fff
+
+
+.headerRight,
+.headerMenuContent,
+.headerMenuWrap,
+.headerMenuItem,
+.headerMenuLink
+	height 100%
+
+.headerMenuWrap
+	flexg(center,flex-end)
+	
+.headerMenuItem
+	height 100%
+	position relative
+	@media screen and (min-width 1025px)
+		&:hover
+			.headerMegamenuContent
+				display block
+	
+.headerMenuLink
+	flexg(center,center)
+	padding 0px 15px
+
+.headerMegamenuContent
+	display none
+	background: #ffffff
+	&.absolute
+		top 100%
+		centerX()
+	&.fixed
+		top 90px
+		width 100%
+		centerX()
+		position fixed
+
+.openSidebarMobile
+	position fixed
+	z-index 200
+	top 0
+	right 20px
+	flexg(center,center)
+	display 	
+	font-size 30px
+	
+.sidebarContentMobile
+	position fixed
+	top 0
+	right 0
+	z-index 180
+	height 100vh
+	width 100%
+	background #dbdbdb
+	transform translateX(100%)
+	transition all 400ms ease
+
+.header
+	.grilla
+		height 100%
+	&.sessionOn
+		.headerOptionLogout
+			display none
+	&.sessionOff
+		.headerOptionLogin
+			display none
+
+.headerEventos
+	position relative
+	margin-right 20px
+	span
+		circle(20,#000)
+		position absolute
+		top -13px
+		right -13px
+		font-size 12px
+		textg(t-400,normal,#fff)
+
+.headerLeft,
+.headerRight
+	height 100%
+
+.headerLeft
+	a
+		height 100%
+		flexg(center,center)
+		figure
+			height 100%
+			flexg(center,center)
+			img
+				height 90%
+				width auto
+
+.headerAnclas
+	height 100%
+	centerX()
+	pointer-events: none
+	a
+		height 100%
+		flexg(center,center)
+		pointer-events: all
+
+.headerAnclas
+	a
+		padding 0px 20px
+		font-size 16px
+		textg(t-500,normal,#fff)
+
+		&.headerEnVivo
+			padding 0px 24px
+			height 44px !important
+			border-radius 100px
+			background #008AC9
+			top 20px
+			right 60px
+			flexg(center,center)
+			font-size 16px
+			textg(t-800,normal,#fff)
+			width fit-content
+			margin-left 28px
+			img
+				margin-left 8px
+				animation onda 1s infinite ease-out
+.headerAnclaBlock
+	position relative
+	.lineActive
+		height 4px
+		position absolute
+		bottom 0
+		centerX()
+		width 0%
+		transition all 400ms ease
+	&.active,
+	&:hover
+		.lineActive
+			width 100%
+			transition all 400ms ease
+
+@keyframes animateZoom
+	0%
+		transform: scale(0.2) 
+		opacity: 0
+	50%
+		transform: scale(1) 
+		opacity: 0.5
+	100%
+		transform: scale(1.05) 
+		opacity: 0
+.headerOptionsSessions
+	height 100%
+
+.headerOptionLogout
+	height 100%
+	.login
+		font-size 14px
+		textg(t-500,normal,#fff)
+		margin-right 20px
+
+.headerButtonRegistrate
+	padding 0px 24px
+	height 40px
+	border-radius 100px
+	font-size 16px
+	background #FA1FAE
+	text-decoration underline
+	flexg(center,center)
+	textg(t-600,normal,#fff)
+
+.headerOptionLogin
+	height 100%
+	position relative
+	&.active
+		ul
+			opacity1()
+	ul
+		position absolute
+		width 130%
+		background #1B1B1B
+		top 100%
+		right 0
+		opacity0()
+		li
+			border-bottom 1px solid #1E1E1E
+			height 56px
+			a
+				height 100%
+				flexg(center,flex-start)
+				font-size 14px
+				textg(t-400,normal,#E9E9E9)
+				flexg(center,space-between)
+				padding 0px 17px
+				transition all 400ms ease
+				&:hover
+					background rgba(#fff,0.8)
+					color #000
+					transition all 400ms ease
+				&.link
+					&:after
+						content ''
+						background-image url(../img/credicorp/download-user.svg)
+						width 22px
+						height 18px
+						backgroundsize()
+
+.headerNameUser
+	font-size 16px
+	textg(t-500,normal,#fff)
+	margin-right 20px
+	position relative
+	flexg(center,flex-end)
+	grid-gap 10px
+	&:before
+		content ''
+		background-image url(../img/credicorp/user-icon.svg)
+		width 24px
+		height 24px
+		backgroundsize()
+
+.headerIconMenu
+	padding 6px 20px
+	padding-right 0px
+	border-left 1px solid c-black
+	font-size 30px
+	color #17181B
+
+.headerMenu
+	height 100%
+	display flex
+	display none
+
+.headerOptionLogin
+	cursor pointer
+	&:hover
+		.headerMenuList
+			opacity1()
+			transform scale(1)
+	
+.headerMenuList
+	border-radius 10px
+	background #fff
+	box-shadow 0px 0px 10px 3px rgba(#000,0.1)
+	width 500%
+	right 0
+	opacity0()
+	transform scale(0.95)
+	ul
+		padding 20px
+		a
+			padding 5px 0px
+	a
+		font-size 16px
+		textg(t-400,normal,#000)
+		&.logout
+			padding 20px
+			border-top 1px solid #dbdbdb
+
+.netWorkingFixed
+	circle(100,#8FC7E2)
+	box-shadow: 0px 15px 18.7px 0px #1C36424D
+	position fixed
+	z-index 600
+	bottom 30px
+	right 30px
+	h3
+		font-size 12px
+		textg(t-800,normal,#FFFFFF)
+		position relative
+		z-index 10
+	&:before
+		content ''
+		circle(86,#008AC9)
+		centerXY()
+		z-index -1
+
+.popUpInfo
+	centerXY()
+	position fixed
+	z-index 2000
+	height 80vh
+	width fit-content
+	margin auto
+	opacity0()
+	border-radius 20px
+	overflow hidden
+	&.active
+		opacity1()
+	figure
+		height 100%
+		img
+			height 100%
+			width auto
+	.icon-close
+		position absolute
+		top 5px
+		right 5px
+		circle(50,#fff)
+		color #000
+		font-size 25px
+		font-weight bold
+
+
+@media screen and (max-width 1366px)
+	.headerAnclas a
+		padding 0px 14px
+		font-size 16px
+@media screen and (max-width 1024px)
+	.headerMenuContent
+		display none
+	.headerMenuWrap
+		flex-direction column
+		justify-content flex-start
+		padding-top 50px
+		padding-bottom 30px
+		overflow-y scroll
+	.sidebarContentMobile
+		&.active
+			transform translateX(0%)
+			transition all 400ms ease     
+	.headerMenuItem,
+	.headerMenuLink
+		height auto
+		width 100%
+	.openSidebarMobile
+		display flex
+	.headerMegamenuContent
+		position relative
+		display blockDe
+		top 0
+		&.fixed,
+		&.absolute
+			position relative
+			top 0
+	.headerAnclas
+		display none
+	.headerLeft
+		width 120px
+	.header
+		height 60px
+	.headerMenu
+		display flex
+	.headerLeft
+		width auto
+	.header
+		top 15px
+		
+@media screen and (max-width 480px)
+	.headerButtonRegistrate
+		padding 0px 15px
+		font-size 14px
+	.headerOptionLogout .login
+		font-size 14px
+		margin-right 5px
+	.header
+		.grilla
+			width calc(100% - 30px)
+	.coockies
+		padding 40px 0px
+		.grilla
+			flex-direction column
+		.gParrafo
+			width 100%
+			padding-right 0
+			margin-bottom 15px
+			text-align center
+	.popUpInfo
+		width 90%
+		height fit-content
+		figure
+			height auto
+			width 100%
+			img
+				width 100%
+				height auto
+		.icon-close
+			width 40px
+			height 40px
+	.headerLogo
+		width 120px

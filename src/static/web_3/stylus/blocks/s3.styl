@@ -1,0 +1,203 @@
+.b3
+    .grilla
+        background #0D0D0D
+        border-radius 32px
+        padding 130px
+    .gPagination
+        bottom 0px
+    &.swiperActive
+        .b3Swiper
+            padding-bottom 60px
+
+.b3Top
+    margin-bottom 60px
+    h2
+        fontg(40,72)
+        textg(t-600,normal,#fff)
+        width 320px
+    .gParrafo
+        fontg(18,24)
+        textg(t-600,normal,#fff)
+        width calc(100% - 320px)
+        padding-left 100px
+
+.b3Item
+    cursor pointer
+    p
+        margin-bottom 0px
+    figure
+        width 205px
+        margin auto
+        position relative
+        z-index 5
+        img
+            width 100%
+    &:hover
+        .b3Info
+            background #fff
+            transition all 400ms ease
+            p.cargo
+                color #000
+                transition all 400ms ease
+        .b3Name
+            p.name
+                color #000
+                transition all 400ms ease
+.b3Info
+    display grid
+    grid-gap 10px
+    padding 60px 30px
+    background #1B1B1B
+    border-radius 24px
+    margin-top -45px
+    z-index 2
+    position relative
+    p.cargo
+        font-size 14px
+        textg(t-400,normal,#FFFFFF)
+        text-align center
+        transition all 400ms ease
+.b3Name
+    grid-gap 20px
+    p.name
+        fontg(18,24)
+        textg(t-600,normal,#FFFFFF)
+        transition all 400ms ease
+    img
+        width 40px
+
+.b3Popup
+    centerXY()
+    position fixed
+    background #fff
+    border-radius 32px
+    padding 32px
+    opacity0()
+    z-index 300
+    max-width 800px
+    width 100%
+    margin auto
+    &.active
+        opacity1()
+    p
+        margin-bottom 0px
+    .icon-close
+        circle(40,#fff)
+        color #000
+        position absolute
+        top 20px
+        right 20px
+        font-size 30px
+
+.b3PopupTop
+    height 210px
+    margin-bottom 40px
+
+.b3PopupTopLeft,
+.b3PopupTopRight
+    width 45%
+    height 100%
+
+.b3PopupTopLeft
+    border-radius 16px
+    figure
+        height 100%
+        width auto
+        img
+            height 100%
+            width auto
+.b3Logo
+    width 100px
+    &.taller
+        width 100%
+
+.b3PopupNameWrap
+    margin-bottom 8px
+
+.b3PopupNameWrap
+    img
+        width 38px
+
+.b3PopupName
+    width calc(100% - 38px)
+    padding-left 30px
+    fontg(20,30)
+    textg(t-600,normal,#0D0D0D)
+
+.b3PopupCargo
+    fontg(16,16)
+    textg(t-500,normal,#0D0D0D)
+
+.b3PopupText
+    font-size 14px
+    textg(t-400,normal,#0D0D0D)
+
+.b3PopupTaller
+    fontg(14,14)
+    textg(t-400,normal,#0D0D0D)
+    margin-bottom 5px
+
+.b3PopupTallerName
+    fontg(18,20)
+    textg(t-700,normal,#0D0D0D)
+
+.b3PopupButton
+    height 40px
+    flexg(center,center)
+    border-radius 100px
+    padding 0px 40px
+    width fit-content
+    background #FA1FAE
+    fontg(18,20)
+    textg(t-500,normal,#FFFFFF)
+    text-decoration underline
+    margin 0 0 0 auto
+    margin-top 20px
+    &.inscrito
+        background #0ACFC9
+        color #000
+    &.aforo-close
+        background #989898
+        pointer-events none
+        text-decoration inherit
+        color #000
+        font-size 14px
+    
+
+
+@media screen and (max-width 1366px)
+    .b3
+        .grilla
+            padding 80px
+
+
+@media screen and (max-width 1024px)
+    .b3
+        .grilla
+            padding 50px 35px
+
+@media screen and (max-width 768px)
+    .b3Top
+        grid-gap 20px
+        h2,
+        .gParrafo
+            width 100%
+            padding 0
+@media screen and (max-width 480px)
+    .b3Popup
+        width calc(100% - 40px)
+        padding 30px 20px
+        border-radius 20px
+    .b3PopupTop
+        height auto
+        grid-gap 20px
+    .b3PopupTopRight
+        width 100%
+        grid-gap 20px
+    .b3PopupName
+        padding-left 15px
+    .b3PopupTop
+        margin-bottom 20px
+    .b3PopupTopLeft
+        height 130px
+        width fit-content

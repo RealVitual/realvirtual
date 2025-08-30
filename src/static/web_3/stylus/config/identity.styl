@@ -1,0 +1,196 @@
+// Colors idendity
+c-black = #262626
+c-white = #FFF
+c-gray = #ffffff
+
+// Fonts
+// t-100 = 'DMSans-Thin', sans-serif
+// t-200 = 'DMSans-ExtraLight', sans-serif
+t-300 = 'InterTight-Light', sans-serif
+t-400 = 'InterTight-Regular', sans-serif
+t-500 = 'InterTight-Medium', sans-serif
+t-600 = 'InterTight-SemiBold', sans-serif
+t-700 = 'InterTight-Bold', sans-serif
+t-800 = 'InterTight-ExtraBold', sans-serif
+// t-900 = 'DMSans-Black', sans-serif
+
+icomoon = 'icomoon'
+
+// Mixins
+placeholder(color,famyli)
+	::-webkit-input-placeholder { color: color; font-family: famyli; } /* WebKit */
+	:-moz-placeholder { color: color; font-family: famyli; } /* Firefox 18- */
+	::-moz-placeholder { color: color; font-family: famyli; } /* Firefox 19+ */
+	:-ms-input-placeholder { color: color; font-family: famyli; } /* IE 10+ */
+
+imgrelative()
+	width fit-content
+	height auto
+	picture
+		position: relative
+		width fit-content
+		height auto
+		display block
+		font-size 0px
+		img
+			position: relative
+			max-width 100%
+			height auto
+					
+scrollbar(c,b,w,h)
+	::-webkit-scrollbar
+		width "%spx" % (w)
+		height "%spx" % (h)
+		scroll-behavior: smooth
+	::-webkit-scrollbar-track
+		background b
+		border-radius 20px
+	::-webkit-scrollbar-thumb
+		background c
+		&:hover
+			background c
+
+gradientSolid(color,opacity)
+	content: ''
+	background rgba(color,opacity)
+	full()
+	z-index 3
+	pointer-events: none
+				
+backgroundsize()
+	background-repeat no-repeat
+	background-size cover
+	background-position center center
+
+full()
+	position: absolute;
+	width 100%
+	height 100%
+	top 0
+	left 0
+	
+circle(m,color)
+	width "%spx" % (m)
+	height "%spx" % (m)
+	background: color
+	border-radius 50%
+	flexg(center,center)
+
+centerY()
+	top 50%
+	transform translateY(-50%)
+	position absolute
+	
+centerX()
+	position absolute
+	left 0
+	right 0
+	margin auto
+	
+centerXY()
+	centerX()
+	centerY()
+
+pseudoSolid(color,opacity)
+	content: ''
+	background rgba(color,opacity)
+	full()
+	z-index 3
+	pointer-events: none
+
+flexg(vertical,horizontal)
+	display flex
+	align-items vertical
+	justify-content horizontal
+
+opacity0()
+	opacity 0
+	visibility hidden
+	transition: all 400ms cubic-bezier(0.78, 0.13, 0.24, 0.88)
+	pointer-events: none
+	
+opacity1()
+	opacity 1
+	visibility visible
+	transition: all 400ms cubic-bezier(0.78, 0.13, 0.24, 0.88)
+	pointer-events: all
+	
+linesText(num)
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: num;
+	overflow: hidden;
+	
+textg(family,lineh,clr)
+	font-family family
+	line-height lineh
+	color clr
+
+fontg(n, p)
+	font-size "%spx" % (p)
+	@media screen and (max-width:1600px)
+		font-size "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+widthg(n, p)
+	width "%spx" % (p)
+	// transition all 200ms ease
+	@media screen and (max-width:1600px)
+		width "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+heightg(n, p)
+	height "%spx" % (p)
+	// transition all 200ms ease
+	@media screen and (max-width:1600px)
+		height "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+topg(n, p)
+	top "%spx" % (p)
+	// transition all 200ms ease
+	@media screen and (max-width:1600px)
+		top "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+rightg(n, p)
+	right "%spx" % (p)
+	// transition all 200ms ease
+	@media screen and (max-width:1600px)
+		right "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+leftg(n, p)
+	left "%spx" % (p)
+	// transition all 200ms ease
+	@media screen and (max-width:1600px)
+		left "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+bottomg(n, p)
+	bottom "%spx" % (p)
+	// transition all 200ms ease
+	@media screen and (max-width:1600px)
+		bottom "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+
+sizeg(a, n, p)
+	if a == font-size
+		font-size "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+	else if a == width
+		width "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+	else if a == height
+		height "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+	else if a == left
+		left "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+	else if a == padding-top
+		padding-top "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+	else if a == top
+		top "calc(%spx + (%s - %s) * ((100vw - 375px) / (1920 - 375)))" % (n p n)
+
+fontMedia(m1920,m1600,m1440,m1380,m1280,m1024,m768,m480,m450)
+	@media screen and (max-width:2000px)
+		font-size "%spx" % (m1920)
+	@media screen and (max-width:1600px)
+		font-size "%spx" % (m1600)
+	@media screen and (max-width:1440px)
+		font-size "%spx" % (m1440)
+	@media screen and (max-width:1380px)
+		font-size "%spx" % (m1380)
+	@media screen and (max-width:1280px)
+		font-size "%spx" % (m1280)
+	@media screen and (max-width:1024px)
+		font-size "%spx" % (m1024)
+	@media screen and (max-width:768px)
+		font-size "%spx" % (m768)
+	@media screen and (max-width:480px)
+		font-size "%spx" % (m480)
+	@media screen and (max-height:450px)
+		font-size "%spx" % (m450)

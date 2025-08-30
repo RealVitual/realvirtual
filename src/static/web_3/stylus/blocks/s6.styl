@@ -1,0 +1,147 @@
+.b6
+    .gTitle
+        margin-bottom 56px
+
+.b6Wrap
+    height 480px
+    grid-gap 16px
+
+.b6Top
+    grid-gap 30px
+    .gButton
+        background transparent
+        border 1px solid #fff
+        padding 0px 40px
+        height 40px
+
+.b6Left,
+.b6Right
+    height 100%
+    width 100%
+
+.b6Item
+    position relative
+    width 100%
+    height 100%
+    border-radius 20px
+    overflow hidden
+    position relative
+    &:before
+        content: ''
+        background: linear-gradient(0deg, #0D0D0D, transparent)
+        position: absolute
+        width: 100%
+        height: 80%
+        bottom: 0
+        left: 0
+        z-index: 2
+    img
+        full()
+        object-fit cover
+    &:hover
+        .b6Info p.name
+            &:after
+                background #CD3A94
+                border 1px solid #fff
+                transition all 400ms ease
+
+.b6Info
+    position absolute
+    bottom 0
+    left 0
+    z-index 5
+    padding 32px
+    padding-top 32px
+    p
+        margin-bottom 0px
+    p.date
+        font-size 14px
+        textg(t-400,normal,#fff)
+        flexg(center,flex-start)
+        span
+            text-decoration underline
+            padding-right 20px
+            position relative
+            width fit-content
+            &:after
+                content ''
+                circle(4,#fff)
+                centerY()
+                right 10px
+    p.name
+        flexg(center,space-between)
+        grid-gap 20px
+        padding-right 55px
+        position relative
+        fontg(16,22)
+        textg(t-600,normal,#fff)
+        &:after
+            content '\e902'
+            font-family icomoon
+            circle(46,transparent)
+            font-size 20px
+            border 1px solid #E9E9E9
+            color #fff
+            centerY()
+            right 0
+            transition all 400ms ease
+
+.b6Right
+    grid-gap 16px
+    .b6Item
+        height 100%
+
+.b6Pagination
+    margin-top 50px
+    ul
+        flexg(center,center)
+        grid-gap 24px
+        li
+            &.prev,
+            &.next
+                a
+                    &:before
+                        content '\e902'
+                        font-family icomoon
+                        font-size 18px
+                        color #fff
+            &.prev
+                margin-right 10px
+                a
+                    &:before
+                        display inline-block
+                        transform rotate(180deg)
+            &.next
+                margin-left 10px
+            a
+                fontg(18,24)
+                textg(t-300,normal,#989898)
+                &.active
+                    font-family t-700
+                    color #fff
+
+@media screen and (max-width 1366px)
+    .b6 .gTitle
+        margin-bottom 20px
+    .b6Wrap
+        height 440px
+
+@media screen and (max-width 1024px)
+    .b6Wrap
+        height 450px
+
+@media screen and (max-width 768px)
+    .b6Wrap
+        height auto
+    .b6Left,
+    .b6Right
+        height auto
+        .b6Item
+            height auto
+            padding-top 65%
+    .b6Item
+        height auto
+        padding-top 65%
+
+    .b6Info
+        padding 20px
