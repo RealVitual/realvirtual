@@ -186,6 +186,113 @@
             OVERLAY.classList.remove("active");
         });
     });
+    $('.g8SumitLogin').click(function(e){
+        e.preventDefault();
+        var item = $(this);
+        var valid = item.closest('form').validationEngine('validate');
+        var form = $(this).closest('form');
+        if (!valid) {
+            } else {
+                $('.g8SumitLogin').addClass('isLoading');
+                $('.g8SumitLogin').disabled = true;
+                let login_data = form.serialize()
+                $.ajax({
+                    url : "/login_access/",
+                    type : "post",
+                    data: login_data,
+                }).done(function(data) {
+                    if(data.success){
+                        window.location.href = data.redirect_url
+                    }else{
+                        $('.g8SumitLogin').disabled = false;
+                        var message = $('.message-warning-login')
+                        message.html(data.message)
+                        message.show();
+                        setTimeout(()=>{
+                            message.fadeOut('slow')
+                        }, 2000)
+                        $('.g8SumitLogin').removeClass('isLoading')
+                        if(data.captcha_error == 1){
+                            setTimeout(()=>{
+                                location.reload();
+                            }, 3000)
+                        }
+                    }
+                });
+        }
+    });
+    $('.save-register').click(function(e){
+        e.preventDefault();
+        var item = $(this);
+        var valid = item.closest('form').validationEngine('validate');
+        var form = $(this).closest('form');
+        console.log(form, 'form')
+        if (!valid) {
+            } else {
+                $('.save-register').addClass('isLoading');
+                $('.save-register').disabled = true;
+                register_data = form.serialize()
+                console.log(register_data, 'REGISTER DATA')
+                $.ajax({
+                    url : "{% url 'landing:validate_register' %}",
+                    type : "post",
+                    data: register_data,
+                }).done(function(data) {
+                    if(data.captcha_error == 1){
+                        setTimeout(()=>{
+                            location.reload();
+                        }, 3000)
+                    }
+                    if(data.success){
+                        window.dataLayer.push({
+                            'event': 'formulario',
+                            'email': register_data['email'],
+                            'nombres': register_data['names'],
+                            'apellidos': register_data['last_name']
+                         });
+                        console.log(window.dataLayer, 'DATALAYER')
+                        $('.save-register').disabled = false;
+                        console.log(data, 'DATA')
+                        if(data.confirmed){
+                            $('.parrafo-register').show();
+                            $('.warning-form').hide();
+                            setTimeout(()=>{
+                                window.location.href = data.redirect_url
+                            }, 2000)
+                        }else{
+                            var parrafo_register = $('.parrafo-register')
+                            parrafo_register.hide();
+                            var register_form = $('.register-form')
+                            register_form.hide();
+                            $('.message-waiting-confirmation').html(data.confirmed_message)
+                            $('.waiting-confirmation-form').show();
+                            setTimeout(()=>{
+                                window.location.href = data.redirect_url
+                            }, 20000)
+                        }
+
+                    }else{
+                        $('.save-register').disabled = false;
+                        $('.save-register').removeClass('isLoading');
+                        var parrafo_register = $('.parrafo-register')
+                        var msg = $('.message-warning')
+                        var register_form = $('.register-form')
+                        var warning_form = $('.warning-form')
+                        register_form.hide();
+                        parrafo_register.hide();
+                        msg.html(data.message)
+                        if(data.can_confirm){
+                            $('.confirm-div').show()
+                        }
+                        else{
+                            $('.confirm-div').hide()
+                        }
+                        warning_form.show();
+                    }
+                });
+        }
+    });
+
     </script>
 </body>
 </html>

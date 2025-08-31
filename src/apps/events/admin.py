@@ -55,7 +55,9 @@ class ExhibitorAdmin(admin.ModelAdmin):
         }),
         (None, {
             'fields': (
-                'company', 'position', 'name', 'image',
+                'company', 'position', 'name', 'title', 'name_on_list',
+                'image', 'description', 'flag_image', 'link', 'link_title',
+                'organization'
             )
         }),
     )

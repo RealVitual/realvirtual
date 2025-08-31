@@ -2,12 +2,12 @@
     1: sessionOn
     2: sessionOff
 -->
-<header class="header sessionOn    ">
+<header class="header {% if logged_user %}sessionOn{% else %}sessionOff{% endif %}">
     <div class="grilla f aic jcsb">
         <div class="headerLeft">
             <a href="#" class="headerLogo">
                 <figure>
-                    <img src="/static/web_3/img/credicorp/logoHeader.svg" alt="">
+                    <img src="{{request.company.logo.url}}" alt="">
                 </figure>
             </a>
         </div>
@@ -15,32 +15,47 @@
             <!-- la clase "lineActive" es la barra qeu se activa cuando se da click , 
                 el color deberìa ser administrable segun el color de la web 
             -->
-            <a href="#acerca" class="headerAnclaBlock">Acerca de <span class="lineActive" style="background:#008ac9;"></span></a>
-            <a href="#speakers" class="headerAnclaBlock">Speakers <span class="lineActive" style="background:#008ac9;"></span></a>
-            <a href="#talleres" class="headerAnclaBlock">Talleres <span class="lineActive" style="background:#008ac9;"></span></a>
-            <a href="#preguntas" class="headerAnclaBlock">Preguntas Frecuentes <span class="lineActive" style="background:#008ac9;"></span></a>
+            {% if header %}
+                {% if header_section.show_schedule_section %}
+                    <a href="#acerca" class="headerAnclaBlock">{{header_section.schecule_header_name}}<span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
+                {% if header_section.show_exhibitors_section %}
+                <a href="#speakers" class="headerAnclaBlock">{{header_section.exhibitors_header_name}} <span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
+                {% if header_section.show_workshops_section %}
+                <a href="#talleres" class="headerAnclaBlock">{{header_section.workshops_header_name}} <span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
+                {% if header_section.show_frequently_questions_section %}
+                <a href="#preguntas" class="headerAnclaBlock">{{header_section.frequently_questions_header_name}}<span class="lineActive" style="background:#008ac9;"></span></a>
+                {% endif %}
+            {% endif %}
         </div>
         <div class="headerRight f aic jcfe">
             <div class="headerOptionsSessions">
                 <!-- OPCIÒN CUANDO NO ESTA LOGEADO -->
                 <div class="headerOptionLogout f aic jcfe">
-                    <a href="" class="headerButtonLogin login">Iniciar Sesión</a>
-                    <a href="" class="headerButtonRegistrate">Regístrate</a>
+                    <a href="" class="headerButtonLogin login">{{header_section.login_title}}</a>
+                    <a href="" class="headerButtonRegistrate">{{header_section.register_title}}</a>
                 </div>
                 <!-- OPCIÒN CUANDO ESTA LOGEADO -->
                 <!-- download-user -->
                 <!-- user-icon -->
                 <div class="headerOptionLogin f aic jcfe">
-                    <a href="#" class="headerNameUser arrowClick">Hola Lucho</a>
+                    <a href="#" class="headerNameUser arrowClick">Hola {{company_user.names}}</a>
                     <ul>
+                        {% if company_user.in_person %}
+                            <li><a class="link" href="{{ticket_url}}">Mi Ticket</a></li>
+                        {% endif %}
+                        {% if company_user.virtual or request.company.enable_credentials %}
+                            <li><a class="link" href="{{credential_url}}">Mi credencial</a></li>
+                        {% endif %}
+                        {% if company_user.certificate %}
+                            <li><a class="link" target="_blank" href="{{company_user.certificate.url}}">Mi certificado</a></li>
+                        {% elif company_user.allow_certificate %}
+                            <li><a class="link" href="{% url 'landing:generate_certificate' %}">Mi certificado</a></li>
+                        {% endif %}
                         <li>
-                            <a href="#" class="link">Mi Ticket</a>
-                        </li>
-                        <li>
-                            <a href="#" class="link">Mi Certificado</a>
-                        </li>
-                        <li>
-                            <a href="#">Cerrar Sesión</a>
+                            <a href="{% url 'landing:logout' %}" class="logout">Cerrar Sesión</a>
                         </li>
                     </ul>
                 </div>
@@ -56,20 +71,21 @@
     <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a>
     <h3>Iniciar Sesión</h3>
     <div class="g8Form">
-        <form action="">
+        <form action=""  method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="g-recaptcha-response_login" name="g-recaptcha-response">
             <div class="g8GroupInput one">
                 <div class="g8Input">
                     <span>Nombre</span>
-                    <input type="text"  maxlength="30" class="g8Box  validate[required]">
-                    
+                    <input type="text"  maxlength="30" class="g8Box  validate[required]" name="{{form_login.email.html_name}}">
                 </div>
                 <div class="g8Input password">
                     <span>Password</span>
-                    <input type="password" maxlength="30" class="g8Box validate[required]">
+                    <input type="password" maxlength="30" class="g8Box validate[required]" name="{{form_login.password.html_name}}">
                     <a href="#" class="show-hide-pass"></a>
                 </div>
             </div>
-            <button class="g8SumitLogin isLoading">Ingresar</button>
+            <button class="g8SumitLogin">Ingresar</button>
         </form>
     </div>
     <div class="g8Bottom tac">
@@ -123,7 +139,7 @@
                         <input type="password" id="emailconfirm"  class="g8Box validate[required,custom[email],equals[email]]">
                     </div>
                 </div>
-                <button class="g8SubmitActualizarPassword isLoading">Actualizar</button>
+                <button class="g8SubmitActualizarPassword">Actualizar</button>
             </form>
         </div>
         <a href="#" class="buttonClosePopup linkCancelar">Cancelar</a>
@@ -134,98 +150,180 @@
 <!-- POPUP REGISTRO -->
 <div class="g8PopupForm formRegistro pr">
     <a href="#" class="g8ClosePopup icon-close pa closeRegistro"></a>
-    <h3>Crear cuenta</h3>
+    {% if allow_register %}
+    <h3>{{header_section.register_form_title}}</h3>
     <div class="gParrafo">
-        <p>Completa el siguiente formulario para poder registrar tus datos.</p>
+        <p>{{header_section.register_form_text}}</p>
     </div>
     <div class="g8Form">
-        <form action="">
-            <div class="g8GroupChecbox g8GroupInput two" style="">
-                <span>Tipo de Asistencia:</span>
-                <div class="g8Checkbox">
-                    <input id="pres" type="radio" checked="" class="validate[required]" name="access_type" value="in_person">
-                    <label for="pres">
-                        Presencial
-                    </label>
+        <form action="" method="POST" class="form-register">
+            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+            {% csrf_token %}
+            {% if choose_access_type %}
+                <div class="g8GroupChecbox g8GroupInput two" style="">
+                    <span>Tipo de Asistencia:</span>
+                    <div class="g8Checkbox">
+                        <input id="pres" type="radio" checked="" class="validate[required]" name="access_type" value="in_person">
+                        <label for="pres">
+                            Presencial
+                        </label>
+                    </div>
+                    <div class="g8Checkbox">
+                        <input id="virt" type="radio" class="validate[required]" name="access_type" value="virtual">
+                        <label for="virt">
+                            Virtual
+                        </label>
+                    </div>
                 </div>
-                <div class="g8Checkbox">
-                    <input id="virt" type="radio" class="validate[required]" name="access_type" value="virtual">
-                    <label for="virt">
-                        Virtual
-                    </label>
-                </div>
-            </div>
+            {% endif %}
             <div class="g8GroupInput two">
                 <div class="g8Input">
-                    <span>Nombre *</span>
+                    <span>{{company.names_field_title}} *</span>
                     <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]">
                 </div>
                 <div class="g8Input">
-                    <span>Apellido *</span>
+                    <span>{{company.last_names_field_title}} *</span>
                     <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]" >
                 </div>
             </div>
             <div class="g8GroupInput two">
+                {% if company.job_company%}
                 <div class="g8Input">
                     <span>Empresa *</span>
                     <input type="text" class="g8Box validate[required]">
                 </div>
-                <div class="g8Input">
-                    <span>Cargo *</span>
-                    <input type="text" class="g8Box validate[required]">
+                {% endif %}
+                {% if company.job_company_select%}
+                <div class="g8Input select">
+                    <span>{{company.job_company_names_field_title}} *</span>
+                    <select name="{{form_register.job_company_select.html_name}}" id="" class="g8Box validate[required]">
+                        <!-- <option value="">Selecciona un tipo</option> -->
+                        <option value=""></option>
+                        {% for job_company in job_companies %}
+                            <option value="{{job_company.id}}">{{job_company.name}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
+            {% endif %}
+            {% if company.company_position%}
+                <div class="g8Input">
+                    <span>{{company.company_position_names_field_title}} *</span>
+                    <input type="text" class="g8Box validate[required]" name="{{form_register.company_position.html_name}}">
+                </div>
+            {% endif %}
             </div>
             <div class="g8GroupInput two">
                 <div class="g8Input select">
-                    <span>Pais *</span>
-                    <select name="" id="" class="g8Box validate[required]">
-                        <!-- <option value="">Selecciona un tipo</option> -->
+                    <span>{{company.country_names_field_title}}  *</span>
+                    <select name="{{form_register.country.html_name}}" id="" class="g8Box validate[required]">
                         <option value=""></option>
-                        <option value="10">Opcion 10</option>
-                        <option value="11">Opcion 11</option>
-                        <option value="12">Opcion 12</option>
-                        <option value="13">Opcion 13</option>
+                        {% for country in countries %}
+                            <option value="{{country.id}}">{{country.name}}</option>
+                        {% endfor %}
                     </select>
                 </div>
+                {% if company.occupation %}
                 <div class="g8Input">
-                    <span>Profesión *</span>
-                    <input type="text" class="g8Box validate[required]">
+                    <span>{{company.occupation_names_field_title}} *</span>
+                    <input type="text" class="g8Box validate[required]" name="{{form_register.occupation.html_name}}">
                 </div>
+                {% endif %}
+                {% if company.occupation_select%}
+                <div class="g8Input select">
+                    <span>{{company.occupation_names_field_title}} *</span>
+                    <select name="{{form_register.occupation_select.html_name}}" id="" class="g8Box validate[required]">
+                        <option value=""></option>
+                        {% for occupation in occupations %}
+                            <option value="{{occupation.id}}">{{occupation.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
             </div>
+            {% if company.phone %}
             <div class="g8GroupInput two">
                 <div class="g8Input">
-                    <span>Email *</span>
-                    <input type="password" id="email" class="g8Box validate[required,custom[email]]">
+                    <span>Teléfono *</span>
+                    <input type="text" data-type="number" maxlength="30" class="g8Box validKeypress validate[required]" name="{{form_register.phone.html_name}}">
+                </div>
+            </div>
+            {% endif %}
+            <div class="g8GroupInput two">
+                <div class="g8Input">
+                    <span>{{company.email_names_field_title}} *</span>
+                    <input type="text" id="email" class="g8Box validate[required,custom[email]]" name="{{form_register.email.html_name}}">
                 </div>
                 <div class="g8Input">
-                    <span>Confirmar Email *</span>
-                    <input type="password" id="emailconfirm"  class="g8Box validate[required,custom[email],equals[email]]">
+                    <span>{{company.confirm_email_names_field_title}} *</span>
+                    <input type="text" id="emailconfirm"  class="g8Box validate[required,custom[email],equals[email]]" name="confirm_email">
                 </div>
             </div>
             <div class="g8GroupInput two">
                 <div class="g8Input password">
                     <span>Contraseña *</span>
-                    <input type="password" id="password" autocomplete="true" class="g8Box validate[required]">
+                    <input type="password" id="passwowrd" class="g8Box validate[required]" name="{{form_register.password.html_name}}">
                     <a href="#" class="show-hide-pass"></a>
                 </div>
                 <div class="g8Input password">
                     <span>Confirmar Contraseña *</span>
-                    <input type="password" id="passwordconfirm" autocomplete="true"  class="g8Box validate[required,equals[password]]">
+                    <input type="password" id="passwordconfirm"  class="g8Box validate[required,equals[passwowrd]]" name="{{form_register.confirm_password.html_name}}">
                     <a href="#" class="show-hide-pass"></a>
                 </div>
             </div>
             <div class="g8Confirm fdc aifs">
                 <p>(*) Campos obligatorios</p>
-				<div class="g8Checkbox">
-					<input id="check1" type="checkbox" checked class="validate[required]" name="checkbox1" value="checkbox1">
-					<label for="check1">Acepto las <a href="#">Políticas de Privacidad</a> y <a href="#">Protección de Datos Personales.</a></label>
-				</div>
-				<a href="#" target="blanck" class="g8Cookies">Conoce nuestraspolitucas de coockies</a>
-				<button class="g8SumitRegistro">Enviar</button>
+                {% if company.privacy_policy or company.protection_data_policy or company.terms_and_conditions %}
+                    <div class="g8Checkbox">
+                        <input id="check1" type="checkbox" checked class="validate[required]" name="checkbox1" value="checkbox1">
+                        <label for="check1">
+                            {% if company.privacy_policy and not company.protection_data_policy and not company.terms_and_conditions %}
+                            He leído y acepto las
+                            <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            {% endif %}
+                            {% if company.privacy_policy and company.protection_data_policy and not company.terms_and_conditions %}
+                            He leído y acepto las
+                            <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            y <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
+                            {% endif %}
+                            {% if company.privacy_policy and not company.protection_data_policy and company.terms_and_conditions %}
+                            He leído y acepto los
+                            <a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a>
+                            y <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            {% endif %}
+                            {% if company.privacy_policy and company.protection_data_policy and company.terms_and_conditions %}
+                            He leído y acepto los
+                            <a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a>
+                            , las <a target="_blank" href="{{company.privacy_policy.url}}">Políticas de Privacidad</a>
+                            y <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
+                            {% endif %}
+                            {% if not company.privacy_policy and company.protection_data_policy and not company.terms_and_conditions %}
+                            He leído y acepto la
+                            <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
+                            {% endif %}
+                            {% if not company.privacy_policy and company.protection_data_policy and company.terms_and_conditions %}
+                            He leído y acepto los
+                            <a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a>
+                            y la <a target="_blank" href="{{company.protection_data_policy.url}}">Protección de Datos Personales</a>
+                            {% endif %}
+                            {% if not company.privacy_policy and not company.protection_data_policy and company.terms_and_conditions %}
+                            He leído y acepto los
+                            <a target="_blank" href="{{company.terms_and_conditions.url}}">Términos y Condiciones.</a>
+                            {% endif %}
+                        </label>
+                    </div>
+                {% endif %}
+                <button class="g8SumitRegistro save-register">Enviar</button>
                 <h4>Ya tengo una cuenta <a href="#" id="openIniciaSesion">Inicial sesión</a></h4>
-			</div>
+            </div>
+            <p class="messageError message-warning"></p>
         </form>
     </div>
+    {% else %}
+        <h3>{{company.title_closed_in_person_register}}</h3>
+        <div class="gParrafo parrafo-register">
+            {{company.message_closed_in_person_register|safe}}
+        </div>
+    {% endif %}
 </div>
 
 
@@ -235,7 +333,7 @@
     <div class="g8PopupContent">
         <h3>Registro exitoso</h3>
         <div class="gParrafo">
-            <p>La preinscripción se ha realizado correctamente. 
+            <p>La preinscripción se ha realizado correctamente.
                 Dado que este evento cuenta con aforo limitado, en las próximas semanas te informaremos vía correo electrónico si tu solicitud fue aceptada.</p>
         </div>
         <a href="#" class="gButton buttonClosePopup">Ok</a>

@@ -15,6 +15,7 @@ class EmailType(Enum):
     REGISTER = 'Registro completado'
     PASSWORD = 'Recuperar/Reestablecer contraseña'
     SCHEDULE = 'Confirmación de agenda'
+    WORKSHOP = 'Confirmación de agenda taller'
 
     @classmethod
     def choices(cls):

@@ -533,6 +533,11 @@ class HomePage(TimeStampedModel):
     banner_description = models.TextField(
         _('Description'), blank=True, null=True
     )
+    banner_footer_section_image = models.ImageField(
+        _('Imagen de Sección Footer'),
+        upload_to=get_upload_path('image_banner'),
+        null=True, blank=True
+    )
 
     main_event_title = models.CharField(
         _('Detalle Evento Título'), max_length=255, blank=True)

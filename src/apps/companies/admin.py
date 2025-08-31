@@ -729,20 +729,9 @@ class HomePageAdmin(admin.ModelAdmin):
                         "fields": (
                             'main_title',
                             'banner_description',
-                            'banner',
-                            'image_banner'
-                        ),
-                        "description": f"Campos disponibles para la versión {version}."
-                    }
-                ),
-                (
-                    "Sección Secundaria Banner", {
-                        "fields": (
-                            'banner_second_section',
+                            'image_banner',
                             'banner_second_section_image',
-                            'banner_second_section_internal_title',
-                            'banner_second_section_internal_text',
-                            'banner_second_section_internal_image'
+                            'banner_footer_section_image'
                         ),
                         "description": f"Campos disponibles para la versión {version}."
                     }

@@ -19,103 +19,85 @@
         <div class="b1Info">
             <div class="b1Top f aife jcsb fdc-768">
                 <div class="b1InfoTopLeft f aife jcfs fdc-480">
-                    <img src="{{company.image_banner.url}}" alt="" width="650" class="imgLogo">
+                    <img src="{{home_page.image_banner.url}}" alt="" width="650" class="imgLogo">
                     <a href="#" class="button" id="b1ButtonRegister">Registrate</a>
                 </div>
                 <div class="b1InfoTopRight">
-                    <img src="{{company.banner_second_section_image.url}}" alt="">
+                    <img src="{{home_page.banner_second_section_image.url}}" alt="">
                 </div>
             </div>
             <div class="b1Bottom">
-                <h3>Transformando el ciclo del desarrollo de software</h3>
+                <h3>{{home_page.main_title}}</h3>
                 <div class="gParrafo">
-                    <p>Es un evento que reunirá conversaciones con líderes y referentes del sector en un encuentro completo, colaborativo e inspirador. Conéctate con el ecosistema tecnológico global mediante una experiencia diseñada para compartir conocimiento en torno a tendencias clave del sector.</p>
+                    <p>{{home_page.banner_description}}</p>
                 </div>
             </div>
         </div>
     </div>
-    <img src="{{company.banner_footer_section_image.url}}" alt="" class="imgAbsolute">
+    <img src="{{home_page.banner_footer_section_image.url}}" alt="" class="imgAbsolute">
 </section>
 
+{% if header_section.show_schedule_section %}
 <section class="b2 mY scrollWrap anclaBlock" id="acerca">
     <div class="grilla scrollItem">
         <div class="b2Wrap f aifs jscb fdc-768">
             <div class="b2Left">
-                <h2>Agenda</h2>
+                <h2>{{home_page.schedule_section_name}}</h2>
             </div>
             <div class="b2Right">
+                {% for schedule in schedules %}
                     <div class="b2ItemRight f aifs jcsb fdc-480">
                         <div class="b2LeftInfo">
-                            <h4>La clave para desarrolladores Felices</h4>
-                            <p>IDPʼs que transforman la experiencia Dev</p>
+                            <h4>{{schedule.name}}</h4>
+                            <p>{{schedule.description}}</p>
                         </div>
                         <div class="b2RightInfo">
-                            <p class="hour">9:55 a.m. a 10:30 a.m.</p>
-                            <img src="/static/web_3/img/credicorp/bandera-arg.png" alt="">
-                            <div class="b2Name">
-                                <p class="name">Rossana Suarez</p>
-                                <p class="cargo">Naranja X - Argentina | Tech Lead DevOps</p>
-                            </div>
+                            <p class="hour">{{schedule.start_time}} a {{schedule.end_time}}</p>
+                            {% for exhibitor in schedule.get_exhibitors %}
+                                <img src="{{exhibitor.flag_image.url}}" alt="">
+                                <div class="b2Name">
+                                    <p class="name">{{exhibitor.name}}</p>
+                                    <p class="cargo">{{exhibitor.title}} | {{exhibitor.organization}}</p>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="b2ItemRight f aifs jcsb fdc-480">
-                        <div class="b2LeftInfo">
-                            <h4>La clave para desarrolladores Felices</h4>
-                            <p>IDPʼs que transforman la experiencia Dev</p>
-                        </div>
-                        <div class="b2RightInfo">
-                            <p class="hour">9:55 a.m. a 10:30 a.m.</p>
-                            <img src="/static/web_3/img/credicorp/bandera-arg.png" alt="">
-                            <div class="b2Name">
-                                <p class="name">Rossana Suarez</p>
-                                <p class="cargo">Naranja X - Argentina | Tech Lead DevOps</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="b2ItemRight f aifs jcsb fdc-480">
-                        <div class="b2LeftInfo">
-                            <h4>La clave para desarrolladores Felices</h4>
-                            <p>IDPʼs que transforman la experiencia Dev</p>
-                        </div>
-                        <div class="b2RightInfo">
-                            <p class="hour">9:55 a.m. a 10:30 a.m.</p>
-                            <img src="/static/web_3/img/credicorp/bandera-arg.png" alt="">
-                            <div class="b2Name">
-                                <p class="name">Rossana Suarez</p>
-                                <p class="cargo">Naranja X - Argentina | Tech Lead DevOps</p>
-                            </div>
-                        </div>
-                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if header_section.show_exhibitors_section %}
 <section class="b3 mY scrollWrap" id="speakers">
     <div class="grilla">
         <div class="b3Top f aic jcsb scrollItem fdc-480 aifs-768">
-            <h2>Speakers</h2>
+            <h2>{{home_page.exhibitors_section_name}}</h2>
             <div class="gParrafo">
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-                    nonummy</p>
+                <p>{{home_page.exhibitors_section_title}}</p>
             </div>
         </div>
         <div class="gSwiperContent">
             <div class="b3Swiper swiper-container scrollItem swiper" data-initial="3">
                 <div class="b3Wrap swiper-wrapper">
-                    {% for row in exhibitors %}
-                    <div class="b3Item b3ItemClickPopup swiper-slide" data-image="/static/web_3/img/credicorp/home-b3-imgPerson.png" data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png" data-pais="/static/web_3/img/credicorp/expositor-pais.svg" data-name="Miguel Yagüe" data-cargo="Senior Advisor - Boston Consulting Group" data-text="<p>Licenciado en Economía con Premio Extraordinario por la Universidad de Barcelona y Máster en Economía y Finanzas por el Centro de Estudios Monetarios y Financieros del Banco de España (CEMFI). Más de veinte años como consultor estratégico en el ámbito de riesgos y finanzas para supervisores y bancos líderes internacionales. Ha sido socio y director de la práctica de Finanzas y Riesgos de Oliver Wyman en España y Portugal. Actualmente, es Senior Advisor en Boston Consulting Group. Profesor Asociado de Análisis Económico en la Universidad Complutense de Madrid y además de macroeconomía en IE University y Riesgos Bancarios en CUNEF.</p>">
+                    {% for ex in exhibitors %}
+                    <div class="b3Item b3ItemClickPopup swiper-slide"
+                    data-image="{{ex.image.url}}"
+                    data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png"
+                    data-pais="{{ex.flag_image.url}}"
+                    data-name="{{ex.name}}"
+                    data-cargo="{{ex.title}} - {{ex.organization}}"
+                    data-text="<p>{{ex.description}}</p>">
                         <figure>
-                            <img src="/static/web_3/img/credicorp/home-b3-imgPerson.png" alt="">
+                            <img src="{{ex.image.url}}" alt="">
                         </figure>
                         <div class="b3Info">
                             <div class="b3Name f aic jcc">
-                                <p class="name">Nombre y 
-                                    Apellido</p>
-                                <img src="/static/web_3/img/credicorp/expositor-pais.svg" alt="">
+                                <p class="name">{{ex.name}}</p>
+                                <img src="{{ex.flag_image.url}}" alt="">
                             </div>
-                            <p class="cargo">Senior Advisor - Boston 
-                                Consulting Group</p>
+                            <p class="cargo">{{ex.title}} - {{ex.organization}}</p>
                         </div>
                     </div>
                     {% endfor %}
@@ -131,6 +113,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- POPUP  -->
 
@@ -149,7 +132,7 @@
                 <p class="b3PopupTaller"></p>
                 <p class="b3PopupTallerName"></p>
             </div>
-            <div clasBottomLeft">
+            <div class="BottomLeft">
                 <div class="b3PopupNameWrap f aic jcsb">
                     <img src="" alt="" class="b3PopuPais">
                     <p  class="b3PopupName"></p>
@@ -169,22 +152,23 @@
     </div>
 </div>
 
+{% if header_section.show_workshops_section %}
 <section class="b4 mY scrollWrap" id="talleres">
     <div class="grilla f aifs jcsb scrollItem fdc-768 ">
         <div class="b4Left">
-            <div class="buttonGradient"> <span class="button">Cupos Limitados</span></div>
-            <img src="/static/web_3/img/credicorp/home-b4-imgLogo.png" alt="">
+            <div class="buttonGradient"> <span class="button">{{home_page.workshop_section_name}}</span></div>
+            <img src="{{home_page.workshop_section_image.url}}" alt="">
         </div>
         <div class="b4Right">
             {% for row in workshops %}
                 <div class="b3ItemClickPopup b4RighItem f aic jcsb fdc-480"
-                data-image="/static/web_3/img/credicorp/home-b3-imgPopup.png"
-                data-pais="/static/web_3/img/credicorp/expositor-pais.svg"
-                data-name="Miguel Yagüe"
-                data-cargo="Senior Advisor - Boston Consulting Group"
+                data-image="{{row.exhibitor.image.url}}"
+                data-pais="{{row.exhibitor.flag_image.url}}"
+                data-name="{{row.exhibitor.name}}"
+                data-cargo="{{row.exhibitor.title}} - {{row.exhibitor.organization}}"
                 data-text="<p>{{row.description}}</p>"
-                data-taller="Taller"
-                data-taller-name="IA Generativa"
+                data-taller="{{row.title}}"
+                data-taller-name="{{row.name}}"
                 data-url-inscribete="url"
                 data-inscrito="false"
                 data-aforo="true"
@@ -204,7 +188,9 @@
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if header_section.show_frequently_questions_section %}
 <section class="b5 mY scrollWrap" id="preguntas">
     <div class="grilla scrollItem">
         <h4>Preguntas Frecuentes</h4>
@@ -222,6 +208,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 {% endblock %}
 

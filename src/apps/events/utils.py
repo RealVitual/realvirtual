@@ -44,23 +44,20 @@ def generate_ics_file(schedule):
         fp.close()
 
 
-def generate_workshop_ics_file(schedule):
-    company = schedule.event.company
+def generate_workshop_ics_file(workshop):
+    company = workshop.company
     mail = EmailTemplate.objects.filter(
-        company=company, email_type="SCHEDULE"
+        company=company, email_type="WORKSHOP"
     ).last()
     if mail:
         c = Calendar()
         e = Event()
         organizer = Organizer(email=mail.from_email)
-        e.name = "%s" % (schedule.name)
+        e.name = "%s" % (workshop.name)
         e.organizer = organizer
         e.description = mail.description
-        start_date = schedule.event.start_datetime.date()
-        start_datetime = datetime.combine(
-                    start_date, schedule.start_time).astimezone(pytz.utc)
-        end_datetime = datetime.combine(
-                    start_date, schedule.end_time).astimezone(pytz.utc)
+        start_datetime = workshop.start_datetime.astimezone(pytz.utc)
+        end_datetime = workshop.end_datetime.astimezone(pytz.utc)
         e.begin = start_datetime.strftime("%Y-%m-%d %H:%M:%S")
         e.end = end_datetime.strftime("%Y-%m-%d %H:%M:%S")
         c.events.add(e)
@@ -69,9 +66,8 @@ def generate_workshop_ics_file(schedule):
         with fp as f:
             f.write(str(c).encode())
             f.seek(0)
-            temp_file = files.File(f, name='{}-{}.ics'.format(
-                schedule.event.name.replace(' ', '_'),
-                schedule.name.replace(' ', '_')))
-            schedule.ics_file = temp_file
-            schedule.save(update_fields=['ics_file'])
+            temp_file = files.File(f, name='{}.ics'.format(
+                workshop.name.replace(' ', '_')))
+            workshop.ics_file = temp_file
+            workshop.save(update_fields=['ics_file'])
         fp.close()

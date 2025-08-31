@@ -43,14 +43,14 @@
 
 <section class="b1">
     <picture class="imgCover">
-        <source srcset="{{company.mobile_banner.url}}" media="(max-width: 767px)">
-        <source srcset="{{company.banner.url}}" media="(max-width: 768px)">
-        <img src="{{company.banner.url}}" width="1920" height="713"  alt="Myimage">
+        <source srcset="{{home_page.mobile_banner.url}}" media="(max-width: 767px)">
+        <source srcset="{{home_page.banner.url}}" media="(max-width: 768px)">
+        <img src="{{home_page.banner.url}}" width="1920" height="713"  alt="Myimage">
     </picture>
     <div class="grilla">
         <div class="b1Info">
-            {% if company.image_banner %}
-                <img src="{{company.image_banner.url}}" alt="" width="650" class="imgLogo">
+            {% if home_page.image_banner %}
+                <img src="{{home_page.image_banner.url}}" alt="" width="650" class="imgLogo">
             {% endif %}
             <h4>{{home_page.main_title}}</h4>
             <a href="#" class="gButton" id="b1ButtonRegister">Regístrate</a>
@@ -188,7 +188,7 @@
 <section class="b4 pY scrollWrap anclaBlock" id="agenda">
     <div class="grilla scrollItem">
         <div class="b4Top f aife jcsb fdc-480">
-            <h4 class="gTitle"><span>AGENDA</span>Explora el itinerario</h4>
+            <h4 class="gTitle"><span>{{home_page.schedule_section_name}}</span>{{home_page.schedule_section_title}}</h4>
             <div class="b4SelectGroup g column3 column1-480 f">
                 {% for f in filters %}
                     {% if f.filter_name in filtered_filters%}
