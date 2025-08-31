@@ -251,18 +251,6 @@ class CompanyAdmin(admin.ModelAdmin):
                         'close_mobile_banner', 'warning_img'
                     )
                 }),
-                (_('Banner Principal'), {
-                    'fields': (
-                        'banner', 'banner_preview',
-                        'mobile_banner', 'mobile_banner_preview',
-                        'image_banner', 'image_banner_preview',
-                        'banner_second_section', 'banner_second_section_image',
-                        'banner_second_section_internal_title',
-                        'banner_second_section_internal_text',
-                        'banner_second_section_internal_image',
-                        'video_file'
-                    )
-                }),
                 (_('Confirmación de usuarios'), {
                     'fields': (
                         'confirm_user', 'message_confirm_user'
@@ -346,13 +334,6 @@ class CompanyAdmin(admin.ModelAdmin):
                         'use_counter', 'counter_datetime', 'counter_text',
                         'close_landing', 'close_banner',
                         'close_mobile_banner', 'warning_img'
-                    )
-                }),
-                (_('Banner Principal'), {
-                    'fields': (
-                        'image_banner', 'image_banner_preview',
-                        'banner_second_section_image',
-                        'banner_footer_section_image'
                     )
                 }),
                 (_('Confirmación de usuarios'), {
@@ -988,14 +969,6 @@ class HeaderAdmin(admin.ModelAdmin):
                             'register_form_title',
                             'register_form_text',
                             'login_title'
-                        ),
-                    }
-                ),
-                (
-                    "Agenda", {
-                        "fields": (
-                            'schecule_header_name',
-                            'show_schedule_section',
                         ),
                     }
                 ),
