@@ -215,6 +215,7 @@
 {% block jsfinal %}
 <script src="/static/web_3/js/swiper/swiper-bundle.min.js"></script>
 <script type="text/javascript">
+    {% if header_section.show_exhibitors_section or header_section.show_workshops_section%}
 
     let elSwiperb3 = document.getElementsByClassName('b3Swiper')[0].dataset.initial
     const breakpointb3 = window.matchMedia('(max-width: 1024px)');
@@ -418,7 +419,7 @@
             OVERLAY.style.zIndex = 200;
         });
     });
-
+    {% endif %}
     const closeBtn = popup.querySelector(".b3ClosePopup");
     closeBtn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -427,6 +428,8 @@
         OVERLAY.removeAttribute("style");
     });
 });
+{% endif %}
+
 
 
 eventClickAccordion("b5ItemClick")
