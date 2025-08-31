@@ -103,6 +103,8 @@
     figure
         height 100%
         width auto
+        margin auto
+        width fit-content
         img
             height 100%
             width auto
@@ -140,6 +142,13 @@
 .b3PopupTallerName
     fontg(18,20)
     textg(t-700,normal,#0D0D0D)
+
+.b3PopupBottomLeft
+    grid-gap 10px
+    p
+        fontg(18,20)
+        textg(t-500,normal,#000)
+        margin-bottom 0px
 
 .b3PopupButton
     height 40px
@@ -201,3 +210,6 @@
     .b3PopupTopLeft
         height 130px
         width fit-content
+    .b3PopupBottomLeft
+        align-items flex-start
+        grid-gap 2px

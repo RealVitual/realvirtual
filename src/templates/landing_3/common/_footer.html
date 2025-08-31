@@ -2,29 +2,29 @@
     <div class="grilla">
         <div class="fWrap  f aic jcc fdc-768">
             <div class="fMenu f aic jcc fItem">
-                {% if header_section.show_about_section %}
+                {% if header_section.show_schedule_section %}
                 <a href="#acerca" class="headerAnclaBlock">
-                    {{header_section.about_section_header_name}}
+                    {{header_section.schecule_header_name}}
                 </a>
                 {% endif %}
                 {% if header_section.show_schedule_section %}
-                <a href="#agenda" class="headerAnclaBlock">
+                <a href="#speakers" class="headerAnclaBlock">
                     {{header_section.schecule_header_name}}
                 </a>
                 {% endif %}
                 {% if header_section.show_exhibitors_section %}
-                <a href="#expositor" class="headerAnclaBlock">
+                <a href="#talleres" class="headerAnclaBlock">
                     {{header_section.exhibitors_header_name}}
                 </a>
                 {% endif %}
-                {% if header_section.show_blog_section %}
-                <a href="#blog" class="headerAnclaBlock">
-                    {{header_section.blog_header_name}}
+                {% if header_section.show_workshops_section %}
+                <a href="#talleres" class="headerAnclaBlock">
+                    {{header_section.workshops_header_name}}
                 </a>
                 {% endif %}
-                {% if header_section.show_sponsors_section %}
-                <a href="#empresa" class="headerAnclaBlock">
-                    {{header_section.sponsors_header_name}}
+                {% if header_section.show_frequently_questions_section %}
+                <a href="#preguntas" class="headerAnclaBlock">
+                    {{header_section.frequently_questions_header_name}}
                 </a>
                 {% endif %}
             </div>

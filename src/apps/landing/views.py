@@ -8,11 +8,12 @@ import requests
 from src.apps.companies.models import UserCompany
 from src.apps.events.models import (
     Event, Exhibitor, Filter, Schedule, Shift, ScheduleCustomerEvent,
-    CustomerEvent, Category)
+    CustomerEvent, Category, Workshop)
 from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
-    NetworkingOption, UserNetworkingPreference, BlogPost)
+    NetworkingOption, UserNetworkingPreference, BlogPost,
+    FrequentlyQuestion)
 from .forms import (
     RegisterForm, CredentialCustomerForm, LoginForm, EmailPasswordForm,
     ResetPasswordForm, CertificateForm)
@@ -56,7 +57,7 @@ class HomeView(CreateView):
         }
         if request.company:
             company = request.company
-            if company.version and company.version != 1:
+            if company.version and company.version.version != 1:
                 internal_view = self.template_name.split('/')[-1]
                 self.template_name = (
                     f"landing_{company.version}/{internal_view}"
@@ -141,6 +142,12 @@ class HomeView(CreateView):
                 is_active=True, company=company).order_by('-publish_date')
             if len(found_posts) >= 3:
                 blog_posts = found_posts[:3]
+            frequently_questions = FrequentlyQuestion.objects.filter(
+                company=company, is_active=True
+            ).order_by("position")
+            workshops = Workshop.objects.filter(
+                company=company, is_active=True
+            ).order_by("position")
             context = {
                 'company': company,
                 'header': True,
@@ -161,7 +168,9 @@ class HomeView(CreateView):
                 'filtered_shift': (
                     filtered_shift.name if filtered_shift else None),
                 'blog_posts': blog_posts,
-                'filtered': filtered
+                'filtered': filtered,
+                'frequently_questions': frequently_questions,
+                'workshops': workshops
             }
         return render(request, self.template_name, context)
 

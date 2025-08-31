@@ -210,6 +210,8 @@ class HomePageAdmin(admin.ModelAdmin):
                 return [ItemMainEventTabular, ]
             elif version == 2:
                 return [IndicatorsMainEventTabular, ItemModuleTabular]
+            elif version == 3:
+                return []
         else:
             return []
 
@@ -417,6 +419,70 @@ class HomePageAdmin(admin.ModelAdmin):
                     }
                 )
             ]
+        elif version == 3:
+            fielsets_version = [
+                (
+                    "Sección Banner Principal", {
+                        "fields": (
+                            'main_title',
+                            'date_description',
+                            'time_description',
+                            'address_description',
+                            'banner',
+                            'mobile_banner',
+                            'image_banner'
+                        ),
+                        "description": f"Campos disponibles para la versión {version}."
+                    }
+                ),
+                (
+                    "Sección Secundaria Banner", {
+                        "fields": (
+                            'banner_second_section',
+                            'banner_second_section_image',
+                            'banner_second_section_internal_title',
+                            'banner_second_section_internal_text',
+                            'banner_second_section_internal_image'
+                        ),
+                        "description": f"Campos disponibles para la versión {version}."
+                    }
+                ),
+                (
+                    "Sección Agenda y Programación", {
+                        "fields": (
+                            'schedule_section_name',
+                            'schedule_section_title'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Expositores", {
+                        "fields": (
+                            'exhibitors_section_name',
+                            'exhibitors_section_title'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Talleres", {
+                        "fields": (
+                            'workshop_section_name',
+                            'workshop_section_image'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
+                    "Sección Preguntas Frecuentes", {
+                        "fields": (
+                            'frequently_questions_section_name',
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+            ]
         for fieldset in fielsets_version:
             fieldsets.append(fieldset)
         return fieldsets
@@ -434,6 +500,252 @@ class HeaderAdmin(admin.ModelAdmin):
     list_display = ('company', )
     list_filter = ('company__enterprise', )
     search_fields = ('company__name', )
+
+    def get_fieldsets(self, request, obj=None):
+        fielsets_version = []
+        if obj is None:
+            return [
+                ("Seleccione la Compañía", {
+                    "fields": ("company", ),
+                    "description": "Debe seleccionar una compañía antes de continuar."
+                }),
+            ]
+        else:
+            version_obj = obj.company.version
+            version = 1
+            if version_obj:
+                version = version_obj.version
+            fieldsets = [
+                ("Información principal", {
+                    "fields": ("company", ),
+                    "description":
+                        f"Empresa seleccionada: {obj.company} (Versión {str(version)})"
+                })
+            ]
+
+        if version == 1:
+            fielsets_version = [
+                (
+                    "Colores", {
+                        "fields": (
+                            'header_color',
+                            'header_text_color',
+                            'button_color',
+                            'button_text_color'
+                        ),
+                    }
+                ),
+                (
+                    "Formulario", {
+                        "fields": (
+                            'register_title',
+                            'register_form_title',
+                            'register_form_text',
+                            'login_title'
+                        ),
+                    }
+                ),
+                (
+                    "Acerca de", {
+                        "fields": (
+                            'show_about_section',
+                            'about_section_header_name',
+                        ),
+                    }
+                ),
+                (
+                    "Agenda", {
+                        "fields": (
+                            'schecule_header_name',
+                            'show_schedule_section',
+                        ),
+                    }
+                ),
+                (
+                    "Galería", {
+                        "fields": (
+                            'show_gallery_section',
+                            'gallery_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Auspiciadores", {
+                        "fields": (
+                            'show_sponsors_section',
+                            'sponsors_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Networking", {
+                        "fields": (
+                            'show_networking_section',
+                            'networking_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Encuesta", {
+                        "fields": (
+                            'show_survey_section',
+                            'survey_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Más Eventos", {
+                        "fields": (
+                            'show_more_events',
+                        ),
+                    }
+                ),
+                (
+                    "Expositores", {
+                        "fields": (
+                            'show_exhibitors_section',
+                            'exhibitors_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Contacto", {
+                        "fields": (
+                            'show_contact',
+                            'contact_header_name'
+                        ),
+                    }
+                ),
+            ]
+        elif version == 2:
+            fielsets_version = [
+                (
+                    "Colores", {
+                        "fields": (
+                            'header_color',
+                            'header_text_color',
+                            'button_color',
+                            'button_text_color'
+                        ),
+                    }
+                ),
+                (
+                    "Formulario", {
+                        "fields": (
+                            'register_title',
+                            'register_form_title',
+                            'register_form_text',
+                            'login_title'
+                        ),
+                    }
+                ),
+                (
+                    "Acerca de", {
+                        "fields": (
+                            'show_about_section',
+                            'about_section_header_name',
+                        ),
+                    }
+                ),
+                (
+                    "Agenda", {
+                        "fields": (
+                            'schecule_header_name',
+                            'show_schedule_section',
+                        ),
+                    }
+                ),
+                (
+                    "Auspiciadores", {
+                        "fields": (
+                            'show_sponsors_section',
+                            'sponsors_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Expositores", {
+                        "fields": (
+                            'show_exhibitors_section',
+                            'exhibitors_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Blog", {
+                        "fields": (
+                            'show_blog_section',
+                            'blog_header_name'
+                        ),
+                    }
+                ),
+            ]
+        elif version == 3:
+            fielsets_version = [
+                (
+                    "Colores", {
+                        "fields": (
+                            'header_color',
+                            'header_text_color',
+                            'button_color',
+                            'button_text_color'
+                        ),
+                    }
+                ),
+                (
+                    "Formulario", {
+                        "fields": (
+                            'register_title',
+                            'register_form_title',
+                            'register_form_text',
+                            'login_title'
+                        ),
+                    }
+                ),
+                (
+                    "Agenda", {
+                        "fields": (
+                            'schecule_header_name',
+                            'show_schedule_section',
+                        ),
+                    }
+                ),
+                (
+                    "Agenda", {
+                        "fields": (
+                            'schecule_header_name',
+                            'show_schedule_section',
+                        ),
+                    }
+                ),
+                (
+                    "Expositores", {
+                        "fields": (
+                            'show_exhibitors_section',
+                            'exhibitors_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Talleres", {
+                        "fields": (
+                            'show_workshops_section',
+                            'workshops_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Preguntas frecuentes", {
+                        "fields": (
+                            'show_frequently_questions_section',
+                            'frequently_questions_header_name'
+                        ),
+                    }
+                )
+            ]
+        for fieldset in fielsets_version:
+            fieldsets.append(fieldset)
+        return fieldsets
 
 
 @admin.register(Footer)

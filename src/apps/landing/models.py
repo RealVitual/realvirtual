@@ -549,3 +549,23 @@ class BlogPostItemContent(BaseModel):
 
     def __str__(self):
         return str(self.name)
+
+
+class FrequentlyQuestion(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_frequently_questions",
+        on_delete=models.CASCADE, null=True, blank=True)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1
+    )
+    name = models.CharField(_('Nombre Pregunta'), max_length=255)
+    answer = models.TextField(
+        _('Respuesta'), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Pregunta frecuente')
+        verbose_name_plural = _('Preguntas frecuentes')
+
+    def __str__(self):
+        return str(self.name)

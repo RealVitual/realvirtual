@@ -5,7 +5,7 @@ from .models import (Video, Sponsor, CredentialCustomer,
                      SurveryChoiceQuestion, SurveryQuestion,
                      UserSurveyAnswer, NetworkingOption,
                      UserNetworkingPreference, FreeImage, CerficateSettings,
-                     BlogPost, BlogPostItem, BlogPostItemContent)
+                     BlogPost, BlogPostItem, BlogPostItemContent, FrequentlyQuestion)
 from django.utils.html import format_html
 import os
 
@@ -145,6 +145,12 @@ class UserNetworkingPreferenceAdmin(admin.ModelAdmin):
 @admin.register(FreeImage)
 class FreeImageAdmin(admin.ModelAdmin):
     list_display = ('name', 'image')
+
+
+@admin.register(FrequentlyQuestion)
+class FrequentlyQuestionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'company')
+    list_filter = ('company', )
 
 
 admin.site.register(CerficateSettings)

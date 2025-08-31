@@ -1,4 +1,4 @@
-{% extends "common/_base.html" %}
+{% extends "landing_3/common/_base.html" %}
 
 {% block cssadicional %}
 {% endblock %}
@@ -16,11 +16,11 @@
                 <!-- OPCIÒN CAMPO IMAGEN -->
                 <picture class="imgCover">
                     <!-- imagen mobile -->
-                    <source srcset="{{STATIC_URL}}img/img-banner-chat.png" media="(max-width: 767px)">
+                    <source srcset="/static/web_3/img/img-banner-chat.png" media="(max-width: 767px)">
                     <!-- imagen desktop -->
-                    <source srcset="{{STATIC_URL}}img/img-banner-chat.png" media="(max-width: 768px)">
+                    <source srcset="/static/web_3/img/img-banner-chat.png" media="(max-width: 768px)">
                     <!-- imagen desktop -->
-                    <img src="{{STATIC_URL}}img/img-banner-chat.png" width="1920" height="713"  alt="Myimage">
+                    <img src="/static/web_3/img/img-banner-chat.png" width="1920" height="713"  alt="Myimage">
                 </picture>
                 <!-- OPCIÒN CAMPO VIDEO -->
                 <iframe src="https://player.vimeo.com/video/385145267?autoplay=1&muted=1" allow="fullscreen" allowfullscreen frameborder="0"></iframe>
@@ -45,7 +45,7 @@
                     </div>
                     <form action="">
                         <textarea name="" id="boxMessage" placeholder="Escribir"></textarea>
-                        <button id="sendMessage"><img src="{{STATIC_URL}}img/credicorp/icon-arrow-button.svg" alt="" width="24"></button>
+                        <button id="sendMessage"><img src="/static/web_3/img/credicorp/icon-arrow-button.svg" alt="" width="24"></button>
                     </form>
                 </div>
             </div>

@@ -383,6 +383,21 @@ class Header(TimeStampedModel):
         _('Nombre Contacto Header'), max_length=50, default="Contacto"
     )
 
+    show_workshops_section = models.BooleanField(
+        _('Mostrar Talleres'), default=True
+    )
+    workshops_header_name = models.CharField(
+        _('Nombre Talleres Header'), max_length=20, default="Talleres"
+    )
+
+    show_frequently_questions_section = models.BooleanField(
+        _('Mostrar Preguntas Frecuentes'), default=True
+    )
+    frequently_questions_header_name = models.CharField(
+        _('Nombre Preguntas Frecuentes Header'), max_length=20,
+        default="Preguntas Frecuentes"
+    )
+
     register_title = models.CharField(
         _('Título Registro'), max_length=50, default="Regístrate"
     )
@@ -584,6 +599,19 @@ class HomePage(TimeStampedModel):
         _('Encuesta descripción texto'), max_length=255,
         blank=True,
         default="Por favor, ayúdanos a mejorar nuestra atención completando la siguiente encuesta.") # noqa
+
+    workshop_section_name = models.CharField(
+        _('Talleres nombre Sección'), max_length=255,
+        blank=True, default="Talleres")
+    workshop_section_image = models.ImageField(
+            _('Detalle Talleres image'),
+            upload_to=get_upload_path('workshop_image'),
+            null=True, blank=True)
+
+    frequently_questions_section_name = models.CharField(
+        _('Preguntas Frecuentes nombre Sección'), max_length=255,
+        blank=True, default="Preguntas Frecuentes")
+
     final_image = models.ImageField(
         _('Imagen Sección final'),
         upload_to=get_upload_path('final_image'),
