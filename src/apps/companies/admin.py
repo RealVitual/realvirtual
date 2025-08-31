@@ -21,102 +21,405 @@ class CompanyAdmin(admin.ModelAdmin):
     readonly_fields = (
         'logo_preview', 'banner_preview', 'mobile_banner_preview',
         'image_banner_preview')
-    fieldsets = (
-        (None, {
-            'fields': (
-                'enterprise', 'domain', 'name', 'logo', 'logo_preview',
-                'main_event_name'
-            )
-        }),
-        (_('Contador, Comunicado y Cierre de landing'), {
-            'fields': (
-                'use_counter', 'counter_datetime', 'counter_text',
-                'close_landing', 'close_banner',
-                'close_mobile_banner', 'warning_img'
-            )
-        }),
-        (_('Version y formato'), {
-            'fields': ('version', 'font')
-        }),
-        (_('Banner Principal'), {
-            'fields': (
-                'banner', 'banner_preview',
-                'mobile_banner', 'mobile_banner_preview',
-                'image_banner', 'image_banner_preview',
-                'banner_second_section', 'banner_second_section_image',
-                'banner_second_section_internal_title',
-                'banner_second_section_internal_text',
-                'banner_second_section_internal_image',
-                'video_file'
-            )
-        }),
-        (_('Confirmación de usuarios'), {
-            'fields': (
-                'confirm_user', 'message_confirm_user'
-            )
-        }),
-        (_('Filtros'), {
-            'fields': (
-                'use_filters', 'use_rooms', 'use_shifts', 'use_dates'
-            )
-        }),
-        (_('Cierre de registro'), {
-            'fields': (
-                'title_closed_in_person_register',
-                'message_closed_in_person_register'
-            )
-        }),
-        (_('Forma de Acceso'), {
-            'fields': (
-                'is_virtual',
-                'in_person',
-                'is_private',
-                'access_type',
-                'allow_virtual_access'
-            )
-        }),
-        (_('Capacidad'), {
-            'fields': (
-                'capacity',
-                'current_quantity'
-            )
-        }),
-        (_('Documentos para Políticas'), {
-            'fields': (
-                'privacy_policy',
-                'protection_data_policy',
-                'cookies_policy',
-                'terms_and_conditions'
-            )
-        }),
-        (_('Formulario'), {
-            'fields': (
-                'names',
-                'names_field_title',
-                'last_name',
-                'last_names_field_title',
-                'job_company',
-                'job_company_names_field_title',
-                'job_company_select',
-                'company_position',
-                'company_position_names_field_title',
-                'phone',
-                'country',
-                'country_names_field_title',
-                'occupation',
-                'occupation_select',
-                'occupation_names_field_title',
-                'email_names_field_title',
-                'confirm_email_names_field_title'
-            )
-        }),
-        (_('Codigos'), {
-            'fields': (
-                'code_header',
-                'code_body',
-            )
-        }),
-    )
+    # fieldsets = (
+    #     (None, {
+    #         'fields': (
+    #             'enterprise', 'domain', 'name', 'logo', 'logo_preview',
+    #             'main_event_name'
+    #         )
+    #     }),
+    #     (_('Contador, Comunicado y Cierre de landing'), {
+    #         'fields': (
+    #             'use_counter', 'counter_datetime', 'counter_text',
+    #             'close_landing', 'close_banner',
+    #             'close_mobile_banner', 'warning_img'
+    #         )
+    #     }),
+    #     (_('Version y formato'), {
+    #         'fields': ('version', 'font')
+    #     }),
+    #     (_('Banner Principal'), {
+    #         'fields': (
+    #             'banner', 'banner_preview',
+    #             'mobile_banner', 'mobile_banner_preview',
+    #             'image_banner', 'image_banner_preview',
+    #             'banner_second_section', 'banner_second_section_image',
+    #             'banner_second_section_internal_title',
+    #             'banner_second_section_internal_text',
+    #             'banner_second_section_internal_image',
+    #             'video_file'
+    #         )
+    #     }),
+    #     (_('Confirmación de usuarios'), {
+    #         'fields': (
+    #             'confirm_user', 'message_confirm_user'
+    #         )
+    #     }),
+    #     (_('Filtros'), {
+    #         'fields': (
+    #             'use_filters', 'use_rooms', 'use_shifts', 'use_dates'
+    #         )
+    #     }),
+    #     (_('Cierre de registro'), {
+    #         'fields': (
+    #             'title_closed_in_person_register',
+    #             'message_closed_in_person_register'
+    #         )
+    #     }),
+    #     (_('Forma de Acceso'), {
+    #         'fields': (
+    #             'is_virtual',
+    #             'in_person',
+    #             'is_private',
+    #             'access_type',
+    #             'allow_virtual_access'
+    #         )
+    #     }),
+    #     (_('Capacidad'), {
+    #         'fields': (
+    #             'capacity',
+    #             'current_quantity'
+    #         )
+    #     }),
+    #     (_('Documentos para Políticas'), {
+    #         'fields': (
+    #             'privacy_policy',
+    #             'protection_data_policy',
+    #             'cookies_policy',
+    #             'terms_and_conditions'
+    #         )
+    #     }),
+    #     (_('Formulario'), {
+    #         'fields': (
+    #             'names',
+    #             'names_field_title',
+    #             'last_name',
+    #             'last_names_field_title',
+    #             'job_company',
+    #             'job_company_names_field_title',
+    #             'job_company_select',
+    #             'company_position',
+    #             'company_position_names_field_title',
+    #             'phone',
+    #             'country',
+    #             'country_names_field_title',
+    #             'occupation',
+    #             'occupation_select',
+    #             'occupation_names_field_title',
+    #             'email_names_field_title',
+    #             'confirm_email_names_field_title'
+    #         )
+    #     }),
+    #     (_('Codigos'), {
+    #         'fields': (
+    #             'code_header',
+    #             'code_body',
+    #         )
+    #     }),
+    # )
+
+    def get_fieldsets(self, request, obj=None):
+        fielsets_version = []
+        if obj is None:
+            return [
+                (_('Version y formato'), {
+                    'fields': ('version', )
+                }),
+                (_('Información Principal'), {
+                    'fields': (
+                        'enterprise', 'domain', 'name', 'logo', 'logo_preview',
+                        'main_event_name'
+                    )
+                }),
+            ]
+        else:
+            version_obj = obj.version
+            version = 1
+            if version_obj:
+                version = version_obj.version
+            fieldsets = [
+            ]
+
+        if version == 1:
+            fielsets_version = [
+                (_('Version y formato'), {
+                    'fields': ('version', 'font')
+                }),
+                (_('Información Principal'), {
+                    'fields': (
+                        'enterprise', 'domain', 'name', 'logo', 'logo_preview',
+                        'main_event_name'
+                    )
+                }),
+                (_('Contador, Comunicado y Cierre de landing'), {
+                    'fields': (
+                        'use_counter', 'counter_datetime', 'counter_text',
+                        'close_landing', 'close_banner',
+                        'close_mobile_banner', 'warning_img'
+                    )
+                }),
+                (_('Banner Principal'), {
+                    'fields': (
+                        'banner', 'banner_preview',
+                        'mobile_banner', 'mobile_banner_preview',
+                        'image_banner', 'image_banner_preview',
+                        'video_file'
+                    )
+                }),
+                (_('Confirmación de usuarios'), {
+                    'fields': (
+                        'confirm_user', 'message_confirm_user'
+                    )
+                }),
+                (_('Filtros'), {
+                    'fields': (
+                        'use_filters', 'use_rooms', 'use_shifts', 'use_dates'
+                    )
+                }),
+                (_('Cierre de registro'), {
+                    'fields': (
+                        'title_closed_in_person_register',
+                        'message_closed_in_person_register'
+                    )
+                }),
+                (_('Forma de Acceso'), {
+                    'fields': (
+                        'is_virtual',
+                        'in_person',
+                        'is_private',
+                        'access_type',
+                        'allow_virtual_access'
+                    )
+                }),
+                (_('Capacidad'), {
+                    'fields': (
+                        'capacity',
+                        'current_quantity'
+                    )
+                }),
+                (_('Documentos para Políticas'), {
+                    'fields': (
+                        'privacy_policy',
+                        'protection_data_policy',
+                        'cookies_policy',
+                        'terms_and_conditions'
+                    )
+                }),
+                (_('Formulario'), {
+                    'fields': (
+                        'names',
+                        'names_field_title',
+                        'last_name',
+                        'last_names_field_title',
+                        'job_company',
+                        'job_company_names_field_title',
+                        'job_company_select',
+                        'company_position',
+                        'company_position_names_field_title',
+                        'phone',
+                        'country',
+                        'country_names_field_title',
+                        'occupation',
+                        'occupation_select',
+                        'occupation_names_field_title',
+                        'email_names_field_title',
+                        'confirm_email_names_field_title'
+                    )
+                }),
+                (_('Codigos'), {
+                    'fields': (
+                        'code_header',
+                        'code_body',
+                    )
+                }),
+            ]
+        elif version == 2:
+            fielsets_version = [
+                (_('Version'), {
+                    'fields': ('version', )
+                }),
+                (_('Información Principal'), {
+                    'fields': (
+                        'enterprise', 'domain', 'name', 'logo', 'logo_preview',
+                        'main_event_name'
+                    )
+                }),
+                (_('Contador, Comunicado y Cierre de landing'), {
+                    'fields': (
+                        'use_counter', 'counter_datetime', 'counter_text',
+                        'close_landing', 'close_banner',
+                        'close_mobile_banner', 'warning_img'
+                    )
+                }),
+                (_('Banner Principal'), {
+                    'fields': (
+                        'banner', 'banner_preview',
+                        'mobile_banner', 'mobile_banner_preview',
+                        'image_banner', 'image_banner_preview',
+                        'banner_second_section', 'banner_second_section_image',
+                        'banner_second_section_internal_title',
+                        'banner_second_section_internal_text',
+                        'banner_second_section_internal_image',
+                        'video_file'
+                    )
+                }),
+                (_('Confirmación de usuarios'), {
+                    'fields': (
+                        'confirm_user', 'message_confirm_user'
+                    )
+                }),
+                (_('Filtros'), {
+                    'fields': (
+                        'use_filters', 'use_rooms', 'use_shifts', 'use_dates'
+                    )
+                }),
+                (_('Cierre de registro'), {
+                    'fields': (
+                        'title_closed_in_person_register',
+                        'message_closed_in_person_register'
+                    )
+                }),
+                (_('Forma de Acceso'), {
+                    'fields': (
+                        'is_virtual',
+                        'in_person',
+                        'is_private',
+                        'access_type',
+                        'allow_virtual_access'
+                    )
+                }),
+                (_('Capacidad'), {
+                    'fields': (
+                        'capacity',
+                        'current_quantity'
+                    )
+                }),
+                (_('Documentos para Políticas'), {
+                    'fields': (
+                        'privacy_policy',
+                        'protection_data_policy',
+                        'cookies_policy',
+                        'terms_and_conditions'
+                    )
+                }),
+                (_('Formulario'), {
+                    'fields': (
+                        'names',
+                        'names_field_title',
+                        'last_name',
+                        'last_names_field_title',
+                        'job_company',
+                        'job_company_names_field_title',
+                        'job_company_select',
+                        'company_position',
+                        'company_position_names_field_title',
+                        'phone',
+                        'country',
+                        'country_names_field_title',
+                        'occupation',
+                        'occupation_select',
+                        'occupation_names_field_title',
+                        'email_names_field_title',
+                        'confirm_email_names_field_title'
+                    )
+                }),
+                (_('Codigos'), {
+                    'fields': (
+                        'code_header',
+                        'code_body',
+                    )
+                }),
+            ]
+        elif version == 3:
+            fielsets_version = [
+                (_('Version'), {
+                    'fields': ('version', )
+                }),
+                (_('Información Principal'), {
+                    'fields': (
+                        'enterprise', 'domain', 'name', 'logo', 'logo_preview',
+                        'main_event_name'
+                    )
+                }),
+                (_('Contador, Comunicado y Cierre de landing'), {
+                    'fields': (
+                        'use_counter', 'counter_datetime', 'counter_text',
+                        'close_landing', 'close_banner',
+                        'close_mobile_banner', 'warning_img'
+                    )
+                }),
+                (_('Banner Principal'), {
+                    'fields': (
+                        'image_banner', 'image_banner_preview',
+                        'banner_second_section_image',
+                        'banner_footer_section_image'
+                    )
+                }),
+                (_('Confirmación de usuarios'), {
+                    'fields': (
+                        'confirm_user', 'message_confirm_user'
+                    )
+                }),
+                (_('Cierre de registro'), {
+                    'fields': (
+                        'title_closed_in_person_register',
+                        'message_closed_in_person_register'
+                    )
+                }),
+                (_('Forma de Acceso'), {
+                    'fields': (
+                        'is_virtual',
+                        'in_person',
+                        'is_private',
+                        'access_type',
+                        'allow_virtual_access'
+                    )
+                }),
+                (_('Capacidad'), {
+                    'fields': (
+                        'capacity',
+                        'current_quantity'
+                    )
+                }),
+                (_('Documentos para Políticas'), {
+                    'fields': (
+                        'privacy_policy',
+                        'protection_data_policy',
+                        'cookies_policy',
+                        'terms_and_conditions'
+                    )
+                }),
+                (_('Formulario'), {
+                    'fields': (
+                        'names',
+                        'names_field_title',
+                        'last_name',
+                        'last_names_field_title',
+                        'job_company',
+                        'job_company_names_field_title',
+                        'job_company_select',
+                        'company_position',
+                        'company_position_names_field_title',
+                        'phone',
+                        'country',
+                        'country_names_field_title',
+                        'occupation',
+                        'occupation_select',
+                        'occupation_names_field_title',
+                        'email_names_field_title',
+                        'confirm_email_names_field_title'
+                    )
+                }),
+                (_('Codigos'), {
+                    'fields': (
+                        'code_header',
+                        'code_body',
+                    )
+                }),
+            ]
+        for fieldset in fielsets_version:
+            fieldsets.append(fieldset)
+        return fieldsets
 
     def logo_preview(self, obj):
         IMAGE_FILE_TYPES = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg']
@@ -425,11 +728,8 @@ class HomePageAdmin(admin.ModelAdmin):
                     "Sección Banner Principal", {
                         "fields": (
                             'main_title',
-                            'date_description',
-                            'time_description',
-                            'address_description',
+                            'banner_description',
                             'banner',
-                            'mobile_banner',
                             'image_banner'
                         ),
                         "description": f"Campos disponibles para la versión {version}."

@@ -137,6 +137,12 @@ class Company(BaseModel):
         null=True, blank=True
     )
 
+    banner_footer_section_image = models.ImageField(
+        _('Imagen de Sección Footer'),
+        upload_to=get_upload_path('image_banner'),
+        null=True, blank=True
+    )
+
     video_file = models.FileField(
         _('Video File Banner'), upload_to=get_upload_path('video_banner'),
         null=True, blank=True
@@ -523,6 +529,9 @@ class HomePage(TimeStampedModel):
     )
     time_description = models.CharField(
         _('Time description'), max_length=50, blank=True, null=True
+    )
+    banner_description = models.TextField(
+        _('Description'), blank=True, null=True
     )
 
     main_event_title = models.CharField(
