@@ -54,7 +54,11 @@
                         <div class="b2RightInfo">
                             <p class="hour">{{schedule.start_time}} a {{schedule.end_time}}</p>
                             {% for exhibitor in schedule.get_exhibitors %}
-                                <img src="{{exhibitor.flag_image.url}}" alt="">
+                                {% if exhibitor.flag_image %}
+                                    <img src="{{exhibitor.flag_image.url}}" alt="">
+                                {% else %}
+                                    <img src="/static/web_3/img/credicorp/bandera-per.png" alt="">
+                                {% endif %}
                                 <div class="b2Name">
                                     <p class="name">{{exhibitor.name}}</p>
                                     <p class="cargo">{{exhibitor.title}} | {{exhibitor.organization}}</p>
