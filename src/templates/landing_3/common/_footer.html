@@ -1,22 +1,53 @@
-<footer>
+<footer style="background: {{footer.background}};">
     <div class="grilla">
         <div class="fWrap  f aic jcc fdc-768">
             <div class="fMenu f aic jcc fItem">
-                <a href="#acerca" class="headerAnclaBlock">Acerca de</a>
-                <a href="#agenda" class="headerAnclaBlock">Agenda</a>
-                <a href="#expositor" class="headerAnclaBlock">Expositor</a>
-                <a href="#blog" class="headerAnclaBlock">Blog</a>
-                <a href="#empresa" class="headerAnclaBlock">Empresas</a>
+                {% if header_section.show_about_section %}
+                <a href="#acerca" class="headerAnclaBlock">
+                    {{header_section.about_section_header_name}}
+                </a>
+                {% endif %}
+                {% if header_section.show_schedule_section %}
+                <a href="#agenda" class="headerAnclaBlock">
+                    {{header_section.schecule_header_name}}
+                </a>
+                {% endif %}
+                {% if header_section.show_exhibitors_section %}
+                <a href="#expositor" class="headerAnclaBlock">
+                    {{header_section.exhibitors_header_name}}
+                </a>
+                {% endif %}
+                {% if header_section.show_blog_section %}
+                <a href="#blog" class="headerAnclaBlock">
+                    {{header_section.blog_header_name}}
+                </a>
+                {% endif %}
+                {% if header_section.show_sponsors_section %}
+                <a href="#empresa" class="headerAnclaBlock">
+                    {{header_section.sponsors_header_name}}
+                </a>
+                {% endif %}
             </div>
             <div class="fRedes fItem f aic jcc">
-                <a href="#" class="icon-linkedin"></a>
-                <a href="#" class="icon-google"></a>
-                <a href="#" class="icon-instagram"></a>
-                <a href="#" class="icon-face"></a>
+                {% if footer.linkedin %}
+                    <a href="{{footer.linkedin}}" target="_blank" class="icon-linkedin"></a>
+                {% endif %}
+                {% if footer.twitter %}
+                    <a href="{{footer.twitter}}" target="_blank" class="icon-twitter"></a>
+                {% endif %}
+                {% if footer.instagram %}
+                    <a href="{{footer.instagram}}" target="_blank" class="icon-instagram"></a>
+                {% endif %}
+                {% if footer.facebook %}
+                    <a href="{{footer.facebook}}" target="_blank" class="icon-face"></a>
+                {% endif %}
+                {% if footer.youtube %}
+                    <a href="{{footer.youtube}}" target="_blank" class="icon-youtube"></a>
+                {% endif %}
             </div>
-            <!-- <div class="fContact fItem">
+            {% comment %} <div class="fContact fItem">
                 <a>Powered by: RealVirtual</a>
-            </div> -->
+            </div> {% endcomment %}
         </div>
     </div>
 </footer>

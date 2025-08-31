@@ -210,16 +210,18 @@ class HomePageAdmin(admin.ModelAdmin):
                 return [ItemMainEventTabular, ]
             elif version == 2:
                 return [IndicatorsMainEventTabular, ItemModuleTabular]
+        else:
+            return []
 
     def get_fieldsets(self, request, obj=None):
         fielsets_version = []
         if obj is None:
-            return [(
+            return [
                 ("Seleccione la Compañía", {
                     "fields": ("company", ),
                     "description": "Debe seleccionar una compañía antes de continuar."
                 }),
-            )]
+            ]
         else:
             version_obj = obj.company.version
             version = 1

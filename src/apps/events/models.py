@@ -372,3 +372,66 @@ class CustomerEvent(BaseModel):
     def __str__(self):
         return '{} | {}'.format(
             self.company_user.email, self.event.name)
+
+
+class Workshop(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_workshops",
+        on_delete=models.CASCADE)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1)
+    title = models.CharField(
+        _('Título'), max_length=255, blank=True)
+    name = models.CharField(
+        _('Nombre'), max_length=255, blank=True)
+    description = models.TextField(
+        _('Descripcion'), blank=True)
+    start_datetime = models.DateTimeField(
+        _('Start Datetime'), blank=True, null=True)
+    end_datetime = models.DateTimeField(
+        _('End Datetime'), blank=True, null=True)
+    exhibitor = models.ForeignKey(
+        Exhibitor,
+        related_name='exhibitor_workshops',
+        on_delete=models.DO_NOTHING,
+        blank=True, null=True)
+    image = models.ImageField(
+        _('Imagen'), upload_to=get_upload_path('workshops'), blank=True,
+        null=True)
+    ics_file = models.FileField(
+        'ICS File', upload_to=get_upload_path("ics_files"), null=True,
+        blank=True
+    )
+
+    class Meta:
+        verbose_name = _('Taller')
+        verbose_name_plural = _('Talleres')
+        ordering = ['position', 'name']
+
+    def __str__(self):
+        return '{} | {} | {}'.format(
+            self.title, self.name, self.company.name)
+
+
+class ScheduleCustomerWorkshop(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_schedule_workshops",
+        on_delete=models.CASCADE)
+    company_user = models.ForeignKey(
+        UserCompany, related_name="company_user_workshops",
+        on_delete=models.CASCADE, null=True, blank=True)
+    workshop = models.ForeignKey(
+        Workshop, related_name="workshop_company_users",
+        on_delete=models.DO_NOTHING,
+        blank=True, null=True
+    )
+
+    class Meta:
+        verbose_name = _('Inscripción a taller')
+        verbose_name_plural = _('Inscripciones a talleres')
+        ordering = ['-modified']
+
+    def __str__(self):
+        return '{} | {}'.format(
+            self.company_user.email, self.workshop.name)
