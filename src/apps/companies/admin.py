@@ -148,7 +148,7 @@ class CompanyAdmin(admin.ModelAdmin):
                 (_('Información Principal'), {
                     'fields': (
                         'enterprise', 'domain', 'name', 'logo', 'logo_preview',
-                        'main_event_name'
+                        'main_event_name', 'contact_phone'
                     )
                 }),
                 (_('Contador, Comunicado y Cierre de landing'), {
@@ -242,7 +242,7 @@ class CompanyAdmin(admin.ModelAdmin):
                 (_('Información Principal'), {
                     'fields': (
                         'enterprise', 'domain', 'name', 'logo', 'logo_preview',
-                        'main_event_name'
+                        'main_event_name', 'contact_phone'
                     )
                 }),
                 (_('Contador, Comunicado y Cierre de landing'), {
@@ -328,7 +328,7 @@ class CompanyAdmin(admin.ModelAdmin):
                 (_('Información Principal'), {
                     'fields': (
                         'enterprise', 'domain', 'name', 'logo', 'logo_preview',
-                        'main_event_name'
+                        'main_event_name', 'contact_phone'
                     )
                 }),
                 (_('Contador, Comunicado y Cierre de landing'), {

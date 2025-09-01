@@ -261,6 +261,10 @@ class Company(BaseModel):
         _('Profesión'), default=True)
     occupation_select = models.BooleanField(
         _('Profesión Select'), default=False)
+    contact_phone = models.CharField(
+        _('Número de contacto'), max_length=100,
+        blank=True, null=True
+    )
 
     class Meta:
         verbose_name = _("Company")
