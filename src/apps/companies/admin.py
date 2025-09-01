@@ -168,7 +168,8 @@ class CompanyAdmin(admin.ModelAdmin):
                 }),
                 (_('Confirmación de usuarios'), {
                     'fields': (
-                        'confirm_user', 'message_confirm_user'
+                        'confirm_user', 'message_confirm_user',
+                        'enable_credentials', 'enable_preferences'
                     )
                 }),
                 (_('Filtros'), {
@@ -253,7 +254,8 @@ class CompanyAdmin(admin.ModelAdmin):
                 }),
                 (_('Confirmación de usuarios'), {
                     'fields': (
-                        'confirm_user', 'message_confirm_user'
+                        'confirm_user', 'message_confirm_user',
+                        'enable_credentials', 'enable_preferences'
                     )
                 }),
                 (_('Filtros'), {
@@ -338,7 +340,8 @@ class CompanyAdmin(admin.ModelAdmin):
                 }),
                 (_('Confirmación de usuarios'), {
                     'fields': (
-                        'confirm_user', 'message_confirm_user'
+                        'confirm_user', 'message_confirm_user',
+                        'enable_credentials', 'enable_preferences'
                     )
                 }),
                 (_('Cierre de registro'), {
