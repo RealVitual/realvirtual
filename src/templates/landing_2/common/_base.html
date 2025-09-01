@@ -158,9 +158,9 @@
                                     'nombres': register_data['names'],
                                     'apellidos': register_data['last_name']
                                  });
-                                console.log(window.dataLayer, 'DATALAYER')
                                 $('.save-register').disabled = false;
-                                console.log(data, 'DATA')
+                                console.log(data, 'DATA!!!!!!!!!!!!!')
+                                $('.save-register').removeClass('isLoading');
                                 if(data.confirmed){
                                     $('.parrafo-register').show();
                                     $('.warning-form').hide();
@@ -173,6 +173,8 @@
                                     var register_form = $('.register-form')
                                     register_form.hide();
                                     $('.message-waiting-confirmation').html(data.confirmed_message)
+                                    $('.formRegistro').removeClass('active')
+                                    $('.formRegistroExitoso').addClass('active')
                                     $('.waiting-confirmation-form').show();
                                     setTimeout(()=>{
                                         window.location.href = data.redirect_url

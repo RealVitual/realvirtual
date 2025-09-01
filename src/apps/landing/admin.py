@@ -5,7 +5,8 @@ from .models import (Video, Sponsor, CredentialCustomer,
                      SurveryChoiceQuestion, SurveryQuestion,
                      UserSurveyAnswer, NetworkingOption,
                      UserNetworkingPreference, FreeImage, CerficateSettings,
-                     BlogPost, BlogPostItem, BlogPostItemContent, FrequentlyQuestion)
+                     BlogPost, BlogPostItem, BlogPostItemContent, FrequentlyQuestion,
+                     CustomerInvitedLanding)
 from django.utils.html import format_html
 import os
 
@@ -154,3 +155,4 @@ class FrequentlyQuestionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(CerficateSettings)
+admin.site.register(CustomerInvitedLanding)

@@ -212,7 +212,7 @@ def validate_register(request):
                     url = 'event'
                     if request.company.enable_credentials:
                         url = "generate_credential"
-                    if user_company.in_person:
+                    elif user_company.in_person and user_company.confirmed:
                         company = request.company
                         company.current_quantity += 1
                         company.save()
@@ -224,6 +224,8 @@ def validate_register(request):
                                 user, domain=request.build_absolute_uri('/')[:-1], # noqa
                                 company=request.company)
                             url = "ticket_view"
+                    else:
+                        url = "home"
                     response_data['success'] = 1
                     response_data['confirmed'] = user_company.confirmed
                     response_data['confirmed_message'] = request.company.message_confirm_user # noqa
@@ -263,7 +265,7 @@ def confirm_register(request):
                 url = 'event'
                 if request.company.enable_credentials:
                     url = "generate_credential"
-                if user_company.in_person:
+                elif user_company.in_person and user_company.confirmed:
                     company = request.company
                     company.current_quantity += 1
                     company.save()
@@ -275,6 +277,8 @@ def confirm_register(request):
                             user, domain=request.build_absolute_uri('/')[:-1], # noqa
                             company=request.company)
                         url = "ticket_view"
+                else:
+                    url = "home"
                 response_data['success'] = 1
                 response_data['confirmed'] = user_company.confirmed
                 response_data['redirect_url'] = reverse('landing:%s' % url)

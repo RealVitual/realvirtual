@@ -275,7 +275,8 @@ class CompanyAdmin(admin.ModelAdmin):
                         'in_person',
                         'is_private',
                         'access_type',
-                        'allow_virtual_access'
+                        'allow_virtual_access',
+                        'is_private_with_confirmation'
                     )
                 }),
                 (_('Capacidad'), {

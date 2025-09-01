@@ -73,12 +73,15 @@ class RegisterForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        print('INIT!!!')
         self.domain = kwargs["initial"].get("domain")
         self.company = kwargs["initial"].get("company")
         self.access_type = kwargs["initial"].get("access_type", None)
         self.is_confirmartion = kwargs["initial"].get('is_confirmation', False)
         self.in_person = None
         self.virtual = None
+        self.is_custom_confirmation = False
+        self.custom_confirmation = False
         super(RegisterForm, self).__init__(*args, **kwargs)
         fields = self.company.get_form_fields_list()
         for field in fields:
@@ -88,6 +91,10 @@ class RegisterForm(forms.ModelForm):
         data = self.cleaned_data
         email = data.get('email')
         allow_register, message, can_confirm = self.allow_register(data)
+        # if self.company.is_private_with_confirmation:
+        #     is_custom_confirmation, custom_confirmarion = self.allow_custom_confirmation(data)
+        data['is_custom_confirmation'] = self.is_custom_confirmation
+        data['custom_confirmation'] = self.custom_confirmation
         if not allow_register and not self.is_confirmartion:
             raise forms.ValidationError(dict(message=message,
                                              can_confirm=can_confirm))
@@ -105,6 +112,8 @@ class RegisterForm(forms.ModelForm):
 
     def save(self):
         data = self.cleaned_data
+        is_custom_confirmation = data.pop('is_custom_confirmation')
+        custom_confirmation = data.pop('custom_confirmation')
         data.pop('confirm_email', None)
         data.pop('confirm_password', None)
         data.pop('can_confirm', None)
@@ -125,6 +134,11 @@ class RegisterForm(forms.ModelForm):
         confirmed = True
         if self.company.confirm_user:
             confirmed = False
+        print(is_custom_confirmation)
+        print(custom_confirmation)
+        if is_custom_confirmation:
+            confirmed = custom_confirmation
+        print(confirmed, 'CONFIRMED!!')
         data['confirmed'] = confirmed
         data['user'] = User.objects.get(email=customer.email)
         data['company'] = self.company
@@ -163,10 +177,34 @@ class RegisterForm(forms.ModelForm):
                             password=password)
         return dict(user=user, message="", user_company=user_company)
 
+    def allow_custom_confirmation(self, data):
+        self.is_custom_confirmation = True
+        found_invited_customer = CustomerInvitedLanding.objects.filter(
+            company=self.company, email=data.get('email'))
+        if found_invited_customer:
+            return True, True
+        else:
+            return True, False
+
     def allow_register(self, data):
         message = ""
         access_type = self.company.access_type
-        if self.company.is_private:
+        if self.company.is_private_with_confirmation:
+            print('IS PRIVATE WITH CONFIRMATION')
+            self.is_custom_confirmation = True
+            found_invited_customer = CustomerInvitedLanding.objects.filter(
+                company=self.company, email=data.get('email'))
+            if found_invited_customer:
+                self.in_person = found_invited_customer.in_person
+                self.virtual = found_invited_customer.virtual
+                self.custom_confirmation = True
+                return True, message, True
+            else:
+                message = "Te encuentras en la lista de espera para poder asistir al evento"  # noqa
+                self.in_person = True
+                self.virtual = False
+                return True, message, True
+        elif self.company.is_private:
             found_invited_customer = CustomerInvitedLanding.objects.filter(
                 company=self.company, email=data.get('email'))
             if found_invited_customer:

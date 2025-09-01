@@ -192,7 +192,9 @@ class Company(BaseModel):
 
     is_virtual = models.BooleanField(_('Is virtual'), default=True)
     in_person = models.BooleanField(_('In Person'), default=False)
-    is_private = models.BooleanField(_('Is Private'), default=False)
+    is_private = models.BooleanField(_('Es privado'), default=False)
+    is_private_with_confirmation = models.BooleanField(
+        _('Es privado con confirmación'), default=False)
     access_type = models.CharField(
         _('access type'),
         choices=AccessType.choices(),
