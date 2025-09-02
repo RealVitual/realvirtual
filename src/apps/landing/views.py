@@ -210,9 +210,7 @@ def validate_register(request):
                 if user:
                     login(request, user)
                     url = 'event'
-                    if request.company.enable_credentials:
-                        url = "generate_credential"
-                    elif user_company.in_person and user_company.confirmed:
+                    if user_company.in_person and user_company.confirmed:
                         company = request.company
                         company.current_quantity += 1
                         company.save()
@@ -224,6 +222,8 @@ def validate_register(request):
                                 user, domain=request.build_absolute_uri('/')[:-1], # noqa
                                 company=request.company)
                             url = "ticket_view"
+                    elif request.company.enable_credentials:
+                        url = "generate_credential"
                     else:
                         url = "home"
                     response_data['success'] = 1
@@ -263,9 +263,7 @@ def confirm_register(request):
             if user:
                 login(request, user)
                 url = 'event'
-                if request.company.enable_credentials:
-                    url = "generate_credential"
-                elif user_company.in_person and user_company.confirmed:
+                if user_company.in_person and user_company.confirmed:
                     company = request.company
                     company.current_quantity += 1
                     company.save()
@@ -277,6 +275,8 @@ def confirm_register(request):
                             user, domain=request.build_absolute_uri('/')[:-1], # noqa
                             company=request.company)
                         url = "ticket_view"
+                elif request.company.enable_credentials:
+                    url = "generate_credential"
                 else:
                     url = "home"
                 response_data['success'] = 1
