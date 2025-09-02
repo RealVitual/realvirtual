@@ -29,7 +29,9 @@
         </div>
         {% include "landing_3/common/_footer.html" %}
     </div>
-    <a href="#" class="icon-whatsapp wspFixed"></a>
+    {% if company.contact_phone %}
+        <a target="_blank" href="https://wa.me/{{company.contact_phone}}" class="icon-whatsapp wspFixed"></a>
+    {% endif %}
     <!-- <a href="#" class="openSidebarMobile icon-menu"></a> -->
     <!-- <div class="sidebarContentMobile"></div> -->
     <!-- <script src="/static/web_3/js/jquery-3.2.1.min.js" type="text/javascript"></script> -->
@@ -66,6 +68,7 @@
     <!-- JSADD END -->
     <script>
         'use strict';
+        var register_data = "";
         document.addEventListener('DOMContentLoaded', function() {
             const buttonCookie = document.getElementById('buttonCookie');
             const elCoockie = document.getElementById('elCoockie');
@@ -79,7 +82,6 @@
                 localStorage.setItem('ocultarElemento', 'true');
             });
         });
-        
         $(function(){
             //Configuraciòn general de plugin formulario
             $("form").validationEngine('attach', {
@@ -125,7 +127,6 @@
                 if (!valid) {
 
                     } else {
-                   
                 }
             });
             //Evento form actualizar contraseña
@@ -137,7 +138,6 @@
                 if (!valid) {
 
                     } else {
-                   
                 }
             });
         })
@@ -162,7 +162,7 @@
             inputBox.addEventListener('focusout',function() {
                 if(this.value === ""){
                     this.parentNode.classList.remove('active')
-                }  	
+                }
             })
         }
 
@@ -186,6 +186,7 @@
             OVERLAY.classList.remove("active");
         });
     });
+    window.dataLayer = window.dataLayer || [];
     $('.g8SumitLogin').click(function(e){
         e.preventDefault();
         var item = $(this);

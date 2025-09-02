@@ -20,7 +20,9 @@
             <div class="b1Top f aife jcsb fdc-768">
                 <div class="b1InfoTopLeft f aife jcfs fdc-480">
                     <img src="{{home_page.image_banner.url}}" alt="" width="650" class="imgLogo">
+                    {% if not logged_user %}
                     <a href="#" class="button" id="b1ButtonRegister">Registrate</a>
+                    {% endif %}
                 </div>
                 <div class="b1InfoTopRight">
                     <img src="{{home_page.banner_second_section_image.url}}" alt="">
@@ -59,7 +61,17 @@
                                 {% else %}
                                     <img src="/static/web_3/img/credicorp/bandera-per.png" alt="">
                                 {% endif %}
-                                <div class="b2Name">
+                                <div class="b2Name b3ItemClickPopup"
+                                data-image="{{exhibitor.image.url}}"
+                                data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png"
+                                {% if exhibitor.flag_image %}
+                                    data-pais="{{exhibitor.flag_image.url}}"
+                                {% else %}
+                                    data-pais="/static/web_3/img/credicorp/bandera-per.png"
+                                {% endif %}
+                                data-name="{{exhibitor.name}}"
+                                data-cargo="{{exhibitor.title}} - {{exhibitor.organization}}"
+                                data-text="<p>{{exhibitor.description}}</p>">
                                     <p class="name">{{exhibitor.name}}</p>
                                     <p class="cargo">{{exhibitor.title}} | {{exhibitor.organization}}</p>
                                 </div>
@@ -83,7 +95,7 @@
             </div>
         </div>
         <div class="gSwiperContent">
-            <div class="b3Swiper swiper-container scrollItem swiper" data-initial="3">
+            <div class="b3Swiper swiper-container scrollItem swiper" data-initial="{{exhibitors_quantity_swiper}}">
                 <div class="b3Wrap swiper-wrapper">
                     {% for ex in exhibitors %}
                     <div class="b3Item b3ItemClickPopup swiper-slide"
@@ -160,7 +172,7 @@
             <p class="b3PopupDate">16 de enero</p>
             <p class="b3PopupHour">10:00</p>
         </div>
-        <a href="#" class="b3PopupButton"></a>
+        <a href="#" class="b3PopupButton schedule_workshop"></a>
     </div>
 </div>
 
@@ -185,11 +197,19 @@
                 data-text="<p>{{row.description}}</p>"
                 data-taller="{{row.title}}"
                 data-taller-name="{{row.name}}"
-                data-url-inscribete="url"
-                data-inscrito="false"
-                data-aforo="true"
-                data-hour="20:30"
-                data-date="16 de febrero">
+                data-url-inscribete="{{row.id}}"
+                {% if row.scheduled %}
+                    data-inscrito="true"
+                {% else %}
+                    data-inscrito="false"
+                {% endif %}
+                {% if row.get_allow_enroll %}
+                    data-aforo="true"
+                {% else %}
+                    data-aforo="false"
+                {% endif %}
+                data-hour='{{ row.start_datetime|date:"H:i" }}'
+                data-date='{{ row.start_datetime|date:"j" }} de {{ row.start_datetime|date:"F" }}'>
                     <div class="b4ItemInfo">
                         <div class="b4ItemInfoContent">
                             <p>{{row.title}}</p>
@@ -230,6 +250,33 @@
 
 {% block jsfinal %}
 <script src="/static/web_3/js/swiper/swiper-bundle.min.js"></script>
+{% if not logged_user %}
+<script src="https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}"></script>
+<script>
+    function getReCaptcha(){
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{recaptcha_site_key}}', {action: "/"}).then(function(token) {
+                let captcha_register = document.getElementById('g-recaptcha-response')
+                if(captcha_register){
+                    document.getElementById('g-recaptcha-response').value = token;
+                }
+                document.getElementById('g-recaptcha-response_login').value = token;
+            });
+        });
+    }
+    getReCaptcha();
+    setInterval(function(){getReCaptcha();}, 110000);
+</script>
+{% endif %}
+<script>
+    function onClick(e) {
+      e.preventDefault();
+      grecaptcha.ready(function() {
+        grecaptcha.execute('{{recaptcha_site_key}}', {action: 'submit'}).then(function(token) {
+        });
+      });
+    }
+</script>
 <script type="text/javascript">
     {% if header_section.show_exhibitors_section or header_section.show_workshops_section %}
 
@@ -414,11 +461,14 @@
             if(urlIncribete){
                 popupButton.style.display = "flex";
                 popupButton.href = urlIncribete || "";
+                popupButton.setAttribute('data-id', urlIncribete);
                 if(booleanInscrito === "true"){
                     console.log('true')
                     popupButton.classList.add('inscrito')
                     popupButton.textContent = 'Inscrito' || "";
-                }else{
+                    popupButton.setAttribute('data-status', 0);
+            }else{
+                    popupButton.setAttribute('data-status', 1);
                     console.log('false')
                     popupButton.classList.remove('inscrito')
                     popupButton.textContent = 'Inscríbete' || "";
@@ -445,10 +495,40 @@
 });
 {% endif %}
 
-
+$('.schedule_workshop').click(function(e){
+    e.preventDefault();
+    var item = $(this);
+    var data_id = item.attr('data-id')
+    var status = item.attr('data-status')
+    $.ajax({
+        url : "{% url 'events:generate_schedule_workshop' %}",
+        type : "post",
+        data: {
+            workshop_id: data_id,
+            status: status,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+    }).done(function(data) {
+        if (data.success) {
+            console.log(status, 'status')
+            if(status == 1){
+                const popup = document.querySelector(".b3Popup");
+                const popupButton = popup.querySelector(".b3PopupButton");
+                popupButton.textContent = 'Inscrito';
+                item.addClass('inscrito');
+                item.attr('data-status', 0);
+            }else{
+                const popup = document.querySelector(".b3Popup");
+                const popupButton = popup.querySelector(".b3PopupButton");
+                popupButton.textContent = 'Inscríbete';
+                item.removeClass('inscrito');
+                item.attr('data-status', 1);
+            }
+        }
+    });
+});
 
 eventClickAccordion("b5ItemClick")
-    
 
 </script>
 {% endblock %}

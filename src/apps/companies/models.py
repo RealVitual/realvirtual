@@ -235,6 +235,12 @@ class Company(BaseModel):
         _('Título Confirmar Email en Formulario'), max_length=100,
         default="Confirmar Email"
     )
+    email_names_field_title = models.CharField(
+        _('Título Email en Formulario'), max_length=100, default="Email"
+    )
+    speciality_names_field_title = models.CharField(
+        _('Título Especialidad en Formulario'), max_length=100, default="Email"
+    )
 
     # codigos seguimiento
     code_header = models.TextField(
@@ -263,6 +269,8 @@ class Company(BaseModel):
         _('Profesión'), default=True)
     occupation_select = models.BooleanField(
         _('Profesión Select'), default=False)
+    speciality = models.BooleanField(
+        _('Speciality'), default=False)
     contact_phone = models.CharField(
         _('Número de contacto'), max_length=100,
         blank=True, null=True
@@ -297,6 +305,8 @@ class Company(BaseModel):
             fields_list.append('occupation')
         if self.occupation_select:
             fields_list.append('occupation_select')
+        if self.speciality:
+            fields_list.append('speciality')
         return fields_list
 
     def set_counter_time(self):

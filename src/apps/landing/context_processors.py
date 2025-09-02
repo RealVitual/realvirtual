@@ -6,8 +6,8 @@ from src.apps.companies.models import Footer, Header
 from django.urls import reverse
 from datetime import datetime
 import pytz
-from django.conf import settings
 from src.apps.companies.models import UserCompany, JobCompany, Occupation
+from src.apps.conf.models import Speciality
 
 
 def main_info(request, **kwargs):
@@ -52,7 +52,8 @@ def main_info(request, **kwargs):
             'company': company,
             'countries': Country.objects.all(),
             'job_companies': JobCompany.objects.filter(company=company),
-            'occupations': Occupation.objects.filter(company=company)
+            'occupations': Occupation.objects.filter(company=company),
+            'specialities': Speciality.objects.filter(is_active=True).order_by('position')
         }
         if user.is_authenticated:
             ticket_url = ""

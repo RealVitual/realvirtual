@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from src.apps.users.models import User
-from src.apps.events.models import Schedule, ScheduleCustomerEvent
-from src.apps.companies.models import EmailTemplate, EmailSettings
+from src.apps.events.models import (
+    Schedule, ScheduleCustomerEvent,
+    Workshop, ScheduleCustomerWorkshop)
+from src.apps.companies.models import EmailTemplate, EmailSettings, UserCompany
 from django.template import Context, Template
 from django.core.mail import EmailMessage
 import threading
@@ -133,3 +135,37 @@ class GenerateCustomerScheduleSerializer(serializers.Serializer):
             ).delete()
 
         return dict(success=True)
+
+
+class GenerateCustomerWorkshopSerializer(serializers.Serializer):
+    workshop_id = serializers.CharField()
+    status = serializers.IntegerField()
+
+    def create(self, validated_data):
+        user = self.context.get("user")
+        company = self.context.get("company")
+        status = self.validated_data.get("status")
+        workshop_id = self.validated_data.get("workshop_id")
+        workshop = Workshop.objects.get(id=int(workshop_id))
+        company_user = UserCompany.objects.get(
+            company=company, user=user
+        )
+        if status:
+            queryset = ScheduleCustomerWorkshop.objects.filter(
+                workshop=workshop, company_user=company_user,
+                company=company
+            )
+            if not queryset:
+                ScheduleCustomerWorkshop.objects.create(
+                    workshop=workshop, company_user=company_user,
+                    company=company
+                )
+
+        else:
+            ScheduleCustomerWorkshop.objects.filter(
+                workshop=workshop, company_user=company_user,
+                company=company
+            ).delete()
+
+        return dict(success=True)
+

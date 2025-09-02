@@ -225,6 +225,13 @@ class Exhibitor(BaseModel):
         default="Ver perfil en Linkedin")
     organization = models.CharField(
         _('Organización'), max_length=255, blank=True)
+    is_principal = models.BooleanField(
+        _('Es principal'), default=False
+    )
+    text_is_principal = models.CharField(
+        _('Texto Principal'), max_length=255, blank=True,
+        null=True
+    )
 
     class Meta:
         verbose_name = _('Expositor')
@@ -403,6 +410,12 @@ class Workshop(BaseModel):
         'ICS File', upload_to=get_upload_path("ics_files"), null=True,
         blank=True
     )
+    capacity = models.PositiveIntegerField(
+        _('Capacidad'), default=100
+    )
+    enrolled = models.PositiveIntegerField(
+        _('Inscritos'), default=0
+    )
 
     class Meta:
         verbose_name = _('Taller')
@@ -412,6 +425,9 @@ class Workshop(BaseModel):
     def __str__(self):
         return '{} | {} | {}'.format(
             self.title, self.name, self.company.name)
+
+    def get_allow_enroll(self):
+        return self.capacity > self.enrolled
 
 
 class ScheduleCustomerWorkshop(BaseModel):

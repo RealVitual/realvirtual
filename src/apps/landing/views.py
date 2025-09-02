@@ -148,6 +148,12 @@ class HomeView(CreateView):
             workshops = Workshop.objects.filter(
                 company=company, is_active=True
             ).order_by("position")
+            for w in workshops:
+                w.scheduled = w.workshop_company_users.filter(
+                    company=w.company, is_active=True
+                )
+            exhibitors = Exhibitor.objects.filter(
+                    company=company, is_active=True)
             context = {
                 'company': company,
                 'header': True,
@@ -159,8 +165,8 @@ class HomeView(CreateView):
                 'sponsors': sponsors,
                 'dates_select': dates_select,
                 'filtered_date': filtered_date if filtered_date else None,
-                'exhibitors': Exhibitor.objects.filter(
-                    company=company, is_active=True),
+                'exhibitors': exhibitors,
+                'exhibitors_quantity_swiper': len(exhibitors) - 1 if len(exhibitors) > 1 else 1,
                 'filters': filters,
                 'filtered_categories': filtered_categories,
                 'filtered_filters': filtered_filters,

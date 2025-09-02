@@ -76,12 +76,12 @@
             <input type="hidden" id="g-recaptcha-response_login" name="g-recaptcha-response">
             <div class="g8GroupInput one">
                 <div class="g8Input">
-                    <span>Nombre</span>
-                    <input type="text"  maxlength="30" class="g8Box  validate[required]" name="{{form_login.email.html_name}}">
+                    <span>Email</span>
+                    <input type="text" id="login_email"  maxlength="30" class="g8Box  validate[required]" name="{{form_login.email.html_name}}">
                 </div>
                 <div class="g8Input password">
                     <span>Password</span>
-                    <input type="password" maxlength="30" class="g8Box validate[required]" name="{{form_login.password.html_name}}">
+                    <input type="password" id="login_passwowrd" maxlength="30" class="g8Box validate[required]" name="{{form_login.password.html_name}}">
                     <a href="#" class="show-hide-pass"></a>
                 </div>
             </div>
@@ -110,7 +110,7 @@
                 <div class="g8GroupInput one">
                     <div class="g8Input">
                         <span>Ingrese correo electrónico *</span>
-                        <input type="text" id="email" class="g8Box validate[required,custom[email]]">
+                        <input type="text" id="c_email" class="g8Box validate[required,custom[email]]">
                     </div>
                 </div>
                 <button class="g8SubmitCorreoVerificacion isLoading">Enviar</button>
@@ -132,11 +132,11 @@
                 <div class="g8GroupInput one">
                     <div class="g8Input">
                         <span>Contraseña nueva *</span>
-                        <input type="password" id="email" class="g8Box validate[required,custom[email]]">
+                        <input type="password" id="p_email" class="g8Box validate[required,custom[email]]">
                     </div>
                     <div class="g8Input">
                         <span>Confirmar contraseña nueva *</span>
-                        <input type="password" id="emailconfirm"  class="g8Box validate[required,custom[email],equals[email]]">
+                        <input type="password" id="emailconfirm"  class="g8Box validate[required,custom[email],equals[p_email]]">
                     </div>
                 </div>
                 <button class="g8SubmitActualizarPassword">Actualizar</button>
@@ -179,11 +179,11 @@
             <div class="g8GroupInput two">
                 <div class="g8Input">
                     <span>{{company.names_field_title}} *</span>
-                    <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]">
+                    <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]" name="{{form_register.names.html_name}}">
                 </div>
                 <div class="g8Input">
                     <span>{{company.last_names_field_title}} *</span>
-                    <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]" >
+                    <input type="text" data-type="text" maxlength="30" class="g8Box validKeypress validate[required]" name="{{form_register.last_name.html_name}}">
                 </div>
             </div>
             <div class="g8GroupInput two">
@@ -246,6 +246,17 @@
                     <span>Teléfono *</span>
                     <input type="text" data-type="number" maxlength="30" class="g8Box validKeypress validate[required]" name="{{form_register.phone.html_name}}">
                 </div>
+                {% if company.speciality%}
+                <div class="g8Input select">
+                    <span>{{company.speciality_names_field_title}} *</span>
+                    <select name="{{form_register.speciality.html_name}}" id="" class="g8Box validate[required]">
+                        <option value=""></option>
+                        {% for speciality in specialities %}
+                            <option value="{{speciality.id}}">{{speciality.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
             </div>
             {% endif %}
             <div class="g8GroupInput two">

@@ -130,7 +130,7 @@ class WorkshopAdmin(admin.ModelAdmin):
                     "fields": (
                         'is_active', 'company', 'position', 'title', 'name',
                         'description', 'start_datetime', 'end_datetime',
-                        'image', 'ics_file'
+                        'image', 'ics_file', 'capacity', 'enrolled'
                     ),
                 }),
             ]
@@ -145,7 +145,8 @@ class WorkshopAdmin(admin.ModelAdmin):
                     'fields': (
                         'is_active', 'company', 'position', 'title', 'name',
                         'start_datetime', 'end_datetime',
-                        'description', 'image', 'exhibitor', 'ics_file'
+                        'description', 'image', 'exhibitor', 'ics_file',
+                        'capacity', 'enrolled'
                     )
                 }),
             ]

@@ -392,7 +392,9 @@ class CompanyAdmin(admin.ModelAdmin):
                         'occupation_select',
                         'occupation_names_field_title',
                         'email_names_field_title',
-                        'confirm_email_names_field_title'
+                        'confirm_email_names_field_title',
+                        'speciality',
+                        'speciality_names_field_title',
                     )
                 }),
                 (_('Codigos'), {
