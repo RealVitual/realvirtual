@@ -314,13 +314,15 @@
                         data-url="{{ex.link}}"
                         data-bandera="{{ex.flag_image.url}}"
                         data-img="{{ex.image.url}}">
-                        <span class="tag">{{ex.organization}}</span>
+                        {% if ex.is_principal %}
+                            <span class="tag">{{ex.text_is_principal}}</span>
+                        {% endif %}
                         <figure>
                             <img src="{{ex.image.url}}" alt="" width="280">
                         </figure>
                         <div class="b5Text">
                             <h4>{{ex.name}}</h4>
-                            <h5>{{ex.title}}</h5>
+                            <h5>{{ex.organization}}</h5>
                         </div>
                     </a>
                 {% endfor %}
