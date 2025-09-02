@@ -95,7 +95,7 @@
             </div>
         </div>
         <div class="gSwiperContent">
-            <div class="b3Swiper swiper-container scrollItem swiper" data-initial="{{exhibitors_quantity_swiper}}">
+            <div class="b3Swiper swiper-container scrollItem swiper" data-initial="5">
                 <div class="b3Wrap swiper-wrapper">
                     {% for ex in exhibitors %}
                     <div class="b3Item b3ItemClickPopup swiper-slide"
@@ -229,7 +229,7 @@
 {% if header_section.show_frequently_questions_section %}
 <section class="b5 mY scrollWrap" id="preguntas">
     <div class="grilla scrollItem">
-        <h4>Preguntas Frecuentes</h4>
+        <h4>{{home_page.frequently_questions_section_name}}</h4>
         <div class="b5List">
             {% for row in frequently_questions %}
                 <div class="b5Item">
