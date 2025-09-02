@@ -321,7 +321,7 @@ class Schedule(BaseModel):
         _categories = self.categories.all().values_list('id')
         principal_filters = Category.objects.filter(
             id__in=_categories, filter__principal_use=True).values_list(
-                'filter__name', flat=True)
+                'name', flat=True)
         if principal_filters:
             return principal_filters[0]
         return ""
@@ -330,7 +330,7 @@ class Schedule(BaseModel):
         _categories = self.categories.all().values_list('id')
         secondary_filters = Category.objects.filter(
             id__in=_categories, filter__secondary_use=True).values_list(
-                'filter__name', flat=True)
+                'name', flat=True)
         if secondary_filters:
             return secondary_filters[0]
         return ""
