@@ -79,6 +79,12 @@ class Filter(BaseModel):
         _('Filter name'),
         max_length=450,
         blank=True, editable=True)
+    principal_use = models.BooleanField(
+        'Uso principal', default=False
+    )
+    secondary_use = models.BooleanField(
+        'Uso secundario', default=False
+    )
 
     def __str__(self):
         return self.name
@@ -310,6 +316,24 @@ class Schedule(BaseModel):
         month = months.get(date.strftime("%B"))
         # day = days.get(date.strftime("%A"))
         return date.strftime("%d de {}".format(month.lower()))
+
+    def get_principal_category(self):
+        _categories = self.categories.all().values_list('id')
+        principal_filters = Category.objects.filter(
+            id__in=_categories, filter__principal_use=True).values_list(
+                'filter__name', flat=True)
+        if principal_filters:
+            return principal_filters[0]
+        return ""
+
+    def get_secondary_category(self):
+        _categories = self.categories.all().values_list('id')
+        secondary_filters = Category.objects.filter(
+            id__in=_categories, filter__secondary_use=True).values_list(
+                'filter__name', flat=True)
+        if secondary_filters:
+            return secondary_filters[0]
+        return ""
 
     def get_current_status(self):
         start_date = self.event.start_datetime.astimezone(

@@ -248,13 +248,13 @@
                     </div>
                     <div class="b4ItemListRight column2 column1-480">
                         <p class="hour"> {{schedule.start_time}} - {{schedule.end_time}}</p>
-                        <p class="theme"> {{schedule.event.name}} </p>
+                        <p class="theme"> {{schedule.get_principal_category}} </p>
                     </div>
                 </div>
                 <div class="b4ItemInfo">
                     <div class="b4ContntInfo f aic jcsb fdc-768">
                         <div class="b4ItemInfoLeft">
-                            <p class="message">Business Agility</p>
+                            <p class="message">{{schedule.get_secondary_category}}</p>
                             {% comment %}
                                 <p class="nameEvent">Bienvenida al Evento Bienvenida al Evento Bienvenida al Evento Bienvenida al Evento Bienvenida al Evento</p>
                             {% endcomment %}
