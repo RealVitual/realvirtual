@@ -81,8 +81,9 @@
                     </ul>
                 </div>
             </div>
-            <!-- OPCIÒN CUANDO ESTAS EN LA PAGINA DE CHAT EN VIVO -->
-            <!-- <a href="#" class="returnChat">Regresar</a> -->
+            {% if not header %}
+            <a href="{% url 'landing:home' %}" class="returnChat">Regresar</a>
+            {% endif %}
         </div>
     </div>
 </header>

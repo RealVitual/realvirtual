@@ -54,7 +54,7 @@
             {% endif %}
             <h4>{{home_page.main_title}}</h4>
             {% if not logged_user %}
-            <a href="#" class="button" id="b1ButtonRegister">Registrate</a>
+            <a href="#" class="gButton" id="b1ButtonRegister">Registrate</a>
             {% endif %}
             <div class="b1List">
                 <div class="b1Item">
@@ -242,7 +242,7 @@
                     <div class="b4ItemListLeft f aic jcfs fdc-480">
                         <div class="live g">
                             <p class="date f aic jcfs">{{schedule.get_date}}</p>
-                                {% if schedule.get_current_status == "is_live" or schedule.get_current_status == "past" %}
+                                {% comment %} {% if schedule.get_current_status == "is_live" or schedule.get_current_status == "past" %}
                                     {% if schedule.video_url %}
                                         <a href="{{schedule.video_url}}" class="reproducir">
                                             Reproducir
@@ -262,7 +262,7 @@
                                         {% endif %}
 
                                     {% endif %}
-                                {% endif %}
+                                {% endif %} {% endcomment %}
                         </div>
                         <p class="name">{{schedule.name}}</p>
                     </div>
