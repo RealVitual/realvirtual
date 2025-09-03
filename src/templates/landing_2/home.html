@@ -393,28 +393,34 @@
             <div class="b6Left">
                 <div class="b6Item zoomImageHover">
                     <img src="{{blog_posts.0.front_image.url}}" alt="">
+                <a href="{% url 'landing:blog_detail' blog_posts.0.slug %}">
                     <div class="b6Info">
                         <p class="date">{{blog_posts.0.publish_date}}</p>
                         <p class="name">{{blog_posts.0.name}}</p>
                     </div>
-                </div>
+                </a>
+            </div>
             </div>
             {% if blog_posts_number > 1 %}
             <div class="b6Right g">
                 <div class="b6Item zoomImageHover">
                     <img src="{{blog_posts.1.front_image.url}}" alt="">
+                    <a href="{% url 'landing:blog_detail' blog_posts.1.slug %}">
                     <div class="b6Info">
                         <p class="date">{{blog_posts.1.publish_date}}</p>
                         <p class="name">{{blog_posts.1.name}}</p>
                     </div>
+                    </a>
                 </div>
                 {% if blog_posts_number > 2 %}
                 <div class="b6Item zoomImageHover">
                     <img src="{{blog_posts.2.front_image.url}}" alt="">
+                    <a href="{% url 'landing:blog_detail' blog_posts.2.slug %}">
                     <div class="b6Info">
                         <p class="date">{{blog_posts.2.publish_date}}</p>
                         <p class="name">{{blog_posts.2.name}}</p>
                     </div>
+                    </a>
                 </div>
                 {% endif %}
             </div>
