@@ -88,48 +88,52 @@ class GenerateCustomerScheduleSerializer(serializers.Serializer):
         status = self.validated_data.get("status")
         schedule_id = self.validated_data.get("schedule_id")
         schedule = Schedule.objects.get(id=int(schedule_id))
+        company_user = UserCompany.objects.get(
+            company=company, user=user
+        )
         if status:
             queryset = ScheduleCustomerEvent.objects.filter(
-                schedule_id=schedule_id, user=user,
+                schedule_id=schedule_id, company_user=company_user,
                 event_id=schedule.event.id,
                 company=company
             )
             if not queryset:
                 ScheduleCustomerEvent.objects.create(
-                    schedule_id=schedule_id, user=user,
+                    schedule_id=schedule_id, company_user=company_user,
                     event_id=schedule.event.id,
                     company=company
                 )
 
         # Send email
-            mailing = EmailTemplate.objects.get(company=company,
+            mailings = EmailTemplate.objects.filter(company=company,
                                                 email_type="SCHEDULE")
-            if mailing.from_email:
+            if mailings:
+                mailing = mailings[0]
                 schedule = Schedule.objects.get(id=schedule_id)
-                context = dict()
-                context["names"] = user.names
-                context["first_name"] = user.names.split(" ")[0]
-                context["email"] = user.email
-                context["schedule"] = schedule
-                a_file = schedule.ics_file.read(), "event.ics", "text/calendar"
+                # context = dict()
+                # context["names"] = user.names
+                # context["first_name"] = user.names.split(" ")[0]
+                # context["email"] = user.email
+                # context["schedule"] = schedule
+                # a_file = schedule.ics_file.read(), "event.ics", "text/calendar"
 
-                mailing = EmailTemplate.objects.get(company=company,
-                                                    email_type="SCHEDULE")
-                template = Template(mailing.html_code)
-                html_content = template.render(Context(context))
-                subject = mailing.subject
-                e_mail = u'{0}<{1}>'.format(
-                    mailing.from_name, mailing.from_email)
-                msg = EmailMessage(
-                    subject, html_content, e_mail, [user.email, ])
-                msg.content_subtype = "html"
-                print("ENVIAR CORREO ")
-                send_html_mail(
-                    subject, html_content, e_mail, [user.email, ],
-                    a_file, user, company)
+                # mailing = EmailTemplate.objects.get(company=company,
+                #                                     email_type="SCHEDULE")
+                # template = Template(mailing.html_code)
+                # html_content = template.render(Context(context))
+                # subject = mailing.subject
+                # e_mail = u'{0}<{1}>'.format(
+                #     mailing.from_name, mailing.from_email)
+                # msg = EmailMessage(
+                #     subject, html_content, e_mail, [user.email, ])
+                # msg.content_subtype = "html"
+                # print("ENVIAR CORREO ")
+                # send_html_mail(
+                #     subject, html_content, e_mail, [user.email, ],
+                #     a_file, user, company)
         else:
             ScheduleCustomerEvent.objects.filter(
-                schedule_id=schedule_id, user=user,
+                schedule_id=schedule_id, company_user=company_user,
                 event_id=schedule.event.id,
                 company=company
             ).delete()

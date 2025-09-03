@@ -53,7 +53,9 @@
                 <img src="{{home_page.image_banner.url}}" alt="" width="650" class="imgLogo">
             {% endif %}
             <h4>{{home_page.main_title}}</h4>
-            <a href="#" class="gButton" id="b1ButtonRegister">Regístrate</a>
+            {% if not logged_user %}
+            <a href="#" class="button" id="b1ButtonRegister">Registrate</a>
+            {% endif %}
             <div class="b1List">
                 <div class="b1Item">
                     <img src="/static/web_2/img/credicorp/marker-black.svg" alt="">
@@ -240,9 +242,27 @@
                     <div class="b4ItemListLeft f aic jcfs fdc-480">
                         <div class="live g">
                             <p class="date f aic jcfs">{{schedule.get_date}}</p>
-                            <!-- CONDICIONAR SOLO UNO DE LOS BOTONES, REPRODUCIR O AGENDAR -->
-                            {% comment %} <a href="#" class="reproducir">Reproducir <i class="icon-play"></i></a> {% endcomment %}
-                            <!-- <a href="#" class="agendar">Agendar </a> -->
+                                {% if schedule.get_current_status == "is_live" or schedule.get_current_status == "past" %}
+                                    {% if schedule.video_url %}
+                                        <a href="{{schedule.video_url}}" class="reproducir">
+                                            Reproducir
+                                            <i class="icon-play"></i>
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    {% if logged_user %}
+                                        {% if schedule.scheduled %}
+                                            <a href="#" class="schedule_event reproducir" data-id="{{schedule.id}}" data-status="0" id="{{schedule.id}}">
+                                                Agendado
+                                            </a>
+                                        {% else %}
+                                            <a href="#" class="schedule_event agendar" data-id="{{schedule.id}}" data-status="1" id="{{schedule.id}}">
+                                                Agendar
+                                            </a>
+                                        {% endif %}
+
+                                    {% endif %}
+                                {% endif %}
                         </div>
                         <p class="name">{{schedule.name}}</p>
                     </div>
@@ -350,7 +370,7 @@
             <h4 class="b25PopupCargo"></h4>
             <div class="gParrafo b25PopupText white">
             </div>
-            <a href="#" class="b25linkedin">Ver perfil en Linkedin <i class="icon-arrowRight"></i></a>
+            <a target="_blank" href="#" class="b25linkedin">Ver perfil en Linkedin <i class="icon-arrowRight"></i></a>
         </div>
     </div>
 </div>
@@ -538,15 +558,50 @@ document.addEventListener('DOMContentLoaded', function () {
             if (link) link.classList.remove('active');
         });
     });
-});
 
-
-eventClickAccordion('b4ItemCLick')
-document.querySelectorAll('.reproducir, .agendar').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.stopPropagation();
+    eventClickAccordion('b4ItemCLick')
+    document.querySelectorAll('.reproducir, .agendar').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var item = $(this);
+            var data_id = item.attr('data-id')
+            var status = item.attr('data-status')
+            $.ajax({
+                url : "{% url 'events:generate_schedule' %}",
+                type : "post",
+                data: {
+                    schedule_id: data_id,
+                    status: status,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+            }).done(function(data) {
+                if (data.success) {
+                    if(status == 1){
+                        let s_button = $("#"+ data_id);
+                        s_button.addClass('reproducir');
+                        s_button.removeClass('agendar');
+                        s_button.attr('data-status', 0);
+                        s_button.textContent = "Agendado";
+                    }else{
+                        let s_button = $("#"+ data_id);
+                        s_button.removeClass('reproducir');
+                        s_button.addClass('agendar');
+                        s_button.attr('data-status', 1);
+                        s_button.textContent = "Agendar";
+                    }
+                }
+            });
+        });
     });
+
+    //$('.schedule_event').click(function(e){
+    //    e.preventDefault();
+    //});
+
 });
+
+
+
 
 {% if header_section.show_exhibitors_section %}
    //************b5-js*******************
@@ -639,7 +694,6 @@ document.querySelectorAll('.reproducir, .agendar').forEach(btn => {
            }else{
             elb25linkedin.style.display = 'none';;
            }
-           
            elb25PopupBandera.setAttribute("src",getBander);
        });
    }
@@ -650,9 +704,6 @@ document.querySelectorAll('.reproducir, .agendar').forEach(btn => {
     OVERLAY.classList.remove('active')
 });
 {% endif %}
-
-
-
 
 
 if(document.getElementsByClassName('b22')[0]){

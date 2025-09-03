@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="/static/web_2/css/styles.css?v=1{{ BUILD_ID }}"/>
     <link rel="stylesheet" href="/static/web_2/js/validationform/validationEngine.jquery.css">
     <!-- <link rel="stylesheet" type="text/css" href="/static/web_2/css/blocks_styl.css?v=2{{ BUILD_ID }}"/> -->
+    {{company.code_header|safe}}
 </head>
 
 
@@ -68,6 +69,7 @@
     <!-- JSADD START -->
     {% block jsfinal %}{% endblock %}
     <!-- JSADD END -->
+    {{company.code_body|safe}}
     <script>
         'use strict';
         var register_data = "";
@@ -272,5 +274,8 @@
         });
     });
     </script>
+
+    {{company.linkedin_pixel|safe}}
+
 </body>
 </html>

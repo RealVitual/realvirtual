@@ -249,6 +249,9 @@ class Company(BaseModel):
     code_body = models.TextField(
         _('Código seguimiento BODY'), blank=True, null=True
     )
+    linkedin_pixel = models.TextField(
+        _('Linkedin pixel'), blank=True, null=True
+    )
 
     # Campos Formulario
     names = models.BooleanField(

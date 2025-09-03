@@ -150,10 +150,18 @@ class HomeView(CreateView):
             workshops = Workshop.objects.filter(
                 company=company, is_active=True
             ).order_by("position")
-            for w in workshops:
-                w.scheduled = w.workshop_company_users.filter(
-                    company=w.company, is_active=True
-                )
+            if request.user.is_authenticated:
+                company_user = UserCompany.objects.get(
+                    company=company, user=request.user)
+                for w in workshops:
+                    w.scheduled = w.workshop_company_users.filter(
+                        company=w.company, is_active=True,
+                        company_user=company_user
+                    )
+                for s in schedules:
+                    s.scheduled = s.schedule_company_users.filter(
+                        company=s.event.company, company_user=company_user
+                    )
             exhibitors = Exhibitor.objects.filter(
                     company=company, is_active=True)
             context = {

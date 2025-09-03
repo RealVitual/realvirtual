@@ -231,6 +231,7 @@ class CompanyAdmin(admin.ModelAdmin):
                     'fields': (
                         'code_header',
                         'code_body',
+                        'linkedin_pixel'
                     )
                 }),
             ]
@@ -318,6 +319,7 @@ class CompanyAdmin(admin.ModelAdmin):
                     'fields': (
                         'code_header',
                         'code_body',
+                        'linkedin_pixel'
                     )
                 }),
             ]
@@ -401,6 +403,7 @@ class CompanyAdmin(admin.ModelAdmin):
                     'fields': (
                         'code_header',
                         'code_body',
+                        'linkedin_pixel'
                     )
                 }),
             ]
