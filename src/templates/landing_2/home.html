@@ -626,7 +626,13 @@ document.querySelectorAll('.reproducir, .agendar').forEach(btn => {
            elb25PopupCargo.innerText = getCargo;
            elb25Popupimg.setAttribute('src',getImg);
            elb25PopupText.innerHTML = getInfo;
-           elb25linkedin.setAttribute("href",getUrl);
+           if(getUrl){
+            elb25linkedin.setAttribute("href",getUrl);
+            elb25linkedin.style.display = '';
+           }else{
+            elb25linkedin.style.display = 'none';;
+           }
+           
            elb25PopupBandera.setAttribute("src",getBander);
        });
    }
