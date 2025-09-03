@@ -563,40 +563,40 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.reproducir, .agendar').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
-            var item = $(this);
-            var data_id = item.attr('data-id')
-            var status = item.attr('data-status')
-            $.ajax({
-                url : "{% url 'events:generate_schedule' %}",
-                type : "post",
-                data: {
-                    schedule_id: data_id,
-                    status: status,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-            }).done(function(data) {
-                if (data.success) {
-                    if(status == 1){
-                        let s_button = $("#"+ data_id);
-                        s_button.addClass('reproducir');
-                        s_button.removeClass('agendar');
-                        s_button.attr('data-status', 0);
-                        s_button.textContent = "Agendado";
-                    }else{
-                        let s_button = $("#"+ data_id);
-                        s_button.removeClass('reproducir');
-                        s_button.addClass('agendar');
-                        s_button.attr('data-status', 1);
-                        s_button.textContent = "Agendar";
-                    }
-                }
-            });
-        });
+    });
     });
 
-    //$('.schedule_event').click(function(e){
-    //    e.preventDefault();
-    //});
+    $('.schedule_event').click(function(e){
+       e.preventDefault();
+       var item = $(this);
+       var data_id = item.attr('data-id')
+       var status = item.attr('data-status')
+       $.ajax({
+           url : "{% url 'events:generate_schedule' %}",
+           type : "post",
+           data: {
+               schedule_id: data_id,
+               status: status,
+               csrfmiddlewaretoken: '{{ csrf_token }}'
+           },
+       }).done(function(data) {
+           if (data.success) {
+               if(status == 1){
+                   let s_button = $("#"+ data_id);
+                   s_button.addClass('reproducir');
+                   s_button.removeClass('agendar');
+                   s_button.attr('data-status', 0);
+                   s_button.textContent = "Agendado";
+               }else{
+                   let s_button = $("#"+ data_id);
+                   s_button.removeClass('reproducir');
+                   s_button.addClass('agendar');
+                   s_button.attr('data-status', 1);
+                   s_button.textContent = "Agendar";
+               }
+           }
+       });
+   });
 
 });
 
