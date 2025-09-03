@@ -368,6 +368,7 @@
             </h4>
             <a href="{% url 'landing:blog' %}" class="gButton">{{home_page.blog_button_title}}</a>
         </div>
+        {% if blog_posts_number > 0 %}
         <div class="b6Wrap g column2 column1-768">
             <div class="b6Left">
                 <div class="b6Item zoomImageHover">
@@ -378,6 +379,7 @@
                     </div>
                 </div>
             </div>
+            {% if blog_posts_number > 1 %}
             <div class="b6Right g">
                 <div class="b6Item zoomImageHover">
                     <img src="{{blog_posts.1.front_image.url}}" alt="">
@@ -386,6 +388,7 @@
                         <p class="name">{{blog_posts.1.name}}</p>
                     </div>
                 </div>
+                {% if blog_posts_number > 2 %}
                 <div class="b6Item zoomImageHover">
                     <img src="{{blog_posts.2.front_image.url}}" alt="">
                     <div class="b6Info">
@@ -393,8 +396,12 @@
                         <p class="name">{{blog_posts.2.name}}</p>
                     </div>
                 </div>
+                {% endif %}
             </div>
+            {% endif %}
         </div>
+        {% endif %}
+
     </div>
 </section>
 {% endif %}

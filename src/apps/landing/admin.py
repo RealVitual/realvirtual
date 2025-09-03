@@ -120,8 +120,9 @@ class BlogPostItemContentTabular(admin.TabularInline):
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
-    list_display = ('name', 'company')
+    list_display = ('name', 'company', 'is_active')
     list_filter = ('company', )
+    list_editable = ('company', 'is_active')
     inlines = BlogPostItemContentTabular, BlogPostItemTabular
 
 

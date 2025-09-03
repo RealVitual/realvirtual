@@ -109,6 +109,7 @@ class HomeView(CreateView):
                 [schedule.shift for schedule in schedules_query]))
             dates = [event.start_datetime for event in events_list]
             if filtered_categories:
+                print(filtered_categories, 'FILTERED CATEGORIES')
                 schedules_query = schedules_query.filter(
                     categories__filter_name__in=filtered_categories).order_by(
                         'event__start_datetime', 'start_time')
@@ -137,11 +138,8 @@ class HomeView(CreateView):
                 is_active=True, company=company).order_by('position')
             sponsors = Sponsor.objects.filter(
                 is_active=True, company=company).order_by('position')
-            blog_posts = []
-            found_posts = BlogPost.objects.filter(
+            blog_posts = BlogPost.objects.filter(
                 is_active=True, company=company).order_by('-publish_date')
-            if len(found_posts) >= 3:
-                blog_posts = found_posts[:3]
             frequently_questions = FrequentlyQuestion.objects.filter(
                 company=company, is_active=True
             ).order_by("position")
@@ -174,6 +172,7 @@ class HomeView(CreateView):
                 'filtered_shift': (
                     filtered_shift.name if filtered_shift else None),
                 'blog_posts': blog_posts,
+                'blog_posts_number': len(blog_posts),
                 'filtered': filtered,
                 'frequently_questions': frequently_questions,
                 'workshops': workshops
