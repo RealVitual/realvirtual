@@ -108,11 +108,7 @@ class HomeView(CreateView):
             shifts = list(dict.fromkeys(
                 [schedule.shift for schedule in schedules_query]))
             dates = [event.start_datetime for event in events_list]
-            if filtered_categories:
-                print(filtered_categories, 'FILTERED CATEGORIES')
-                schedules_query = schedules_query.filter(
-                    categories__filter_name__in=filtered_categories).order_by(
-                        'event__start_datetime', 'start_time')
+
             events_list = list(dict.fromkeys(
                 [schedule.event for schedule in schedules_query]))
             if filtered_date:
@@ -122,6 +118,14 @@ class HomeView(CreateView):
                 schedules_query = schedules_query.filter(
                     shift__filter_name=filtered_shift)
                 filtered_shift = Shift.objects.get(filter_name=filtered_shift)
+            if filtered_categories:
+                new_schedules = []
+                for s in schedules_query:
+                    found_filters = [f for f in s.categories.all().values_list(
+                        'filter_name', flat=True)]
+                    if set(found_filters) >= set(filtered_categories):
+                        new_schedules.append(s)
+                schedules_query = new_schedules
             for schedule in schedules_query:
                 if schedule not in schedules:
                     schedules.append(schedule)
