@@ -1,0 +1,534 @@
+{% extends "landing_3/common/_base.html" %}
+
+{% block cssadicional %}
+<link rel="stylesheet" href="/static/web_3/js/swiper/swiper-bundle.min.css">
+{% endblock %}
+
+{% block classbody %}pageHome{% endblock %}
+
+{% block content %}
+
+
+<section class="b1">
+    <!-- <picture class="imgCover">
+        <source srcset="/static/web_3/img/credicorp/home-b1-imgDesktop.png" media="(max-width: 767px)">
+        <source srcset="/static/web_3/img/credicorp/home-b1-imgDesktop.png" media="(max-width: 768px)">
+        <img src="/static/web_3/img/credicorp/home-b1-imgDesktop.png" width="1920" height="713"  alt="Myimage">
+    </picture> -->
+    <div class="grilla">
+        <div class="b1Info">
+            <div class="b1Top f aife jcsb fdc-768">
+                <div class="b1InfoTopLeft f aife jcfs fdc-480">
+                    <img src="{{home_page.image_banner.url}}" alt="" width="650" class="imgLogo">
+                    {% if not logged_user %}
+                    <a href="#" class="button" id="b1ButtonRegister">Registrate</a>
+                    {% endif %}
+                </div>
+                <div class="b1InfoTopRight">
+                    <img src="{{home_page.banner_second_section_image.url}}" alt="">
+                </div>
+            </div>
+            <div class="b1Bottom">
+                <h3>{{home_page.main_title}}</h3>
+                <div class="gParrafo">
+                    <p>{{home_page.banner_description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img src="{{home_page.banner_footer_section_image.url}}" alt="" class="imgAbsolute">
+</section>
+
+{% if header_section.show_schedule_section %}
+<section class="b2 mY scrollWrap anclaBlock" id="acerca">
+    <div class="grilla scrollItem">
+        <div class="b2Wrap f aifs jscb fdc-768">
+            <div class="b2Left">
+                <h2>{{home_page.schedule_section_name}}</h2>
+            </div>
+            <div class="b2Right">
+                {% for schedule in schedules %}
+                    <div class="b2ItemRight f aifs jcsb fdc-480">
+                        <div class="b2LeftInfo">
+                            <h4>{{schedule.name}}</h4>
+                            <p>{{schedule.description}}</p>
+                        </div>
+                        <div class="b2RightInfo">
+                            <p class="hour">{{schedule.start_time}} a {{schedule.end_time}}</p>
+                            {% for exhibitor in schedule.get_exhibitors %}
+                                {% if exhibitor.flag_image %}
+                                    <img src="{{exhibitor.flag_image.url}}" alt="">
+                                {% else %}
+                                    <img src="/static/web_3/img/credicorp/bandera-per.png" alt="">
+                                {% endif %}
+                                <div class="b2Name b3ItemClickPopup"
+                                data-image="{{exhibitor.image.url}}"
+                                data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png"
+                                {% if exhibitor.flag_image %}
+                                    data-pais="{{exhibitor.flag_image.url}}"
+                                {% else %}
+                                    data-pais="/static/web_3/img/credicorp/bandera-per.png"
+                                {% endif %}
+                                data-name="{{exhibitor.name}}"
+                                data-cargo="{{exhibitor.title}} - {{exhibitor.organization}}"
+                                data-text="<p>{{exhibitor.description}}</p>">
+                                    <p class="name">{{exhibitor.name}}</p>
+                                    <p class="cargo">{{exhibitor.title}} | {{exhibitor.organization}}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if header_section.show_exhibitors_section %}
+<section class="b3 mY scrollWrap" id="speakers">
+    <div class="grilla">
+        <div class="b3Top f aic jcsb scrollItem fdc-480 aifs-768">
+            <h2>{{home_page.exhibitors_section_name}}</h2>
+            <div class="gParrafo">
+                <p>{{home_page.exhibitors_section_title}}</p>
+            </div>
+        </div>
+        <div class="gSwiperContent">
+            <div class="b3Swiper swiper-container scrollItem swiper" data-initial="3">
+                <div class="b3Wrap swiper-wrapper">
+                    {% for ex in exhibitors %}
+                    <div class="b3Item b3ItemClickPopup swiper-slide"
+                    data-image="{{ex.image.url}}"
+                    data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png"
+                    {% if ex.flag_image %}
+                        data-pais="{{ex.flag_image.url}}"
+                    {% else %}
+                        data-pais="/static/web_3/img/credicorp/bandera-per.png"
+                    {% endif %}
+                    data-name="{{ex.name}}"
+                    data-cargo="{{ex.title}} - {{ex.organization}}"
+                    data-text="<p>{{ex.description}}</p>">
+                        <figure>
+                            <img src="{{ex.image.url}}" alt="">
+                        </figure>
+                        <div class="b3Info">
+                            <div class="b3Name f aic jcc">
+                                <p class="name">{{ex.name}}</p>
+                                {% if ex.flag_image %}
+                                    <img src="{{ex.flag_image.url}}" alt="">
+                                {% else %}
+                                    <img src="/static/web_3/img/credicorp/bandera-per.png" alt="">
+                                {% endif %}
+                            </div>
+                            <p class="cargo">{{ex.title}} - {{ex.organization}}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- pagination dots -->
+                <div class="b3Pagination gPagination"></div>
+                <!-- nav prev and next -->
+            </div>
+            <!-- <div class="b3Nav gNav">
+                <div class="b3Prev gPrev"></div>
+                <div class="b3Next gNext"></div>
+            </div> -->
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- POPUP  -->
+
+<div class="b3Popup">
+    <a href="#" class="b3ClosePopup icon-close"></a>
+    <div class="b3PopupTop f aic jcsb fdc-480">
+        <div class="b3PopupTopLeft">
+            <figure>
+                <img src="" alt="" class="b3PopupImage">
+            </figure>
+        </div>
+        <div class="b3PopupTopRight f fdc aifs jcsb">
+            <div class="b3Logo">
+                <img src="" alt="" class="b3PopupLogo">
+                <!-- Info para el segundo formato de popup -->
+                <p class="b3PopupTaller"></p>
+                <p class="b3PopupTallerName"></p>
+            </div>
+            <div class="BottomLeft">
+                <div class="b3PopupNameWrap f aic jcsb">
+                    <img src="" alt="" class="b3PopuPais">
+                    <p  class="b3PopupName"></p>
+                </div>
+                <p class=" b3PopupCargo"></p>
+            </div>
+        </div>
+    </div>
+    <div class="b3PopupText">
+    </div>
+    <div class="b3PopupBottom f aic jcsb">
+        <div class="b3PopupBottomLeft f aic jcfs fdc-480 aifs-480">
+            <p class="b3PopupDate">16 de enero</p>
+            <p class="b3PopupHour">10:00</p>
+        </div>
+        <a href="#" class="b3PopupButton schedule_workshop"></a>
+    </div>
+</div>
+
+{% if header_section.show_workshops_section %}
+<section class="b4 mY scrollWrap" id="talleres">
+    <div class="grilla f aifs jcsb scrollItem fdc-768 ">
+        <div class="b4Left">
+            <div class="buttonGradient"> <span class="button">{{home_page.workshop_section_name}}</span></div>
+            <img src="{{home_page.workshop_section_image.url}}" alt="">
+        </div>
+        <div class="b4Right">
+            {% for row in workshops %}
+                <div class="b3ItemClickPopup b4RighItem f aic jcsb fdc-480"
+                data-image="{{row.exhibitor.image.url}}"
+                {% if row.exhibitor.flag_image %}
+                data-pais="{{row.exhibitor.flag_image.url}}"
+                {% else %}
+                data-pais="/static/web_3/img/credicorp/bandera-per.png"
+                {% endif %}
+                data-name="{{row.exhibitor.name}}"
+                data-cargo="{{row.exhibitor.title}} - {{row.exhibitor.organization}}"
+                data-text="<p>{{row.description}}</p>"
+                data-taller="{{row.title}}"
+                data-taller-name="{{row.name}}"
+                data-url-inscribete="{{row.id}}"
+                {% if row.scheduled %}
+                    data-inscrito="true"
+                {% else %}
+                    data-inscrito="false"
+                {% endif %}
+                {% if row.get_allow_enroll %}
+                    data-aforo="true"
+                {% else %}
+                    data-aforo="false"
+                {% endif %}
+                data-hour='{{ row.start_datetime|date:"H:i" }}'
+                data-date='{{ row.start_datetime|date:"j" }} de {{ row.start_datetime|date:"F" }}'>
+                    <div class="b4ItemInfo">
+                        <div class="b4ItemInfoContent">
+                            <p>{{row.title}}</p>
+                            <p class="info">{{row.name}}</p>
+                        </div>
+                    </div>
+                    <div class="b4ItemImage">
+                        <img src="{{row.image.url}}" alt="">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if header_section.show_frequently_questions_section %}
+<section class="b5 mY scrollWrap" id="preguntas">
+    <div class="grilla scrollItem">
+        <h4>{{home_page.frequently_questions_section_name}}</h4>
+        <div class="b5List">
+            {% for row in frequently_questions %}
+                <div class="b5Item">
+                    <a href="#" class="b5ItemClick arrowClick">{{row.name}}</a>
+                    <div class="b5Info">
+                        <div class="gParrafo">
+                            <p>{{row.answer}}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}
+
+{% block jsfinal %}
+<script src="/static/web_3/js/swiper/swiper-bundle.min.js"></script>
+{% if not logged_user %}
+<script src="https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}"></script>
+<script>
+    function getReCaptcha(){
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{recaptcha_site_key}}', {action: "/"}).then(function(token) {
+                let captcha_register = document.getElementById('g-recaptcha-response')
+                if(captcha_register){
+                    document.getElementById('g-recaptcha-response').value = token;
+                }
+                document.getElementById('g-recaptcha-response_login').value = token;
+            });
+        });
+    }
+    getReCaptcha();
+    setInterval(function(){getReCaptcha();}, 110000);
+</script>
+{% endif %}
+<script>
+    function onClick(e) {
+      e.preventDefault();
+      grecaptcha.ready(function() {
+        grecaptcha.execute('{{recaptcha_site_key}}', {action: 'submit'}).then(function(token) {
+        });
+      });
+    }
+</script>
+<script type="text/javascript">
+    {% if header_section.show_exhibitors_section or header_section.show_workshops_section %}
+
+    let elSwiperb3 = document.getElementsByClassName('b3Swiper')[0].dataset.initial
+    const breakpointb3 = window.matchMedia('(max-width: 1024px)');
+    const breakpointCheckerb3 = () => {
+        let getCountItemsb3 = document.getElementsByClassName('b3Item').length;
+        breakpointb3.matches === true ? 
+            (getCountItemsb3 >= 2 ? enableSwiperb3(elSwiperb3) : destroySwiperb3()): 
+            (getCountItemsb3 > elSwiperb3 ? enableSwiperb3(elSwiperb3) : destroySwiperb3())
+    }
+    let mySwiperb3;
+    let elWrapSwiperb3 = document.getElementsByClassName('b3')[0]
+    const destroySwiperb3 = () =>{
+		elWrapSwiperb3.classList.add('noSwiper')
+		elWrapSwiperb3.classList.remove('swiperActive')
+        if(mySwiperb3 !== undefined) {
+            return mySwiperb3.destroy(true,true);
+        }
+    }
+    const enableSwiperb3 = (initial) => {
+		elWrapSwiperb3.classList.remove('noSwiper')
+		elWrapSwiperb3.classList.add('swiperActive')
+        mySwiperb3 = new Swiper ('.b3Swiper', {
+            loop: false,
+            spaceBetween: 24,
+            centeredSlides: false,
+            pagination: {
+                el: '.b3Pagination',
+                type: 'bullets',
+                clickable: true
+            },
+            navigation: {
+                nextEl: '.b3Next',
+                prevEl: '.b3Prev',
+            },
+            breakpoints:{
+                1024:{
+                   slidesPerView: initial,
+                   spaceBetween: 24,
+                },
+                768:{
+                   slidesPerView: 2,
+                   spaceBetween: 24,
+                },
+                320:{
+                   slidesPerView: 1,
+                   spaceBetween: 24,
+                }
+            }
+        });
+        
+    };
+    breakpointb3.addListener(breakpointCheckerb3);
+    breakpointCheckerb3();
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll(".b3ItemClickPopup");
+    const popup = document.querySelector(".b3Popup");
+
+    const popupImage = popup.querySelector(".b3PopupImage");
+    const popupLogo = popup.querySelector(".b3PopupLogo");
+    const popupPais = popup.querySelector(".b3PopuPais");
+    const popupName = popup.querySelector(".b3PopupName");
+    const popupCargo = popup.querySelector(".b3PopupCargo");
+    const popupText = popup.querySelector(".b3PopupText");
+    const popupTaller = popup.querySelector(".b3PopupTaller");
+    const popupTallerName = popup.querySelector(".b3PopupTallerName"); 
+    const popupButton = popup.querySelector(".b3PopupButton"); 
+    const popupDate = popup.querySelector(".b3PopupDate"); 
+    const popupHour = popup.querySelector(".b3PopupHour"); 
+
+    items.forEach(item => {
+        item.addEventListener("click", () => {
+            const image = item.getAttribute("data-image");
+            const logo = item.getAttribute("data-logo");
+            const pais = item.getAttribute("data-pais");
+            const name = item.getAttribute("data-name");
+            const cargo = item.getAttribute("data-cargo");
+            const text = item.getAttribute("data-text");
+            const taller = item.getAttribute("data-taller");
+            const tallerName = item.getAttribute("data-taller-name");
+            const urlIncribete = item.getAttribute("data-url-inscribete");
+            const booleanInscrito = item.getAttribute("data-inscrito");
+            const booleanAforo = item.getAttribute("data-aforo");
+            const date = item.getAttribute('data-hour')
+            const hour = item.getAttribute('data-date')
+
+            popupButton.href = ""
+            popupTaller.textContent = ""
+            popupTallerName.textContent = ""
+
+            if(date){
+                popupDate.textContent = date
+                popupDate.style.display = 'block'
+            }else{
+                popupDate.textContent = ""
+                popupDate.style.display = 'none'
+            }
+
+            if(hour){
+                popupHour.textContent = hour
+                popupHour.style.display = 'block'
+            }else{
+                popupHour.textContent = ""
+                popupHour.style.display = 'none'
+            }
+
+            // Imagen
+            if (image) {
+                popupImage.src = image;
+                popupImage.style.display = "block";
+            } else {
+                popupImage.removeAttribute("src");
+                popupImage.style.display = "none";
+            }
+
+            // Logo
+            if (logo) {
+                popupLogo.src = logo;
+                popupLogo.style.display = "block";
+                popupLogo.parentElement.classList.remove('taller')
+            } else {
+                popupLogo.removeAttribute("src");
+                popupLogo.style.display = "none";
+            }
+
+            // País
+            if (pais) {
+                popupPais.src = pais;
+                popupPais.style.display = "inline-block";
+            } else {
+                popupPais.removeAttribute("src");
+                popupPais.style.display = "none";
+            }
+
+            // Nombre
+            if (name) {
+                popupName.textContent = name;
+                popupName.style.display = "block";
+            } else {
+                popupName.textContent = "";
+                popupName.style.display = "none";
+            }
+
+            // Cargo
+            if (cargo) {
+                popupCargo.textContent = cargo;
+                popupCargo.style.display = "block";
+            } else {
+                popupCargo.textContent = "";
+                popupCargo.style.display = "none";
+            }
+
+            // Texto
+            if (text) {
+                popupText.innerHTML = text;
+                popupText.style.display = "block";
+            } else {
+                popupText.innerHTML = "";
+                popupText.style.display = "none";
+            }
+
+            // Taller
+            if (taller) {
+                popupTaller.style.display = "block";
+                popupTaller.textContent = taller || "";
+                popupTaller.parentElement.classList.add('taller')
+            } else {
+                popupTaller.style.display = "none";
+            }
+            // Taller Nombre
+            if (tallerName) {
+                
+                popupTallerName.style.display = "block";
+                popupTallerName.textContent = tallerName || "";
+            } else {
+                popupTallerName.style.display = "none";
+            }
+            // Url de inscrpciòn
+            if(urlIncribete){
+                popupButton.style.display = "flex";
+                popupButton.href = urlIncribete || "";
+                popupButton.setAttribute('data-id', urlIncribete);
+                if(booleanInscrito === "true"){
+                    console.log('true')
+                    popupButton.classList.add('inscrito')
+                    popupButton.textContent = 'Inscrito' || "";
+                    popupButton.setAttribute('data-status', 0);
+            }else{
+                    popupButton.setAttribute('data-status', 1);
+                    console.log('false')
+                    popupButton.classList.remove('inscrito')
+                    popupButton.textContent = 'Inscríbete' || "";
+                }
+                if(booleanAforo === "false"){
+                    popupButton.textContent = 'Agotado' || "";
+                    popupButton.classList.add('aforo-close')
+                }
+            }else{
+                popupButton.style.display = "none";
+            }
+            popup.classList.add("active");
+            OVERLAY.classList.add("active");
+            OVERLAY.style.zIndex = 200;
+        });
+    });
+    const closeBtn = popup.querySelector(".b3ClosePopup");
+    closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        popup.classList.remove("active");
+        OVERLAY.classList.remove("active");
+        OVERLAY.removeAttribute("style");
+    });
+});
+{% endif %}
+
+$('.schedule_workshop').click(function(e){
+    e.preventDefault();
+    var item = $(this);
+    var data_id = item.attr('data-id')
+    var status = item.attr('data-status')
+    $.ajax({
+        url : "{% url 'events:generate_schedule_workshop' %}",
+        type : "post",
+        data: {
+            workshop_id: data_id,
+            status: status,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+    }).done(function(data) {
+        if (data.success) {
+            console.log(status, 'status')
+            if(status == 1){
+                const popup = document.querySelector(".b3Popup");
+                const popupButton = popup.querySelector(".b3PopupButton");
+                popupButton.textContent = 'Inscrito';
+                item.addClass('inscrito');
+                item.attr('data-status', 0);
+            }else{
+                const popup = document.querySelector(".b3Popup");
+                const popupButton = popup.querySelector(".b3PopupButton");
+                popupButton.textContent = 'Inscríbete';
+                item.removeClass('inscrito');
+                item.attr('data-status', 1);
+            }
+        }
+    });
+});
+
+eventClickAccordion("b5ItemClick")
+
+</script>
+{% endblock %}

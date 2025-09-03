@@ -343,6 +343,11 @@ class EventsView(CreateView):
         }
         if request.company:
             company = request.company
+            if company.version and company.version.version != 1:
+                internal_view = self.template_name.split('/')[-1]
+                self.template_name = (
+                    f"landing_{company.version}/{internal_view}"
+                )
             home_page = HomePage.objects.get(company=company)
             filtered_date = None
             query_filters = dict(request.GET)
@@ -350,6 +355,13 @@ class EventsView(CreateView):
             filtered_filters = []
             filtered_shift = None
             schedules = []
+            filtered = []
+            filters = []
+            if company.use_filters:
+                filters = Filter.objects.filter(
+                    company=request.company, is_active=True
+                ).order_by('position')
+
             for filter, value in query_filters.items():
                 if 'fbclid' not in filter:
                     if filter == "date":
@@ -359,6 +371,19 @@ class EventsView(CreateView):
                     else:
                         filtered_filters.append(filter)
                         filtered_categories.append(value[0])
+                        category_filter_name = Category.objects.get(
+                            filter__in=filters, filter_name=value[0]
+                        ).name
+                        filtered.append(
+                            dict(
+                                filter=(
+                                    filters.filter(filter_name=filter)[0].name
+                                ),
+                                filter_name=filter,
+                                category=category_filter_name,
+                                category_filter_name=value[0],
+                                )
+                        )
             schedules_query = Schedule.objects.filter(
                 event__is_active=True,
                 event__company=company,
@@ -369,10 +394,7 @@ class EventsView(CreateView):
             shifts = list(dict.fromkeys(
                 [schedule.shift for schedule in schedules_query]))
             dates = [event.start_datetime for event in events_list]
-            if filtered_categories:
-                schedules_query = schedules_query.filter(
-                    categories__filter_name__in=filtered_categories).order_by(
-                        'event__start_datetime', 'start_time')
+
             events_list = list(dict.fromkeys(
                 [schedule.event for schedule in schedules_query]))
             if filtered_date:
@@ -380,9 +402,16 @@ class EventsView(CreateView):
                 schedules_query = schedules_query.filter(event__in=events_list)
             if filtered_shift:
                 schedules_query = schedules_query.filter(
-                    shift__filter_name=filtered_shift
-                )
+                    shift__filter_name=filtered_shift)
                 filtered_shift = Shift.objects.get(filter_name=filtered_shift)
+            if filtered_categories:
+                new_schedules = []
+                for s in schedules_query:
+                    found_filters = [f for f in s.categories.all().values_list(
+                        'filter_name', flat=True)]
+                    if set(found_filters) >= set(filtered_categories):
+                        new_schedules.append(s)
+                schedules_query = new_schedules
             for schedule in schedules_query:
                 if schedule not in schedules:
                     schedules.append(schedule)
@@ -397,11 +426,30 @@ class EventsView(CreateView):
                 is_active=True, company=company).order_by('position')
             sponsors = Sponsor.objects.filter(
                 is_active=True, company=company).order_by('position')
-            filters = []
-            if company.use_filters:
-                filters = Filter.objects.filter(
-                    company=request.company, is_active=True
-                ).order_by('position')
+            sponsors = Sponsor.objects.filter(
+                is_active=True, company=company).order_by('position')
+            blog_posts = BlogPost.objects.filter(
+                is_active=True, company=company).order_by('-publish_date')
+            frequently_questions = FrequentlyQuestion.objects.filter(
+                company=company, is_active=True
+            ).order_by("position")
+            workshops = Workshop.objects.filter(
+                company=company, is_active=True
+            ).order_by("position")
+            if request.user.is_authenticated:
+                company_user = UserCompany.objects.get(
+                    company=company, user=request.user)
+                for w in workshops:
+                    w.scheduled = w.workshop_company_users.filter(
+                        company=w.company, is_active=True,
+                        company_user=company_user
+                    )
+                for s in schedules:
+                    s.scheduled = s.schedule_company_users.filter(
+                        company=s.event.company, company_user=company_user
+                    )
+            exhibitors = Exhibitor.objects.filter(
+                    company=company, is_active=True)
             context = {
                 'company': company,
                 'header': True,
@@ -413,15 +461,19 @@ class EventsView(CreateView):
                 'sponsors': sponsors,
                 'dates_select': dates_select,
                 'filtered_date': filtered_date if filtered_date else None,
-                'exhibitors': Exhibitor.objects.filter(
-                    company=company, is_active=True),
+                'exhibitors': exhibitors,
+                'exhibitors_quantity_swiper': len(exhibitors) - 1 if len(exhibitors) > 1 else 1,
                 'filters': filters,
                 'filtered_categories': filtered_categories,
                 'filtered_filters': filtered_filters,
                 'shifts':  shifts,
                 'filtered_shift': (
-                    filtered_shift.name if filtered_shift else None
-                )
+                    filtered_shift.name if filtered_shift else None),
+                'blog_posts': blog_posts,
+                'blog_posts_number': len(blog_posts),
+                'filtered': filtered,
+                'frequently_questions': frequently_questions,
+                'workshops': workshops
             }
         return render(request, self.template_name, context)
 
