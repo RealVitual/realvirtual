@@ -538,7 +538,7 @@ class HomePage(TimeStampedModel):
     secondary_title = models.CharField(
             _('Secondary Title'), max_length=255, null=True, blank=True)
     address_description = models.CharField(
-        _('Address description'), max_length=50, blank=True, null=True
+        _('Address description'), max_length=255, blank=True, null=True
     )
     date_description = models.CharField(
         _('Date description'), max_length=50, blank=True, null=True
