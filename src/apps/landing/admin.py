@@ -9,6 +9,9 @@ from .models import (Video, Sponsor, CredentialCustomer,
                      CustomerInvitedLanding)
 from django.utils.html import format_html
 import os
+from django.db import models
+from ckeditor.fields import RichTextField
+from django.forms import Textarea
 
 
 @admin.register(Video)
@@ -153,6 +156,13 @@ class FreeImageAdmin(admin.ModelAdmin):
 class FrequentlyQuestionAdmin(admin.ModelAdmin):
     list_display = ('name', 'company')
     list_filter = ('company', )
+
+
+@admin.register(BlogPostItem)
+class BlogPostItemAdmin(admin.ModelAdmin):
+    list_display = ('position', 'blog_post', 'position')
+    list_editable = ('blog_post', )
+    list_filter = ('blog_post', )
 
 
 admin.site.register(CerficateSettings)

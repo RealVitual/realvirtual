@@ -248,7 +248,7 @@
                     <div class="b4ItemListLeft f aic jcfs fdc-480">
                         <div class="live g">
                             <p class="date f aic jcfs">{{schedule.get_date}}</p>
-                                {% comment %} {% if schedule.get_current_status == "is_live" or schedule.get_current_status == "past" %}
+                                {% if schedule.get_current_status == "is_live" or schedule.get_current_status == "past" %}
                                     {% if schedule.video_url %}
                                         <a href="{{schedule.video_url}}" class="reproducir">
                                             Reproducir
@@ -258,17 +258,17 @@
                                 {% else %}
                                     {% if logged_user %}
                                         {% if schedule.scheduled %}
-                                            <a href="#" class="schedule_event reproducir" data-id="{{schedule.id}}" data-status="0" id="{{schedule.id}}">
+                                            <a href="#" class="agendar_{{schedule.id}} schedule_event agendado" data-id="{{schedule.id}}" data-status="0" id="{{schedule.id}}">
                                                 Agendado
                                             </a>
                                         {% else %}
-                                            <a href="#" class="schedule_event agendar" data-id="{{schedule.id}}" data-status="1" id="{{schedule.id}}">
+                                            <a href="#" class="agendar_{{schedule.id}} schedule_event agendar" data-id="{{schedule.id}}" data-status="1" id="{{schedule.id}}">
                                                 Agendar
                                             </a>
                                         {% endif %}
 
                                     {% endif %}
-                                {% endif %} {% endcomment %}
+                                {% endif %}
                         </div>
                         <p class="name">{{schedule.name}}</p>
                     </div>
@@ -572,7 +572,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     eventClickAccordion('b4ItemCLick')
-    document.querySelectorAll('.reproducir, .agendar').forEach(btn => {
+    document.querySelectorAll('.reproducir, .agendar, .agendado').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
     });
@@ -594,16 +594,15 @@ document.addEventListener('DOMContentLoaded', function () {
        }).done(function(data) {
            if (data.success) {
                if(status == 1){
-                   let s_button = $("#"+ data_id);
-                   s_button.addClass('reproducir');
-                   s_button.removeClass('agendar');
-                   s_button.attr('data-status', 0);
+                   const s_button = document.querySelector(".agendar_" + data_id);
+                   s_button.classList.add('agendado');
+                   s_button.setAttribute('data-status', 0);
                    s_button.textContent = "Agendado";
                }else{
-                   let s_button = $("#"+ data_id);
-                   s_button.removeClass('reproducir');
-                   s_button.addClass('agendar');
-                   s_button.attr('data-status', 1);
+                   const s_button = document.querySelector(".agendar_"+data_id);
+                   console.log(s_button,' s_buttons_button')
+                   s_button.classList.remove('agendado');
+                   s_button.setAttribute('data-status', 1);
                    s_button.textContent = "Agendar";
                }
            }

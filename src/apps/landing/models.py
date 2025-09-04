@@ -534,6 +534,7 @@ class BlogPostItem(BaseModel):
 
 
 class BlogPostItemContent(BaseModel):
+    name = models.CharField(_('Nombre'), max_length=255)
     blog_post = models.ForeignKey(
         BlogPost, related_name="blog_post_contents",
         on_delete=models.CASCADE, null=True, blank=True)
@@ -541,7 +542,6 @@ class BlogPostItemContent(BaseModel):
         _('Posición'),
         default=1
     )
-    name = models.CharField(_('Nombre'), max_length=255)
 
     class Meta:
         verbose_name = _('Contenido para publicación')
