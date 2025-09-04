@@ -78,7 +78,13 @@
             <p>{{home_page.banner_second_section|default:""}}</p>
             {% if home_page.banner_second_section_image %}
                 <figure>
-                    <img src="{{home_page.banner_second_section_image.url}}" alt="">
+                    {% if home_page.banner_second_section_file %}
+                        <a href="{{home_page.banner_second_section_file.url}}" target="_blank">
+                            <img src="{{home_page.banner_second_section_image.url}}" alt="">
+                        </a>
+                    {% else %}
+                        <img src="{{home_page.banner_second_section_image.url}}" alt="">
+                    {% endif %}
                 </figure>
             {% endif %}
         </div>
@@ -86,7 +92,7 @@
 </section>
 
 
-<div class="b1PopupInfo">
+{% comment %} <div class="b1PopupInfo">
     <a href="#" class="b1CloseMapa icon-close"></a>
     <h3>
         {{home_page.banner_second_section_internal_title|default:""}}
@@ -97,7 +103,7 @@
             <img src="{{home_page.banner_second_section_internal_image.url}}" alt="">
         </figure>
     {% endif %}
-</div>
+</div> {% endcomment %}
 
 {% if company.use_counter%}
     <section class="b22">
@@ -740,21 +746,21 @@ if(document.getElementsByClassName('b22')[0]){
     setInterval(actualizarContador, 1000);
 }
 
-let elb1CloseMapa = document.getElementsByClassName('b1CloseMapa')[0]
-let elb1Bottom = document.getElementsByClassName('b1Bottom')[0]
-let elb1PopupInfo = document.getElementsByClassName('b1PopupInfo')[0]
+//let elb1CloseMapa = document.getElementsByClassName('b1CloseMapa')[0]
+//let elb1Bottom = document.getElementsByClassName('b1Bottom')[0]
+//let elb1PopupInfo = document.getElementsByClassName('b1PopupInfo')[0]
 
-elb1Bottom.addEventListener('click',function(e){
-    e.preventDefault();
-    elb1PopupInfo.classList.add('active')
-    OVERLAY.classList.add('active')
-    OVERLAY.style.zIndex = 100
-})
-elb1CloseMapa.addEventListener('click',function(e){
-    e.preventDefault();
-    elb1PopupInfo.classList.remove('active')
-    OVERLAY.classList.remove('active')
-    OVERLAY.removeAttribute('style')
-})
+//elb1Bottom.addEventListener('click',function(e){
+//    e.preventDefault();
+//    elb1PopupInfo.classList.add('active')
+//    OVERLAY.classList.add('active')
+//    OVERLAY.style.zIndex = 100
+//})
+//elb1CloseMapa.addEventListener('click',function(e){
+//    e.preventDefault();
+//    elb1PopupInfo.classList.remove('active')
+//    OVERLAY.classList.remove('active')
+//    OVERLAY.removeAttribute('style')
+//})
 </script>
 {% endblock %}

@@ -516,6 +516,11 @@ class HomePage(TimeStampedModel):
         upload_to=get_upload_path('image_banner'),
         null=True, blank=True
     )
+    banner_second_section_file = models.FileField(
+        _('Documento de Sección Secundaria'),
+        upload_to=get_upload_path('image_banner'),
+        null=True, blank=True
+    )
     banner_second_section_internal_title = models.CharField(
         _('Título interno de Sección Secundaria'), max_length=255, blank=True,
         null=True

@@ -638,9 +638,7 @@ class HomePageAdmin(admin.ModelAdmin):
                         "fields": (
                             'banner_second_section',
                             'banner_second_section_image',
-                            'banner_second_section_internal_title',
-                            'banner_second_section_internal_text',
-                            'banner_second_section_internal_image'
+                            'banner_second_section_file'
                         ),
                         "description": f"Campos disponibles para la versión {version}."
                     }
