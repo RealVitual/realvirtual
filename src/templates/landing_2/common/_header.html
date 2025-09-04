@@ -112,7 +112,8 @@
         </form>
     </div>
     <div class="g8Bottom tac">
-        <a href="" class="losePassword">Olvidé mi contraseña</a>
+        {% comment %} <a href="" class="losePassword">Olvidé mi contraseña</a> {% endcomment %}
+        <a href="{% url 'landing:recover_password' %}">Olvidé mi contraseña</a>
         <h4>No tengo una cuenta <a href="#" id="openRegistrarme">Registrarme</a></h4>
     </div>
 </div>

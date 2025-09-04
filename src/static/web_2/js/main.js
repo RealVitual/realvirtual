@@ -493,16 +493,16 @@ if(document.getElementsByClassName('headerButtonLogin')[0] || document.getElemen
 	let elHeaderButtonRegistrate = document.getElementsByClassName('headerButtonRegistrate')[0];
 	let elg8ClosePopup = document.getElementsByClassName('g8ClosePopup')
 	let elbuttonClosePopup = document.getElementsByClassName('buttonClosePopup')
-	let ellosePassword = document.getElementsByClassName('losePassword')[0]
-	let elformCorreoVerificacion = document.getElementsByClassName('formCorreoVerificacion')[0]
+	// let ellosePassword = document.getElementsByClassName('losePassword')[0]
+	// let elformCorreoVerificacion = document.getElementsByClassName('formCorreoVerificacion')[0]
 
 
-	ellosePassword.addEventListener('click',function(e){
-		e.preventDefault()
-		elformLogin.classList.remove('active')
-		elformCorreoVerificacion.classList.add('active')
+	// ellosePassword.addEventListener('click',function(e){
+	// 	e.preventDefault()
+	// 	elformLogin.classList.remove('active')
+	// 	elformCorreoVerificacion.classList.add('active')
 
-	})
+	// })
 	elHeaderButtonLogin.addEventListener('click', function(e){
 		e.preventDefault();
 		elformLogin.classList.add('active')

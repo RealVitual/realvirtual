@@ -1033,7 +1033,14 @@ class RecoverPasswordView(CreateView):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect(reverse('landing:generate_credential'))
+            return redirect(reverse('landing:home'))
+        if request.company:
+            company = request.company
+            if company.version and company.version.version != 1:
+                internal_view = self.template_name.split('/')[-1]
+                self.template_name = (
+                    f"landing_{company.version}/{internal_view}"
+                )
         context = {
             'form': self.get_form()
             }
@@ -1190,6 +1197,13 @@ class ResetPasswordView(CreateView):
         return form_kwargs
 
     def get(self, request, *args, **kwargs):
+        if request.company:
+            company = request.company
+            if company.version and company.version.version != 1:
+                internal_view = self.template_name.split('/')[-1]
+                self.template_name = (
+                    f"landing_{company.version}/{internal_view}"
+                )
         context = {
             'form': self.get_form()
             }
