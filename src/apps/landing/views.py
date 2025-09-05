@@ -30,6 +30,7 @@ from django.conf import settings
 from src.apps.users.permissions import (
     AuthenticatedPermission, )
 from django.db.models import Q
+from src.apps.tickets.models import Ticket
 
 
 class HomeView(CreateView):
@@ -214,7 +215,8 @@ def validate_register(request):
             register_form = RegisterForm(
                 initial=dict(domain=request.META['HTTP_HOST'],
                              company=request.company,
-                             access_type=access_type),
+                             access_type=access_type,
+                             domain_pdf=request.build_absolute_uri('/')[:-1]),
                 data=data,
                 prefix="register"
                 )
@@ -234,10 +236,6 @@ def validate_register(request):
                         company.refresh_from_db()
                         url = "select_preferences"
                         if not request.company.enable_preferences:
-                            generate_ticket_code(user, request.company)
-                            record_to_pdf(
-                                user, domain=request.build_absolute_uri('/')[:-1], # noqa
-                                company=request.company)
                             url = "ticket_view"
                     elif request.company.enable_credentials:
                         url = "generate_credential"
@@ -264,11 +262,12 @@ def validate_register(request):
 def confirm_register(request):
     if request.method == 'POST' and is_ajax(request=request):
         data = request.POST.dict()
-        print(data, 'DATA')
         register_form = RegisterForm(
             initial=dict(domain=request.META['HTTP_HOST'],
                          company=request.company,
-                         is_confirmation=True),
+                         is_confirmation=True,
+                         domain_pdf=request.build_absolute_uri('/')[:-1],
+                         ),
             data=data,
             prefix="register"
             )
@@ -287,10 +286,6 @@ def confirm_register(request):
                     company.refresh_from_db()
                     url = "select_preferences"
                     if not request.company.enable_preferences:
-                        generate_ticket_code(user, request.company)
-                        record_to_pdf(
-                            user, domain=request.build_absolute_uri('/')[:-1], # noqa
-                            company=request.company)
                         url = "ticket_view"
                 elif request.company.enable_credentials:
                     url = "generate_credential"
@@ -804,6 +799,22 @@ class CustomerTicket(APIView):
 
     def get(self, request, **kwargs):
         tickets = request.user.user_tickets.filter(company=request.company)
+        if not tickets:
+            return redirect(reverse('landing:home'))
+        ticket = tickets.last()
+        img = requests.get(ticket.pdf.url)
+        response = HttpResponse(img.content, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename=%s' % \
+            ticket.pdf.name.split('/')[-1]
+        return response
+
+
+class DownloadCustomerTicket(APIView):
+    permission_classes = []
+
+    def get(self, request, **kwargs):
+        hash_id = self.kwargs['hash_id']
+        tickets = Ticket.objects.filter(hash_id=hash_id)
         if not tickets:
             return redirect(reverse('landing:home'))
         ticket = tickets.last()

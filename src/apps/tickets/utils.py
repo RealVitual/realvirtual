@@ -3,6 +3,7 @@ import qrcode
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from .models import Ticket
 from src.apps.companies.models import UserCompany
+from uuid import uuid4
 
 
 def generate_ticket_code(user=None, company=None):
@@ -13,6 +14,8 @@ def generate_ticket_code(user=None, company=None):
         if existing_tickets:
             ticket = existing_tickets.last()
             ticket.full_name = user_company.full_name
+            if not ticket.hash_id:
+                ticket.hash_id = str(uuid4())
             ticket.save()
             return ticket
         ticket.user = user
@@ -21,6 +24,7 @@ def generate_ticket_code(user=None, company=None):
         ticket.document = user.document if user.document else ""
     ticket.company = company
     ticket.status = "c"
+    ticket.hash_id = str(uuid4())
     ticket.save()
     ticket.code = ticket.get_code()
 

@@ -11,8 +11,9 @@ from django.template import Context, Template
 import threading
 from django.core.mail import EmailMessage
 from django.core.mail import get_connection
-from .constants import forms_dict
 from src.apps.landing.utils import generate_certificate_pdf
+from src.apps.tickets.utils import generate_ticket_code
+from .utils import record_to_pdf
 
 
 def send_html_mail(subject, html_content, e_mail, receptors,
@@ -76,6 +77,7 @@ class RegisterForm(forms.ModelForm):
         print('INIT!!!')
         self.domain = kwargs["initial"].get("domain")
         self.company = kwargs["initial"].get("company")
+        self.domain_pdf = kwargs["initial"].get("domain_pdf")
         self.access_type = kwargs["initial"].get("access_type", None)
         self.is_confirmartion = kwargs["initial"].get('is_confirmation', False)
         self.in_person = None
@@ -146,22 +148,41 @@ class RegisterForm(forms.ModelForm):
         )
         user_company.set_password(password)
         user_company.save()
+        user = authenticate(username=customer.email,
+                            password=password)
 
+        print(self.domain)
+        print(self.domain_pdf)
+        if user_company.in_person and user_company.confirmed and not self.company.enable_preferences:
+            generate_ticket_code(user, self.company)
+            record_to_pdf(
+                user, domain=self.domain_pdf,
+                company=self.company
+            )
+        user = User.objects.get(email=customer.email)
+        tickets = user.user_tickets.filter(company=self.company)
+        url_ticket = ""
+        if tickets:
+            ticket = tickets.last()
+            url_ticket = "%s/download_ticket/%s" % (
+                self.domain_pdf, ticket.hash_id
+            )
+        print(url_ticket, 'url_ticket')
         # Send Email
+        print(confirmed, 'CONFIRMED!!!!!!!!!!!!!!!!!')
         if confirmed:
             mailing, created = EmailTemplate.objects.get_or_create(
                 company=self.company, email_type="CONFIRMED_REGISTER")
         else:
             mailing, created = EmailTemplate.objects.get_or_create(
                 company=self.company, email_type="REGISTER")
-        mailing, created = EmailTemplate.objects.get_or_create(
-            company=self.company, email_type="REGISTER")
         if mailing.from_email:
             context = dict()
             context["names"] = customer.names
             context["first_name"] = customer.names.split(" ")[0]
             context["email"] = customer.email
             context["company"] = self.company
+            context['url_ticket'] = url_ticket
 
             template = Template(mailing.html_code)
             html_content = template.render(Context(context))
@@ -175,8 +196,6 @@ class RegisterForm(forms.ModelForm):
                 subject, html_content, e_mail, [customer.email, ],
                 customer, self.company)
 
-        user = authenticate(username=customer.email,
-                            password=password)
         return dict(user=user, message="", user_company=user_company)
 
     def allow_custom_confirmation(self, data):
@@ -197,8 +216,9 @@ class RegisterForm(forms.ModelForm):
             found_invited_customer = CustomerInvitedLanding.objects.filter(
                 company=self.company, email=data.get('email'))
             if found_invited_customer:
-                self.in_person = found_invited_customer.in_person
-                self.virtual = found_invited_customer.virtual
+                invited = found_invited_customer[0]
+                self.in_person = invited.in_person
+                self.virtual = invited.virtual
                 self.custom_confirmation = True
                 return True, message, True
             else:
@@ -417,4 +437,3 @@ class CertificateForm(forms.Form):
             user__email=self.user, company_id=self.company_id)
         generate_certificate_pdf(user_company, full_name)
         return self.user
-

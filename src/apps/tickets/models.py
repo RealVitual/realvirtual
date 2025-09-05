@@ -29,6 +29,9 @@ class Ticket(UidMixin, BaseModel):
         on_delete=models.CASCADE, null=True)
     code = models.CharField(
         _('Código del ticket'), max_length=8, blank=True, default='')
+    hash_id = models.CharField(
+        _('Hash id'), max_length=255, blank=True, null=True
+    )
     qr = models.ImageField(
         verbose_name='Qr', upload_to=get_upload_path('tickets/qrcode'),
         null=True, blank=True)
