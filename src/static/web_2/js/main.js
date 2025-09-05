@@ -190,7 +190,7 @@ for(const clickVideo of elclickVideo){
 					let elVimeo = document.createElement('iframe');
 					elVimeo.classList.add('videoVimeo');
 					this.parentElement.appendChild(elVimeo);
-					elVimeo.src = `https://player.vimeo.com/video/${getIdVideo}?autoplay=1&muted=1`;
+					elVimeo.src = `https://player.vimeo.com/video/${getIdVideo}?fullscreen=1%autoplay=1&muted=1`;
 				}else{
 					let getUrlMp4 = this.dataset.urlvideo
 					let elMp4 = document.createElement('video')

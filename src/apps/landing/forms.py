@@ -134,11 +134,8 @@ class RegisterForm(forms.ModelForm):
         confirmed = True
         if self.company.confirm_user:
             confirmed = False
-        print(is_custom_confirmation)
-        print(custom_confirmation)
         if is_custom_confirmation:
             confirmed = custom_confirmation
-        print(confirmed, 'CONFIRMED!!')
         data['confirmed'] = confirmed
         data['user'] = User.objects.get(email=customer.email)
         data['company'] = self.company
@@ -151,6 +148,12 @@ class RegisterForm(forms.ModelForm):
         user_company.save()
 
         # Send Email
+        if confirmed:
+            mailing, created = EmailTemplate.objects.get_or_create(
+                company=self.company, email_type="CONFIRMED_REGISTER")
+        else:
+            mailing, created = EmailTemplate.objects.get_or_create(
+                company=self.company, email_type="REGISTER")
         mailing, created = EmailTemplate.objects.get_or_create(
             company=self.company, email_type="REGISTER")
         if mailing.from_email:
@@ -168,7 +171,6 @@ class RegisterForm(forms.ModelForm):
             msg = EmailMessage(
                 subject, html_content, e_mail, [customer.email, ])
             msg.content_subtype = "html"
-            print("ENVIAR CORREO ")
             send_html_mail(
                 subject, html_content, e_mail, [customer.email, ],
                 customer, self.company)

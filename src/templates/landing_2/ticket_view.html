@@ -1,0 +1,68 @@
+{% extends "landing_2/common/_base.html" %}
+
+{% block cssadicional %}
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b15">
+    <div class="grilla ">
+        <div class="b15Wrap f aic jcsb">
+            <div class="b15Left">
+                <h1 class="gTitle">E-Ticket</h1>
+                <h2>¡Tu e-ticket se creó con éxito!</h2>
+                <h3>Presenta tu invitación el dia del evento</h3>
+            </div>
+            <div class="b15RightContent">
+                <div class="b15Right f aic jcsb">
+                    <figure>
+                        <img src="{{ticket.qr.url}}" alt="" width="20">
+                    </figure>
+                    <div class="b15Info ">
+                        <div class="b15WrapInfo column2 column1-480" style="grid-gap: 25px;">
+                            <div class="b15Item">
+                                <h3><img src="{{domain}}/static/web/img/person-ticket.svg" alt="" width="20">Nombre</h3>
+                                <h4>{{user.full_name}}</h4>
+                            </div>
+                            <div class="b15Item">
+                                <h3><img src="{{domain}}/static/web/img/star-ticket.svg" alt="" width="20">Evento</h3>
+                                <h4>{{settings.event_name}}</h4>
+                            </div>
+                            <div class="b15Item">
+                                <h3><img src="{{domain}}/static/web/img/calendar-ticket.svg" alt="" width="20">Fecha y hora</h3>
+                                <h4>{{settings.event_date}}</h4>
+                                <h4>{{settings.event_time}}</h4>
+                            </div>
+                            <div class="b15Item">
+                                <h3><img src="{{domain}}/static/web/img/marker-ticket.svg" alt="" width="20">Lugar</h3>
+                                <h4>{{settings.event_address}}</h4>
+                            </div>
+                        </div>
+                        <div class="b15InfoBottom">
+                            <div class="b15Item">
+                                <h3><img src="{{domain}}/static/web/img/person-ticket.svg" alt="" width="20">Información adicional:</h3>
+                                <h4>{{settings.additional_information}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="b15Buttons">
+                    <a href="{% url 'landing:download_customer_ticket' %}" class="gButton">Descargar E-Ticket</a>
+                    {% if company.enable_credentials %}
+                    <a href="{% url 'landing:generate_credential' %}" class="gButton">Genera tu Credencial</a>
+                    {% endif %}
+                    <a href="{% url 'landing:event' %}" class="link">Ver evento</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+</script>
+{% endblock %}

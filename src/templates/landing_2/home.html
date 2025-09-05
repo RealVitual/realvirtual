@@ -142,7 +142,9 @@
                 <figure class="imgCover">
                     <img src="{{home_page.main_event_image.url}}" alt="">
                 </figure>
-                <a href="#" class="clickVideo box clickVideoBox " data-urlvideo="{{home_page.main_event_video_url}}"><i class="icon-play"></i></a>
+                <iframe src="{{home_page.main_event_video_url}}"
+                width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
+        </iframe>
             </div>
             <div class="b2Info">
                 <div class="gParrafo">
@@ -595,6 +597,7 @@ document.addEventListener('DOMContentLoaded', function () {
            if (data.success) {
                if(status == 1){
                    const s_button = document.querySelector(".agendar_" + data_id);
+                   s_button.classList.remove('agendar');
                    s_button.classList.add('agendado');
                    s_button.setAttribute('data-status', 0);
                    s_button.textContent = "Agendado";
@@ -602,6 +605,7 @@ document.addEventListener('DOMContentLoaded', function () {
                    const s_button = document.querySelector(".agendar_"+data_id);
                    console.log(s_button,' s_buttons_button')
                    s_button.classList.remove('agendado');
+                   s_button.classList.add('agendar');
                    s_button.setAttribute('data-status', 1);
                    s_button.textContent = "Agendar";
                }

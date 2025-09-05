@@ -550,6 +550,12 @@ class TicketView(View):
         return super(TicketView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, **kwargs):
+        company = self.request.company
+        if company.version and company.version.version != 1:
+            internal_view = self.template_name.split('/')[-1]
+            self.template_name = (
+                f"landing_{company.version}/{internal_view}"
+            )
         tickets = request.user.user_tickets.filter(company=request.company)
         if not tickets:
             return redirect(reverse('landing:home'))

@@ -13,6 +13,7 @@ class AccessType(Enum):
 
 class EmailType(Enum):
     REGISTER = 'Registro completado'
+    CONFIRMED_REGISTER = 'Registro usuario confirmado'
     PASSWORD = 'Recuperar/Reestablecer contraseña'
     SCHEDULE = 'Confirmación de agenda'
     WORKSHOP = 'Confirmación de agenda taller'
@@ -29,4 +30,3 @@ class FontType(Enum):
     @classmethod
     def choices(cls):
         return [(choice.name, choice.value) for choice in cls]
-
