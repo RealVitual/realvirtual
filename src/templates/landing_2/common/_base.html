@@ -69,7 +69,6 @@
     <!-- JSADD START -->
     {% block jsfinal %}{% endblock %}
     <!-- JSADD END -->
-    {{company.code_body|safe}}
     <script>
         'use strict';
         var register_data = "";
@@ -181,8 +180,9 @@
                                     setTimeout(()=>{
                                         window.location.href = data.redirect_url
                                     }, 20000)
-                                }
+                                {{company.code_body|safe}}
 
+                                }
                             }else{
                                 $('.save-register').disabled = false;
                                 $('.save-register').removeClass('isLoading');
