@@ -560,7 +560,7 @@ class FrequentlyQuestion(BaseModel):
         default=1
     )
     name = models.CharField(_('Nombre Pregunta'), max_length=255)
-    answer = models.TextField(
+    answer = RichTextField(
         _('Respuesta'), null=True, blank=True)
 
     class Meta:
