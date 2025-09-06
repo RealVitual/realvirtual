@@ -645,6 +645,9 @@ class HomePage(TimeStampedModel):
             _('Detalle Talleres image'),
             upload_to=get_upload_path('workshop_image'),
             null=True, blank=True)
+    workshop_section_url = models.CharField(
+        _('Talleres URL Sección'), max_length=255,
+        blank=True, null=True)
 
     frequently_questions_section_name = models.CharField(
         _('Preguntas Frecuentes nombre Sección'), max_length=255,

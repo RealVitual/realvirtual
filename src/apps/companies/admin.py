@@ -746,7 +746,8 @@ class HomePageAdmin(admin.ModelAdmin):
                     "Sección Talleres", {
                         "fields": (
                             'workshop_section_name',
-                            'workshop_section_image'
+                            'workshop_section_image',
+                            'workshop_section_url'
                         ),
                         "description": "Recuerde activar esta sección en configuración Header."
                     }

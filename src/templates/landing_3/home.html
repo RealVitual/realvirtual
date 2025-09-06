@@ -182,7 +182,11 @@
     <div class="grilla f aifs jcsb scrollItem fdc-768 ">
         <div class="b4Left">
             <div class="buttonGradient"> <span class="button">{{home_page.workshop_section_name}}</span></div>
-            <img src="{{home_page.workshop_section_image.url}}" alt="">
+            {% if home_page.workshop_section_url %}
+                <a href="{{home_page.workshop_section_url}}" target="_blank"><img src="{{home_page.workshop_section_image.url}}" alt=""></a>
+            {% else %}
+                <img src="{{home_page.workshop_section_image.url}}" alt="">
+            {% endif %}
         </div>
         <div class="b4Right">
             {% for row in workshops %}
