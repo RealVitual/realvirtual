@@ -40,7 +40,7 @@
 </section>
 
 {% if header_section.show_schedule_section %}
-<section class="b2 mY scrollWrap anclaBlock" id="acerca">
+<section class="b2 mY scrollWrap anclaBlock" id="agenda">
     <div class="grilla scrollItem">
         <div class="b2Wrap f aifs jscb fdc-768">
             <div class="b2Left">
@@ -87,7 +87,7 @@
 {% endif %}
 
 {% if header_section.show_exhibitors_section %}
-<section class="b3 mY scrollWrap" id="speakers">
+<section class="b3 mY scrollWrap" id="expositor">
     <div class="grilla">
         <div class="b3Top f aic jcsb scrollItem fdc-480 aifs-768">
             <h2>{{home_page.exhibitors_section_name}}</h2><br>
@@ -241,7 +241,7 @@
                     <a href="#" class="b5ItemClick arrowClick">{{row.name}}</a>
                     <div class="b5Info">
                         <div class="gParrafo">
-                            <p>{{row.answer}}</p>
+                            <p>{{row.answer|safe}}</p>
                         </div>
                     </div>
                 </div>
