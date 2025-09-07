@@ -6,7 +6,8 @@ from .models import (
     Company, HomePage, ItemMainEvent, Header,
     Footer, EmailSettings, EmailTemplate,
     UserCompany, Font, Enterprise, JobCompany,
-    Occupation, TemplateVersion, ItemModule, IndicatorsMainEvent)
+    Occupation, TemplateVersion, ItemModule,
+    IndicatorsMainEvent, FilterEmailDomain)
 from prettyjson import PrettyJSONWidget
 from django.utils.safestring import mark_safe
 from django.utils.html import format_html
@@ -344,6 +345,7 @@ class CompanyAdmin(admin.ModelAdmin):
                 (_('Confirmación de usuarios'), {
                     'fields': (
                         'confirm_user', 'message_confirm_user',
+                        'filter_domain_user', 'message_filter_domain_user',
                         'enable_credentials', 'enable_preferences'
                     )
                 }),
@@ -1151,3 +1153,10 @@ class EmailTemplateAdmin(admin.ModelAdmin):
         html_content = template.render(Context(context))
         res.write(html_content)
         return res
+
+
+@admin.register(FilterEmailDomain)
+class FilterEmailDomainAdmin(admin.ModelAdmin):
+    list_display = ('name', 'company', )
+    list_filter = ('company', )
+    search_fields = ('company__name', 'name')

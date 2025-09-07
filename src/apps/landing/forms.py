@@ -5,7 +5,7 @@ from .models import CustomerInvitedLanding, CredentialCustomer
 from .utils import decode_base64_file, generate_credential
 from uuid import uuid4
 from src.apps.users.models import User
-from src.apps.companies.models import UserCompany
+from src.apps.companies.models import UserCompany, FilterEmailDomain
 from src.apps.companies.models import EmailTemplate, EmailSettings
 from django.template import Context, Template
 import threading
@@ -64,9 +64,6 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = UserCompany
-        # fields = ('names', 'email', 'last_name', 'password', 'country',
-        #           'occupation', 'job_company', 'company_position',
-        #           'confirm_password')
         fields = ('email', 'password', 'confirm_password')
         widgets = {
             'password': forms.PasswordInput(),
@@ -74,7 +71,6 @@ class RegisterForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        print('INIT!!!')
         self.domain = kwargs["initial"].get("domain")
         self.company = kwargs["initial"].get("company")
         self.domain_pdf = kwargs["initial"].get("domain_pdf")
@@ -93,8 +89,6 @@ class RegisterForm(forms.ModelForm):
         data = self.cleaned_data
         email = data.get('email')
         allow_register, message, can_confirm = self.allow_register(data)
-        # if self.company.is_private_with_confirmation:
-        #     is_custom_confirmation, custom_confirmarion = self.allow_custom_confirmation(data)
         data['is_custom_confirmation'] = self.is_custom_confirmation
         data['custom_confirmation'] = self.custom_confirmation
         if not allow_register and not self.is_confirmartion:
@@ -210,8 +204,20 @@ class RegisterForm(forms.ModelForm):
     def allow_register(self, data):
         message = ""
         access_type = self.company.access_type
-        if self.company.is_private_with_confirmation:
-            print('IS PRIVATE WITH CONFIRMATION')
+        if self.company.filter_domain_user:
+            self.is_custom_confirmation = True
+            self.custom_confirmation = False
+            _email = data.get('email').lower()
+            valid_domains = FilterEmailDomain.objects.filter(
+                company=self.company, is_active=True
+            ).values_list('name', flat=True)
+            found_valid_email = next(
+                (domain for domain in valid_domains if domain in _email), None
+            )
+            if found_valid_email:
+                self.custom_confirmation = True
+            return True, message, True
+        elif self.company.is_private_with_confirmation:
             self.is_custom_confirmation = True
             found_invited_customer = CustomerInvitedLanding.objects.filter(
                 company=self.company, email=data.get('email'))

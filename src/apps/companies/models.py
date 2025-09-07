@@ -161,6 +161,11 @@ class Company(BaseModel):
     confirm_user = models.BooleanField(_('Confirmar Usuarios'), default=False)
     message_confirm_user = RichTextField(
         _('Mensaje confirmación'), null=True, blank=True)
+    filter_domain_user = models.BooleanField(
+        _('Filtrar registro por dominio en correo'),
+        default=False)
+    message_filter_domain_user = models.TextField(
+        _('Mensaje Usuario filtrado'), null=True, blank=True)
     title_closed_in_person_register = models.CharField(
         _('Titulo Cierre registro presencial'),
         max_length=255, null=True, blank=True
@@ -899,7 +904,6 @@ class UserCompany(BaseModel):
         upload_to=get_upload_path('certificates'),
         null=True, blank=True)
 
-
     uuid_hash = models.CharField(
         'UUID',
         max_length=36,
@@ -947,3 +951,19 @@ class UserCompany(BaseModel):
         if not self.full_name:
             self.full_name = f'{self.names} {self.last_name}'
         super(UserCompany, self).save(*args, **kwargs)
+
+
+class FilterEmailDomain(BaseModel):
+    company = models.ForeignKey(
+        HomePage, related_name="company_filtered_email_domains",
+        on_delete=models.CASCADE)
+    name = models.CharField(
+            _('Nombre dominio'), max_length=100
+    )
+
+    class Meta:
+        verbose_name = _('Dominio de correo')
+        verbose_name_plural = _('Dominios de correo')
+
+    def __str__(self):
+        return self.name
