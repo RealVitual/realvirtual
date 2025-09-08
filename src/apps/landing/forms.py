@@ -91,6 +91,7 @@ class RegisterForm(forms.ModelForm):
         allow_register, message, can_confirm = self.allow_register(data)
         data['is_custom_confirmation'] = self.is_custom_confirmation
         data['custom_confirmation'] = self.custom_confirmation
+        data['message'] = message
         if not allow_register and not self.is_confirmartion:
             raise forms.ValidationError(dict(message=message,
                                              can_confirm=can_confirm))
@@ -113,7 +114,7 @@ class RegisterForm(forms.ModelForm):
         data.pop('confirm_email', None)
         data.pop('confirm_password', None)
         data.pop('can_confirm', None)
-        data.pop('message', None)
+        message = data.pop('message', None)
         data['in_person'] = self.in_person
         data['virtual'] = self.virtual
         data['email'] = data['email'].lower()
@@ -147,12 +148,6 @@ class RegisterForm(forms.ModelForm):
 
         print(self.domain)
         print(self.domain_pdf)
-        if user_company.in_person and user_company.confirmed and not self.company.enable_preferences:
-            generate_ticket_code(user, self.company)
-            record_to_pdf(
-                user, domain=self.domain_pdf,
-                company=self.company
-            )
         user = User.objects.get(email=customer.email)
         tickets = user.user_tickets.filter(company=self.company)
         url_ticket = ""
@@ -162,21 +157,56 @@ class RegisterForm(forms.ModelForm):
                 self.domain_pdf, ticket.hash_id
             )
         print(url_ticket, 'url_ticket')
-        # Send Email
         print(confirmed, 'CONFIRMED!!!!!!!!!!!!!!!!!')
-        if confirmed:
-            mailing, created = EmailTemplate.objects.get_or_create(
-                company=self.company, email_type="CONFIRMED_REGISTER")
-        else:
+        create_ticket_pdf = False
+        # Usa filtro con dominios
+        if self.company.filter_domain_user:
+            if user_company.in_person:
+                create_ticket_pdf = True
+                mailing, created = EmailTemplate.objects.get_or_create(
+                    company=self.company, email_type="TO_CONFIRM_USER")
+            else:
+                mailing, created = EmailTemplate.objects.get_or_create(
+                    company=self.company, email_type="REGISTER")
+        # Privado con opción a ser confirmados
+        elif self.company.is_private_with_confirmation:
+            if user_company.in_person and user_company.confirmed:
+                if not self.company.enable_preferences:
+                    create_ticket_pdf = True
+                # Envia correo para usuario inscritos
+                mailing, created = EmailTemplate.objects.get_or_create(
+                    company=self.company, email_type="CONFIRMED_REGISTER")
+            else:
+                # envia correo para usuarios preeinscritos
+                mailing, created = EmailTemplate.objects.get_or_create(
+                    company=self.company, email_type="REGISTER")
+        elif user_company.in_person and user_company.confirmed:
+            if not self.company.enable_preferences:
+                create_ticket_pdf = True
             mailing, created = EmailTemplate.objects.get_or_create(
                 company=self.company, email_type="REGISTER")
-        if mailing.from_email:
+        elif user_company.virtual and user_company.confirmed:
+            mailing, created = EmailTemplate.objects.get_or_create(
+                company=self.company, email_type="REGISTER")
+        if create_ticket_pdf:
+            generate_ticket_code(user, self.company)
+            record_to_pdf(
+                user, domain=self.domain_pdf,
+                company=self.company
+            )
+
+        confirmation_url = "%s/confirmation_user/%s" % (
+            self.domain_pdf, user_company.hash_id
+        )
+        # Send Email
+        if mailing and mailing.from_email:
             context = dict()
             context["names"] = customer.names
             context["first_name"] = customer.names.split(" ")[0]
             context["email"] = customer.email
             context["company"] = self.company
             context['url_ticket'] = url_ticket
+            context['confirmation_url'] = confirmation_url
 
             template = Template(mailing.html_code)
             html_content = template.render(Context(context))
@@ -190,7 +220,7 @@ class RegisterForm(forms.ModelForm):
                 subject, html_content, e_mail, [customer.email, ],
                 customer, self.company)
 
-        return dict(user=user, message="", user_company=user_company)
+        return dict(user=user, message=message, user_company=user_company)
 
     def allow_custom_confirmation(self, data):
         self.is_custom_confirmation = True
@@ -215,10 +245,17 @@ class RegisterForm(forms.ModelForm):
                 (domain for domain in valid_domains if domain in _email), None
             )
             if found_valid_email:
-                self.custom_confirmation = True
+                message = self.company.message_filter_found_domain_user
+                self.in_person = True
+                self.virtual = True
+            else:
+                self.in_person = False
+                self.virtual = True
+                message = self.company.message_filter_domain_user
             return True, message, True
         elif self.company.is_private_with_confirmation:
             self.is_custom_confirmation = True
+            self.custom_confirmation = False
             found_invited_customer = CustomerInvitedLanding.objects.filter(
                 company=self.company, email=data.get('email'))
             if found_invited_customer:
@@ -228,7 +265,7 @@ class RegisterForm(forms.ModelForm):
                 self.custom_confirmation = True
                 return True, message, True
             else:
-                message = "Te encuentras en la lista de espera para poder asistir al evento"  # noqa
+                message = self.company.message_confirm_user  # noqa
                 self.in_person = True
                 self.virtual = False
                 return True, message, True

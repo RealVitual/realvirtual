@@ -1,0 +1,215 @@
+{% extends "landing_3/common/_base.html" %}
+
+{% block cssadicional %}
+<link rel="stylesheet" href="/static/web/js/croppie/croppie.min.css">
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b14 mY scrollWrap">
+    <div class="grilla scrollItem">
+        <div class="b10Wrap f aifs jcc">
+            <div class="b10Left scrollItem">
+                <h3 class="gTitle">Crea tu credencial</h3>
+                <label for="" class="gParrafo">Ingresa tu nombre, apellido y sube tu foto.</label>
+                <form action="" class="g8Form" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" id="uploadText" name="{{form.profile_image.html_name}}">
+                    <div class="g8Input b10InputText">
+                        <span>Nombre y apellido</span>
+                        <input type="text" id="namePerson" class="g8Box validate[required,custom[onlyLetterSp]]" name="{{form.names.html_name}}">
+                    </div>
+                    <div class="b10ContentFile">
+                        <input type="file" id="fileInput" accept="image/jpeg, image/png">
+                        <label for="" class="b10WrapFile f aic jcc fdc">
+                            <div class="b10FileImage f aic jcc">
+                                <img src="/static/web/img/icon-image.png" alt="">
+                                <h4>Subir una foto</h4>
+                            </div>
+                            <h5>Formato: JPEG y PNG</h5>
+                        </label>
+                    </div>
+                    <div class="b10ValidateFile">
+                        <div class="b10FileNameCheck f aic jcfs" >
+                            <img src="/static/web/img/check.svg" alt="">
+                            <h4 class="b10FileName"></h4>
+                        </div>
+                        <a href="#" class="b10CleanFile">
+                            <img src="/static/web/img/clear.svg" alt="">
+                        </a>
+                    </div>
+                    <button type="submit" class="gButton b10GenerateCred">Generar credencial</button>
+                    <a href="{% url 'landing:event' %}" class="b10Omitir">Omitir</a>
+                </form>
+            </div>
+            <div class="b10Right scrollItem">
+                <figure class="imgCover">
+                    <img src="{{credential_settings.image_credential.url}}" width="1920" height="713"  alt="Myimage">
+                </figure>
+                <div class="b10ContentInfo">
+                    <h5>{{credential_settings.title_credential|default:""}}</h5>
+                    {% if credential_settings.default_avatar %}
+                        <div id="result" data-image-default="{{credential_settings.default_avatar.url}}">
+                            <img src="{{credential_settings.default_avatar.url}}" alt="" class="croppieImage">
+                        </div>
+                        <h6 class="b10NamePersonCred">Tu nombre</h6>
+                    {% else %}
+                        <div id="result" data-image-default="/static/web/img/credencial-imagen-default.png">
+                            <img src="/static/web/img/credencial-imagen-default.png" alt="" class="croppieImage">
+                        </div>
+                        <h6 class="b10NamePersonCred">Tu nombre</h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<div class="b10Popup">
+    <div id="croppieContainer"></div>
+    <!-- <input type="file" id="fileInput"> -->
+    <div id="croppieContainer"></div>
+    <div class="b10Buttons f aic jcc">
+        <button id="cropBtn">Aceptar</button>
+        <button class="b10CerrarPopup">Cancelar</button>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+{% block jsfinal %}
+<script src="/static/web/js/croppie/croppie.min.js"></script>
+<script type="text/javascript">
+    const elb10Popup = document.getElementsByClassName('b10Popup')[0]
+    const elb10CerrarPopup = document.getElementsByClassName('b10CerrarPopup')[0]
+    const elb10FileName = document.getElementsByClassName('b10FileName')[0]
+    const elb10ValidateFile = document.getElementsByClassName('b10ValidateFile')[0]
+    const elb10ContentFile = document.getElementsByClassName('b10ContentFile')[0]
+    const elb10CleanFile = document.getElementsByClassName('b10CleanFile')[0]
+    const elb10NamePersonCred = document.getElementsByClassName('b10NamePersonCred')[0]
+    const elb10GenerateCred = document.getElementsByClassName('b10GenerateCred')[0]
+
+    const fileInput = document.getElementById('fileInput');
+    const namePerson = document.getElementById('namePerson');
+    const croppieContainer = document.getElementById('croppieContainer');
+    const cropBtn = document.getElementById('cropBtn');
+    const resultContainer = document.getElementById('result');
+
+    let croppieInstance = null;
+
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        elb10FileName.innerText = file.name
+        elb10Popup.classList.add('active')
+        OVERLAY.classList.add('active')
+        OVERLAY.style.zIndex = 500
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                if (croppieInstance) {
+                    croppieInstance.destroy();
+                }
+                if(window.innerWidth > 768){
+                    croppieInstance = new Croppie(croppieContainer, {
+                        viewport: { width: 400, height: 400,type:'circle' },
+                        boundary: { width: 700, height: 500 },
+                        showZoomer: true,
+                    });
+                }else{
+                    croppieInstance = new Croppie(croppieContainer, {
+                        viewport: { width: 280, height: 280,type:'circle' },
+                        boundary: { width: 'auto', height: 400 },
+                        showZoomer: true,
+                    });
+                }
+                croppieInstance.bind({
+                    url: event.target.result
+                });
+            };
+            img.src = event.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    //Boton aceptar el recorte
+    cropBtn.addEventListener('click', function() {
+        croppieInstance.result('base64').then(function(base64) {
+            resultContainer.innerHTML = `<img src="${base64}" alt="Cropped Image">`;
+        });
+        elb10Popup.classList.remove('active')
+        OVERLAY.classList.remove('active')
+        OVERLAY.removeAttribute('style')
+        elb10ValidateFile.classList.add('active')
+        elb10ContentFile.classList.add('hide')
+        setTimeout(()=>{
+            let elresult = resultContainer.children[0].getAttribute("src");
+            console.log(elresult);
+            $("#uploadText").attr('value', elresult);
+        },500)
+        detectedButton()
+    });
+    //Boton cancelar el recorte
+    elb10CerrarPopup.addEventListener('click', function(e) {
+        e.preventDefault();
+        elb10Popup.classList.remove('active')
+        OVERLAY.classList.remove('active')
+        OVERLAY.removeAttribute('style')
+        elb10ValidateFile.classList.remove('active')
+        elb10ContentFile.classList.remove('hide')
+        elb10FileName.innerText = "";
+    });
+    //Boton limpiar el recorte
+    elb10CleanFile.addEventListener('click', function(e) {
+        e.preventDefault();
+        elb10FileName.innerText = "";
+        elb10ValidateFile.classList.remove('active')
+        elb10ContentFile.classList.remove('hide')
+        let getImageDefault = resultContainer.dataset.imageDefault
+        resultContainer.children[0].setAttribute('src',getImageDefault)
+        fileInput.value = ""
+        detectedButton()
+    });
+
+
+    namePerson.addEventListener('input',function(e){
+        let teclaPresionada = event.target.value
+        elb10NamePersonCred.innerText = teclaPresionada
+        if(teclaPresionada.length < 1){
+            setTimeout(()=>{
+                elb10GenerateCred.classList.remove('active')
+            },300)
+        }
+        detectedButton()
+    })
+
+    const detectedButton = () => {
+        if(document.getElementsByClassName('b10InputText')[0].classList.contains('active')){
+            elb10GenerateCred.classList.add('active')
+        }else{
+            elb10GenerateCred.classList.remove('active')
+        }
+    }
+
+    $('.b10GenerateCred').click(function(e){
+        e.preventDefault();
+        var item = $(this);
+        var valid = item.closest('form').validationEngine('validate');
+        var form = $(this).closest('form');
+        if (!valid) {
+            console.log('credencial incorrecta')
+            } else {
+                $('.b10GenerateCred').addClass('isLoading');
+                form.submit()
+        }
+    });
+</script>
+{% endblock %}

@@ -173,7 +173,9 @@
             <p class="b3PopupDate">16 de enero</p>
             <p class="b3PopupHour">10:00</p>
         </div>
+        {% if company_user.confirmed %}
         <a href="#" class="b3PopupButton schedule_workshop"></a>
+        {% endif %}
     </div>
 </div>
 
@@ -202,7 +204,11 @@
                 data-text="<p>{{row.description}}</p>"
                 data-taller="{{row.title}}"
                 data-taller-name="{{row.name}}"
-                data-url-inscribete="{{row.id}}"
+                {% if company_user.confirmed %}
+                    data-url-inscribete="{{row.id}}"
+                {% else %}
+                    data-url-inscribete="0"
+                {% endif %}
                 {% if row.scheduled %}
                     data-inscrito="true"
                 {% else %}
@@ -351,7 +357,7 @@
     const popupText = popup.querySelector(".b3PopupText");
     const popupTaller = popup.querySelector(".b3PopupTaller");
     const popupTallerName = popup.querySelector(".b3PopupTallerName"); 
-    const popupButton = popup.querySelector(".b3PopupButton"); 
+    const popupButton = popup.querySelector(".b3PopupButton");
     const popupDate = popup.querySelector(".b3PopupDate"); 
     const popupHour = popup.querySelector(".b3PopupHour"); 
 
@@ -371,7 +377,9 @@
             const date = item.getAttribute('data-hour')
             const hour = item.getAttribute('data-date')
 
-            popupButton.href = ""
+            if(popupButton){
+                popupButton.href = ""
+            }
             popupTaller.textContent = ""
             popupTallerName.textContent = ""
 
@@ -456,34 +464,36 @@
             }
             // Taller Nombre
             if (tallerName) {
-                
                 popupTallerName.style.display = "block";
                 popupTallerName.textContent = tallerName || "";
             } else {
                 popupTallerName.style.display = "none";
             }
             // Url de inscrpciòn
-            if(urlIncribete){
-                popupButton.style.display = "flex";
-                popupButton.href = urlIncribete || "";
-                popupButton.setAttribute('data-id', urlIncribete);
-                if(booleanInscrito === "true"){
-                    console.log('true')
-                    popupButton.classList.add('inscrito')
-                    popupButton.textContent = 'Inscrito' || "";
-                    popupButton.setAttribute('data-status', 0);
-            }else{
-                    popupButton.setAttribute('data-status', 1);
-                    console.log('false')
-                    popupButton.classList.remove('inscrito')
-                    popupButton.textContent = 'Inscríbete' || "";
+            if(popupButton){
+                if(urlIncribete){
+                    popupButton.style.display = "flex";
+                    popupButton.href = urlIncribete || "";
+                    popupButton.setAttribute('data-id', urlIncribete);
+                    if(booleanInscrito === "true"){
+                        console.log('true')
+                        popupButton.classList.add('inscrito')
+                        popupButton.textContent = 'Inscrito' || "";
+                        popupButton.setAttribute('data-status', 0);
+                    }else{
+                        popupButton.setAttribute('data-status', 1);
+                        console.log('false')
+                        popupButton.classList.remove('inscrito')
+                        popupButton.textContent = 'Inscríbete' || "";
+                    }
+                    if(booleanAforo === "false"){
+                        popupButton.textContent = 'Agotado' || "";
+                        popupButton.classList.add('aforo-close')
+                    }
+                }else{
+                    $('.schedule_workshop').hide();
+                    popupButton.style.display = "none";
                 }
-                if(booleanAforo === "false"){
-                    popupButton.textContent = 'Agotado' || "";
-                    popupButton.classList.add('aforo-close')
-                }
-            }else{
-                popupButton.style.display = "none";
             }
             popup.classList.add("active");
             OVERLAY.classList.add("active");

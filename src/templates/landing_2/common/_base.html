@@ -153,6 +153,7 @@
                                 }, 3000)
                             }
                             if(data.success){
+                                console.log(data, 'DATA!!!')
                                 window.dataLayer.push({
                                     'event': 'formulario',
                                     'email': register_data['email'],
@@ -175,7 +176,6 @@
                                     $('.message-waiting-confirmation').html(data.confirmed_message)
                                     $('.formRegistro').removeClass('active')
                                     $('.formRegistroExitoso').addClass('active')
-                                    $('.waiting-confirmation-form').show();
                                     setTimeout(()=>{
                                         window.location.href = data.redirect_url
                                     }, 20000)

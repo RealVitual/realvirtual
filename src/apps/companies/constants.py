@@ -14,6 +14,7 @@ class AccessType(Enum):
 class EmailType(Enum):
     REGISTER = 'Registro completado'
     CONFIRMED_REGISTER = 'Registro usuario confirmado'
+    TO_CONFIRM_USER = 'Usuario por confirmar'
     PASSWORD = 'Recuperar/Reestablecer contraseña'
     SCHEDULE = 'Confirmación de agenda'
     WORKSHOP = 'Confirmación de agenda taller'

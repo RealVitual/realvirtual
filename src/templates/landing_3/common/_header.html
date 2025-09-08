@@ -5,7 +5,7 @@
 <header class="header {% if logged_user %}sessionOn{% else %}sessionOff{% endif %}">
     <div class="grilla f aic jcsb">
         <div class="headerLeft">
-            <a href="#" class="headerLogo">
+            <a href="{% url 'landing:home' %}" class="headerLogo">
                 <figure>
                     <img src="{{request.company.logo.url}}" alt="">
                 </figure>
@@ -43,7 +43,7 @@
                 <div class="headerOptionLogin f aic jcfe">
                     <a href="#" class="headerNameUser arrowClick">Hola {{company_user.names}}</a>
                     <ul>
-                        {% if company_user.in_person %}
+                        {% if company_user.in_person and company_user.confirmed %}
                             <li><a class="link" href="{{ticket_url}}">Mi Ticket</a></li>
                         {% endif %}
                         {% if company_user.virtual or request.company.enable_credentials %}
@@ -343,10 +343,8 @@
     <!-- <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a> -->
     <div class="g8PopupContent">
         <h3>Registro exitoso</h3>
-        <div class="gParrafo">
-            <p>La preinscripción se ha realizado correctamente.
-                Dado que este evento cuenta con aforo limitado, en las próximas semanas te informaremos vía correo electrónico si tu solicitud fue aceptada.</p>
+        <div class="gParrafo message-waiting-confirmation">
         </div>
-        <a href="#" class="gButton buttonClosePopup">Ok</a>
+        <a href="{% url 'landing:home' %}" class="gButton">Ok</a>
     </div>
 </div>

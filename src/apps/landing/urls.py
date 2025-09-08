@@ -8,7 +8,7 @@ from .views import (
     save_networking_preferences, NetworkingUsersView, RecoverPasswordView,
     ScheduledEventsView, TicketViewPDF, ResetPasswordView, CertificateView,
     CloseLandingView, GenerateCertificateView, BlogListView, BlogDetailView,
-    DownloadCustomerTicket)
+    DownloadCustomerTicket, ConfirmUser)
 
 app_name = 'landing'
 
@@ -67,4 +67,6 @@ urlpatterns = [
           BlogDetailView.as_view(), name='blog_detail'),
      path('download_ticket/<hash_id>',
           DownloadCustomerTicket.as_view(), name='download_ticket'),
+     path('confirmation_user/<hash_id>',
+          ConfirmUser.as_view(), name='confirmation_user'),
 ]

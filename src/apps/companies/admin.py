@@ -346,6 +346,7 @@ class CompanyAdmin(admin.ModelAdmin):
                     'fields': (
                         'confirm_user', 'message_confirm_user',
                         'filter_domain_user', 'message_filter_domain_user',
+                        'message_filter_found_domain_user',
                         'enable_credentials', 'enable_preferences'
                     )
                 }),
@@ -1071,10 +1072,10 @@ class EmailTemplateAdmin(admin.ModelAdmin):
     fields = (
         'company', 'email_type', 'name', 'from_email', 'from_name', 'subject',
         'html_code', 'html_preview')
-    list_display = ('name', 'subject', 'company',
+    list_display = ('email_type', 'name', 'subject', 'company',
                     'is_active', 'from_email')
     search_fields = ('company__name', )
-    list_filter = ('company__enterprise', 'company')
+    list_filter = ('company__enterprise', 'company', 'email_type')
     readonly_fields = (
         'html_preview', )
 

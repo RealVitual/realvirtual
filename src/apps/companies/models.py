@@ -166,6 +166,8 @@ class Company(BaseModel):
         default=False)
     message_filter_domain_user = models.TextField(
         _('Mensaje Usuario filtrado'), null=True, blank=True)
+    message_filter_found_domain_user = models.TextField(
+        _('Mensaje Usuario encontrado filtrado'), null=True, blank=True)
     title_closed_in_person_register = models.CharField(
         _('Titulo Cierre registro presencial'),
         max_length=255, null=True, blank=True
@@ -843,6 +845,9 @@ class Occupation(BaseModel):
 
 
 class UserCompany(BaseModel):
+    hash_id = models.CharField(
+        _('Hash id'), max_length=255, blank=True, null=True
+    )
     is_admin = models.BooleanField(_('Es admin'), default=False)
     email = models.EmailField()
     company = models.ForeignKey(Company, related_name="company_users",
@@ -950,12 +955,14 @@ class UserCompany(BaseModel):
             self.uuid_hash = str(uuid4())
         if not self.full_name:
             self.full_name = f'{self.names} {self.last_name}'
+        if not self.hash_id:
+            self.hash_id = str(uuid4())
         super(UserCompany, self).save(*args, **kwargs)
 
 
 class FilterEmailDomain(BaseModel):
     company = models.ForeignKey(
-        HomePage, related_name="company_filtered_email_domains",
+        Company, related_name="company_filtered_email_domains",
         on_delete=models.CASCADE)
     name = models.CharField(
             _('Nombre dominio'), max_length=100

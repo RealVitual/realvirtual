@@ -226,6 +226,7 @@ def validate_register(request):
                 form_object = register_form.save()
                 user = form_object.get('user', None)
                 user_company = form_object.get('user_company', None)
+                message = form_object.get('message', None)
                 if user:
                     login(request, user)
                     url = 'event'
@@ -237,13 +238,15 @@ def validate_register(request):
                         url = "select_preferences"
                         if not request.company.enable_preferences:
                             url = "ticket_view"
+                    elif request.company.filter_domain_user and user_company.in_person:
+                        url = "home"
                     elif request.company.enable_credentials:
                         url = "generate_credential"
                     else:
                         url = "home"
                     response_data['success'] = 1
                     response_data['confirmed'] = user_company.confirmed
-                    response_data['confirmed_message'] = request.company.message_confirm_user # noqa
+                    response_data['confirmed_message'] = message # noqa
                     response_data['redirect_url'] = reverse('landing:%s' % url)
                 del request.session['used_recaptcha']
             else:
@@ -589,10 +592,19 @@ class GenerateCredentialView(CreateView):
         self.user = request.user
         user_company = UserCompany.objects.get(company=company,
                                                user=request.user)
-        if not user_company.confirmed:
+        if company.filter_domain_user and \
+                company.enable_credentials and user_company.virtual:
+            pass
+        elif not user_company.confirmed:
             return redirect(reverse('landing:home'))
         if not request.company.enable_credentials:
             return redirect(reverse('landing:event'))
+        if company.version and company.version.version != 1:
+            internal_view = self.template_name.split('/')[-1]
+            self.template_name = (
+                f"landing_{company.version}/{internal_view}"
+            )
+
         return super(GenerateCredentialView, self).dispatch(request, *args, **kwargs) # noqa
 
     def get(self, request, *args, **kwargs):
@@ -823,6 +835,20 @@ class DownloadCustomerTicket(APIView):
         response['Content-Disposition'] = 'attachment; filename=%s' % \
             ticket.pdf.name.split('/')[-1]
         return response
+
+
+class ConfirmUser(APIView):
+    permission_classes = []
+
+    def get(self, request, **kwargs):
+        hash_id = self.kwargs['hash_id']
+        users_company = UserCompany.objects.filter(hash_id=hash_id)
+        if not users_company:
+            return redirect(reverse('landing:home'))
+        user_company = users_company.last()
+        user_company.confirmed = True
+        user_company.save()
+        return redirect(reverse('landing:home'))
 
 
 class SurveyView(View):
