@@ -8,6 +8,7 @@
 
 {% block content %}
 
+<a href="#" class="gAncla icon-arrow-right" id="backToTop"></a>
 
 <section class="b1">
     <!-- <picture class="imgCover">
@@ -38,6 +39,31 @@
     </div>
     <img src="{{home_page.banner_footer_section_image.url}}" alt="" class="imgAbsolute">
 </section>
+{% if company.use_counter%}
+    <section class="b22">
+        <div class="grilla">
+            <h3>{{company.counter_text}}</h3>
+            <div id="contador" data-date="{{company.set_counter_time}}">
+                <div class="elemento">
+                    <span id="dias">00</span>
+                    <p>DÍAS</p>
+                </div>
+                <div class="elemento">
+                    <span id="horas">00</span>
+                    <p>HORAS</p>
+                </div>
+                <div class="elemento">
+                    <span id="minutos">00</span>
+                    <p>MINUTOS</p>
+                </div>
+                <div class="elemento">
+                    <span id="segundos">00</span>
+                    <p>SEGUNDOS</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
 
 {% if header_section.show_schedule_section %}
 <section class="b2 mY scrollWrap anclaBlock" id="agenda">
@@ -56,27 +82,31 @@
                         </div>
                         <div class="b2RightInfo">
                             {% comment %} <p class="hour">{{schedule.start_time}} a {{schedule.end_time}}</p> {% endcomment %}
-                            {% for exhibitor in schedule.get_exhibitors %}
-                                {% if exhibitor.flag_image %}
-                                    <img src="{{exhibitor.flag_image.url}}" alt="">
-                                {% else %}
-                                    <img src="/static/web_3/img/credicorp/bandera-per.png" alt="">
-                                {% endif %}
-                                <div class="b2Name b3ItemClickPopup"
-                                data-image="{{exhibitor.image.url}}"
-                                data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png"
-                                {% if exhibitor.flag_image %}
-                                    data-pais="{{exhibitor.flag_image.url}}"
-                                {% else %}
-                                    data-pais="/static/web_3/img/credicorp/bandera-per.png"
-                                {% endif %}
-                                data-name="{{exhibitor.name}}"
-                                data-cargo="{{exhibitor.title}} - {{exhibitor.organization}}"
-                                data-text="<p>{{exhibitor.description}}</p>">
-                                    <p class="name">{{exhibitor.name}}</p>
-                                    <p class="cargo">{{exhibitor.organization}}</p>
-                                </div>
-                            {% endfor %}
+                            <div class="b2ExpositorWrap">
+                                {% for exhibitor in schedule.get_exhibitors %}
+                                    <div class="b2Expositor f aic jcfs">
+                                        {% if exhibitor.flag_image %}
+                                            <img src="{{exhibitor.flag_image.url}}" alt="">
+                                        {% else %}
+                                            <img src="/static/web_3/img/credicorp/bandera-per.png" alt="">
+                                        {% endif %}
+                                        <div class="b2Name b3ItemClickPopup"
+                                        data-image="{{exhibitor.image.url}}"
+                                        data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png"
+                                        {% if exhibitor.flag_image %}
+                                            data-pais="{{exhibitor.flag_image.url}}"
+                                        {% else %}
+                                            data-pais="/static/web_3/img/credicorp/bandera-per.png"
+                                        {% endif %}
+                                        data-name="{{exhibitor.name}}"
+                                        data-cargo="{{exhibitor.title}} - {{exhibitor.organization}}"
+                                        data-text="<p>{{exhibitor.description}}</p>">
+                                            <p class="name">{{exhibitor.name}}</p>
+                                            <p class="cargo">{{exhibitor.organization}}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
@@ -545,5 +575,83 @@ $('.schedule_workshop').click(function(e){
 
 eventClickAccordion("b5ItemClick")
 
+if(document.getElementsByClassName('b22')[0]){
+    function actualizarContador() {
+        const fechaObjetivoString = document.getElementById("contador").getAttribute("data-date");
+        const [fecha, hora] = fechaObjetivoString.split(' ');
+        const [dia, mes, año] = fecha.split('-');
+        const fechaObjetivoISO = `${año}-${mes}-${dia}T${hora}`;
+        const fechaObjetivo = new Date(fechaObjetivoISO);
+        const ahora = new Date();
+        const diferencia = fechaObjetivo - ahora;
+        if (diferencia > 0) {
+            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+            document.getElementById("dias").innerText = dias.toString().padStart(2, "0");
+            document.getElementById("horas").innerText = horas.toString().padStart(2, "0");
+            document.getElementById("minutos").innerText = minutos.toString().padStart(2, "0");
+            document.getElementById("segundos").innerText = segundos.toString().padStart(2, "0");
+        } else {
+            document.getElementById("dias").innerText = "00";
+            document.getElementById("horas").innerText = "00";
+            document.getElementById("minutos").innerText = "00";
+            document.getElementById("segundos").innerText = "00";
+        }
+    }
+    setInterval(actualizarContador, 1000);
+}
+//NUEVO ANCLA SCROLLTOP ********************
+const backToTop = document.getElementById("backToTop");
+const footer = document.querySelector("#preguntas"); 
+
+window.addEventListener("scroll", () => {
+  const footerTop = footer.getBoundingClientRect().top;
+  const windowHeight = window.innerHeight;
+
+  if (footerTop <= windowHeight) {
+    backToTop.classList.add("show");
+  } else {
+    backToTop.classList.remove("show");
+  }
+});
+
+backToTop.addEventListener("click", () => {
+  smoothScrollToTop();
+});
+
+function smoothScrollToTop() {
+  const start = window.scrollY;
+  const duration = 600; 
+  const startTime = performance.now();
+
+  function scrollStep(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    window.scrollTo(0, start * (1 - progress));
+
+    if (progress < 1) {
+      requestAnimationFrame(scrollStep);
+    }
+  }
+
+  requestAnimationFrame(scrollStep);
+}
+
+
+let elb3PopupButton = document.getElementsByClassName('b3PopupButton')[0]
+let elb2PopupConfirm = document.getElementsByClassName('b2PopupConfirm')[0]
+let elb2cancel = document.getElementsByClassName('b2cancel')[0]
+
+elb3PopupButton.addEventListener('click',function(e){
+    e.preventDefault()
+    elb2PopupConfirm.classList.add('active')
+})
+
+elb2cancel.addEventListener('click',function(e){
+    e.preventDefault()
+    elb2PopupConfirm.classList.remove('active')
+})
 </script>
 {% endblock %}
