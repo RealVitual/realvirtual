@@ -22,7 +22,7 @@
                 {% if header_section.show_exhibitors_section %}
                 <a href="#expositor" class="headerAnclaBlock">{{header_section.exhibitors_header_name}} <span class="lineActive" style="background:#2AD2C9;"></span></a>
                 {% endif %}
-                {% if header_section.show_workshops_section %}
+                {% if header_section.show_workshops_section and company_user.in_person and company_user.confirmed %}
                 <a href="#talleres" class="headerAnclaBlock">{{header_section.workshops_header_name}} <span class="lineActive" style="background:#2AD2C9;"></span></a>
                 {% endif %}
                 {% if header_section.show_frequently_questions_section %}

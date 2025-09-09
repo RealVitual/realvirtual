@@ -21,7 +21,7 @@
                 <div class="b1InfoTopLeft f aife jcfs fdc-480">
                     <img src="{{home_page.image_banner.url}}" alt="" width="650" class="imgLogo">
                     {% if not logged_user %}
-                    <a href="#" class="button" id="b1ButtonRegister">Registrate</a>
+                    <a href="#" class="button" id="b1ButtonRegister">{{header_section.register_title}}</a>
                     {% endif %}
                 </div>
                 <div class="b1InfoTopRight">
@@ -40,7 +40,7 @@
 </section>
 
 {% if header_section.show_schedule_section %}
-<section class="b2 mY scrollWrap anclaBlock" id="acerca">
+<section class="b2 mY scrollWrap anclaBlock" id="agenda">
     <div class="grilla scrollItem">
         <div class="b2Wrap f aifs jscb fdc-768">
             <div class="b2Left">
@@ -51,10 +51,11 @@
                     <div class="b2ItemRight f aifs jcsb fdc-480">
                         <div class="b2LeftInfo">
                             <h4>{{schedule.name}}</h4>
+                            <p>{{schedule.start_time}} a {{schedule.end_time}}</p>
                             <p>{{schedule.description}}</p>
                         </div>
                         <div class="b2RightInfo">
-                            <p class="hour">{{schedule.start_time}} a {{schedule.end_time}}</p>
+                            {% comment %} <p class="hour">{{schedule.start_time}} a {{schedule.end_time}}</p> {% endcomment %}
                             {% for exhibitor in schedule.get_exhibitors %}
                                 {% if exhibitor.flag_image %}
                                     <img src="{{exhibitor.flag_image.url}}" alt="">
@@ -73,7 +74,7 @@
                                 data-cargo="{{exhibitor.title}} - {{exhibitor.organization}}"
                                 data-text="<p>{{exhibitor.description}}</p>">
                                     <p class="name">{{exhibitor.name}}</p>
-                                    <p class="cargo">{{exhibitor.title}} | {{exhibitor.organization}}</p>
+                                    <p class="cargo">{{exhibitor.organization}}</p>
                                 </div>
                             {% endfor %}
                         </div>
@@ -86,10 +87,10 @@
 {% endif %}
 
 {% if header_section.show_exhibitors_section %}
-<section class="b3 mY scrollWrap" id="speakers">
+<section class="b3 mY scrollWrap" id="expositor">
     <div class="grilla">
         <div class="b3Top f aic jcsb scrollItem fdc-480 aifs-768">
-            <h2>{{home_page.exhibitors_section_name}}</h2>
+            <h2>{{home_page.exhibitors_section_name}}</h2><br>
             <div class="gParrafo">
                 <p>{{home_page.exhibitors_section_title}}</p>
             </div>
@@ -172,16 +173,22 @@
             <p class="b3PopupDate">16 de enero</p>
             <p class="b3PopupHour">10:00</p>
         </div>
+        {% if company_user.confirmed %}
         <a href="#" class="b3PopupButton schedule_workshop"></a>
+        {% endif %}
     </div>
 </div>
 
-{% if header_section.show_workshops_section %}
+{% if header_section.show_workshops_section and company_user.in_person and company_user.confirmed %}
 <section class="b4 mY scrollWrap" id="talleres">
     <div class="grilla f aifs jcsb scrollItem fdc-768 ">
         <div class="b4Left">
             <div class="buttonGradient"> <span class="button">{{home_page.workshop_section_name}}</span></div>
-            <img src="{{home_page.workshop_section_image.url}}" alt="">
+            {% if home_page.workshop_section_url %}
+                <a href="{{home_page.workshop_section_url}}" target="_blank"><img src="{{home_page.workshop_section_image.url}}" alt=""></a>
+            {% else %}
+                <img src="{{home_page.workshop_section_image.url}}" alt="">
+            {% endif %}
         </div>
         <div class="b4Right">
             {% for row in workshops %}
@@ -197,7 +204,11 @@
                 data-text="<p>{{row.description}}</p>"
                 data-taller="{{row.title}}"
                 data-taller-name="{{row.name}}"
-                data-url-inscribete="{{row.id}}"
+                {% if company_user.confirmed %}
+                    data-url-inscribete="{{row.id}}"
+                {% else %}
+                    data-url-inscribete="0"
+                {% endif %}
                 {% if row.scheduled %}
                     data-inscrito="true"
                 {% else %}
@@ -236,7 +247,7 @@
                     <a href="#" class="b5ItemClick arrowClick">{{row.name}}</a>
                     <div class="b5Info">
                         <div class="gParrafo">
-                            <p>{{row.answer}}</p>
+                            {{row.answer|safe}}
                         </div>
                     </div>
                 </div>
@@ -346,7 +357,7 @@
     const popupText = popup.querySelector(".b3PopupText");
     const popupTaller = popup.querySelector(".b3PopupTaller");
     const popupTallerName = popup.querySelector(".b3PopupTallerName"); 
-    const popupButton = popup.querySelector(".b3PopupButton"); 
+    const popupButton = popup.querySelector(".b3PopupButton");
     const popupDate = popup.querySelector(".b3PopupDate"); 
     const popupHour = popup.querySelector(".b3PopupHour"); 
 
@@ -366,7 +377,9 @@
             const date = item.getAttribute('data-hour')
             const hour = item.getAttribute('data-date')
 
-            popupButton.href = ""
+            if(popupButton){
+                popupButton.href = ""
+            }
             popupTaller.textContent = ""
             popupTallerName.textContent = ""
 
@@ -451,34 +464,36 @@
             }
             // Taller Nombre
             if (tallerName) {
-                
                 popupTallerName.style.display = "block";
                 popupTallerName.textContent = tallerName || "";
             } else {
                 popupTallerName.style.display = "none";
             }
             // Url de inscrpciòn
-            if(urlIncribete){
-                popupButton.style.display = "flex";
-                popupButton.href = urlIncribete || "";
-                popupButton.setAttribute('data-id', urlIncribete);
-                if(booleanInscrito === "true"){
-                    console.log('true')
-                    popupButton.classList.add('inscrito')
-                    popupButton.textContent = 'Inscrito' || "";
-                    popupButton.setAttribute('data-status', 0);
-            }else{
-                    popupButton.setAttribute('data-status', 1);
-                    console.log('false')
-                    popupButton.classList.remove('inscrito')
-                    popupButton.textContent = 'Inscríbete' || "";
+            if(popupButton){
+                if(urlIncribete){
+                    popupButton.style.display = "flex";
+                    popupButton.href = urlIncribete || "";
+                    popupButton.setAttribute('data-id', urlIncribete);
+                    if(booleanInscrito === "true"){
+                        console.log('true')
+                        popupButton.classList.add('inscrito')
+                        popupButton.textContent = 'Inscrito' || "";
+                        popupButton.setAttribute('data-status', 0);
+                    }else{
+                        popupButton.setAttribute('data-status', 1);
+                        console.log('false')
+                        popupButton.classList.remove('inscrito')
+                        popupButton.textContent = 'Inscríbete' || "";
+                    }
+                    if(booleanAforo === "false"){
+                        popupButton.textContent = 'Agotado' || "";
+                        popupButton.classList.add('aforo-close')
+                    }
+                }else{
+                    $('.schedule_workshop').hide();
+                    popupButton.style.display = "none";
                 }
-                if(booleanAforo === "false"){
-                    popupButton.textContent = 'Agotado' || "";
-                    popupButton.classList.add('aforo-close')
-                }
-            }else{
-                popupButton.style.display = "none";
             }
             popup.classList.add("active");
             OVERLAY.classList.add("active");

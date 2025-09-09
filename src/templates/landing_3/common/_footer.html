@@ -12,7 +12,7 @@
                     {{header_section.exhibitors_header_name}}
                 </a>
                 {% endif %}
-                {% if header_section.show_workshops_section %}
+                {% if header_section.show_workshops_section and company_user.in_person and company_user.confirmed %}
                 <a href="#talleres" class="headerAnclaBlock">
                     {{header_section.workshops_header_name}}
                 </a>
