@@ -13,13 +13,13 @@
     <div class="grilla ">
         <div class="b10Wrap f aifs jcc">
             <div class="b10Left scrollItem">
-                <h3 class="gTitle">{{credential_settings.first_text_message|default:""}} </h3>
+                <h3 class="gTitle" style="color: #000000;">{{credential_settings.first_text_message|default:""}} </h3>
                 <label for="" class="gParrafo">{{credential_settings.second_text_message|default:""}}</label>
                 {% comment %} <a href="#" onclick="history.back()"  class="b10Atras"><i class="icon-arrowLeft"></i>Ir atrás</a> {% endcomment %}
-                <a href="{% url 'landing:generate_credential' %}"  class="b10Atras"><i class="icon-arrowLeft"></i>Ir atrás</a>
+                <a href="{% url 'landing:generate_credential' %}"  class="b10Atras" style="color: #2ad2c9;"><i class="icon-arrowLeft"></i>Ir atrás</a>
                 <div class="b10Links f aic jcfs">
-                    <a class="b10DownloadCredencial" href="{% url 'landing:download_credential' instance.code%}">Descargar credencial <img src="/static/web/img/download.svg" alt="" width="22"></a>
-                    <a href="{% url 'landing:event' %}" class="b10VerEvento">Ver evento</a>
+                    <a class="b10DownloadCredencial" style="background: #2ad2c9;" href="{% url 'landing:download_credential' instance.code%}">Descargar credencial <img src="/static/web/img/download.svg" alt="" width="22"></a>
+                    <a href="{% url 'landing:event' %}" class="b10VerEvento" style="color: #2ad2c9;">Ver evento</a>
                 </div>
             </div>
             <div class="b10Right scrollItem">

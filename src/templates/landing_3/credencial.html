@@ -13,7 +13,7 @@
         <div class="b10Wrap f aifs jcc">
             <div class="b10Left scrollItem">
                 <h3 class="gTitle">Crea tu credencial</h3>
-                <label for="" class="gParrafo">Ingresa tu nombre, apellido y sube tu foto.</label>
+                <label for="" class="gParrafo" style="color: #000000;">Ingresa tu nombre, apellido y sube tu foto.</label>
                 <form action="" class="g8Form" method="POST">
                     {% csrf_token %}
                     <input type="hidden" id="uploadText" name="{{form.profile_image.html_name}}">
@@ -21,12 +21,12 @@
                         <span>Nombre y apellido</span>
                         <input type="text" id="namePerson" class="g8Box validate[required,custom[onlyLetterSp]]" name="{{form.names.html_name}}">
                     </div>
-                    <div class="b10ContentFile">
+                    <div class="b10ContentFile" style="border: 1px dashed #2ad2c9;">
                         <input type="file" id="fileInput" accept="image/jpeg, image/png">
                         <label for="" class="b10WrapFile f aic jcc fdc">
                             <div class="b10FileImage f aic jcc">
                                 <img src="/static/web/img/icon-image.png" alt="">
-                                <h4>Subir una foto</h4>
+                                <h4 style="color: #2ad2c9;">Subir una foto</h4>
                             </div>
                             <h5>Formato: JPEG y PNG</h5>
                         </label>
@@ -41,7 +41,7 @@
                         </a>
                     </div>
                     <button type="submit" class="gButton b10GenerateCred">Generar credencial</button>
-                    <a href="{% url 'landing:event' %}" class="b10Omitir">Omitir</a>
+                    <a href="{% url 'landing:event' %}" class="b10Omitir" style="color: #000000">Omitir</a>
                 </form>
             </div>
             <div class="b10Right scrollItem">
@@ -74,8 +74,8 @@
     <!-- <input type="file" id="fileInput"> -->
     <div id="croppieContainer"></div>
     <div class="b10Buttons f aic jcc">
-        <button id="cropBtn">Aceptar</button>
-        <button class="b10CerrarPopup">Cancelar</button>
+        <button id="cropBtn" style="background: #2ad2c9;">Aceptar</button>
+        <button class="b10CerrarPopup" style="background: #2ad2c9;">Cancelar</button>
     </div>
 </div>
 
