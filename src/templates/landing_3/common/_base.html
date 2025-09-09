@@ -257,16 +257,21 @@
                             $('.parrafo-register').show();
                             $('.warning-form').hide();
                             setTimeout(()=>{
-                                window.location.href = data.redirect_url
+                                window.location.href = '/generar-credencial'
                             }, 2000)
                         }else{
-                            var register_form = $('.formRegistro')
-                            register_form.hide();
-                            $('.message-waiting-confirmation').html(data.confirmed_message)
-                            $('.formRegistroExitoso').addClass('active');
-                            setTimeout(()=>{
-                                window.location.href = data.redirect_url
-                            }, 20000)
+                            if(data.confirmed_message){
+                                var register_form = $('.formRegistro')
+                                register_form.hide();
+                                $('.message-waiting-confirmation').html(data.confirmed_message)
+                                $('.formRegistroExitoso').addClass('active');
+                                setTimeout(()=>{
+                                    window.location.href = '/generar-credencial'
+                                }, 20000)
+                            }
+                            else{
+                                window.location.href = '/generar-credencial'
+                            }
                         }
 
                     }else{
