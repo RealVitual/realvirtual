@@ -599,11 +599,6 @@ class GenerateCredentialView(CreateView):
             return redirect(reverse('landing:home'))
         if not request.company.enable_credentials:
             return redirect(reverse('landing:event'))
-        if company.version and company.version.version != 1:
-            internal_view = self.template_name.split('/')[-1]
-            self.template_name = (
-                f"landing_{company.version}/{internal_view}"
-            )
 
         return super(GenerateCredentialView, self).dispatch(request, *args, **kwargs) # noqa
 
@@ -611,6 +606,11 @@ class GenerateCredentialView(CreateView):
         credential_settings = CredentialSettings.objects.filter(
             company=request.company
         )
+        if request.company.version and request.company.version.version != 1:
+            internal_view = self.template_name.split('/')[-1]
+            self.template_name = (
+                f"landing_{request.company.version}/{internal_view}"
+            )
         context = {
             'header': False,
             'credential_settings': credential_settings[0] if credential_settings else None, # noqa
@@ -654,7 +654,10 @@ class AfterCreatedCredentialView(View):
             return redirect(reverse('landing:home'))
         user_company = UserCompany.objects.get(company=company,
                                                user=request.user)
-        if not user_company.confirmed:
+        if company.filter_domain_user and \
+                company.enable_credentials and user_company.virtual:
+            pass
+        elif not user_company.confirmed:
             return redirect(reverse('landing:home'))
         if not request.company.enable_credentials:
             return redirect(reverse('landing:event'))
@@ -669,6 +672,11 @@ class AfterCreatedCredentialView(View):
             CredentialCustomer, code=code)
         url_share = request.META['HTTP_HOST'] + reverse(
                 'landing:credential_generated', kwargs=dict(uid=instance.code))
+        if request.company.version and request.company.version.version != 1:
+            internal_view = self.template_name.split('/')[-1]
+            self.template_name = (
+                f"landing_{request.company.version}/{internal_view}"
+            )
         context = {
             'credential_settings': credential_settings[0] if credential_settings else None, # noqa
             "instance": instance,
