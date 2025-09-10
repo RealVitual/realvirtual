@@ -153,7 +153,7 @@
     {% if allow_register %}
     <h3>{{header_section.register_form_title}}</h3>
     <div class="gParrafo">
-        <p>{{header_section.register_form_text}}</p>
+        <p>{{header_section.register_form_text|safe}}</p>
     </div>
     <div class="g8Form">
         <form action="" method="POST" class="form-register">

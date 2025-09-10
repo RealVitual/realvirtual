@@ -436,10 +436,8 @@ class Header(TimeStampedModel):
     register_form_title = models.CharField(
         _('Título Registro Formulario'), max_length=255, default="Crear cuenta"
     )
-    register_form_text = models.TextField(
-        _('Texto Registro Formulario'),
-        default="Completa el siguiente formulario para poder registrar tus datos." # noqa
-    )
+    register_form_text = RichTextField(
+        _('Mensaje Registro'), null=True, blank=True)
 
     login_title = models.CharField(
         _('Título Login'), max_length=20, default="Inicia Sesión"
