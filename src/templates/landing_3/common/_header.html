@@ -16,17 +16,17 @@
                 el color deberìa ser administrable segun el color de la web 
             -->
             {% if header %}
+                {% if header_section.show_exhibitors_section %}
+                    <a href="#expositor" class="headerAnclaBlock">{{header_section.exhibitors_header_name}} <span class="lineActive" style="background:#2AD2C9;"></span></a>
+                {% endif %}
                 {% if header_section.show_schedule_section %}
                     <a href="#agenda" class="headerAnclaBlock">{{header_section.schecule_header_name}}<span class="lineActive" style="background:#2AD2C9;"></span></a>
                 {% endif %}
-                {% if header_section.show_exhibitors_section %}
-                <a href="#expositor" class="headerAnclaBlock">{{header_section.exhibitors_header_name}} <span class="lineActive" style="background:#2AD2C9;"></span></a>
-                {% endif %}
                 {% if header_section.show_workshops_section and company_user.in_person and company_user.confirmed %}
-                <a href="#talleres" class="headerAnclaBlock">{{header_section.workshops_header_name}} <span class="lineActive" style="background:#2AD2C9;"></span></a>
+                    <a href="#talleres" class="headerAnclaBlock">{{header_section.workshops_header_name}} <span class="lineActive" style="background:#2AD2C9;"></span></a>
                 {% endif %}
                 {% if header_section.show_frequently_questions_section %}
-                <a href="#preguntas" class="headerAnclaBlock">{{header_section.frequently_questions_header_name}}<span class="lineActive" style="background:#2AD2C9;"></span></a>
+                    <a href="#preguntas" class="headerAnclaBlock">{{header_section.frequently_questions_header_name}}<span class="lineActive" style="background:#2AD2C9;"></span></a>
                 {% endif %}
             {% endif %}
         </div>
