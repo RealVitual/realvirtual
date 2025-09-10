@@ -117,7 +117,7 @@
 {% endif %}
 
 {% if header_section.show_exhibitors_section %}
-<section class="b3 mY scrollWrap" id="expositor">
+<section class="b3 mY scrollWrap anclaBlock" id="expositor">
     <div class="grilla">
         <div class="b3Top f aic jcsb scrollItem fdc-480 aifs-768">
             <h2>{{home_page.exhibitors_section_name}}</h2><br>
@@ -210,7 +210,7 @@
 </div>
 
 {% if header_section.show_workshops_section and company_user.in_person and company_user.confirmed %}
-<section class="b4 mY scrollWrap" id="talleres">
+<section class="b4 mY scrollWrap anclaBlock" id="talleres">
     <div class="grilla f aifs jcsb scrollItem fdc-768 ">
         <div class="b4Left">
             <div class="buttonGradient"> <span class="button">{{home_page.workshop_section_name}}</span></div>
@@ -268,7 +268,7 @@
 {% endif %}
 
 {% if header_section.show_frequently_questions_section %}
-<section class="b5 mY scrollWrap" id="preguntas">
+<section class="b5 mY scrollWrap anclaBlock" id="preguntas">
     <div class="grilla scrollItem">
         <h4>{{home_page.frequently_questions_section_name}}</h4>
         <div class="b5List">
@@ -344,6 +344,7 @@
         mySwiperb3 = new Swiper ('.b3Swiper', {
             loop: false,
             spaceBetween: 24,
+            slidesPerGroup: 4,
             centeredSlides: false,
             pagination: {
                 el: '.b3Pagination',
