@@ -65,57 +65,6 @@
     </section>
 {% endif %}
 
-{% if header_section.show_schedule_section %}
-<section class="b2 mY scrollWrap anclaBlock" id="agenda">
-    <div class="grilla scrollItem">
-        <div class="b2Wrap f aifs jscb fdc-768">
-            <div class="b2Left">
-                <h2>{{home_page.schedule_section_name}}</h2>
-            </div>
-            <div class="b2Right">
-                {% for schedule in schedules %}
-                    <div class="b2ItemRight f aifs jcsb fdc-480">
-                        <div class="b2LeftInfo">
-                            <h4>{{schedule.name}}</h4>
-                            <p>{{schedule.start_time}} a {{schedule.end_time}}</p>
-                            <p>{{schedule.description}}</p>
-                        </div>
-                        <div class="b2RightInfo">
-                            {% comment %} <p class="hour">{{schedule.start_time}} a {{schedule.end_time}}</p> {% endcomment %}
-                            <div class="b2ExpositorWrap">
-                                {% for exhibitor in schedule.get_exhibitors %}
-                                    <div class="b2Expositor f aic jcfs">
-                                        {% if exhibitor.flag_image %}
-                                            <img src="{{exhibitor.flag_image.url}}" alt="">
-                                        {% else %}
-                                            <img src="/static/web_3/img/credicorp/bandera-per.png" alt="">
-                                        {% endif %}
-                                        <div class="b2Name b3ItemClickPopup"
-                                        data-image="{{exhibitor.image.url}}"
-                                        data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png"
-                                        {% if exhibitor.flag_image %}
-                                            data-pais="{{exhibitor.flag_image.url}}"
-                                        {% else %}
-                                            data-pais="/static/web_3/img/credicorp/bandera-per.png"
-                                        {% endif %}
-                                        data-name="{{exhibitor.name}}"
-                                        data-cargo="{{exhibitor.title}} - {{exhibitor.organization}}"
-                                        data-text="<p>{{exhibitor.description}}</p>">
-                                            <p class="name">{{exhibitor.name}}</p>
-                                            <p class="cargo">{{exhibitor.organization}}</p>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
 {% if header_section.show_exhibitors_section %}
 <section class="b3 mY scrollWrap anclaBlock" id="expositor">
     <div class="grilla">
@@ -165,6 +114,57 @@
                 <div class="b3Prev gPrev"></div>
                 <div class="b3Next gNext"></div>
             </div> -->
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if header_section.show_schedule_section %}
+<section class="b2 mY scrollWrap anclaBlock" id="agenda">
+    <div class="grilla scrollItem">
+        <div class="b2Wrap f aifs jscb fdc-768">
+            <div class="b2Left">
+                <h2>{{home_page.schedule_section_name}}</h2>
+            </div>
+            <div class="b2Right">
+                {% for schedule in schedules %}
+                    <div class="b2ItemRight f aifs jcsb fdc-480">
+                        <div class="b2LeftInfo">
+                            <h4>{{schedule.name}}</h4>
+                            <p>{{schedule.start_time}} a {{schedule.end_time}}</p>
+                            <p>{{schedule.description}}</p>
+                        </div>
+                        <div class="b2RightInfo">
+                            {% comment %} <p class="hour">{{schedule.start_time}} a {{schedule.end_time}}</p> {% endcomment %}
+                            <div class="b2ExpositorWrap">
+                                {% for exhibitor in schedule.get_exhibitors %}
+                                    <div class="b2Expositor f aic jcfs">
+                                        {% if exhibitor.flag_image %}
+                                            <img src="{{exhibitor.flag_image.url}}" alt="">
+                                        {% else %}
+                                            <img src="/static/web_3/img/credicorp/bandera-per.png" alt="">
+                                        {% endif %}
+                                        <div class="b2Name b3ItemClickPopup"
+                                        data-image="{{exhibitor.image.url}}"
+                                        data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png"
+                                        {% if exhibitor.flag_image %}
+                                            data-pais="{{exhibitor.flag_image.url}}"
+                                        {% else %}
+                                            data-pais="/static/web_3/img/credicorp/bandera-per.png"
+                                        {% endif %}
+                                        data-name="{{exhibitor.name}}"
+                                        data-cargo="{{exhibitor.title}} - {{exhibitor.organization}}"
+                                        data-text="<p>{{exhibitor.description}}</p>">
+                                            <p class="name">{{exhibitor.name}}</p>
+                                            <p class="cargo">{{exhibitor.organization}}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </section>
