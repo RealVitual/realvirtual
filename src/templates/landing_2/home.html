@@ -252,10 +252,7 @@
                             <p class="date f aic jcfs">{{schedule.get_date}}</p>
                                 {% if schedule.get_current_status == "is_live" or schedule.get_current_status == "past" %}
                                     {% if schedule.video_url %}
-                                        <a href="{{schedule.video_url}}" class="reproducir">
-                                            Reproducir
-                                            <i class="icon-play"></i>
-                                        </a>
+                                        <a href="" class="reproducir clickVideo popup clickVideoBox " data-urlvideo="{{schedule.video_url}}">Reproducir<i class="icon-play"></i></a>
                                     {% endif %}
                                 {% else %}
                                     {% if logged_user %}
