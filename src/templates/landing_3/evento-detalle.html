@@ -21,9 +21,9 @@
             <div class="b1Top f aife jcsb fdc-768">
                 <div class="b1InfoTopLeft f aife jcfs fdc-480">
                     <img src="{{home_page.image_banner.url}}" alt="" width="650" class="imgLogo">
-                    {% if not logged_user %}
+                    {% comment %} {% if not logged_user %}
                     <a href="#" class="button" id="b1ButtonRegister">{{header_section.register_title}}</a>
-                    {% endif %}
+                    {% endif %} {% endcomment %}
                 </div>
                 <div class="b1InfoTopRight">
                     <img src="{{home_page.banner_second_section_image.url}}" alt="">
@@ -63,61 +63,6 @@
             </div>
         </div>
     </section>
-{% endif %}
-
-
-{% if header_section.show_exhibitors_section %}
-<section class="b3 mY scrollWrap" id="expositor">
-    <div class="grilla">
-        <div class="b3Top f aic jcsb scrollItem fdc-480 aifs-768">
-            <h2>{{home_page.exhibitors_section_name}}</h2><br>
-            <div class="gParrafo">
-                <p>{{home_page.exhibitors_section_title}}</p>
-            </div>
-        </div>
-        <div class="gSwiperContent">
-            <div class="b3Swiper swiper-container scrollItem swiper" data-initial="3">
-                <div class="b3Wrap swiper-wrapper">
-                    {% for ex in exhibitors %}
-                    <div class="b3Item b3ItemClickPopup swiper-slide"
-                    data-image="{{ex.image.url}}"
-                    data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png"
-                    {% if ex.flag_image %}
-                        data-pais="{{ex.flag_image.url}}"
-                    {% else %}
-                        data-pais="/static/web_3/img/credicorp/bandera-per.png"
-                    {% endif %}
-                    data-name="{{ex.name}}"
-                    data-cargo="{{ex.title}} - {{ex.organization}}"
-                    data-text="<p>{{ex.description}}</p>">
-                        <figure>
-                            <img src="{{ex.image.url}}" alt="">
-                        </figure>
-                        <div class="b3Info">
-                            <div class="b3Name f aic jcc">
-                                <p class="name">{{ex.name}}</p>
-                                {% if ex.flag_image %}
-                                    <img src="{{ex.flag_image.url}}" alt="">
-                                {% else %}
-                                    <img src="/static/web_3/img/credicorp/bandera-per.png" alt="">
-                                {% endif %}
-                            </div>
-                            <p class="cargo">{{ex.title}} - {{ex.organization}}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <!-- pagination dots -->
-                <div class="b3Pagination gPagination"></div>
-                <!-- nav prev and next -->
-            </div>
-            <!-- <div class="b3Nav gNav">
-                <div class="b3Prev gPrev"></div>
-                <div class="b3Next gNext"></div>
-            </div> -->
-        </div>
-    </div>
-</section>
 {% endif %}
 
 {% if header_section.show_schedule_section %}
@@ -171,6 +116,60 @@
 </section>
 {% endif %}
 
+{% if header_section.show_exhibitors_section %}
+<section class="b3 mY scrollWrap anclaBlock" id="expositor">
+    <div class="grilla">
+        <div class="b3Top f aic jcsb scrollItem fdc-480 aifs-768">
+            <h2>{{home_page.exhibitors_section_name}}</h2><br>
+            <div class="gParrafo">
+                <p>{{home_page.exhibitors_section_title}}</p>
+            </div>
+        </div>
+        <div class="gSwiperContent">
+            <div class="b3Swiper swiper-container scrollItem swiper" data-initial="3">
+                <div class="b3Wrap swiper-wrapper">
+                    {% for ex in exhibitors %}
+                    <div class="b3Item b3ItemClickPopup swiper-slide"
+                    data-image="{{ex.image.url}}"
+                    data-logo="/static/web_3/img/credicorp/home-b3-imgLogoPopup.png"
+                    {% if ex.flag_image %}
+                        data-pais="{{ex.flag_image.url}}"
+                    {% else %}
+                        data-pais="/static/web_3/img/credicorp/bandera-per.png"
+                    {% endif %}
+                    data-name="{{ex.name}}"
+                    data-cargo="{{ex.title}} - {{ex.organization}}"
+                    data-text="<p>{{ex.description}}</p>">
+                        <figure>
+                            <img src="{{ex.image.url}}" alt="">
+                        </figure>
+                        <div class="b3Info">
+                            <div class="b3Name f aic jcc">
+                                <p class="name">{{ex.name}}</p>
+                                {% if ex.flag_image %}
+                                    <img src="{{ex.flag_image.url}}" alt="">
+                                {% else %}
+                                    <img src="/static/web_3/img/credicorp/bandera-per.png" alt="">
+                                {% endif %}
+                            </div>
+                            <p class="cargo">{{ex.title}} - {{ex.organization}}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- pagination dots -->
+                <div class="b3Pagination gPagination"></div>
+                <!-- nav prev and next -->
+            </div>
+            <!-- <div class="b3Nav gNav">
+                <div class="b3Prev gPrev"></div>
+                <div class="b3Next gNext"></div>
+            </div> -->
+        </div>
+    </div>
+</section>
+{% endif %}
+
 <!-- POPUP  -->
 
 <div class="b3Popup">
@@ -211,7 +210,7 @@
 </div>
 
 {% if header_section.show_workshops_section and company_user.in_person and company_user.confirmed %}
-<section class="b4 mY scrollWrap" id="talleres">
+<section class="b4 mY scrollWrap anclaBlock" id="talleres">
     <div class="grilla f aifs jcsb scrollItem fdc-768 ">
         <div class="b4Left">
             <div class="buttonGradient"> <span class="button">{{home_page.workshop_section_name}}</span></div>
@@ -269,7 +268,7 @@
 {% endif %}
 
 {% if header_section.show_frequently_questions_section %}
-<section class="b5 mY scrollWrap" id="preguntas">
+<section class="b5 mY scrollWrap anclaBlock" id="preguntas">
     <div class="grilla scrollItem">
         <h4>{{home_page.frequently_questions_section_name}}</h4>
         <div class="b5List">
@@ -284,6 +283,16 @@
                 </div>
             {% endfor %}
         </div>
+    </div>
+</section>
+{% endif %}
+
+{% if home_page.final_image %}
+<section class="b31 pY scrollWrap">
+    <div class="grilla scrollItm">
+        <figure>
+            <img src="{{home_page.final_image.url}}" alt="">
+        </figure>
     </div>
 </section>
 {% endif %}
@@ -345,6 +354,7 @@
         mySwiperb3 = new Swiper ('.b3Swiper', {
             loop: false,
             spaceBetween: 24,
+            slidesPerGroup: 4,
             centeredSlides: false,
             pagination: {
                 el: '.b3Pagination',
@@ -605,7 +615,7 @@ if(document.getElementsByClassName('b22')[0]){
 }
 //NUEVO ANCLA SCROLLTOP ********************
 const backToTop = document.getElementById("backToTop");
-const footer = document.querySelector("#preguntas"); 
+const footer = document.querySelector("#contador"); 
 
 window.addEventListener("scroll", () => {
   const footerTop = footer.getBoundingClientRect().top;
