@@ -763,6 +763,13 @@ class HomePageAdmin(admin.ModelAdmin):
                         "description": "Recuerde activar esta sección en configuración Header."
                     }
                 ),
+                (
+                    "Sección Final", {
+                        "fields": (
+                            'final_image',
+                        ),
+                    }
+                )
             ]
         for fieldset in fielsets_version:
             fieldsets.append(fieldset)

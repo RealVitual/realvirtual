@@ -287,6 +287,16 @@
 </section>
 {% endif %}
 
+{% if home_page.final_image %}
+<section class="b31 pY scrollWrap">
+    <div class="grilla scrollItm">
+        <figure>
+            <img src="{{home_page.final_image.url}}" alt="">
+        </figure>
+    </div>
+</section>
+{% endif %}
+
 {% endblock %}
 
 {% block jsfinal %}
@@ -605,7 +615,7 @@ if(document.getElementsByClassName('b22')[0]){
 }
 //NUEVO ANCLA SCROLLTOP ********************
 const backToTop = document.getElementById("backToTop");
-const footer = document.querySelector("#preguntas"); 
+const footer = document.querySelector("#contador"); 
 
 window.addEventListener("scroll", () => {
   const footerTop = footer.getBoundingClientRect().top;
