@@ -88,6 +88,7 @@
                     {% endif %}
                     data-name="{{ex.name}}"
                     data-cargo="{{ex.title}} - {{ex.organization}}"
+                    data-linkedin="{{ex.link}}"
                     data-text="<p>{{ex.description}}</p>">
                         <figure>
                             <img src="{{ex.image.url}}" alt="">
@@ -153,6 +154,7 @@
                                             data-pais="/static/web_3/img/credicorp/bandera-per.png"
                                         {% endif %}
                                         data-name="{{exhibitor.name}}"
+                                        data-linkedin="{{exhibitor.link}}"
                                         data-cargo="{{exhibitor.title}} - {{exhibitor.organization}}"
                                         data-text="<p>{{exhibitor.description}}</p>">
                                             <p class="name">{{exhibitor.name}}</p>
@@ -199,6 +201,7 @@
     <div class="b3PopupText">
     </div>
     <div class="b3PopupBottom f aic jcsb">
+        <a href="#" target="_blank" class="icon-linkedin b3PopupLinkedin"></a>
         <div class="b3PopupBottomLeft f aic jcfs fdc-480 aifs-480">
             <p class="b3PopupDate">16 de enero</p>
             <p class="b3PopupHour">10:00</p>
@@ -234,6 +237,7 @@
                 data-text="<p>{{row.description}}</p>"
                 data-taller="{{row.title}}"
                 data-taller-name="{{row.name}}"
+                data-taller-name="{{row.exhibitor.link}}"
                 {% if company_user.confirmed %}
                     data-url-inscribete="{{row.id}}"
                 {% else %}
@@ -265,6 +269,19 @@
         </div>
     </div>
 </section>
+<div class="g8PopupForm b2PopupConfirm pr">
+    <div class="g8PopupContent">
+        <h3>Deseas inscribirte?</h3>
+        <div class="gParrafo">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis optio eius aspernatur sint excepturi aspernatur.</p>
+        </div>
+        <div class="b2Buttons g8Buttons f aic jcc">
+            <a href="#" class="gButton b2accept">Aceptar</a>
+            <a href="#" class="gButton b2cancel">Cancelar</a>
+        </div>
+    </div>
+</div>
+
 {% endif %}
 
 {% if header_section.show_frequently_questions_section %}
@@ -397,10 +414,11 @@
     const popupCargo = popup.querySelector(".b3PopupCargo");
     const popupText = popup.querySelector(".b3PopupText");
     const popupTaller = popup.querySelector(".b3PopupTaller");
-    const popupTallerName = popup.querySelector(".b3PopupTallerName"); 
+    const popupTallerName = popup.querySelector(".b3PopupTallerName");
     const popupButton = popup.querySelector(".b3PopupButton");
-    const popupDate = popup.querySelector(".b3PopupDate"); 
-    const popupHour = popup.querySelector(".b3PopupHour"); 
+    const popupDate = popup.querySelector(".b3PopupDate");
+    const popupHour = popup.querySelector(".b3PopupHour");
+    const popupLinkedin = popup.querySelector(".b3PopupLinkedin");
 
     items.forEach(item => {
         item.addEventListener("click", () => {
@@ -417,6 +435,15 @@
             const booleanAforo = item.getAttribute("data-aforo");
             const date = item.getAttribute('data-hour')
             const hour = item.getAttribute('data-date')
+            const linkedin = item.getAttribute('data-linkedin')
+            console.log(linkedin, 'linkedin')
+            if(linkedin){
+                popupLinkedin.setAttribute("href", linkedin);
+                popupLinkedin.style.display = '';
+            }else{
+                popupLinkedin.style.display = 'none';
+            }
+
 
             if(popupButton){
                 popupButton.href = ""
