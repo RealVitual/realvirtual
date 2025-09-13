@@ -203,8 +203,8 @@
     <div class="b3PopupBottom f aic jcsb">
         <a href="#" target="_blank" class="icon-linkedin b3PopupLinkedin"></a>
         <div class="b3PopupBottomLeft f aic jcfs fdc-480 aifs-480">
-            <p class="b3PopupDate">16 de enero</p>
-            <p class="b3PopupHour">10:00</p>
+            <p class="b3PopupDate"></p>
+            <p class="b3PopupHour"></p>
         </div>
         {% if company_user.confirmed %}
         <a href="#" class="b3PopupButton schedule_workshop"></a>
@@ -451,21 +451,13 @@
             popupTaller.textContent = ""
             popupTallerName.textContent = ""
 
-            if(date){
-                popupDate.textContent = date
-                popupDate.style.display = 'block'
-            }else{
-                popupDate.textContent = ""
-                popupDate.style.display = 'none'
-            }
-
-            if(hour){
-                popupHour.textContent = hour
-                popupHour.style.display = 'block'
-            }else{
-                popupHour.textContent = ""
-                popupHour.style.display = 'none'
-            }
+            // if(date){
+            //     popupDate.textContent = date
+            //     popupDate.style.display = 'block'
+            // }else{
+            //     popupDate.textContent = ""
+            //     popupDate.style.display = 'none'
+            // }
 
             // Imagen
             if (image) {
