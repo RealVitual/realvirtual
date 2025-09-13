@@ -80,6 +80,7 @@ class RegisterForm(forms.ModelForm):
         self.virtual = None
         self.is_custom_confirmation = False
         self.custom_confirmation = False
+        self.validate_assistance_type = False
         super(RegisterForm, self).__init__(*args, **kwargs)
         fields = self.company.get_form_fields_list()
         for field in fields:
@@ -160,11 +161,13 @@ class RegisterForm(forms.ModelForm):
         print(confirmed, 'CONFIRMED!!!!!!!!!!!!!!!!!')
         create_ticket_pdf = False
         # Usa filtro con dominios
+        mailing = None
         if self.company.filter_domain_user:
             if user_company.in_person:
                 create_ticket_pdf = True
-                mailing, created = EmailTemplate.objects.get_or_create(
-                    company=self.company, email_type="TO_CONFIRM_USER")
+                if not self.validate_assistance_type:
+                    mailing, created = EmailTemplate.objects.get_or_create(
+                        company=self.company, email_type="TO_CONFIRM_USER")
             else:
                 mailing, created = EmailTemplate.objects.get_or_create(
                     company=self.company, email_type="REGISTER")
@@ -220,7 +223,11 @@ class RegisterForm(forms.ModelForm):
                 subject, html_content, e_mail, [customer.email, ],
                 customer, self.company)
 
-        return dict(user=user, message=message, user_company=user_company)
+        return dict(
+            user=user,
+            message=message,
+            user_company=user_company,
+            validate_assistance_type=self.validate_assistance_type)
 
     def allow_custom_confirmation(self, data):
         self.is_custom_confirmation = True
@@ -245,9 +252,10 @@ class RegisterForm(forms.ModelForm):
                 (domain for domain in valid_domains if domain in _email), None
             )
             if found_valid_email:
-                message = self.company.message_filter_found_domain_user
+                # message = self.company.message_filter_found_domain_user
                 self.in_person = True
                 self.virtual = True
+                self.validate_assistance_type = True
             else:
                 self.in_person = False
                 self.virtual = True

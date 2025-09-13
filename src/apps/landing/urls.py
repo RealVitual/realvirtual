@@ -8,7 +8,12 @@ from .views import (
     save_networking_preferences, NetworkingUsersView, RecoverPasswordView,
     ScheduledEventsView, TicketViewPDF, ResetPasswordView, CertificateView,
     CloseLandingView, GenerateCertificateView, BlogListView, BlogDetailView,
-    DownloadCustomerTicket, ConfirmUser)
+    DownloadCustomerTicket, ConfirmUser, ValidateInPersonCompanyUser
+)
+from rest_framework.routers import DefaultRouter
+
+
+router = DefaultRouter()
 
 app_name = 'landing'
 
@@ -69,4 +74,8 @@ urlpatterns = [
           DownloadCustomerTicket.as_view(), name='download_ticket'),
      path('confirmation_user/<hash_id>',
           ConfirmUser.as_view(), name='confirmation_user'),
+     path('validate_in_person/',
+          ValidateInPersonCompanyUser.as_view(), name='validate_in_person'),
 ]
+
+urlpatterns += router.urls

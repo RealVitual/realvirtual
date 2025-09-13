@@ -269,18 +269,6 @@
         </div>
     </div>
 </section>
-<div class="g8PopupForm b2PopupConfirm pr">
-    <div class="g8PopupContent">
-        <h3>Deseas inscribirte?</h3>
-        <div class="gParrafo">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis optio eius aspernatur sint excepturi aspernatur.</p>
-        </div>
-        <div class="b2Buttons g8Buttons f aic jcc">
-            <a href="#" class="gButton b2accept">Aceptar</a>
-            <a href="#" class="gButton b2cancel">Cancelar</a>
-        </div>
-    </div>
-</div>
 
 {% endif %}
 
@@ -570,6 +558,35 @@
 });
 {% endif %}
 
+$('.validatePerson').click(function(e){
+    e.preventDefault();
+    var item = $(this);
+    var status = item.attr('data-status');
+    item.addClass('isLoading');
+    $.ajax({
+        url : "{% url 'landing:validate_in_person' %}",
+        type : "post",
+        data: {
+            status: status,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+    }).done(function(data) {
+        if (data.success) {
+            if(status == 1){
+                var confirm_form = $('.b2PopupConfirm')
+                confirm_form.hide();
+                $('.message-waiting-confirmation').html(data.message)
+                $('.formRegistroExitoso').addClass('active');
+                setTimeout(()=>{
+                    window.location.href = '/generar-credencial'
+                }, 20000)
+            }else{
+                window.location.href = '/generar-credencial'
+            }
+        }
+    });
+});
+
 $('.schedule_workshop').click(function(e){
     e.preventDefault();
     var item = $(this);
@@ -669,19 +686,5 @@ function smoothScrollToTop() {
   requestAnimationFrame(scrollStep);
 }
 
-
-let elb3PopupButton = document.getElementsByClassName('b3PopupButton')[0]
-let elb2PopupConfirm = document.getElementsByClassName('b2PopupConfirm')[0]
-let elb2cancel = document.getElementsByClassName('b2cancel')[0]
-
-elb3PopupButton.addEventListener('click',function(e){
-    e.preventDefault()
-    elb2PopupConfirm.classList.add('active')
-})
-
-elb2cancel.addEventListener('click',function(e){
-    e.preventDefault()
-    elb2PopupConfirm.classList.remove('active')
-})
 </script>
 {% endblock %}

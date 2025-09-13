@@ -29,6 +29,10 @@ class GenerateWorkshopCustomerEvent(APIView):
     serializer_class = GenerateCustomerWorkshopSerializer
     permission_classes = [AuthenticatedPermission]
 
+    def dispatch(self, request, *args, **kwargs):
+        return super(GenerateWorkshopCustomerEvent, self).dispatch(
+            request, *args, **kwargs)
+
     def post(self, request):
         serializer = self.serializer_class(
             data=request.data,

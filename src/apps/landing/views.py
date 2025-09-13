@@ -31,6 +31,10 @@ from src.apps.users.permissions import (
     AuthenticatedPermission, )
 from django.db.models import Q
 from src.apps.tickets.models import Ticket
+from .serializers import ValidateInPersonCompanyUserSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import AllowAny
 
 
 class HomeView(CreateView):
@@ -227,6 +231,8 @@ def validate_register(request):
                 user = form_object.get('user', None)
                 user_company = form_object.get('user_company', None)
                 message = form_object.get('message', None)
+                validate_assistance_type = form_object.get(
+                    'validate_assistance_type', None)
                 if user:
                     login(request, user)
                     url = 'event'
@@ -246,6 +252,7 @@ def validate_register(request):
                         url = "home"
                     response_data['success'] = 1
                     response_data['confirmed'] = user_company.confirmed
+                    response_data['validate_assistance_type'] = validate_assistance_type
                     response_data['confirmed_message'] = message # noqa
                     response_data['redirect_url'] = reverse('landing:%s' % url)
                 del request.session['used_recaptcha']
@@ -1395,3 +1402,31 @@ class BlogDetailView(View):
             'header': False,
         }
         return render(request, self.template_name, context)
+
+
+class ValidateInPersonCompanyUser(APIView):
+    serializer_class = ValidateInPersonCompanyUserSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def dispatch(self, request, *args, **kwargs):
+        self.user = request.user
+        if not self.user.is_authenticated:
+            return Response("Error", status=status.HTTP_400_BAD_REQUEST)
+        return super(ValidateInPersonCompanyUser, self).dispatch(
+            request, *args, **kwargs)
+
+    def post(self, request):
+        serializer = self.serializer_class(
+            data=request.data,
+            context={
+                'user': self.user,
+                'company': request.company,
+                'domain_pdf': request.build_absolute_uri('/')[:-1]
+            }
+        )
+        if serializer.is_valid():
+            response = serializer.save()
+            return Response(dict(
+                success=True, message=response['message']), status=200)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

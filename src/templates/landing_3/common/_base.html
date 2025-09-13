@@ -244,6 +244,7 @@
                     type : "post",
                     data: register_data,
                 }).done(function(data) {
+                    console.log(data, 'DATA!!')
                     if(data.captcha_error == 1){
                         setTimeout(()=>{
                             location.reload();
@@ -257,7 +258,6 @@
                             'apellidos': register_data['last_name']
                          });
                         $('.save-register').disabled = false;
-                        console.log(data, 'DATA')
                         if(data.confirmed){
                             $('.parrafo-register').show();
                             $('.warning-form').hide();
@@ -273,6 +273,11 @@
                                 setTimeout(()=>{
                                     window.location.href = '/generar-credencial'
                                 }, 20000)
+                            }
+                            else if(data.validate_assistance_type){
+                                var register_form = $('.formRegistro')
+                                register_form.hide();
+                                $('.b2PopupConfirm').addClass('active');
                             }
                             else{
                                 window.location.href = '/generar-credencial'
