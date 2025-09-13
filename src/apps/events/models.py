@@ -262,8 +262,8 @@ class Schedule(BaseModel):
         _('End time'), null=True, blank=True)
     name = models.CharField(
         _('Nombre'), max_length=255, blank=True)
-    description = models.TextField(
-        _('Descripcion'), blank=True)
+    description = RichTextField(
+        _('description'), null=True, blank=True)
     exhibitors = models.ManyToManyField(
         Exhibitor, related_name='schedule_exhibitors', blank=True, null=True)
     image = models.ImageField(
@@ -416,8 +416,8 @@ class Workshop(BaseModel):
         _('Título'), max_length=255, blank=True)
     name = models.CharField(
         _('Nombre'), max_length=255, blank=True)
-    description = models.TextField(
-        _('Descripcion'), blank=True)
+    description = RichTextField(
+        _('description'), null=True, blank=True)
     start_datetime = models.DateTimeField(
         _('Start Datetime'), blank=True, null=True)
     end_datetime = models.DateTimeField(

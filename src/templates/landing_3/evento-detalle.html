@@ -89,7 +89,7 @@
                     data-name="{{ex.name}}"
                     data-cargo="{{ex.title}} - {{ex.organization}}"
                     data-linkedin="{{ex.link}}"
-                    data-text="<p>{{ex.description}}</p>">
+                    data-text="{{ex.description|safe}}">
                         <figure>
                             <img src="{{ex.image.url}}" alt="">
                         </figure>
@@ -133,7 +133,7 @@
                         <div class="b2LeftInfo">
                             <h4>{{schedule.name}}</h4>
                             <p>{{schedule.start_time}} a {{schedule.end_time}}</p>
-                            <p>{{schedule.description}}</p>
+                            {{schedule.description|safe}}
                         </div>
                         <div class="b2RightInfo">
                             {% comment %} <p class="hour">{{schedule.start_time}} a {{schedule.end_time}}</p> {% endcomment %}
@@ -156,7 +156,7 @@
                                         data-name="{{exhibitor.name}}"
                                         data-linkedin="{{exhibitor.link}}"
                                         data-cargo="{{exhibitor.title}} - {{exhibitor.organization}}"
-                                        data-text="<p>{{exhibitor.description}}</p>">
+                                        data-text="{{exhibitor.description|safe}}">
                                             <p class="name">{{exhibitor.name}}</p>
                                             <p class="cargo">{{exhibitor.organization}}</p>
                                         </div>
@@ -234,7 +234,7 @@
                 {% endif %}
                 data-name="{{row.exhibitor.name}}"
                 data-cargo="{{row.exhibitor.title}} - {{row.exhibitor.organization}}"
-                data-text="<p>{{row.description}}</p>"
+                data-text="{{row.description|safe}}"
                 data-taller="{{row.title}}"
                 data-taller-name="{{row.name}}"
                 data-linkedin="{{row.exhibitor.link}}"
