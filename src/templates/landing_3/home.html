@@ -206,9 +206,7 @@
             <p class="b3PopupDate"></p>
             <p class="b3PopupHour"></p>
         </div>
-        {% if company_user.confirmed %}
-        <a href="#" class="b3PopupButton schedule_workshop"></a>
-        {% endif %}
+        <a href="#" class="b3PopupButton schedule_workshop_to_confirm"></a>
     </div>
 </div>
 
@@ -238,11 +236,7 @@
                 data-taller="{{row.title}}"
                 data-taller-name="{{row.name}}"
                 data-linkedin="{{row.exhibitor.link}}"
-                {% if company_user.confirmed %}
-                    data-url-inscribete="{{row.id}}"
-                {% else %}
-                    data-url-inscribete="0"
-                {% endif %}
+                data-url-inscribete="{{row.id}}"
                 {% if row.scheduled %}
                     data-inscrito="true"
                 {% else %}
@@ -340,7 +334,7 @@
     const breakpointb3 = window.matchMedia('(max-width: 1024px)');
     const breakpointCheckerb3 = () => {
         let getCountItemsb3 = document.getElementsByClassName('b3Item').length;
-        breakpointb3.matches === true ? 
+        breakpointb3.matches === true ?
             (getCountItemsb3 >= 2 ? enableSwiperb3(elSwiperb3) : destroySwiperb3()): 
             (getCountItemsb3 > elSwiperb3 ? enableSwiperb3(elSwiperb3) : destroySwiperb3())
     }
@@ -385,7 +379,7 @@
                 }
             }
         });
-        
+
     };
     breakpointb3.addListener(breakpointCheckerb3);
     breakpointCheckerb3();
@@ -524,15 +518,15 @@
                     popupButton.href = urlIncribete || "";
                     popupButton.setAttribute('data-id', urlIncribete);
                     if(booleanInscrito === "true"){
-                        console.log('true')
                         popupButton.classList.add('inscrito')
                         popupButton.textContent = 'Inscrito' || "";
                         popupButton.setAttribute('data-status', 0);
+                        popupButton.removeAttribute('href');
                     }else{
                         popupButton.setAttribute('data-status', 1);
-                        console.log('false')
                         popupButton.classList.remove('inscrito')
                         popupButton.textContent = 'Inscríbete' || "";
+                        popupButton.setAttribute('href', '#');
                     }
                     if(booleanAforo === "false"){
                         popupButton.textContent = 'Agotado' || "";
@@ -573,7 +567,7 @@ $('.validatePerson').click(function(e){
     }).done(function(data) {
         if (data.success) {
             if(status == 1){
-                var confirm_form = $('.b2PopupConfirm')
+                var confirm_form = $('.confirmPresence')
                 confirm_form.hide();
                 $('.message-waiting-confirmation').html(data.message)
                 $('.formRegistroExitoso').addClass('active');
@@ -607,15 +601,18 @@ $('.schedule_workshop').click(function(e){
                 const popup = document.querySelector(".b3Popup");
                 const popupButton = popup.querySelector(".b3PopupButton");
                 popupButton.textContent = 'Inscrito';
-                item.addClass('inscrito');
-                item.attr('data-status', 0);
+                popupButton.removeAttribute('href');
+                $('.b3PopupButton').addClass('inscrito');
+                $('.b3PopupButton').attr('data-status', 0);
+                $('.b3PopupButton').removeClass('schedule_workshop_to_confirm', 0);
             }else{
                 const popup = document.querySelector(".b3Popup");
                 const popupButton = popup.querySelector(".b3PopupButton");
                 popupButton.textContent = 'Inscríbete';
-                item.removeClass('inscrito');
-                item.attr('data-status', 1);
+                $('.b3PopupButton').removeClass('inscrito');
+                $('.b3PopupButton').attr('data-status', 1);
             }
+            $('.confirmWorkshop').removeClass('active')
         }
     });
 });
@@ -686,5 +683,21 @@ function smoothScrollToTop() {
   requestAnimationFrame(scrollStep);
 }
 
+let elb2PopupConfirm = document.getElementsByClassName('confirmWorkshop')[0]
+let noConfirmWorshop = document.getElementsByClassName('noConfirmWorshop')[0]
+noConfirmWorshop.addEventListener('click',function(e){
+    e.preventDefault()
+    elb2PopupConfirm.classList.remove('active')
+})
+$('.schedule_workshop_to_confirm').click(function(e){
+    e.preventDefault();
+    var item = $(this);
+    var data_id = item.attr('data-id')
+    var data_status = item.attr('data-status')
+    if(data_status === '1'){
+        $('.schedule_workshop').attr("data-id", data_id);
+        $('.confirmWorkshop').addClass('active')
+    }
+});
 </script>
 {% endblock %}

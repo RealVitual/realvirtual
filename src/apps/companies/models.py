@@ -168,6 +168,8 @@ class Company(BaseModel):
         _('Mensaje Usuario filtrado'), null=True, blank=True)
     message_filter_found_domain_user = models.TextField(
         _('Mensaje Usuario encontrado filtrado'), null=True, blank=True)
+    message_confirm_workshop = RichTextField(
+        _('Mensaje confirmación Taller'), null=True, blank=True)
     title_closed_in_person_register = models.CharField(
         _('Titulo Cierre registro presencial'),
         max_length=255, null=True, blank=True

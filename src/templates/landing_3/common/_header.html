@@ -348,7 +348,7 @@
         <a href="{% url 'landing:generate_credential' %}" class="gButton">Ok</a>
     </div>
 </div>
-<div class="g8PopupForm b2PopupConfirm pr">
+<div class="g8PopupForm b2PopupConfirm confirmPresence pr">
     <div class="g8PopupContent">
         <h3>Deseas inscribirte?</h3>
         <div class="gParrafo">
@@ -357,6 +357,18 @@
         <div class="b2Buttons g8Buttons f aic jcc">
             <a href="#" data-status="1" class="gButton b2accept validatePerson">Sí</a>
             <a href="#" data-status="0" class="gButton b2cancel validatePerson">No</a>
+        </div>
+    </div>
+</div>
+<div class="g8PopupForm b2PopupConfirm confirmWorkshop pr">
+    <div class="g8PopupContent">
+        <h3>Confirmar Asistencia</h3>
+        <div class="gParrafo confirmWorkshopMsg">
+            {{company.message_confirm_workshop|safe}}
+        </div>
+        <div class="b2Buttons g8Buttons f aic jcc">
+            <a href="#" data-status="1" class="gButton b2accept schedule_workshop">Sí</a>
+            <a href="#" class="gButton b2cancel noConfirmWorshop">No</a>
         </div>
     </div>
 </div>

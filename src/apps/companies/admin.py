@@ -347,6 +347,7 @@ class CompanyAdmin(admin.ModelAdmin):
                         'confirm_user', 'message_confirm_user',
                         'filter_domain_user', 'message_filter_domain_user',
                         'message_filter_found_domain_user',
+                        'message_confirm_workshop',
                         'enable_credentials', 'enable_preferences'
                     )
                 }),
