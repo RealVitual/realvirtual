@@ -144,16 +144,33 @@ class GenerateCustomerScheduleSerializer(serializers.Serializer):
 class GenerateCustomerWorkshopSerializer(serializers.Serializer):
     workshop_id = serializers.CharField()
     status = serializers.IntegerField()
+    confirm = serializers.BooleanField()
 
     def create(self, validated_data):
         user = self.context.get("user")
         company = self.context.get("company")
         status = self.validated_data.get("status")
+        confirm = self.validated_data.get("confirm")
         workshop_id = self.validated_data.get("workshop_id")
         workshop = Workshop.objects.get(id=int(workshop_id))
+        print(confirm, 'CONFIRM!!')
         company_user = UserCompany.objects.get(
             company=company, user=user
         )
+        # Validate is it confirmed
+        if not company_user.confirmed:
+            return dict(success=False)
+
+        # Validate workshop numbers
+        if workshop.capacity <= workshop.enrolled and confirm:
+            return dict(success=False)
+        elif workshop.capacity > workshop.enrolled and not confirm:
+            return dict(success=False)
+        elif workshop.waiting_list_capacity <= workshop.waiting_list_enrolled and not confirm:
+            return dict(success=False)
+        elif workshop.waiting_list_capacity > workshop.waiting_list_enrolled and confirm:
+            return dict(success=False)
+
         if status:
             queryset = ScheduleCustomerWorkshop.objects.filter(
                 workshop=workshop, company_user=company_user,
@@ -162,14 +179,17 @@ class GenerateCustomerWorkshopSerializer(serializers.Serializer):
             if not queryset:
                 ScheduleCustomerWorkshop.objects.create(
                     workshop=workshop, company_user=company_user,
-                    company=company
+                    company=company, confirmed=confirm
                 )
-
+            if confirm:
+                workshop.enrolled += 1
+            else:
+                workshop.waiting_list_enrolled += 1
+            workshop.save()
         else:
             ScheduleCustomerWorkshop.objects.filter(
                 workshop=workshop, company_user=company_user,
                 company=company
             ).delete()
 
-        return dict(success=True)
-
+        return dict(success=True, confirm=confirm)

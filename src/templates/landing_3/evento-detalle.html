@@ -206,9 +206,7 @@
             <p class="b3PopupDate"></p>
             <p class="b3PopupHour"></p>
         </div>
-        {% if company_user.confirmed %}
-        <a href="#" class="b3PopupButton schedule_workshop"></a>
-        {% endif %}
+        <a href="#" class="b3PopupButton schedule_workshop_to_confirm"></a>
     </div>
 </div>
 
@@ -225,7 +223,7 @@
         </div>
         <div class="b4Right">
             {% for row in workshops %}
-                <div class="b3ItemClickPopup b4RighItem f aic jcsb fdc-480"
+                <div class="b3ItemClickPopup b4RighItem f aic jcsb fdc-480" id="{{row.id}}"
                 data-image="{{row.exhibitor.image.url}}"
                 {% if row.exhibitor.flag_image %}
                 data-pais="{{row.exhibitor.flag_image.url}}"
@@ -238,16 +236,19 @@
                 data-taller="{{row.title}}"
                 data-taller-name="{{row.name}}"
                 data-linkedin="{{row.exhibitor.link}}"
-                {% if company_user.confirmed %}
-                    data-url-inscribete="{{row.id}}"
+                data-url-inscribete="{{row.id}}"
+                data-confirm_schedule="{{row.confirm_schedule}}"
+                {% if row.confirm_schedule %}
+                    data-message="{{company.message_confirm_workshop|safe}}"
                 {% else %}
-                    data-url-inscribete="0"
+                    data-message="{{company.message_confirm_waiting_list_workshop|safe}}"
                 {% endif %}
                 {% if row.scheduled %}
                     data-inscrito="true"
                 {% else %}
                     data-inscrito="false"
                 {% endif %}
+                    data-confirm-inscrito="{{row.confirm_scheduled}}"
                 {% if row.get_allow_enroll %}
                     data-aforo="true"
                 {% else %}
@@ -340,7 +341,7 @@
     const breakpointb3 = window.matchMedia('(max-width: 1024px)');
     const breakpointCheckerb3 = () => {
         let getCountItemsb3 = document.getElementsByClassName('b3Item').length;
-        breakpointb3.matches === true ? 
+        breakpointb3.matches === true ?
             (getCountItemsb3 >= 2 ? enableSwiperb3(elSwiperb3) : destroySwiperb3()): 
             (getCountItemsb3 > elSwiperb3 ? enableSwiperb3(elSwiperb3) : destroySwiperb3())
     }
@@ -385,7 +386,7 @@
                 }
             }
         });
-        
+
     };
     breakpointb3.addListener(breakpointCheckerb3);
     breakpointCheckerb3();
@@ -424,6 +425,9 @@
             const date = item.getAttribute('data-hour')
             const hour = item.getAttribute('data-date')
             const linkedin = item.getAttribute('data-linkedin')
+            const message = item.getAttribute('data-message')
+            const confirm = item.getAttribute('data-confirm_schedule')
+            const confirmedInscrito = item.getAttribute('data-confirm-inscrito')
             console.log(linkedin, 'linkedin')
             if(linkedin){
                 popupLinkedin.setAttribute("href", linkedin);
@@ -524,22 +528,28 @@
                     popupButton.href = urlIncribete || "";
                     popupButton.setAttribute('data-id', urlIncribete);
                     if(booleanInscrito === "true"){
-                        console.log('true')
                         popupButton.classList.add('inscrito')
-                        popupButton.textContent = 'Inscrito' || "";
+                        if(confirmedInscrito == "True"){
+                            popupButton.textContent = 'Inscrito' || "";
+                        }else{
+                            popupButton.textContent = 'En espera' || "";
+                        }
                         popupButton.setAttribute('data-status', 0);
+                        popupButton.removeAttribute('href');
                     }else{
                         popupButton.setAttribute('data-status', 1);
-                        console.log('false')
                         popupButton.classList.remove('inscrito')
                         popupButton.textContent = 'Inscríbete' || "";
+                        popupButton.setAttribute('href', '#');
+                        popupButton.setAttribute('data-message', message);
+                        popupButton.setAttribute('data-confirm_schedule', confirm);
+
                     }
-                    if(booleanAforo === "false"){
+                    if(booleanAforo === "false" && booleanInscrito === "false"){
                         popupButton.textContent = 'Agotado' || "";
                         popupButton.classList.add('aforo-close')
                     }
                 }else{
-                    $('.schedule_workshop').hide();
                     popupButton.style.display = "none";
                 }
             }
@@ -573,7 +583,7 @@ $('.validatePerson').click(function(e){
     }).done(function(data) {
         if (data.success) {
             if(status == 1){
-                var confirm_form = $('.b2PopupConfirm')
+                var confirm_form = $('.confirmPresence')
                 confirm_form.hide();
                 $('.message-waiting-confirmation').html(data.message)
                 $('.formRegistroExitoso').addClass('active');
@@ -592,12 +602,15 @@ $('.schedule_workshop').click(function(e){
     var item = $(this);
     var data_id = item.attr('data-id')
     var status = item.attr('data-status')
+    var confirm = item.attr('data-confirm')
+    console.log(confirm, 'CONFIRM!')
     $.ajax({
         url : "{% url 'events:generate_schedule_workshop' %}",
         type : "post",
         data: {
             workshop_id: data_id,
             status: status,
+            confirm: confirm,
             csrfmiddlewaretoken: '{{ csrf_token }}'
         },
     }).done(function(data) {
@@ -606,16 +619,33 @@ $('.schedule_workshop').click(function(e){
             if(status == 1){
                 const popup = document.querySelector(".b3Popup");
                 const popupButton = popup.querySelector(".b3PopupButton");
-                popupButton.textContent = 'Inscrito';
-                item.addClass('inscrito');
-                item.attr('data-status', 0);
+                if(data.confirm){
+                    popupButton.textContent = 'Inscrito';
+                }else{
+                    popupButton.textContent = 'En Espera';
+                }
+                popupButton.removeAttribute('href');
+                $('.b3PopupButton').addClass('inscrito');
+                $('.b3PopupButton').attr('data-status', 0);
+                $('.b3PopupButton').removeClass('schedule_workshop_to_confirm', 0);
+                var workshop_row = $('#'+ data_id)
+                workshop_row.attr('data-inscrito', true)
+                if(confirm == "True"){
+                    workshop_row.attr('data-confirm-inscrito', "True")
+                }else{
+                    workshop_row.attr('data-confirm-inscrito', "False")
+
+                }
             }else{
                 const popup = document.querySelector(".b3Popup");
                 const popupButton = popup.querySelector(".b3PopupButton");
                 popupButton.textContent = 'Inscríbete';
-                item.removeClass('inscrito');
-                item.attr('data-status', 1);
+                $('.b3PopupButton').removeClass('inscrito');
+                $('.b3PopupButton').attr('data-status', 1);
             }
+            $('.confirmWorkshop').removeClass('active')
+        }else{
+            location.reload();
         }
     });
 });
@@ -686,5 +716,25 @@ function smoothScrollToTop() {
   requestAnimationFrame(scrollStep);
 }
 
+let elb2PopupConfirm = document.getElementsByClassName('confirmWorkshop')[0]
+let noConfirmWorshop = document.getElementsByClassName('noConfirmWorshop')[0]
+noConfirmWorshop.addEventListener('click',function(e){
+    e.preventDefault()
+    elb2PopupConfirm.classList.remove('active')
+})
+$('.schedule_workshop_to_confirm').click(function(e){
+    e.preventDefault();
+    var item = $(this);
+    var data_id = item.attr('data-id')
+    var data_status = item.attr('data-status')
+    var data_message = item.attr('data-message')
+    var data_confirm = item.attr('data-confirm_schedule')
+    $('.confirmWorkshopMsg').html(data_message)
+    if(data_status === '1'){
+        $('.schedule_workshop').attr("data-id", data_id);
+        $('.schedule_workshop').attr("data-confirm", data_confirm);
+        $('.confirmWorkshop').addClass('active')
+    }
+});
 </script>
 {% endblock %}

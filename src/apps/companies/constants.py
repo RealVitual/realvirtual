@@ -16,8 +16,9 @@ class EmailType(Enum):
     CONFIRMED_REGISTER = 'Registro usuario confirmado'
     TO_CONFIRM_USER = 'Usuario por confirmar'
     PASSWORD = 'Recuperar/Reestablecer contraseña'
-    SCHEDULE = 'Confirmación de agenda'
-    WORKSHOP = 'Confirmación de agenda taller'
+    SCHEDULE = 'Evento / Horario Agendado'
+    WORKSHOP = 'Taller Agendado'
+    WORKSHOP_WAITING = 'Taller en lista de espera Agendado'
 
     @classmethod
     def choices(cls):

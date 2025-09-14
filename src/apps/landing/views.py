@@ -159,10 +159,13 @@ class HomeView(CreateView):
                 company_user = UserCompany.objects.get(
                     company=company, user=request.user)
                 for w in workshops:
-                    w.scheduled = w.workshop_company_users.filter(
+                    scheduled = w.workshop_company_users.filter(
                         company=w.company, is_active=True,
                         company_user=company_user
                     )
+                    if scheduled:
+                        w.scheduled = scheduled[0]
+                        w.confirm_scheduled = scheduled[0].confirmed
                 for s in schedules:
                     s.scheduled = s.schedule_company_users.filter(
                         company=s.event.company, company_user=company_user
@@ -445,10 +448,13 @@ class EventsView(CreateView):
                 company_user = UserCompany.objects.get(
                     company=company, user=request.user)
                 for w in workshops:
-                    w.scheduled = w.workshop_company_users.filter(
+                    scheduled = w.workshop_company_users.filter(
                         company=w.company, is_active=True,
                         company_user=company_user
                     )
+                    if scheduled:
+                        w.scheduled = scheduled[0]
+                        w.confirm_scheduled = scheduled[0].confirmed
                 for s in schedules:
                     s.scheduled = s.schedule_company_users.filter(
                         company=s.event.company, company_user=company_user
@@ -1428,5 +1434,9 @@ class ValidateInPersonCompanyUser(APIView):
         if serializer.is_valid():
             response = serializer.save()
             return Response(dict(
-                success=True, message=response['message']), status=200)
+                success=True,
+                message=response['message'],
+                confirm=response['confirm']
+                    ),
+                status=200)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

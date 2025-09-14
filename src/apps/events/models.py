@@ -440,6 +440,12 @@ class Workshop(BaseModel):
     enrolled = models.PositiveIntegerField(
         _('Inscritos'), default=0
     )
+    waiting_list_capacity = models.PositiveIntegerField(
+        _('Capacidad Lista de espera'), default=0
+    )
+    waiting_list_enrolled = models.PositiveIntegerField(
+        _('Inscritos Lista de espera'), default=0
+    )
 
     class Meta:
         verbose_name = _('Taller')
@@ -450,8 +456,18 @@ class Workshop(BaseModel):
         return '{} | {} | {}'.format(
             self.title, self.name, self.company.name)
 
-    def get_allow_enroll(self):
+    def get_allow_enroll(self) -> bool:
+        if self.waiting_list_capacity:
+            return (self.capacity > self.enrolled) or (
+                self.waiting_list_capacity > self.waiting_list_enrolled)
         return self.capacity > self.enrolled
+
+    def confirm_schedule(self) -> str:
+        if self.capacity > self.enrolled:
+            return True
+        elif self.waiting_list_capacity > self.waiting_list_enrolled:
+            return False
+        return None
 
 
 class ScheduleCustomerWorkshop(BaseModel):
@@ -465,6 +481,9 @@ class ScheduleCustomerWorkshop(BaseModel):
         Workshop, related_name="workshop_company_users",
         on_delete=models.DO_NOTHING,
         blank=True, null=True
+    )
+    confirmed = models.BooleanField(
+        _("Confirmado"), default=True
     )
 
     class Meta:

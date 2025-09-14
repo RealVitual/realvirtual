@@ -347,8 +347,13 @@ class CompanyAdmin(admin.ModelAdmin):
                         'confirm_user', 'message_confirm_user',
                         'filter_domain_user', 'message_filter_domain_user',
                         'message_filter_found_domain_user',
-                        'message_confirm_workshop',
                         'enable_credentials', 'enable_preferences'
+                    )
+                }),
+                (_('Confirmación asistencia Talleres'), {
+                    'fields': (
+                        'message_confirm_workshop',
+                        'message_confirm_waiting_list_workshop'
                     )
                 }),
                 (_('Cierre de registro'), {
