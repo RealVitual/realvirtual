@@ -718,6 +718,8 @@ class IndicatorsMainEvent(BaseModel):
             _('Título'), max_length=255, null=True, blank=True)
     number = models.CharField(
             _('Número'), default=1, null=True, blank=True)
+    sufix = models.CharField(
+            _('Sufijo'), default="0", null=True, blank=True)
 
     class Meta:
         verbose_name = _('Indicador')

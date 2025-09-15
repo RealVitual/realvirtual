@@ -153,7 +153,8 @@
                 <div class="b2ListNumber column3 column1-480">
                     {% for row in home_page.get_indicators %}
                         <div class="b2ItemNUmber">
-                            <p>+<span class="b2Number" data-num="{{row.number}}"></span></p>
+                            {% comment %} <p>+<span class="b2Number" data-num="{{row.number}}{{row.sufix}}"></span></p> {% endcomment %}
+                            <p>+{{row.number}}</p>
                             <p class="info">{{row.title}}</p>
                         </div>
                     {% endfor %}
@@ -499,7 +500,7 @@
 <script type="text/javascript">
 
 //bloque 3 - js
-eventCountAnimate("elb2","b2Number",3,1)
+eventCountAnimate("elb2","b2Number",3, 1)
 
 document.addEventListener('DOMContentLoaded', function () {
     const selects = document.querySelectorAll('.b4ClickSelect');
