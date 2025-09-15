@@ -413,7 +413,7 @@ class EmailPasswordForm(forms.Form):
         email = data.get("email")
         print(email, 'EMAIIL')
         if not UserCompany.objects.filter(email=email.lower(), company=self.company):
-            mensaje = "Error de Credenciales"
+            mensaje = "Correo no registrado"
             raise forms.ValidationError(mensaje)
         return data
 
