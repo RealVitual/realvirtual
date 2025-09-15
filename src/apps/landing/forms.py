@@ -411,7 +411,8 @@ class EmailPasswordForm(forms.Form):
     def clean(self):
         data = self.cleaned_data
         email = data.get("email")
-        if not User.objects.filter(email=email.lower()):
+        print(email, 'EMAIIL')
+        if not UserCompany.objects.filter(email=email.lower(), company=self.company):
             mensaje = "Error de Credenciales"
             raise forms.ValidationError(mensaje)
         return data
