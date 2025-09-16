@@ -12,15 +12,15 @@ from django.core.mail import get_connection
 
 
 def send_html_mail(subject, html_content, e_mail, receptors,
-                   a_file, customer, company):
+                   a_file, customer, company, send_ics):
     EmailThread(
         subject, html_content, e_mail, receptors,
-        a_file, customer, company).start()
+        a_file, customer, company, send_ics).start()
 
 
 class EmailThread(threading.Thread):
     def __init__(self, subject, html_content,
-                 e_mail, receptors, a_file, customer, company):
+                 e_mail, receptors, a_file, customer, company, send_ics):
         self.subject = subject
         self.e_mail = e_mail
         self.html_content = html_content
@@ -28,6 +28,7 @@ class EmailThread(threading.Thread):
         self.a_file = a_file
         self.customer = customer
         self.company = company
+        self.send_ics = send_ics
         threading.Thread.__init__(self)
 
     def run(self):
@@ -49,7 +50,7 @@ class EmailThread(threading.Thread):
             connection=connection)
         msg.content_subtype = "html"
 
-        if self.a_file:
+        if self.a_file and self.send_ics:
             print(self.a_file, 'A FILE')
             msg = EmailMessage(
                 subject=self.subject,
@@ -152,6 +153,7 @@ class GenerateCustomerWorkshopSerializer(serializers.Serializer):
             workshop, confirm
         )
         print(_continue, '_continue')
+        send_ics = False
         if _continue:
             if status:
                 queryset = ScheduleCustomerWorkshop.objects.filter(
@@ -164,6 +166,7 @@ class GenerateCustomerWorkshopSerializer(serializers.Serializer):
                         company=company, confirmed=confirm
                     )
                 if confirm:
+                    send_ics = True
                     workshop.enrolled += 1
                     mailings = EmailTemplate.objects.filter(
                         company=company, email_type="WORKSHOP")
@@ -193,7 +196,7 @@ class GenerateCustomerWorkshopSerializer(serializers.Serializer):
                     print("ENVIAR CORREO ")
                     send_html_mail(
                         subject, html_content, e_mail, [user.email, ],
-                        a_file, user, company)
+                        a_file, user, company, send_ics)
             else:
                 ScheduleCustomerWorkshop.objects.filter(
                     workshop=workshop, company_user=company_user,
