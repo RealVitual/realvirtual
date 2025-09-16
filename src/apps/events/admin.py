@@ -190,3 +190,10 @@ class WorkshopAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Category, MPTTModelAdmin)
+
+
+@admin.register(Schedule)
+class ScheduleAdmin(admin.ModelAdmin):
+    list_display = ('name', 'start_time', 'end_time', 'event')
+    list_filter = ('event', 'event__company')
+    search_fields = ('name', 'event__name')
