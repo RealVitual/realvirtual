@@ -74,7 +74,8 @@ def main_info(request, **kwargs):
                         'landing:generate_credential')
                     if user.credentials.filter(company=company):
                         cred = user.credentials.filter(
-                            company=company).last()
+                            company=company).order_by('-created').first()
+                        print(cred, 'CRED')
                         credential_url = reverse(
                             'landing:credential_generated',
                             kwargs=dict(uid=cred.code))
