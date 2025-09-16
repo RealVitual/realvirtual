@@ -163,34 +163,38 @@ class GenerateCustomerWorkshopSerializer(serializers.Serializer):
             return dict(success=False)
 
         # Validate workshop numbers
-        if workshop.capacity <= workshop.enrolled and confirm:
-            return dict(success=False)
-        elif workshop.capacity > workshop.enrolled and not confirm:
-            return dict(success=False)
-        elif workshop.waiting_list_capacity <= workshop.waiting_list_enrolled and not confirm:
-            return dict(success=False)
-        elif workshop.waiting_list_capacity > workshop.waiting_list_enrolled and confirm:
-            return dict(success=False)
-
-        if status:
-            queryset = ScheduleCustomerWorkshop.objects.filter(
-                workshop=workshop, company_user=company_user,
-                company=company
-            )
-            if not queryset:
-                ScheduleCustomerWorkshop.objects.create(
+        _continue = self.check_validation(
+            workshop, confirm
+        )
+        print(_continue, '_continue')
+        if _continue:
+            if status:
+                queryset = ScheduleCustomerWorkshop.objects.filter(
                     workshop=workshop, company_user=company_user,
-                    company=company, confirmed=confirm
+                    company=company
                 )
-            if confirm:
-                workshop.enrolled += 1
+                if not queryset:
+                    ScheduleCustomerWorkshop.objects.create(
+                        workshop=workshop, company_user=company_user,
+                        company=company, confirmed=confirm
+                    )
+                if confirm:
+                    workshop.enrolled += 1
+                else:
+                    workshop.waiting_list_enrolled += 1
+                workshop.save()
             else:
-                workshop.waiting_list_enrolled += 1
-            workshop.save()
-        else:
-            ScheduleCustomerWorkshop.objects.filter(
-                workshop=workshop, company_user=company_user,
-                company=company
-            ).delete()
+                ScheduleCustomerWorkshop.objects.filter(
+                    workshop=workshop, company_user=company_user,
+                    company=company
+                ).delete()
+            return dict(success=True, confirm=confirm)
+        return dict(success=False, confirm=None)
 
-        return dict(success=True, confirm=confirm)
+    def check_validation(self, workshop, confirm) -> bool:
+        if workshop.capacity > workshop.enrolled and confirm:
+            return True
+        if workshop.waiting_list_capacity:
+            if workshop.waiting_list_capacity > workshop.waiting_list_enrolled and not confirm:
+                return True
+        return False

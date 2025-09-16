@@ -260,6 +260,25 @@
                         <div class="b4ItemInfoContent">
                             <p>{{row.title}}</p>
                             <p class="info">{{row.name}}</p>
+                            <p class="address">{{row.address}}</p>
+                            <p class="hour">{{ row.start_datetime|date:"f:i a" }} a {{ row.end_datetime|date:"f:i a" }}</p>
+                            {% if row.scheduled %}
+                                {% if row.confirm_scheduled %}
+                                    <p class="date">Inscrito</p>
+                                {% else %}
+                                    <p class="date">En Lista de espera</p>
+                                {% endif %}
+                            {% else %}
+                                {% if row.get_available_number %}
+                                    {% if row.confirm_schedule %}
+                                        <p class="date">Cupos disponibles: {{row.get_available_number}}</p>
+                                    {% else %}
+                                        <p class="date">Cupos Lista de espera: {{row.get_available_number}}</p>
+                                    {% endif %}
+                                {% else %}
+                                    <p class="date">Agotado</p>
+                                {% endif %}
+                            {% endif %}
                         </div>
                     </div>
                     <div class="b4ItemImage">
@@ -615,6 +634,7 @@ $('.schedule_workshop').click(function(e){
         },
     }).done(function(data) {
         if (data.success) {
+            console.log(data, 'DATA!!')
             console.log(status, 'status')
             if(status == 1){
                 const popup = document.querySelector(".b3Popup");

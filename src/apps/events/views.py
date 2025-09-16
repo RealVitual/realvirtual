@@ -40,7 +40,8 @@ class GenerateWorkshopCustomerEvent(APIView):
                 'user': request.user,
                 'company': request.company})
         if serializer.is_valid():
-            serializer.save()
+            response = serializer.save()
             return Response(dict(
-                success=True), status=200)
+                success=response['success'],
+                confirm=response['confirm']), status=200)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -416,6 +416,8 @@ class Workshop(BaseModel):
         _('Título'), max_length=255, blank=True)
     name = models.CharField(
         _('Nombre'), max_length=255, blank=True)
+    address = models.CharField(
+        _('Dirección'), max_length=255, blank=True)
     description = RichTextField(
         _('description'), null=True, blank=True)
     start_datetime = models.DateTimeField(
@@ -469,6 +471,17 @@ class Workshop(BaseModel):
             return False
         return None
 
+    def get_available_number(self) -> int:
+        if self.capacity > self.enrolled:
+            return self.capacity - self.enrolled
+        if self.capacity <= self.enrolled:
+            if not self.waiting_list_capacity:
+                return 0
+            else:
+                if self.waiting_list_capacity > self.waiting_list_enrolled:
+                    return self.waiting_list_capacity - self.waiting_list_enrolled
+                else:
+                    return 0
 
 class ScheduleCustomerWorkshop(BaseModel):
     company = models.ForeignKey(
