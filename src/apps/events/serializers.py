@@ -56,7 +56,8 @@ class EmailThread(threading.Thread):
                 subject=self.subject,
                 body=self.html_content,
                 from_email=rules_email.username,
-                to=self.receptors)
+                to=self.receptors,
+                connection=connection)
             msg.content_subtype = "html"
             msg.attach(self.a_file[1], self.a_file[0], self.a_file[2])
         msg.send()
