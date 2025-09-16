@@ -154,6 +154,7 @@ class GenerateCustomerWorkshopSerializer(serializers.Serializer):
         workshop_id = self.validated_data.get("workshop_id")
         workshop = Workshop.objects.get(id=int(workshop_id))
         print(confirm, 'CONFIRM!!')
+        print(status, 'status!!')
         company_user = UserCompany.objects.get(
             company=company, user=user
         )
