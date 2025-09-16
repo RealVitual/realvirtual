@@ -86,10 +86,11 @@
                 </div>
             </div>
             <button class="g8SumitLogin">Ingresar</button>
+            <p class="messageError message-warning-login"></p>
         </form>
     </div>
     <div class="g8Bottom tac">
-        <a href="" class="losePassword">Olvidé mi contraseña</a>
+        <a href="{% url 'landing:recover_password' %}">Olvidé mi contraseña</a>
         <h4>¿No tienes cuenta? <a href="#" id="openRegistrarme">Regístrate aquí</a></h4>
     </div>
 </div>
