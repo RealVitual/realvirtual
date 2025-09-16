@@ -256,9 +256,11 @@ class RegisterForm(forms.ModelForm):
                 self.in_person = True
                 self.virtual = True
                 self.validate_assistance_type = True
+                self.custom_confirmation = False
             else:
                 self.in_person = False
                 self.virtual = True
+                self.custom_confirmation = True
                 message = self.company.message_filter_domain_user
             return True, message, True
         elif self.company.is_private_with_confirmation:
