@@ -71,6 +71,8 @@ class ValidateInPersonCompanyUserSerializer(serializers.Serializer):
             user_company.save()
             mailing, created = EmailTemplate.objects.get_or_create(
                 company=company, email_type="TO_CONFIRM_USER")
+            user_company.confirmed = True
+            user_company.save()
         else:
             mailing, created = EmailTemplate.objects.get_or_create(
                 company=company, email_type="REGISTER")
@@ -109,4 +111,4 @@ class ValidateInPersonCompanyUserSerializer(serializers.Serializer):
                 subject, html_content, e_mail, [user_company.email, ],
                 user_company, company)
 
-        return dict(success=True, message=message)
+        return dict(success=True, message=message, confirm=status)

@@ -1433,6 +1433,7 @@ class ValidateInPersonCompanyUser(APIView):
         )
         if serializer.is_valid():
             response = serializer.save()
+            print(response, 'RESPONSE')
             return Response(dict(
                 success=True,
                 message=response['message'],
