@@ -33,29 +33,24 @@ class EmailThread(threading.Thread):
     def run(self):
         rules_email, created = EmailSettings.objects.get_or_create(
             company=self.company)
-        print(rules_email.username, 'rules_email.username')
-        print(rules_email.host, 'rules_email.host')
-        # connection = get_connection(
-        #     host=rules_email.host,
-        #     port=rules_email.port,
-        #     username=rules_email.username,
-        #     password=rules_email.password,
-        #     use_tls=rules_email.use_tls
-        # )
+        connection = get_connection(
+            host=rules_email.host,
+            port=rules_email.port,
+            username=rules_email.username,
+            password=rules_email.password,
+            use_tls=rules_email.use_tls
+        )
         # connection.open()
-        # msg = EmailMessage(
-        #     self.subject, self.html_content, self.e_mail, self.receptors,
-        #     connection)
-        # msg.content_subtype = "html"
+        msg = EmailMessage(
+            subject=self.subject,
+            body=self.html_content,
+            from_email=rules_email.username,
+            to=self.receptors,
+            connection=connection)
+        msg.content_subtype = "html"
 
         if self.a_file:
             print(self.a_file, 'A FILE')
-            # msg = EmailMessage(
-            #     subject=self.subject,
-            #     body=self.html_content,
-            #     from_email=rules_email.username,
-            #     to=self.receptors,
-            #     connection=connection)
             msg = EmailMessage(
                 subject=self.subject,
                 body=self.html_content,
@@ -63,19 +58,9 @@ class EmailThread(threading.Thread):
                 to=self.receptors)
             msg.content_subtype = "html"
             msg.attach(self.a_file[1], self.a_file[0], self.a_file[2])
-            msg.send()
-        # settings.EMAIL_HOST = rules_email.host
-        # settings.EMAIL_PORT = rules_email.port
-        # settings.EMAIL_HOST_USER = rules_email.username
-        # settings.EMAIL_HOST_PASSWORD = rules_email.password
-        # settings.EMAIL_USE_TLS = rules_email.use_tls
-
+        msg.send()
         # connection.close()
         print('SE ENVIÓ CORREO EXITOSAMENTE PARA ==>' + self.receptors[0])
-        # if "Regi" in self.subject:
-        #     User.objects.filter(email=self.receptors[0]).update(
-        #         received_welcome_email=True)
-        #     print('CLIENTE ACTUALIZADO!')
 
 
 class GenerateCustomerScheduleSerializer(serializers.Serializer):
@@ -180,9 +165,35 @@ class GenerateCustomerWorkshopSerializer(serializers.Serializer):
                     )
                 if confirm:
                     workshop.enrolled += 1
+                    mailings = EmailTemplate.objects.filter(
+                        company=company, email_type="WORKSHOP")
                 else:
                     workshop.waiting_list_enrolled += 1
+                    mailings = EmailTemplate.objects.filter(
+                        company=company, email_type="WORKSHOP_WAITING")
                 workshop.save()
+
+                # Send email
+                if mailings:
+                    mailing = mailings[0]
+                    context = dict()
+                    context["names"] = company_user.names
+                    context["first_name"] = company_user.names.split(" ")[0]
+                    context["email"] = company_user.email
+                    context["workshop"] = workshop
+                    a_file = workshop.ics_file.read(), "event.ics", "text/calendar"
+                    template = Template(mailing.html_code)
+                    html_content = template.render(Context(context))
+                    subject = mailing.subject
+                    e_mail = u'{0}<{1}>'.format(
+                        mailing.from_name, mailing.from_email)
+                    msg = EmailMessage(
+                        subject, html_content, e_mail, [user.email, ])
+                    msg.content_subtype = "html"
+                    print("ENVIAR CORREO ")
+                    send_html_mail(
+                        subject, html_content, e_mail, [user.email, ],
+                        a_file, user, company)
             else:
                 ScheduleCustomerWorkshop.objects.filter(
                     workshop=workshop, company_user=company_user,
