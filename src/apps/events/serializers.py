@@ -146,8 +146,8 @@ class GenerateCustomerWorkshopSerializer(serializers.Serializer):
             company=company, user=user
         )
         # Validate is it confirmed
-        if not company_user.confirmed:
-            return dict(success=False)
+        # if not company_user.confirmed:
+        #     return dict(success=False)
 
         # Validate workshop numbers
         _continue = self.check_validation(
