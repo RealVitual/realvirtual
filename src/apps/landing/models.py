@@ -569,3 +569,32 @@ class FrequentlyQuestion(BaseModel):
 
     def __str__(self):
         return str(self.name)
+
+
+class VoteCategory(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_vote_categories",
+        on_delete=models.DO_NOTHING, null=True, blank=True)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1
+    )
+    name = models.CharField(_('Nombre'), max_length=255)
+    description = RichTextField(
+        _('Descripción'), null=True, blank=True)
+    slug = models.SlugField(
+        _('Url'),
+        max_length=450,
+        blank=True, editable=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(VoteCategory, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = _('Categoria para votación')
+        verbose_name_plural = _('Categorias para votación')
+
+    def __str__(self):
+        return str(self.name)

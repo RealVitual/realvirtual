@@ -5,13 +5,21 @@ from .models import (Video, Sponsor, CredentialCustomer,
                      SurveryChoiceQuestion, SurveryQuestion,
                      UserSurveyAnswer, NetworkingOption,
                      UserNetworkingPreference, FreeImage, CerficateSettings,
-                     BlogPost, BlogPostItem, BlogPostItemContent, FrequentlyQuestion,
-                     CustomerInvitedLanding)
+                     BlogPost, BlogPostItem, BlogPostItemContent,
+                     FrequentlyQuestion,
+                     CustomerInvitedLanding, VoteCategory)
 from django.utils.html import format_html
 import os
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.forms import Textarea
+
+
+@admin.register(VoteCategory)
+class VoteCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'position', 'company')
+    list_filter = ('company', )
+    list_editable = ('position', 'company')
 
 
 @admin.register(Video)

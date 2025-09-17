@@ -1,3 +1,4 @@
+
 .g8Form
 	button
 		height 55px
@@ -70,6 +71,14 @@
 				padding 0px
 				flexg(center,flex-start)
 				padding-left 20px
+
+.g8Cookies
+	text-decoration underline
+	padding-left 30px
+	text-align left
+	font-size 14px
+	textg(t-400,normal,#000)
+	width 100%
 
 .g8LinkForm
 	font-size 16px
@@ -153,6 +162,7 @@
 			centerY()
 			right 10px
 			font-size 25px
+			pointer-events none
 	span
 		position absolute
 		left 15px
@@ -305,6 +315,21 @@
 		font-size 16px
 		textg(t-400,normal,#262626)
 
+.g8GroupChecbox
+	flexg(center,flex-start)
+	margin-bottom 15px
+	justify-content center !important
+	span
+		margin-right 10px !important
+		font-size 16px
+		textg(t-400,normal,#262626)
+	.g8Checkbox
+		width fit-content !important
+		margin-right 10px
+		margin-bottom 0px !important
+		&:last-child
+			margin-right 0
+
 @media screen and (max-width: 1440px)
 	.g8Input
 		height 50px
@@ -398,3 +423,6 @@
 		margin 10px 0px
 	.g8PopupForm.formRegistro button
 		margin-top 10px
+	.g8GroupChecbox
+		.g8Checkbox
+			margin-right 10px !important

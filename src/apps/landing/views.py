@@ -13,7 +13,7 @@ from .models import (
     Video, Sponsor, CredentialCustomer, CredentialSettings, Question,
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
     NetworkingOption, UserNetworkingPreference, BlogPost,
-    FrequentlyQuestion)
+    FrequentlyQuestion, VoteCategory)
 from .forms import (
     RegisterForm, CredentialCustomerForm, LoginForm, EmailPasswordForm,
     ResetPasswordForm, CertificateForm)
@@ -172,6 +172,9 @@ class HomeView(CreateView):
                     )
             exhibitors = Exhibitor.objects.filter(
                     company=company, is_active=True)
+            vote_categories = VoteCategory.objects.filter(
+                company=request.company
+            ).order_by('position')
             context = {
                 'company': company,
                 'header': True,
@@ -195,7 +198,8 @@ class HomeView(CreateView):
                 'blog_posts_number': len(blog_posts),
                 'filtered': filtered,
                 'frequently_questions': frequently_questions,
-                'workshops': workshops
+                'workshops': workshops,
+                'vote_categories': vote_categories
             }
         return render(request, self.template_name, context)
 
@@ -461,6 +465,9 @@ class EventsView(CreateView):
                     )
             exhibitors = Exhibitor.objects.filter(
                     company=company, is_active=True)
+            vote_categories = VoteCategory.objects.filter(
+                company=request.company
+            ).order_by('position')
             context = {
                 'company': company,
                 'header': True,
@@ -484,7 +491,8 @@ class EventsView(CreateView):
                 'blog_posts_number': len(blog_posts),
                 'filtered': filtered,
                 'frequently_questions': frequently_questions,
-                'workshops': workshops
+                'workshops': workshops,
+                'vote_categories': vote_categories
             }
         return render(request, self.template_name, context)
 

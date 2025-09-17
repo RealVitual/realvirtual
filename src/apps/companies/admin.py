@@ -22,102 +22,6 @@ class CompanyAdmin(admin.ModelAdmin):
     readonly_fields = (
         'logo_preview', 'banner_preview', 'mobile_banner_preview',
         'image_banner_preview')
-    # fieldsets = (
-    #     (None, {
-    #         'fields': (
-    #             'enterprise', 'domain', 'name', 'logo', 'logo_preview',
-    #             'main_event_name'
-    #         )
-    #     }),
-    #     (_('Contador, Comunicado y Cierre de landing'), {
-    #         'fields': (
-    #             'use_counter', 'counter_datetime', 'counter_text',
-    #             'close_landing', 'close_banner',
-    #             'close_mobile_banner', 'warning_img'
-    #         )
-    #     }),
-    #     (_('Version y formato'), {
-    #         'fields': ('version', 'font')
-    #     }),
-    #     (_('Banner Principal'), {
-    #         'fields': (
-    #             'banner', 'banner_preview',
-    #             'mobile_banner', 'mobile_banner_preview',
-    #             'image_banner', 'image_banner_preview',
-    #             'banner_second_section', 'banner_second_section_image',
-    #             'banner_second_section_internal_title',
-    #             'banner_second_section_internal_text',
-    #             'banner_second_section_internal_image',
-    #             'video_file'
-    #         )
-    #     }),
-    #     (_('Confirmación de usuarios'), {
-    #         'fields': (
-    #             'confirm_user', 'message_confirm_user'
-    #         )
-    #     }),
-    #     (_('Filtros'), {
-    #         'fields': (
-    #             'use_filters', 'use_rooms', 'use_shifts', 'use_dates'
-    #         )
-    #     }),
-    #     (_('Cierre de registro'), {
-    #         'fields': (
-    #             'title_closed_in_person_register',
-    #             'message_closed_in_person_register'
-    #         )
-    #     }),
-    #     (_('Forma de Acceso'), {
-    #         'fields': (
-    #             'is_virtual',
-    #             'in_person',
-    #             'is_private',
-    #             'access_type',
-    #             'allow_virtual_access'
-    #         )
-    #     }),
-    #     (_('Capacidad'), {
-    #         'fields': (
-    #             'capacity',
-    #             'current_quantity'
-    #         )
-    #     }),
-    #     (_('Documentos para Políticas'), {
-    #         'fields': (
-    #             'privacy_policy',
-    #             'protection_data_policy',
-    #             'cookies_policy',
-    #             'terms_and_conditions'
-    #         )
-    #     }),
-    #     (_('Formulario'), {
-    #         'fields': (
-    #             'names',
-    #             'names_field_title',
-    #             'last_name',
-    #             'last_names_field_title',
-    #             'job_company',
-    #             'job_company_names_field_title',
-    #             'job_company_select',
-    #             'company_position',
-    #             'company_position_names_field_title',
-    #             'phone',
-    #             'country',
-    #             'country_names_field_title',
-    #             'occupation',
-    #             'occupation_select',
-    #             'occupation_names_field_title',
-    #             'email_names_field_title',
-    #             'confirm_email_names_field_title'
-    #         )
-    #     }),
-    #     (_('Codigos'), {
-    #         'fields': (
-    #             'code_header',
-    #             'code_body',
-    #         )
-    #     }),
-    # )
 
     def get_fieldsets(self, request, obj=None):
         fielsets_version = []
@@ -609,6 +513,15 @@ class HomePageAdmin(admin.ModelAdmin):
                     }
                 ),
                 (
+                    "Sección Votación", {
+                        "fields": (
+                            'vote_section_name',
+                            'vote_section_text'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
                     "Sección Networking", {
                         "fields": (
                             'networking_section_name',
@@ -861,6 +774,14 @@ class HeaderAdmin(admin.ModelAdmin):
                         "fields": (
                             'show_gallery_section',
                             'gallery_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Votación", {
+                        "fields": (
+                            'show_vote_section',
+                            'vote_header_name'
                         ),
                     }
                 ),

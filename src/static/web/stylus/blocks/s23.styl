@@ -1,6 +1,101 @@
-// @media screen and (max-width 1440px)
-// @media screen and (max-width 1366px)
-// @media screen and (max-width 1280px)
-// @media screen and (max-width 1024px)
-// @media screen and (max-width 768px)
-// @media screen and (max-width 480px)
+.b23
+    margin 96px 0px
+.b23Top
+    margin-bottom 30px
+    .gTitle
+        fontg(22,36)
+        span
+            display block
+            width 100%
+            font-family t-600
+            fontg(18,24)
+
+.b23Wrap
+    flexg(flex-start,flex-start)
+    flex-flow row wrap
+    
+
+.b23Item
+    width 48%
+    border-radius 16px
+    padding 40px
+    margin-right 4%
+    margin-bottom 32px
+    min-height 370px
+    height 400px
+    transition all 400ms
+    &:nth-child(1),
+    &:nth-child(3),
+    &:nth-child(4),
+    &:nth-child(5)
+        background #EFEFF3
+    &:nth-child(2),
+    &:nth-child(3),
+    &:nth-child(6),
+    &:nth-child(7)
+        background #E0E0E0
+    &:nth-child(2n)
+        margin-right 0
+    p.name
+        fontg(22,36)
+        textg(t-700,norma,#000)
+        margin-bottom 16px
+    .gParrafo
+        fontg(16,20)
+        textg(t-400,normal,#000)
+        min-height 200px
+        overflow-y auto
+        max-height 200px
+        ul
+            &:last-child
+                margin-bottom 0
+            &:first-child
+                margin-top 0px
+            a
+                color #000
+        p
+            a
+                text-decoration underline
+                color #000
+                display inline
+            strong,em
+                font-family t-700
+                color #000
+                display inline
+    .button
+        flexg(center,center)
+        background #000
+        border-radius 100px
+        height 52px
+        padding 0px 24px
+        font-size 16px
+        textg(t-800,normal,#fff)
+        margin-top 24px
+        width fit-content
+    &:hover
+        @media screen and (min-width 1025px)
+            transform scale(1.03)
+            transition all 400ms
+
+@media screen and (max-width 1366px)
+    .b23
+        margin 70px 0px
+
+@media screen and (max-width 1024px)
+    .b23
+        margin 60px 0px
+    .b23Item
+        width 100%
+        margin-right 0
+        height auto
+        min-height initial
+        .gParrafo
+            height auto
+            min-height initial
+            max-height initial
+
+@media screen and (max-width 480px)
+    .b23
+        margin 50px 0px
+    .b23Item
+        padding 30px 20px

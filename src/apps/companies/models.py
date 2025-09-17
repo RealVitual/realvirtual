@@ -376,6 +376,13 @@ class Header(TimeStampedModel):
         _('Nombre Galería Header'), max_length=20, default="Galería"
     )
 
+    show_vote_section = models.BooleanField(
+        _('Mostrar Votación'), default=False
+    )
+    vote_header_name = models.CharField(
+        _('Nombre Votación Header'), max_length=20, default="Votación"
+    )
+
     show_sponsors_section = models.BooleanField(
         _('Mostrar Auspiciadores'), default=True
     )
@@ -635,6 +642,13 @@ class HomePage(TimeStampedModel):
     gallery_section_text = models.CharField(
         _('Galería texto'), max_length=255,
         blank=True, default="Con la participación de")
+
+    vote_section_name = models.CharField(
+        _('Votación nombre Sección'), max_length=255,
+        blank=True, default="Categorías")
+    vote_section_text = models.CharField(
+        _('Votación texto'), max_length=255,
+        blank=True, default="Premios Palmas")
 
     networking_section_name = models.CharField(
         _('Networking nombre Sección'), max_length=255,

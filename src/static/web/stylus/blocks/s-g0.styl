@@ -227,12 +227,13 @@ a
 .gParrafo
 	font-size 16px
 	textg(t-400,1.5,#17181B)
+	text-align: justify
 	p
 		margin-bottom 0px
 		em
 			font-style italic
 		a
-			color red
+			color #17181B
 			text-decoration: underline
 			display inline
 	ul
@@ -243,7 +244,6 @@ a
 			em
 				font-style italic
 			a
-				color red
 				text-decoration: underline
 				display inline
 			&:before
@@ -262,7 +262,6 @@ a
 			em
 				font-style italic
 			a
-				color red
 				text-decoration: underline
 				display inline
 			&:before
@@ -451,3 +450,5 @@ for $j in (1..50)
 		font-size 14px
 	.gTitle
 		font-size 22px
+	.grilla
+		width calc(100% - 20px)

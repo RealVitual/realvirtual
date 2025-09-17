@@ -18,6 +18,9 @@
                 {% if header_section.show_gallery_section %}
                     <a href="#galeria" class="headerAnclaBlock" style="color:{{header_section.header_text_color}};">{{header_section.gallery_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
+                {% if header_section.show_vote_section %}
+                    <a href="#votacion" class="headerAnclaBlock" style="color:{{header_section.header_text_color}};">{{header_section.vote_header_name}}<span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
+                {% endif %}
                 {% if header_section.show_networking_section %}
                     <a href="#networking" class="headerAnclaBlock" style="color:{{header_section.header_text_color}};">{{header_section.networking_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}

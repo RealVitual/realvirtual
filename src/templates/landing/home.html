@@ -422,6 +422,67 @@
     </div>
 </section>
 {% endif %}
+{% if header_section.show_vote_section %}
+<section class="b23 marginY scrollWrap anclaBlock" id="votacion">
+    <div class="grilla">
+        <div class="b23Top">
+            <h4 class="gTitle">
+                <span>{{home_page.vote_section_name}}</span>
+                {{home_page.vote_section_text}}
+            </h4>
+        </div>
+        <div class="b23Wrap">
+            {% for cat in vote_categories %}
+                <div class="b23Item">
+                    <p class="name">{{cat.name}}</p>
+                    <div class="gParrafo">
+                        {{cat.description|safe}}
+                    </div>
+                    <a href="#" class="button">Votar</a>
+                </div>
+            {% endfor %}
+
+            {% comment %} <div class="b23Item">
+                <p class="name">Inteligencia Artificial</p>
+                <div class="gParrafo">
+                    <ul>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                    </ul>
+                    <p>Se puede incluir el journey de la incorporación y desarrollo del talento humano.</p>
+                </div>
+                <a href="#" class="button">Votar</a>
+            </div>
+            <div class="b23Item">
+                <p class="name">Inteligencia Artificial</p>
+                <div class="gParrafo">
+                    <ul>
+                        <li><a href="#">Optimización de procesos</a> con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con <strong>journey de la </strong></li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                    </ul>
+                    <p>Se puede incluir el <strong>journey de la </strong>incorporación y desarrollo del talento humano.</p>
+                </div>
+                <a href="#" class="button">Votar</a>
+            </div>
+            <div class="b23Item">
+                <p class="name">Inteligencia Artificial</p>
+                <div class="gParrafo">
+                    <ul>
+                        <li><a href="#">Optimización de procesos</a> con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con <strong>journey de la </strong></li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                    </ul>
+                    <p>Se puede incluir el <strong>journey de la </strong>incorporación y desarrollo del talento humano.</p>
+                </div>
+                <a href="#" class="button">Votar</a>
+            </div> {% endcomment %}
+        </div>
+    </div>
+</section>
+{% endif %}
 {% if header_section.show_sponsors_section %}
 <section class="b6 anclaBlock anclaBlock" id="auspiciador">
     <div class="grilla">
