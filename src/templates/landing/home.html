@@ -247,7 +247,7 @@
                                 <p class="hora"><img src="/static/web/img/icon-hour.svg" alt="" width="13"> {{schedule.start_time}} - {{schedule.end_time}}</p>
                                 <h4>{{schedule.name}}</h4>
                                 <div class="gParrafo">
-                                    <p>{{schedule.description}}</p>
+                                    {{schedule.description|safe}}
                                 </div>
                                 <div class="b4Buttons f aifs jcfs">
                                 {% if logged_user and company_user.confirmed%}

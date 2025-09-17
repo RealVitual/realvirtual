@@ -247,29 +247,30 @@
                                 <p class="hora"><img src="/static/web/img/icon-hour.svg" alt="" width="13"> {{schedule.start_time}} - {{schedule.end_time}}</p>
                                 <h4>{{schedule.name}}</h4>
                                 <div class="gParrafo">
-                                    <p>{{schedule.description}}</p>
+                                    {{schedule.description|safe}}
                                 </div>
                                 <div class="b4Buttons f aifs jcfs">
-                                    {% if logged_user and company_user.confirmed%}
-                                        {% if schedule.schedule_file %}
-                                            {% comment %} <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar only"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a> {% endcomment %}
-                                            <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar only b4ButtonRelative"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a>
-                                        {% endif %}
-                                        {% if schedule.get_current_status == 'upcoming' %}
-                                            {% comment %} <a href="#" class="b4Agendar agregarCalendario b4ButtonRelative" data-item-id="2"><span>Agendar</span></a> {% endcomment %}
-                                        {% endif %}
-                                        {% if schedule.get_current_status == 'is_live' %}
-                                            {% if company.access_type == "IN_PERSON" %}
-                                                <a class="b4Envivo b4ButtonRelative">En vivo <img src="/static/web/img/live.svg" alt=""></a>
-                                            {% else %}
-                                                <a href="{% url 'landing:transmission'  schedule.event.slug %}" class="b4Envivo b4ButtonRelative">En vivo <img src="/static/web/img/live.svg" alt=""></a>
-                                            {% endif %}
-                                        {% endif %}
-                                        {% if schedule.get_current_status == 'past' and schedule.video_url %}
-                                            <a href="#" class="b4VolverVer clickVideo b4ButtonRelative popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
+                                {% if logged_user and company_user.confirmed%}
+                                    {% if schedule.schedule_file %}
+                                        {% comment %} <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar only"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a> {% endcomment %}
+                                        <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar only b4ButtonRelative"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a>
+                                    {% endif %}
+                                    {% if schedule.get_current_status == 'upcoming' %}
+                                        {% comment %} <a href="#" class="b4Agendar agregarCalendario b4ButtonRelative" data-item-id="2"><span>Agendar</span></a> {% endcomment %}
+                                    {% endif %}
+                                    {% if schedule.get_current_status == 'is_live' %}
+                                        {% if company.access_type == "IN_PERSON" %}
+                                            <a class="b4Envivo b4ButtonRelative">En vivo <img src="/static/web/img/live.svg" alt=""></a>
+                                        {% else %}
+                                            <a href="{% url 'landing:transmission'  schedule.event.slug %}" class="b4Envivo b4ButtonRelative">En vivo <img src="/static/web/img/live.svg" alt=""></a>
                                         {% endif %}
                                     {% endif %}
-                                </div>
+                                    {% if schedule.get_current_status == 'past' and schedule.video_url %}
+                                        <a href="#" class="b4VolverVer clickVideo b4ButtonRelative popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
+                                    {% endif %}
+                                {% endif %}
+                               </div>
+
                             </div>
                         </div>
                         <div class="b4ItemRight">
@@ -383,8 +384,8 @@
 {% if header_section.show_gallery_section %}
 <section class="b5 scrollWrap anclaBlock" id="galeria">
     <div class="grilla">
-        <h4>Conoce más</h4>
-        <h3 class="gTitle white">Galería del evento</h3>
+        <h4>{{home_page.gallery_section_name}}</h4>
+        <h3 class="gTitle white">{{home_page.gallery_section_text}}</h3>
         <div class="b5Swiper swiper-container scrollItem swiper" data-initial="3">
             <div class="b5Wrap swiper-wrapper">
                 {% for video in videos %}
@@ -417,6 +418,67 @@
             <!-- pagination dots -->
             <div class="b5Pagination gPagination"></div>
             <!-- nav prev and next -->
+        </div>
+    </div>
+</section>
+{% endif %}
+{% if header_section.show_vote_section %}
+<section class="b23 marginY scrollWrap anclaBlock" id="votacion">
+    <div class="grilla">
+        <div class="b23Top">
+            <h4 class="gTitle">
+                <span>{{home_page.vote_section_name}}</span>
+                {{home_page.vote_section_text}}
+            </h4>
+        </div>
+        <div class="b23Wrap">
+            {% for cat in vote_categories %}
+                <div class="b23Item">
+                    <p class="name">{{cat.name}}</p>
+                    <div class="gParrafo">
+                        {{cat.description|safe}}
+                    </div>
+                    <a href="#" class="button">Votar</a>
+                </div>
+            {% endfor %}
+
+            {% comment %} <div class="b23Item">
+                <p class="name">Inteligencia Artificial</p>
+                <div class="gParrafo">
+                    <ul>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                    </ul>
+                    <p>Se puede incluir el journey de la incorporación y desarrollo del talento humano.</p>
+                </div>
+                <a href="#" class="button">Votar</a>
+            </div>
+            <div class="b23Item">
+                <p class="name">Inteligencia Artificial</p>
+                <div class="gParrafo">
+                    <ul>
+                        <li><a href="#">Optimización de procesos</a> con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con <strong>journey de la </strong></li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                    </ul>
+                    <p>Se puede incluir el <strong>journey de la </strong>incorporación y desarrollo del talento humano.</p>
+                </div>
+                <a href="#" class="button">Votar</a>
+            </div>
+            <div class="b23Item">
+                <p class="name">Inteligencia Artificial</p>
+                <div class="gParrafo">
+                    <ul>
+                        <li><a href="#">Optimización de procesos</a> con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con <strong>journey de la </strong></li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
+                    </ul>
+                    <p>Se puede incluir el <strong>journey de la </strong>incorporación y desarrollo del talento humano.</p>
+                </div>
+                <a href="#" class="button">Votar</a>
+            </div> {% endcomment %}
         </div>
     </div>
 </section>
@@ -563,6 +625,7 @@
     function getReCaptcha(){
         grecaptcha.ready(function() {
             grecaptcha.execute('{{recaptcha_site_key}}', {action: "/"}).then(function(token) {
+                let captcha_register = document.getElementById('g-recaptcha-response')
                 if(captcha_register){
                     document.getElementById('g-recaptcha-response').value = token;
                 }
@@ -583,27 +646,6 @@
         });
       });
     }
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var iframe = document.querySelector('iframe[src*="vimeo.com/event"]');
-      if (!iframe) return;
-      iframe.setAttribute('referrerpolicy', 'origin-when-cross-origin');
-
-      var contenedor = document.createElement('div');
-      contenedor.id = 'vimeo-container-secure';
-      contenedor.style.cssText = iframe.parentNode.style.cssText;
-
-      var nuevoIframe = iframe.cloneNode(true);
-
-      iframe.parentNode.parentNode.replaceChild(contenedor, iframe.parentNode);
-      contenedor.appendChild(nuevoIframe);
-
-      var metaReferrer = document.createElement('meta');
-      metaReferrer.name = 'referrer';
-      metaReferrer.content = 'origin';
-      document.head.appendChild(metaReferrer);
-    });
 </script>
 <script type="text/javascript">
     if(document.getElementsByClassName("b3")[0]){
