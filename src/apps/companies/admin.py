@@ -345,7 +345,8 @@ class CompanyAdmin(admin.ModelAdmin):
                 (_('Confirmación de usuarios'), {
                     'fields': (
                         'confirm_user', 'message_confirm_user',
-                        'filter_domain_user', 'message_filter_domain_user',
+                        'filter_domain_user', 'title_filter_user',
+                        'message_filter_domain_user',
                         'message_filter_found_domain_user',
                         'enable_credentials', 'enable_preferences'
                     )

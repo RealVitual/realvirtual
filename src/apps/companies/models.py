@@ -166,6 +166,9 @@ class Company(BaseModel):
         default=False)
     message_filter_domain_user = models.TextField(
         _('Mensaje Usuario filtrado'), null=True, blank=True)
+    title_filter_user = models.CharField(
+        _('Titulo usuario filtrado'), max_length=128,
+        null=True, blank=True, default="Registro exitoso")
     message_filter_found_domain_user = models.TextField(
         _('Mensaje Usuario encontrado filtrado'), null=True, blank=True)
     message_confirm_workshop = RichTextField(

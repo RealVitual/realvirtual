@@ -343,7 +343,7 @@
 <div class="g8PopupForm formRegistroExitoso pr">
     <!-- <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a> -->
     <div class="g8PopupContent">
-        <h3>Registro exitoso</h3>
+        <h3>{{company.title_filter_user}}</h3>
         <div class="gParrafo message-waiting-confirmation">
         </div>
         <a href="{% url 'landing:generate_credential' %}" class="gButton">Ok</a>
@@ -354,7 +354,7 @@
         <h3>Elije tu modalidad de participación</h3>
         <div class="gParrafo">
             <p style="text-align: center;">El evento presencial se realizará el 11 de noviembre en el BCP de La Molina.</p>
-            <p style="text-align: center;">(Cupos limitados)</p>
+            <p style="text-align: center;">*Cupos limitados</p>
         </div>
         <div class="b2Buttons g8Buttons f aic jcc">
             <a href="#" data-status="1" class="gButton b2accept validatePerson">Presencial</a>
