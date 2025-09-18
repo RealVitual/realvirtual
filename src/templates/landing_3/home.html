@@ -273,10 +273,10 @@
                                     {% if row.confirm_schedule %}
                                         <p class="date">Cupos disponibles: {{row.get_available_number}}</p>
                                     {% else %}
-                                        <p class="date">Cupos Lista de espera: {{row.get_available_number}}</p>
+                                        <p class="date">Lista de espera: {{row.get_available_number}}</p>
                                     {% endif %}
                                 {% else %}
-                                    <p class="date">Agotado</p>
+                                    <p class="date">Cupos Agotados</p>
                                 {% endif %}
                             {% endif %}
                         </div>

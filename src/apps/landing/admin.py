@@ -71,7 +71,8 @@ class SponsorAdmin(admin.ModelAdmin):
 
 @admin.register(CredentialCustomer)
 class CredentialCustomerAdmin(admin.ModelAdmin):
-    list_display = ('names', 'credential_img', 'created')
+    list_display = ('names', 'credential_img', 'company', 'created')
+    list_filter = ('company', )
 
 
 @admin.register(CredentialSettings)
