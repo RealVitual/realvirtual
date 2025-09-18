@@ -210,7 +210,7 @@
     </div>
 </div>
 
-{% if header_section.show_workshops_section and company_user.in_person and company_user.confirmed %}
+{% if header_section.show_workshops_section and company_user.in_person %}
 <section class="b4 mY scrollWrap anclaBlock" id="talleres">
     <div class="grilla f aifs jcsb scrollItem fdc-768 ">
         <div class="b4Left">
@@ -273,10 +273,10 @@
                                     {% if row.confirm_schedule %}
                                         <p class="date">Cupos disponibles: {{row.get_available_number}}</p>
                                     {% else %}
-                                        <p class="date">Cupos Lista de espera: {{row.get_available_number}}</p>
+                                        <p class="date">Lista de espera</p>
                                     {% endif %}
                                 {% else %}
-                                    <p class="date">Agotado</p>
+                                    <p class="date">Cupos Agotados</p>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -379,7 +379,7 @@
         mySwiperb3 = new Swiper ('.b3Swiper', {
             loop: false,
             spaceBetween: 24,
-            slidesPerGroup: 4,
+            slidesPerGroup: 3,
             centeredSlides: false,
             pagination: {
                 el: '.b3Pagination',
@@ -402,6 +402,7 @@
                 320:{
                    slidesPerView: 1,
                    spaceBetween: 24,
+                   slidesPerGroup: 1,
                 }
             }
         });
