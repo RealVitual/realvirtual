@@ -438,7 +438,10 @@
                     <div class="gParrafo">
                         {{cat.description|safe}}
                     </div>
-                    <a href="#" class="button">Votar</a>
+                    <div class="b23Bottom f aic jcfs">
+                        <a href="#" class="button button_vote" data-id="{{cat.id}}">Votar</a>
+                        <p class="message_vote" id="msg_{{cat.id}}">Aún no están abiertas las votaciones</p>
+                    </div>
                 </div>
             {% endfor %}
 
@@ -1061,5 +1064,20 @@
     if(document.getElementsByClassName("b4FilterItemClick")[0]){
         eventClickAccordion("b4FilterItemClick")
      }
+     document.addEventListener("DOMContentLoaded", () => {
+        const items = document.querySelectorAll(".button_vote");
+        items.forEach(item => {
+            item.addEventListener("click", (e) => {
+                e.preventDefault();
+                const data_id = item.getAttribute("data-id");
+                $('#msg_'+data_id).fadeIn('slow')
+                setTimeout(()=>{
+                    $('#msg_'+data_id).fadeOut('slow')
+                }, 2000)
+            });
+        });
+
+
+});
 </script>
 {% endblock %}
