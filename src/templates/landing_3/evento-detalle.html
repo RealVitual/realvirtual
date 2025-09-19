@@ -264,19 +264,19 @@
                             <p class="hour">{{ row.start_datetime|date:"f:i a" }} a {{ row.end_datetime|date:"f:i a" }}</p>
                             {% if row.scheduled %}
                                 {% if row.confirm_scheduled %}
-                                    <p class="date">Inscrito</p>
+                                    <p class="date" id="b_msg-{{row.id}}">Inscrito</p>
                                 {% else %}
-                                    <p class="date">En Lista de espera</p>
+                                    <p class="date" id="b_msg-{{row.id}}">En Lista de espera</p>
                                 {% endif %}
                             {% else %}
                                 {% if row.get_available_number %}
                                     {% if row.confirm_schedule %}
-                                        <p class="date">Cupos disponibles: {{row.get_available_number}}</p>
+                                        <p class="date" id="b_msg-{{row.id}}">Cupos disponibles: {{row.get_available_number}}</p>
                                     {% else %}
-                                        <p class="date">Lista de espera</p>
+                                        <p class="date" id="b_msg-{{row.id}}">Lista de espera</p>
                                     {% endif %}
                                 {% else %}
-                                    <p class="date">Cupos Agotados</p>
+                                    <p class="date" id="b_msg-{{row.id}}">Cupos Agotados</p>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -635,8 +635,6 @@ $('.schedule_workshop').click(function(e){
         },
     }).done(function(data) {
         if (data.success) {
-            console.log(data, 'DATA!!')
-            console.log(status, 'status')
             if(status == 1){
                 const popup = document.querySelector(".b3Popup");
                 const popupButton = popup.querySelector(".b3PopupButton");
@@ -650,12 +648,14 @@ $('.schedule_workshop').click(function(e){
                 $('.b3PopupButton').attr('data-status', 0);
                 $('.b3PopupButton').removeClass('schedule_workshop_to_confirm', 0);
                 var workshop_row = $('#'+ data_id)
+                var btnw = $('#b_msg-'+ data_id)
                 workshop_row.attr('data-inscrito', true)
                 if(confirm == "True"){
                     workshop_row.attr('data-confirm-inscrito', "True")
+                    btnw.html('Inscrito')
                 }else{
                     workshop_row.attr('data-confirm-inscrito', "False")
-
+                    btnw.html('En Lista de espera')
                 }
             }else{
                 const popup = document.querySelector(".b3Popup");

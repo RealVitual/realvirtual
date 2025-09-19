@@ -255,8 +255,11 @@
                                         {% comment %} <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar only"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a> {% endcomment %}
                                         <a target="_blank" href="{{schedule.schedule_file.url}}" class="b4Descargar only b4ButtonRelative"><img src="/static/web/img/download-svgrepo-com.svg" alt=""></a>
                                     {% endif %}
-                                    {% if schedule.get_current_status == 'upcoming' %}
-                                        {% comment %} <a href="#" class="b4Agendar agregarCalendario b4ButtonRelative" data-item-id="2"><span>Agendar</span></a> {% endcomment %}
+                                    {% if schedule.get_current_status == 'upcoming' and schedule.allow_schedule %}
+                                        <a href="#" class="b4Agendar agregarCalendario b4ButtonRelative"
+                                            data-item-id="{{schedule.id}}">
+                                            <span>Agendar</span>
+                                        </a>
                                     {% endif %}
                                     {% if schedule.get_current_status == 'is_live' %}
                                         {% if company.access_type == "IN_PERSON" %}
