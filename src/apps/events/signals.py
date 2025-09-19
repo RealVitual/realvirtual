@@ -6,7 +6,9 @@ from .utils import generate_ics_file, generate_workshop_ics_file
 
 @receiver(pre_save, sender=Schedule)
 def do_something_if_changed(sender, instance, update_fields, **kwargs):
-    if not update_fields:
+    if not instance.ics_file:
+        generate_ics_file(instance)
+    elif not update_fields:
         try:
             obj = sender.objects.get(pk=instance.pk)
         except sender.DoesNotExist:

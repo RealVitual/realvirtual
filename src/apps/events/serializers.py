@@ -65,6 +65,65 @@ class EmailThread(threading.Thread):
         print('SE ENVIÓ CORREO EXITOSAMENTE PARA ==>' + self.receptors[0])
 
 
+def send_schedule_event_mail(company_user, schedule_id, company):
+    EmailScheduleThread(company_user, schedule_id, company).start()
+
+
+class EmailScheduleThread(threading.Thread):
+    def __init__(self, company_user, schedule_id, company):
+        self.company_user = company_user
+        self.schedule_id = schedule_id
+        self.company = company
+        threading.Thread.__init__(self)
+
+    def run(self):
+        mailings = EmailTemplate.objects.filter(
+            company=self.company,
+            email_type="SCHEDULE"
+        )
+        if mailings:
+            mailing = mailings[0]
+            schedule = Schedule.objects.get(id=self.schedule_id)
+            context = dict()
+            context["names"] = self.company_user.names
+            context["first_name"] = self.company_user.names.split(" ")[0]
+            context["email"] = self.company_user.email
+            context["schedule"] = schedule
+            a_file = schedule.ics_file.read(), "event.ics", "text/calendar"
+            template = Template(mailing.html_code)
+            html_content = template.render(Context(context))
+            subject = mailing.subject
+            receptors = [self.company_user.email]
+            rules_email, created = EmailSettings.objects.get_or_create(
+                company=self.company)
+            connection = get_connection(
+                host=rules_email.host,
+                port=rules_email.port,
+                username=rules_email.username,
+                password=rules_email.password,
+                use_tls=rules_email.use_tls
+            )
+            msg = EmailMessage(
+                subject=subject,
+                body=html_content,
+                from_email=rules_email.username,
+                to=receptors,
+                connection=connection)
+            msg.content_subtype = "html"
+
+            if a_file:
+                msg = EmailMessage(
+                    subject=subject,
+                    body=html_content,
+                    from_email=rules_email.username,
+                    to=receptors,
+                    connection=connection)
+                msg.content_subtype = "html"
+                msg.attach(a_file[1], a_file[0], a_file[2])
+            msg.send()
+            print('SE ENVIÓ CORREO EXITOSAMENTE PARA ==>' + receptors[0])
+
+
 class GenerateCustomerScheduleSerializer(serializers.Serializer):
     schedule_id = serializers.CharField()
     status = serializers.IntegerField()
@@ -78,6 +137,7 @@ class GenerateCustomerScheduleSerializer(serializers.Serializer):
         company_user = UserCompany.objects.get(
             company=company, user=user
         )
+        print(company_user)
         if status:
             queryset = ScheduleCustomerEvent.objects.filter(
                 schedule_id=schedule_id, company_user=company_user,
@@ -92,32 +152,9 @@ class GenerateCustomerScheduleSerializer(serializers.Serializer):
                 )
 
         # Send email
-            mailings = EmailTemplate.objects.filter(company=company,
-                                                email_type="SCHEDULE")
-            if mailings:
-                mailing = mailings[0]
-                schedule = Schedule.objects.get(id=schedule_id)
-                # context = dict()
-                # context["names"] = user.names
-                # context["first_name"] = user.names.split(" ")[0]
-                # context["email"] = user.email
-                # context["schedule"] = schedule
-                # a_file = schedule.ics_file.read(), "event.ics", "text/calendar"
-
-                # mailing = EmailTemplate.objects.get(company=company,
-                #                                     email_type="SCHEDULE")
-                # template = Template(mailing.html_code)
-                # html_content = template.render(Context(context))
-                # subject = mailing.subject
-                # e_mail = u'{0}<{1}>'.format(
-                #     mailing.from_name, mailing.from_email)
-                # msg = EmailMessage(
-                #     subject, html_content, e_mail, [user.email, ])
-                # msg.content_subtype = "html"
-                # print("ENVIAR CORREO ")
-                # send_html_mail(
-                #     subject, html_content, e_mail, [user.email, ],
-                #     a_file, user, company)
+            send_schedule_event_mail(
+                company_user, schedule_id, company
+            )
         else:
             ScheduleCustomerEvent.objects.filter(
                 schedule_id=schedule_id, company_user=company_user,

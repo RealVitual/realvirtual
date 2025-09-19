@@ -194,6 +194,8 @@ admin.site.register(Category, MPTTModelAdmin)
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'start_time', 'end_time', 'event')
+    list_display = ('name', 'allow_schedule', 'ics_file',
+                    'start_time', 'end_time', 'event')
+    list_editable = ('allow_schedule', 'ics_file')
     list_filter = ('event', 'event__company')
     search_fields = ('name', 'event__name')

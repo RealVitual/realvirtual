@@ -249,6 +249,9 @@ class Exhibitor(BaseModel):
 
 
 class Schedule(BaseModel):
+    allow_schedule = models.BooleanField(
+        _('Permitir agendar'), default=True
+    )
     event = models.ForeignKey(
         Event, related_name="schedules",
         on_delete=models.CASCADE, null=True)
@@ -383,7 +386,8 @@ class ScheduleCustomerEvent(BaseModel):
         ordering = ['-modified']
 
     def __str__(self):
-        return self.company_user.email
+        return '{} | {}'.format(
+            self.company_user, self.event.name)
 
 
 class CustomerEvent(BaseModel):
