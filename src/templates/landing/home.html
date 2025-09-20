@@ -10,23 +10,33 @@
 
 
 <section class="b1 scrollWrap">
-    {% if company.video_file %}
+    {% if home_page.video_file %}
         <video width="640" height="360" autoplay loop muted>
-            <source src="{{company.video_file.url}}" type="video/mp4">
+            <source src="{{home_page.video_file.url}}" type="video/mp4">
         </video>
     {% else %}
-        <picture class="imgCover">
-            <source srcset="{{company.mobile_banner.url}}" media="(max-width: 767px)">
-            <source srcset="{{company.banner.url}}" media="(max-width: 768px)">
-            <img src="{{company.banner.url}}" width="1920" height="713"  alt="Myimage">
-        </picture>
+        {% if home_page.banner_link %}
+            <a href="{{home_page.banner_link}}" target="_blank">
+                <picture class="imgCover">
+                    <source srcset="{{home_page.mobile_banner.url}}" media="(max-width: 767px)">
+                    <source srcset="{{home_page.banner.url}}" media="(max-width: 768px)">
+                    <img src="{{home_page.banner.url}}" width="1920" height="713"  alt="Myimage">
+                </picture>
+            </a>
+        {% else %}
+            <picture class="imgCover">
+                <source srcset="{{home_page.mobile_banner.url}}" media="(max-width: 767px)">
+                <source srcset="{{home_page.banner.url}}" media="(max-width: 768px)">
+                <img src="{{home_page.banner.url}}" width="1920" height="713"  alt="Myimage">
+            </picture>
+        {% endif %}
     {% endif %}
     <div class="grilla f center jcfs">
         <div class="b1Info top">
             <h2 class="scrollItem">{{home_page.first_title|default:""}}</h2>
             <h1 class="scrollItem">{{home_page.main_title|default:""}}</h1>
             <h3 class="scrollItem">{{home_page.secondary_title|default:""}}</h3>
-            {% if home_page.home_video_url and not company.video_file %}
+            {% if home_page.home_video_url and not home_page.video_file %}
                 <a href="#" class="clickVideo popup scrollItem" data-urlvideo="{{home_page.home_video_url}}">
                     <span style="color:{{home_page.text_buttons_color}};">Ver video</span>
                     <!-- linea circular animada administrable -->

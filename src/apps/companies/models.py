@@ -68,6 +68,15 @@ class Company(BaseModel):
         _('Favicon'), upload_to=get_upload_path("favicon"),
         null=True, blank=True
     )
+    button_color = models.CharField(
+        _('Color de botones'), max_length=20, default="#008ac9"
+    )
+    button_text_color = models.CharField(
+        _('Color de Textos en botones '), max_length=20, default="#FFFFF"
+    )
+    section_color = models.CharField(
+        _('Color de Textos en botones '), max_length=20, default="#FFFFF"
+    )
 
     use_counter = models.BooleanField(_('Usa Contador'), default=False)
     counter_datetime = models.DateTimeField(_('Fecha y Hora de contador'),
@@ -514,6 +523,9 @@ class HomePage(TimeStampedModel):
 
     home_video_url = models.CharField(
             _('Home Video Url'), max_length=255, null=True, blank=True)
+    banner_link = models.CharField(
+        _('Banner url'), max_length=255, null=True, blank=True
+    )
     banner = models.ImageField(
         _('Banner'), upload_to=get_upload_path('banner'),
         null=True, blank=True

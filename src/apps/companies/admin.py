@@ -56,6 +56,12 @@ class CompanyAdmin(admin.ModelAdmin):
                         'main_event_name', 'contact_phone'
                     )
                 }),
+                (_('Colores'), {
+                    'fields': (
+                        'button_color', 'button_text_color',
+                        'section_color',
+                    )
+                }),
                 (_('Contador, Comunicado y Cierre de landing'), {
                     'fields': (
                         'use_counter', 'counter_datetime', 'counter_text',
@@ -453,6 +459,7 @@ class HomePageAdmin(admin.ModelAdmin):
                             'text_buttons_color',
                             'first_title',
                             'main_title',
+                            'banner_link',
                             'banner',
                             'mobile_banner',
                             'image_banner',
