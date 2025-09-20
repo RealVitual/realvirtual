@@ -88,7 +88,7 @@
 
 {% if header_section.show_about_section %}
 <section class="b3 f aic jcsb scrollWrap anclaBlock" id="acerca">
-    <div class="b3Left f aifs jcfs scrollItem">
+    <div class="b3Left f aifs jcfs scrollItem" style="background: {{company.section_color}} !important;">
         <div class="b3ContentLeft">
             <h3 class="gTitle">{{home_page.main_event_title}}</h3>
             <div class="gParrafo">
@@ -201,7 +201,7 @@
             </div>
         </div>
         <div class="b4ContentWrap scrollItem {% if not company.use_filters %}hideFilterLeft{% endif %}">
-            <div class="b4FilterLeft">
+            <div class="b4FilterLeft" style="background: {{company.section_color}} !important;">
                 <h3>Filtros</h6>
                 <div class="b4FilterItemInfo">
                     <ul>
@@ -279,7 +279,9 @@
                                         {% endif %}
                                     {% endif %}
                                     {% if schedule.get_current_status == 'past' and schedule.video_url %}
-                                        <a href="#" class="b4VolverVer clickVideo b4ButtonRelative popup" data-urlvideo="{{schedule.video_url}}">Volver a ver</a>
+                                        <a href="#" class="b4VolverVer clickVideo b4ButtonRelative popup" data-urlvideo="{{schedule.video_url}}" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">
+                                            Volver a ver
+                                        </a>
                                     {% endif %}
                                 {% endif %}
                                </div>
@@ -323,7 +325,7 @@
                         </div>
                     </div>
                     {% else %}
-                        <div class="b4Break">
+                        <div class="b4Break" style="background: {{company.section_color}} !important;">
                             <h3>{{schedule.start_time}} - {{schedule.end_time}} <span>{{schedule.name}}</span></h3>
                         </div>
                     {% endif %}
@@ -349,7 +351,9 @@
             <h4 class="b4PopupCargo"></h4>
             <div class="gParrafo b4PopupText">
             </div>
-            <a href="#" target="_blank" class="b4linkedin"><img src="/static/web/img/arrow.svg" alt="" width="12"></a>
+            <a href="#" target="_blank" class="b4linkedin"
+            style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">">
+                <img src="/static/web/img/arrow.svg" alt="" width="12"></a>
         </div>
     </div>
 </div>
@@ -446,13 +450,13 @@
         </div>
         <div class="b23Wrap">
             {% for cat in vote_categories %}
-                <div class="b23Item">
+                <div class="b23Item" style="background: {{company.section_color}} !important;">
                     <p class="name">{{cat.name}}</p>
                     <div class="gParrafo">
                         {{cat.description|safe}}
                     </div>
                     <div class="b23Bottom f aic jcfs">
-                        <a href="#" class="button button_vote" data-id="{{cat.id}}">Votar</a>
+                        <a href="#" class="button button_vote" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};" data-id="{{cat.id}}">Votar</a>
                         <p class="message_vote" id="msg_{{cat.id}}">Aún no están abiertas las votaciones</p>
                     </div>
                 </div>
@@ -522,7 +526,7 @@
 {% if header_section.show_networking_section %}
     {% if logged_user %}
         <section class="b16 anclaBlock" id="networking">
-            <div class="grilla">
+            <div class="grilla" style="background: {{company.section_color}} !important;">
                 <h3 class="gTitle">{{home_page.networking_section_name}}</h3>
                 {% if company_user.allow_networking %}
                     <div class="gParrafo">
@@ -533,7 +537,7 @@
                     <div class="gParrafo">
                         <p>¿Autorizas compartir tu información de contacto con el resto de los asistentes?</p>
                     </div>
-                    <a href="#" class="gButton b16OpenPopup">Si, continuar</a>
+                    <a href="#" class="gButton b16OpenPopup" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Si, continuar</a>
                 {% endif %}
             </div>
         </section>
@@ -546,13 +550,13 @@
                     <p>Confirma que desea compartir sus datos con los demás asistentes del evento.</p>
                 </div>
                 <div class="b16Buttons">
-                    <a href="#" class="gButton b16AceptNet">Aceptar</a>
-                    <a href="#" class="gButton b16CancelNet">Cancelar</a>
+                    <a href="#" class="gButton b16AceptNet" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Aceptar</a>
+                    <a href="#" class="gButton b16CancelNet" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Cancelar</a>
                 </div>
             </div>
         </div>
     {% else %}
-        <section class="b16 anclaBlock" id="networking">
+        <section class="b16 anclaBlock" style="background: {{company.section_color}} !important;" id="networking">
             <div class="grilla">
                 <h3 class="gTitle">{{home_page.networking_section_name}}</h3>
                 <div class="gParrafo">

@@ -75,7 +75,7 @@ class Company(BaseModel):
         _('Color de Textos en botones '), max_length=20, default="#FFFFF"
     )
     section_color = models.CharField(
-        _('Color de Textos en botones '), max_length=20, default="#FFFFF"
+        _('Color de Secciones'), max_length=20, default="#FFFFF"
     )
 
     use_counter = models.BooleanField(_('Usa Contador'), default=False)

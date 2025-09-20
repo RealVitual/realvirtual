@@ -44,7 +44,7 @@ class CompanyAdmin(admin.ModelAdmin):
                 version = version_obj.version
             fieldsets = [
             ]
-
+        # efeff3
         if version == 1:
             fielsets_version = [
                 (_('Version y formato'), {
