@@ -102,7 +102,7 @@
         <div class="g8Bottom gParrafo login-message-warning">
         </div>
         <div class="g8Bottom">
-            <a class="return-login-form" href="#"><- Regresar</a>
+            <a class="return-login-form" href="#" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};"><- Regresar</a>
         </div>
     </div>
     <div class="g8Form login-form">
@@ -120,12 +120,12 @@
                     <a href="#" class="show-hide-pass"></a>
                 </div>
             </div>
-            <button class="g8SumitLogin">Ingresar</button>
+            <button class="g8SumitLogin" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Ingresar</button>
         </form>
     </div>
     <div class="g8Bottom tac">
-        <a href="{% url 'landing:recover_password' %}">Olvidé mi contraseña</a>
-        <h4>No tengo una cuenta <a href="#" id="openRegistrarme">Registrarme</a></h4>
+        <a href="{% url 'landing:recover_password' %}" style="color: {{company.button_color}};">Olvidé mi contraseña</a>
+        <h4>No tengo una cuenta <a href="#" id="openRegistrarme" style="color: {{company.button_color}};">Registrarme</a></h4>
     </div>
 </div>
 
@@ -137,15 +137,15 @@
         <div class="gParrafo message-warning">
         </div>
         <div class="g8Confirm fdc aifs confirm-div" style="display:none;">
-            <button class="g8SumitRegistro confirm-button">Continuar con el Registro</button>
+            <button class="g8SumitRegistro confirm-button" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Continuar con el Registro</button>
         </div>
-        <h4><a href="#" class="return-register-form"><- Regresar</a></h4>
+        <h4><a href="#" class="return-register-form" style="color: {{company.button_color}};"><- Regresar</a></h4>
     </div>
     <div class="g8Form waiting-confirmation-form" style="display:none;">
         <div class="gParrafo message-waiting-confirmation">
         </div>
         <div class="g8Confirm fdc aifs">
-            <button class="g8SumitRegistro waiting-confirm-button">Continuar</button>
+            <button class="g8SumitRegistro waiting-confirm-button" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Continuar</button>
         </div>
     </div>
     <div class="gParrafo parrafo-register">
@@ -308,8 +308,8 @@
                         </label>
 				    </div>
                 {% endif %}
-				<button class="g8SumitRegistro save-register">Enviar</button>
-                <h4>Ya tengo una cuenta <a href="#" id="openIniciaSesion">Iniciar sesión</a></h4>
+				<button class="g8SumitRegistro save-register" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Enviar</button>
+                <h4>Ya tengo una cuenta <a href="#" id="openIniciaSesion" style="color: {{company.button_color}};">Iniciar sesión</a></h4>
 			</div>
         </form>
     </div>
