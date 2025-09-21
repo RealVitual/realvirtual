@@ -35,8 +35,8 @@
                         <span>Email</span>
                         <input type="text" class="g8Box validate[required,custom[email]]" name="{{form.email.html_name}}">
                     </div>
-                    <button type="submit">Enviar</button>
-                    <a href="{% url 'landing:home' %}" class="g8LinkForm">Cancelar</a>
+                    <button type="submit" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Enviar</button>
+                    <a href="{% url 'landing:home' %}" class="g8LinkForm" style="color: {{company.button_color}};">Cancelar</a>
                 </form>
             {% endif %}
         </div>
