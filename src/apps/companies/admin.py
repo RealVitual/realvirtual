@@ -787,6 +787,14 @@ class HeaderAdmin(admin.ModelAdmin):
                 (
                     "Votación", {
                         "fields": (
+                            'show_communities_section',
+                            'communities_header_name'
+                        ),
+                    }
+                ),
+                (
+                    "Votación", {
+                        "fields": (
                             'show_vote_section',
                             'vote_header_name'
                         ),

@@ -425,6 +425,14 @@ class Header(TimeStampedModel):
         _('Nombre Expositores Header'), max_length=20, default="Expositores"
     )
 
+    show_communities_section = models.BooleanField(
+        _('Mostrar Comunidades'), default=False
+    )
+    communities_header_name = models.CharField(
+        _('Nombre Comunidades Header'), max_length=20,
+        default="Comunidades"
+    )
+
     show_blog_section = models.BooleanField(
         _('Mostrar Blog'), default=True
     )

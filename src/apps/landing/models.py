@@ -598,3 +598,50 @@ class VoteCategory(BaseModel):
 
     def __str__(self):
         return str(self.name)
+
+
+class Community(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_communities",
+        on_delete=models.CASCADE, null=True)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=1)
+    name = models.CharField(
+        _('Nombre'),
+        max_length=255,
+        blank=True,
+        null=True)
+    url = models.CharField(
+        _('URL'),
+        max_length=255,
+        blank=True,
+        null=True)
+
+    class Meta:
+        verbose_name = _('Comunidad')
+        verbose_name_plural = _('Comunidades')
+
+    def __str__(self):
+        return self.name
+
+
+class UserCommunityPreference(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_user_community_preferences",
+        on_delete=models.CASCADE, null=True)
+    community = models.ForeignKey(
+        Community,
+        related_name='community_user_preferences',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True)
+    user_company = models.ForeignKey(
+        UserCompany,
+        related_name='community_preferences',
+        on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Preferencia de comunidad')
+        verbose_name_plural = _('Preferencias de comunidad')
+        ordering = ['-modified']

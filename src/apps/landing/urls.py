@@ -8,7 +8,8 @@ from .views import (
     save_networking_preferences, NetworkingUsersView, RecoverPasswordView,
     ScheduledEventsView, TicketViewPDF, ResetPasswordView, CertificateView,
     CloseLandingView, GenerateCertificateView, BlogListView, BlogDetailView,
-    DownloadCustomerTicket, ConfirmUser, ValidateInPersonCompanyUser
+    DownloadCustomerTicket, ConfirmUser, ValidateInPersonCompanyUser,
+    CommunityView
 )
 from rest_framework.routers import DefaultRouter
 
@@ -53,6 +54,8 @@ urlpatterns = [
           name='save_networking_preferences'),
      path('networking/', NetworkingUsersView.as_view(),
           name='networking'),
+     path('comunidades/', CommunityView.as_view(),
+          name='community'),
      path('recover-password/',
           RecoverPasswordView.as_view(), name="recover_password"),
      path('agendados/',

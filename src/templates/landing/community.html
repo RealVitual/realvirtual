@@ -1,0 +1,89 @@
+{% extends "landing/common/_base.html" %}
+
+{% block cssadicional %}
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b11 pageEncuesta scrollWrap">
+    <div class="b11Left scrollItem">
+        <div class="b11LeftContent">
+            <a href="{% url 'landing:home' %}"class="gReturn">Regresar</a>
+            <h1 class="gTitle">Comunidades</h1>
+             <div class="gParrafo">
+                <p>{{home_page.main_title|default:""}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="b11Right scrollItem">
+        <div class="b17Content">
+            <div class="gParrafo">
+                <p>Selecciona una comunidad de tu interés</p>
+            </div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="b17Tabs f aic jcfs ffrw">
+                    {% for option in options %}
+                        <div class="b17Option">
+                            {% if option.id in preferences %}
+                            <input id="{{option.id}}" data-url="{{option.url}}"  type="checkbox" name="{{option.id}}" value="{{option.id}}" checked>
+                            <label for="{{option.id}}" data-url="{{option.url}}" class="b17TabItem {{option.id}}" data-color="#008AC9">
+                                <h3>{{option.name}}</h3>
+                            </label>
+                            {% else %}
+                            <input id="{{option.id}}" data-url="{{option.url}}" type="checkbox" name="{{option.id}}" value="{{option.id}}">
+                            <label for="{{option.id}}" data-url="{{option.url}}" class="b17TabItem {{option.id}}" data-color="#008AC9">
+                                <h3>{{option.name}}</h3>
+                            </label>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+    eventGrilla("b11Left","left")
+    eventGrilla("b11Right","right")
+
+    let elb17TabItem = document.getElementsByClassName('b17TabItem')
+    let elb17Submit = document.getElementsByClassName('b17Submit')[0]
+
+    setTimeout(() => {
+        $('input[type=checkbox]').each(function () {
+            let check_id = this.id
+            if (this.checked) {
+                $('label[for=' + check_id + ']').trigger( "click" );
+                $(this).trigger( "click" );
+            }
+        });
+      }, 500);
+
+    for(const b17TabItem of elb17TabItem){
+        let getColor = b17TabItem.dataset.color;
+        b17TabItem.style.border  = `1px solid ${getColor}`;
+        b17TabItem.children[0].style.color = getColor
+        b17TabItem.addEventListener('click',function(e){
+            let getColorActive = this.dataset.color;
+            let getUrl = this.dataset.url;
+        if(!this.classList.contains('activetab')){
+                this.classList.add('activetab')
+                this.style.background = getColorActive
+                this.children[0].style.color = "#fff"
+            }else{
+                this.classList.remove('activetab')
+                this.style.background = "transparent"
+                this.children[0].style.color = getColorActive
+            }
+            window.open(getUrl, "_blank");
+        })
+    }
+</script>
+{% endblock %}
