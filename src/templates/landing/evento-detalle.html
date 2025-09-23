@@ -567,6 +567,37 @@
     {% endif %}
 {% endif %}
 
+{% if header_section.show_communities_section %}
+    {% if logged_user %}
+        <section class="b16 anclaBlock" id="community">
+            <div class="grilla" style="background: {{company.section_color}} !important;">
+                <h3 class="gTitle">Comunidades</h3>
+                    <div class="gParrafo">
+                        <p></p>
+                    </div>
+                    <a href="{% url 'landing:community' %}" class="gButton">
+                        Ir a Comunidades
+                    </a>
+            </div>
+        </section>
+
+        {% comment %} <div class="b16Popup">
+            <!-- <a href="#" class="icon-close"></a> -->
+            <div class="b16PopupContent">
+                <h3 class="gTitle">{{home_page.networking_section_name}}</h3>
+                <div class="gParrafo">
+                    <p>Confirma que desea compartir sus datos con los demás asistentes del evento.</p>
+                </div>
+                <div class="b16Buttons">
+                    <a href="#" class="gButton b16AceptNet" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Aceptar</a>
+                    <a href="#" class="gButton b16CancelNet" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Cancelar</a>
+                </div>
+            </div>
+        </div> {% endcomment %}
+    {% endif %}
+{% endif %}
+
+
 {% if header_section.show_survey_section %}
 <section class="b7 anclaBlock" id="encuesta">
     <!-- Que todo sea -->
