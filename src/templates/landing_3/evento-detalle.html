@@ -255,13 +255,13 @@
                     data-aforo="false"
                 {% endif %}
                 data-hour='{{ row.start_datetime|date:"H:i" }}'
-                data-date='{{ row.start_datetime|date:"j" }} de {{ row.start_datetime|date:"F" }}'>
+                data-date='{{ row.start_datetime|date:"j" }} de {{ row.end_datetime|date:"F" }}'>
                     <div class="b4ItemInfo">
                         <div class="b4ItemInfoContent">
                             <p>{{row.title}}</p>
                             <p class="info">{{row.name}}</p>
                             <p class="address">{{row.address}}</p>
-                            <p class="hour">{{ row.start_datetime|date:"f:i a" }} a {{ row.end_datetime|date:"f:i a" }}</p>
+                            <p class="hour">{{ row.start_datetime|date:"H:i a" }} a {{ row.end_datetime|date:"H:i a" }}</p>
                             {% if row.scheduled %}
                                 {% if row.confirm_scheduled %}
                                     <p class="date" id="b_msg-{{row.id}}">Inscrito</p>
