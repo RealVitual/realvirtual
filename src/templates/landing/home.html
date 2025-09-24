@@ -267,7 +267,7 @@
                                     {% endif %}
                                     {% if schedule.get_current_status == 'upcoming' and schedule.allow_schedule %}
                                         <a href="#" class="b4Agendar agregarCalendario b4ButtonRelative"
-                                            data-item-id="{{schedule.id}}">
+                                            data-item-id="{{schedule.id}}" data-color-initial="{{company.section_color}}" data-color-click="{{company.button_color}}" style="background: {{company.section_color}};color: #FFF;">
                                             <span>Agendar</span>
                                         </a>
                                     {% endif %}
@@ -439,6 +439,32 @@
     </div>
 </section>
 {% endif %}
+{% if header_section.show_communities_section %}
+    {% if logged_user %}
+        <section class="b16 anclaBlock" id="community">
+            <div class="grilla" style="background: {{company.section_color}} !important;">
+                <h3 class="gTitle">{{home_page.community_section_name}}</h3>
+                    <div class="gParrafo">
+                        <p>
+                            {{home_page.community_description_text}}
+                        </p>
+                    </div>
+                    <a href="{% url 'landing:community' %}" class="gButton" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">
+                        Ir a {{home_page.community_section_name}}
+                    </a>
+            </div>
+        </section>
+    {% else %}
+        <section class="b16 anclaBlock" id="community">
+            <div class="grilla" style="background: {{company.section_color}} !important;" id="networking">
+                <h3 class="gTitle">{{home_page.community_section_name}}</h3>
+                <div class="gParrafo">
+                    <p>Para ir a Comunidades, primero debes registrarte</p>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endif %}
 {% if header_section.show_vote_section %}
 <section class="b23 marginY scrollWrap anclaBlock" id="votacion">
     <div class="grilla">
@@ -461,44 +487,6 @@
                     </div>
                 </div>
             {% endfor %}
-
-            {% comment %} <div class="b23Item">
-                <p class="name">Inteligencia Artificial</p>
-                <div class="gParrafo">
-                    <ul>
-                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
-                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
-                    </ul>
-                    <p>Se puede incluir el journey de la incorporación y desarrollo del talento humano.</p>
-                </div>
-                <a href="#" class="button">Votar</a>
-            </div>
-            <div class="b23Item">
-                <p class="name">Inteligencia Artificial</p>
-                <div class="gParrafo">
-                    <ul>
-                        <li><a href="#">Optimización de procesos</a> con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
-                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con <strong>journey de la </strong></li>
-                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
-                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
-                    </ul>
-                    <p>Se puede incluir el <strong>journey de la </strong>incorporación y desarrollo del talento humano.</p>
-                </div>
-                <a href="#" class="button">Votar</a>
-            </div>
-            <div class="b23Item">
-                <p class="name">Inteligencia Artificial</p>
-                <div class="gParrafo">
-                    <ul>
-                        <li><a href="#">Optimización de procesos</a> con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
-                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con <strong>journey de la </strong></li>
-                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
-                        <li>Optimización de procesos con aplicación de IA a productos ya implementados y medidos con impacto positivo.</li>
-                    </ul>
-                    <p>Se puede incluir el <strong>journey de la </strong>incorporación y desarrollo del talento humano.</p>
-                </div>
-                <a href="#" class="button">Votar</a>
-            </div> {% endcomment %}
         </div>
     </div>
 </section>
@@ -561,33 +549,6 @@
                 <h3 class="gTitle">{{home_page.networking_section_name}}</h3>
                 <div class="gParrafo">
                     <p>Para conectarte con los demás usuarios, primero debes registrarte</p>
-                </div>
-            </div>
-        </section>
-    {% endif %}
-{% endif %}
-
-{% if header_section.show_communities_section %}
-    {% if logged_user %}
-        <section class="b16 anclaBlock" id="community">
-            <div class="grilla" style="background: {{company.section_color}} !important;">
-                <h3 class="gTitle">{{home_page.community_section_name}}</h3>
-                    <div class="gParrafo">
-                        <p>
-                            {{home_page.community_description_text}}
-                        </p>
-                    </div>
-                    <a href="{% url 'landing:community' %}" class="gButton" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">
-                        Ir a {{home_page.community_section_name}}
-                    </a>
-            </div>
-        </section>
-    {% else %}
-        <section class="b16 anclaBlock" id="community">
-            <div class="grilla" style="background: {{company.section_color}} !important;" id="networking">
-                <h3 class="gTitle">{{home_page.community_section_name}}</h3>
-                <div class="gParrafo">
-                    <p>Para ir a Comunidades, primero debes registrarte</p>
                 </div>
             </div>
         </section>
@@ -711,24 +672,28 @@
                 if (item) {
                     item.classList.add('selected');
                     item.children[0].textContent = "Agendado";
+                    item.style.background = "{{company.button_color}}";
                 }
             }
 
             items.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault()
+                    let colorInitial = item.dataset.colorInitial;
+                    let colorClick = item.dataset.colorClick;
+                    console.log(colorInitial)
                     const itemId = this.getAttribute('data-item-id');
                     if (selectedItems.has(parseInt(itemId))) {
-                        scheduleManager(parseInt(itemId), 0, selectedItems, this.classList, this.children[0])
+                        scheduleManager(parseInt(itemId), 0, selectedItems, this.classList, this.children[0], colorInitial, colorClick, this)
 
                     } else {
-                        scheduleManager(parseInt(itemId), 1, selectedItems, this.classList, this.children[0])
+                        scheduleManager(parseInt(itemId), 1, selectedItems, this.classList, this.children[0], colorInitial, colorClick, this)
 
                     }
                 });
             });
 
-            function scheduleManager(schedule_id, status, selectedItems, classList, item_content){
+            function scheduleManager(schedule_id, status, selectedItems, classList, item_content, colorInitial, colorClick, item){
                 $.ajax({
                     url: '{% url "events:generate_schedule" %}',
                     type: 'POST',
@@ -744,11 +709,13 @@
                                 classList.add('selected');
                                 selectedItems.add(schedule_id)
                                 item_content.textContent = "Agendado";
+                                item.style.background = colorClick
                                 totalCount++;
                             }else{
                                 classList.remove('selected');
                                 selectedItems.delete(schedule_id)
                                 item_content.textContent = "Agendar";
+                                item.style.background = colorInitial
                                 totalCount--;
                             }
                             updateTotalCountDisplay();
