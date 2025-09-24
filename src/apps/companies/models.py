@@ -677,6 +677,13 @@ class HomePage(TimeStampedModel):
         _('Networking descripción texto'), max_length=255,
         blank=True, default="Conéctate con los demás usuarios.")
 
+    community_section_name = models.CharField(
+        _('Comunidades nombre Sección'), max_length=255,
+        blank=True, default="Comunidades")
+    community_description_text = models.CharField(
+        _('commuComunidadesnity descripción texto'), max_length=255,
+        blank=True, default="Conéctate con los demás usuarios.")
+
     survey_section_name = models.CharField(
         _('Encuesta nombre Sección'), max_length=255,
         blank=True, default="Tu opinión es importante")

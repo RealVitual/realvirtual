@@ -532,7 +532,7 @@
                     <div class="gParrafo">
                         <p>{{home_page.networking_description_text}}</p>
                     </div>
-                    <a href="{% url 'landing:networking_preferences' %}" class="gButton">Ir a Networking</a>
+                    <a href="{% url 'landing:networking_preferences' %}"  style="background: {{company.button_color}} !important;color: {{company.button_text_color}};" class="gButton">Ir a Networking</a>
                 {% else %}
                     <div class="gParrafo">
                         <p>¿Autorizas compartir tu información de contacto con el resto de los asistentes?</p>
@@ -556,11 +556,11 @@
             </div>
         </div>
     {% else %}
-        <section class="b16 anclaBlock" style="background: {{company.section_color}} !important;" id="networking">
-            <div class="grilla">
+        <section class="b16 anclaBlock" id="networking">
+            <div class="grilla" style="background: {{company.section_color}} !important;">
                 <h3 class="gTitle">{{home_page.networking_section_name}}</h3>
                 <div class="gParrafo">
-                    <p>Para conectarte con los demás usuarios primero debes registrarte</p>
+                    <p>Para conectarte con los demás usuarios, primero debes registrarte</p>
                 </div>
             </div>
         </section>
@@ -571,29 +571,26 @@
     {% if logged_user %}
         <section class="b16 anclaBlock" id="community">
             <div class="grilla" style="background: {{company.section_color}} !important;">
-                <h3 class="gTitle">Comunidades</h3>
+                <h3 class="gTitle">{{home_page.community_section_name}}</h3>
                     <div class="gParrafo">
-                        <p></p>
+                        <p>
+                            {{home_page.community_description_text}}
+                        </p>
                     </div>
-                    <a href="{% url 'landing:community' %}" class="gButton">
-                        Ir a Comunidades
+                    <a href="{% url 'landing:community' %}" class="gButton" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">
+                        Ir a {{home_page.community_section_name}}
                     </a>
             </div>
         </section>
-
-        {% comment %} <div class="b16Popup">
-            <!-- <a href="#" class="icon-close"></a> -->
-            <div class="b16PopupContent">
-                <h3 class="gTitle">{{home_page.networking_section_name}}</h3>
+    {% else %}
+        <section class="b16 anclaBlock" id="community">
+            <div class="grilla" style="background: {{company.section_color}} !important;" id="networking">
+                <h3 class="gTitle">{{home_page.community_section_name}}</h3>
                 <div class="gParrafo">
-                    <p>Confirma que desea compartir sus datos con los demás asistentes del evento.</p>
-                </div>
-                <div class="b16Buttons">
-                    <a href="#" class="gButton b16AceptNet" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Aceptar</a>
-                    <a href="#" class="gButton b16CancelNet" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Cancelar</a>
+                    <p>Para ir a Comunidades, primero debes registrarte</p>
                 </div>
             </div>
-        </div> {% endcomment %}
+        </section>
     {% endif %}
 {% endif %}
 

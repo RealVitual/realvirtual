@@ -9,7 +9,7 @@ from .views import (
     ScheduledEventsView, TicketViewPDF, ResetPasswordView, CertificateView,
     CloseLandingView, GenerateCertificateView, BlogListView, BlogDetailView,
     DownloadCustomerTicket, ConfirmUser, ValidateInPersonCompanyUser,
-    CommunityView
+    CommunityView, GenerateUserCommunityPreference
 )
 from rest_framework.routers import DefaultRouter
 
@@ -79,6 +79,8 @@ urlpatterns = [
           ConfirmUser.as_view(), name='confirmation_user'),
      path('validate_in_person/',
           ValidateInPersonCompanyUser.as_view(), name='validate_in_person'),
+     path('generate_cummunity_preference/',
+          GenerateUserCommunityPreference.as_view(),
+          name='generate_cummunity_preference'),
 ]
-
 urlpatterns += router.urls

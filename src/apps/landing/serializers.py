@@ -5,6 +5,7 @@ from src.apps.events.models import (
     Workshop, ScheduleCustomerWorkshop)
 from src.apps.companies.models import (
     EmailTemplate, EmailSettings, UserCompany, Company)
+from .models import Community, UserCommunityPreference
 from django.template import Context, Template
 from django.core.mail import EmailMessage
 import threading
@@ -111,3 +112,29 @@ class ValidateInPersonCompanyUserSerializer(serializers.Serializer):
                 user_company, company)
 
         return dict(success=True, message=message, confirm=status)
+
+
+class GenerateUserCommunityPreferenceSerializer(serializers.Serializer):
+    community_id = serializers.CharField()
+    status = serializers.IntegerField()
+
+    def create(self, validated_data):
+        user = self.context.get("user")
+        company = self.context.get("company")
+        status = self.validated_data.get("status")
+        community_id = self.validated_data.get("community_id")
+        community = Community.objects.get(id=int(community_id))
+        user_company = UserCompany.objects.get(
+            company=company, user=user
+        )
+        if status:
+            queryset = UserCommunityPreference.objects.filter(
+                community=community, user_company=user_company,
+                company=company
+            )
+            if not queryset:
+                UserCommunityPreference.objects.create(
+                    community=community, user_company=user_company,
+                    company=company,
+                )
+        return dict(success=True)

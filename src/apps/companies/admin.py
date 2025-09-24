@@ -538,6 +538,15 @@ class HomePageAdmin(admin.ModelAdmin):
                     }
                 ),
                 (
+                    "Sección Comunidades", {
+                        "fields": (
+                            'community_section_name',
+                            'community_description_text'
+                        ),
+                        "description": "Recuerde activar esta sección en configuración Header."
+                    }
+                ),
+                (
                     "Sección Encuesta", {
                         "fields": (
                             'survey_section_name',

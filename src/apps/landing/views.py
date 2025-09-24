@@ -32,7 +32,10 @@ from src.apps.users.permissions import (
     AuthenticatedPermission, )
 from django.db.models import Q
 from src.apps.tickets.models import Ticket
-from .serializers import ValidateInPersonCompanyUserSerializer
+from .serializers import (
+    ValidateInPersonCompanyUserSerializer,
+    GenerateUserCommunityPreferenceSerializer
+)
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -1480,3 +1483,26 @@ class ValidateInPersonCompanyUser(APIView):
                     ),
                 status=200)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GenerateUserCommunityPreference(APIView):
+    serializer_class = GenerateUserCommunityPreferenceSerializer
+    permission_classes = [AuthenticatedPermission]
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(GenerateUserCommunityPreference, self).dispatch(
+            request, *args, **kwargs)
+
+    def post(self, request):
+        serializer = self.serializer_class(
+            data=request.data,
+            context={
+                'user': request.user,
+                'company': request.company})
+        if serializer.is_valid():
+            response = serializer.save()
+            return Response(dict(
+                success=response['success']), status=200)
+        return Response(
+            serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        )

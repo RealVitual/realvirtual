@@ -29,12 +29,20 @@
                         <div class="b17Option">
                             {% if option.id in preferences %}
                             <input id="{{option.id}}" data-url="{{option.url}}"  type="checkbox" name="{{option.id}}" value="{{option.id}}" checked>
-                            <label for="{{option.id}}" data-url="{{option.url}}" class="b17TabItem {{option.id}}" data-color="#008AC9">
+                            <label for="{{option.id}}"
+                             data-url="{{option.url}}"
+                             data-id="{{option.id}}"
+                             class="b17TabItem {{option.id}}"
+                             data-color="{{company.button_color}}">
                                 <h3>{{option.name}}</h3>
                             </label>
                             {% else %}
                             <input id="{{option.id}}" data-url="{{option.url}}" type="checkbox" name="{{option.id}}" value="{{option.id}}">
-                            <label for="{{option.id}}" data-url="{{option.url}}" class="b17TabItem {{option.id}}" data-color="#008AC9">
+                            <label for="{{option.id}}"
+                             data-url="{{option.url}}"
+                             data-id="{{option.id}}"
+                             class="b17TabItem {{option.id}}"
+                             data-color="{{company.button_color}}">
                                 <h3>{{option.name}}</h3>
                             </label>
                             {% endif %}
@@ -73,14 +81,26 @@
         b17TabItem.addEventListener('click',function(e){
             let getColorActive = this.dataset.color;
             let getUrl = this.dataset.url;
-        if(!this.classList.contains('activetab')){
+            let data_id = this.dataset.id
+            if(!this.classList.contains('activetab')){
                 this.classList.add('activetab')
                 this.style.background = getColorActive
-                this.children[0].style.color = "#fff"
+                this.children[0].style.color = "{{company.button_text_color}}"
+                $.ajax({
+                    url : "{% url 'landing:generate_cummunity_preference' %}",
+                    type : "post",
+                    data: {
+                        community_id: data_id,
+                        status: 1,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                }).done(function(data) {
+                    console.log(data, 'DATA')
+                    if (data.success) {
+                    }else{
+                    }
+                });
             }else{
-                this.classList.remove('activetab')
-                this.style.background = "transparent"
-                this.children[0].style.color = getColorActive
             }
             window.open(getUrl, "_blank");
         })
