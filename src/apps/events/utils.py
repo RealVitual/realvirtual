@@ -53,7 +53,8 @@ def generate_workshop_ics_file(workshop):
         c = Calendar()
         e = Event()
         organizer = Organizer(email=mail.from_email)
-        e.name = "%s" % (workshop.name)
+        e.name = f"{workshop.title}-{workshop.name}"
+        e.address = workshop.address
         e.organizer = organizer
         e.description = mail.description
         start_datetime = workshop.start_datetime.astimezone(pytz.utc)

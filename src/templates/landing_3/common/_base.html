@@ -4,7 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
+    {% if company.meta_title %}
+        <title>{{company.meta_title}}</title>
+        <meta name="title" property="og:title" content="{{company.meta_title}}" />
+    {% endif %}
+    {% if company.meta_description %}
+        <meta name="description" content="{{company.meta_description}}">
+    {% endif %}
+        <meta name="url" property="og:url" content="{{ request.build_absolute_uri }}" />
+        <meta name="type" property="og:type" content="website"/>
+    {% if company.meta_image %}
+        <meta name="image" property="og:image" content="{{ company.meta_image.url }}" />
+    {% endif %}
+    {% if company.favicon %}
+        <link rel="icon" type="image/png" href="{{company.favicon.url}}"/>
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{company.favicon.url}}">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{company.favicon.url}}">
+        <link rel="apple-touch-icon-precomposed" href="{{company.favicon.url}}">
+    {% endif %}
     {% if company.favicon %}
         <link rel="icon" type="image/png" href="{{company.favicon.url}}"/>
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{company.favicon.url}}">

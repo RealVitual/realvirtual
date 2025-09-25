@@ -56,6 +56,11 @@ class CompanyAdmin(admin.ModelAdmin):
                         'favicon', 'main_event_name', 'contact_phone'
                     )
                 }),
+                (_('Información Seguimiento'), {
+                    'fields': (
+                        'meta_title', 'meta_description', 'meta_image'
+                    )
+                }),
                 (_('Colores'), {
                     'fields': (
                         'button_color', 'button_text_color',
@@ -157,6 +162,11 @@ class CompanyAdmin(admin.ModelAdmin):
                         'favicon', 'main_event_name', 'contact_phone'
                     )
                 }),
+                (_('Información Seguimiento'), {
+                    'fields': (
+                        'meta_title', 'meta_description', 'meta_image'
+                    )
+                }),
                 (_('Contador, Comunicado y Cierre de landing'), {
                     'fields': (
                         'use_counter', 'counter_datetime', 'counter_text',
@@ -243,6 +253,11 @@ class CompanyAdmin(admin.ModelAdmin):
                     'fields': (
                         'enterprise', 'domain', 'name', 'logo', 'logo_preview',
                         'favicon', 'main_event_name', 'contact_phone'
+                    )
+                }),
+                (_('Información Seguimiento'), {
+                    'fields': (
+                        'meta_title', 'meta_description', 'meta_image'
                     )
                 }),
                 (_('Contador, Comunicado y Cierre de landing'), {

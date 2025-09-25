@@ -24,6 +24,8 @@ def do_something_if_changed(sender, instance, update_fields, **kwargs):
 
 @receiver(pre_save, sender=Workshop)
 def do_something_if_workshop_changed(sender, instance, update_fields, **kwargs):
+    if not instance.ics_file:
+        generate_workshop_ics_file(instance)
     if not update_fields:
         try:
             obj = sender.objects.get(pk=instance.pk)

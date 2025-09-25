@@ -60,6 +60,15 @@ class Company(BaseModel):
     name = models.CharField(_('Nombre compañia'), max_length=255)
     main_event_name = models.CharField(_('Nombre principal del evento'),
                                        max_length=255, blank=True, null=True)
+    meta_title = models.CharField(
+        _('Meta title'), blank=True, null=True, max_length=255)
+    meta_description = models.TextField(
+        _('Meta description'), blank=True, null=True
+    )
+    meta_image = models.ImageField(
+            _('Meta Imagen'), upload_to=get_upload_path("meta_images"),
+            blank=True, null=True
+    )
     logo = models.FileField(
         _('Logo'), upload_to=get_upload_path("company"),
         null=True, blank=True
