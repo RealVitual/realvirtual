@@ -264,7 +264,7 @@
                             <p class="hour">{{ row.start_datetime|date:"H:i a" }} a {{ row.end_datetime|date:"H:i a" }}</p>
                             {% if row.scheduled %}
                                 {% if row.confirm_scheduled %}
-                                    <p class="date" id="b_msg-{{row.id}}">Inscrito</p>
+                                    <p class="date" id="b_msg-{{row.id}}">Reservado</p>
                                 {% else %}
                                     <p class="date" id="b_msg-{{row.id}}">En Lista de espera</p>
                                 {% endif %}
@@ -550,7 +550,7 @@
                     if(booleanInscrito === "true"){
                         popupButton.classList.add('inscrito')
                         if(confirmedInscrito == "True"){
-                            popupButton.textContent = 'Inscrito' || "";
+                            popupButton.textContent = 'Reservado' || "";
                         }else{
                             popupButton.textContent = 'En espera' || "";
                         }
@@ -639,7 +639,7 @@ $('.schedule_workshop').click(function(e){
                 const popup = document.querySelector(".b3Popup");
                 const popupButton = popup.querySelector(".b3PopupButton");
                 if(data.confirm){
-                    popupButton.textContent = 'Inscrito';
+                    popupButton.textContent = 'Reservado';
                 }else{
                     popupButton.textContent = 'En Espera';
                 }
@@ -652,7 +652,7 @@ $('.schedule_workshop').click(function(e){
                 workshop_row.attr('data-inscrito', true)
                 if(confirm == "True"){
                     workshop_row.attr('data-confirm-inscrito', "True")
-                    btnw.html('Inscrito')
+                    btnw.html('Reservado')
                 }else{
                     workshop_row.attr('data-confirm-inscrito', "False")
                     btnw.html('En Lista de espera')
