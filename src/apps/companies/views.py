@@ -12,7 +12,9 @@ import pytz
 from src.apps.landing.models import UserAnswer
 from itertools import groupby
 from operator import itemgetter
-from src.apps.events.models import CustomerEvent
+from src.apps.events.models import (
+    CustomerEvent, ScheduleCustomerWorkshop
+)
 
 
 class AdminCustomerViewSet(ModelViewSet):
@@ -73,6 +75,17 @@ class AdminCustomerViewSet(ModelViewSet):
         user_answers = UserAnswer.objects.filter(question__in=questions).order_by('question__position')
         return self.download_preferences_xlsx(user_answers, questions, request.company)
 
+    @action(
+        detail=False,
+        methods=['get'],
+        url_path='download-workshop_customers',
+        url_name='download-workshop_customers-list')
+    def download_workshop_customers_list(self, request, pk=None):
+        workshops = request.company.company_workshops.filter(
+            is_active=True)
+        queryset = ScheduleCustomerWorkshop.objects.filter(
+            workshop__in=workshops).order_by('-created')
+        return self.download_workshop_customers_xlsx(queryset)
 
     def download_xlsx(self, queryset):
         response = HttpResponse(content_type='application/ms-excel')
@@ -267,5 +280,44 @@ class AdminCustomerViewSet(ModelViewSet):
             value = o.created.astimezone(tz).strftime(
                 "%d/%m/%Y, %H:%M:%S")
             row.write(3, value)
+        wb.save(response)
+        return response
+
+    def download_workshop_customers_xlsx(self, queryset):
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="workshop_customers.xls"'  # noqa
+
+        wb = xlwt.Workbook(encoding='utf-8')
+
+        # Sheet for attributes
+        ws = wb.add_sheet('INSCRIPCIONES A TALLERES')
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        columns = ['Taller', 'Email', 'Nombres y Apellidos', 'Tipo', 'fecha']
+        row_index = 0
+        # Header
+        for column_index, value in enumerate(columns):
+            ws.write(row_index, column_index, value, font_style)
+
+        for column_index in range(0, len(columns)):
+            ws.col(column_index).width = 2962*3
+
+        font_style = xlwt.XFStyle()
+        c = 0
+        for idx, o in enumerate(queryset):
+            c += 1
+            row = ws.row(c)
+            value = '{} - {}'.format(o.workshop.title, o.workshop.name)
+            row.write(0, value)
+            value = o.company_user.email
+            row.write(1, value)
+            value = o.company_user.full_name
+            row.write(2, value)
+            value = "Inscrito" if o.confirmed else "Lista de espera"
+            row.write(3, value)
+            tz = pytz.timezone("America/Lima")
+            value = o.created.astimezone(tz).strftime(
+                "%d/%m/%Y, %H:%M:%S")
+            row.write(4, value)
         wb.save(response)
         return response

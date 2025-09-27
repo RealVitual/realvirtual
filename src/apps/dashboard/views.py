@@ -4,13 +4,16 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import LoginForm
-from src.apps.events.models import Event, ScheduleCustomerEvent, CustomerEvent
+from src.apps.events.models import (
+    Event, ScheduleCustomerEvent, CustomerEvent,
+    ScheduleCustomerWorkshop,
+)
 from src.apps.customers.models import Customer
 from django.contrib import messages
 from django.db.models import Count
 from datetime import datetime
 from src.apps.users.models import User
-from src.apps.companies.models import UserCompany
+from src.apps.companies.models import UserCompany, Header
 
 
 class DashboardView(View):
@@ -42,6 +45,12 @@ class DashboardView(View):
         customers = UserCompany.objects.filter(
             company=request.company).exclude(
                 is_admin=True).order_by('-user__modified')
+        header = Header.objects.get(
+            company=request.company
+        )
+        workshop_schedules = ScheduleCustomerWorkshop.objects.filter(
+            company=request.company
+        )
         context = {
             "events": events,
             "customers": customers[:10] if customers.count() >= 10 else customers,
@@ -50,7 +59,10 @@ class DashboardView(View):
                 company_user__company=request.company).count(),
             'day': now.strftime("%d"),
             'month': now.strftime("%m"),
-            'current': now.strftime("%I:%M %p")
+            'current': now.strftime("%I:%M %p"),
+            'header': header,
+            'workshop_schedules': workshop_schedules,
+            'workshop_schedules_number': workshop_schedules.count()
            }
         return render(request, self.template_name, context)
 

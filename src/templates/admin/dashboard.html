@@ -204,13 +204,23 @@
                                             <button type="button" class="btn btn-warning">Descargar</button>
                                         </a>
                                     </div>
-                                    <br>
                                     {% comment %} <p class="card-text text-muted mb-0">Preferencias</p>
                                     <div class="center col-12 budget-wrapper">
                                         <a id="export_preferences">
                                             <button type="button" class="btn btn-warning">Descargar</button>
                                         </a>
                                     </div> {% endcomment %}
+                                    {% if header.show_networking_section %}
+                                    <br>
+                                        <p class="card-text text-muted mb-0">Inscritos Talleres</p>
+                                        <h3 class="font-weight-bolder mb-0">{{workshop_schedules_number}}</h3>
+                                        <div class="center col-12 budget-wrapper">
+                                            <a id="export_workshop_schedules">
+                                                <button type="button" class="btn btn-warning">Descargar</button>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                    <br>
                                     <p class="card-text text-muted mb-0">Asistencias</p>
                                     <h3 class="font-weight-bolder mb-0">{{asistants}}</h3>
                                     <div class="center col-12 budget-wrapper">
@@ -218,6 +228,7 @@
                                             <button type="button" class="btn btn-warning">Descargar</button>
                                         </a>
                                     </div>
+
                                     {% comment %} <p class="card-text text-muted mb-0">Asistentes</p>
                                     <h3 class="font-weight-bolder mb-0">{{asistants}}</h3>
                                     <div class="center col-12 budget-wrapper">
@@ -262,6 +273,10 @@
         $('#export_asistants').click(function(e) {
             e.preventDefault();
             window.location = "/api/companies/customers_list/download-asistants/"
+        });
+        $('#export_workshop_schedules').click(function(e) {
+            e.preventDefault();
+            window.location = "/api/companies/customers_list/download-workshop_customers/"
         });
         {% comment %} $('#export_schedules').click(function(e) {
                 e.preventDefault();

@@ -487,6 +487,7 @@ class Workshop(BaseModel):
                 else:
                     return 0
 
+
 class ScheduleCustomerWorkshop(BaseModel):
     company = models.ForeignKey(
         Company, related_name="company_schedule_workshops",
