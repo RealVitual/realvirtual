@@ -1506,3 +1506,12 @@ class GenerateUserCommunityPreference(APIView):
         return Response(
             serializer.errors, status=status.HTTP_400_BAD_REQUEST
         )
+
+
+class WhiteView(View):
+    template_name = "landing/white.html"
+
+    def get(self, request, **kwargs):
+        context = {
+        }
+        return render(request, self.template_name, context)

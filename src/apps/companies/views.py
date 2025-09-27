@@ -168,10 +168,12 @@ class AdminCustomerViewSet(ModelViewSet):
             else:
                 row.write(4, o.job_company)
             row.write(5, o.company_position)
-            if o.virtual:
-                row.write(6, "Virtual")
-            elif o.in_person:
+            if o.virtual and o.in_person and o.confirmed:
+                row.write(6, "Virtual / Presencial")
+            elif o.in_person and o.confirmed:
                 row.write(6, "Presencial")
+            elif o.virtual:
+                row.write(6, "Virtual")
             else:
                 row.write(6, "-")
             tz = pytz.timezone("America/Lima")

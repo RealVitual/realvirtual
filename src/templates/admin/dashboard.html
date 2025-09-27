@@ -120,10 +120,12 @@
                                                     </td>
                                                     <td class="text-nowrap">
                                                         <div class="d-flex flex-column">
-                                                            {% if c.virtual %}
-                                                                <span class="font-weight-bolder mb-25">Virtual</span>
-                                                            {% elif c.in_person %}
+                                                            {% if c.virtual and c.in_person and c.confirmed %}
                                                                 <span class="font-weight-bolder mb-25">Presencial</span>
+                                                            {% elif c.in_person and c.confirmed %}
+                                                                <span class="font-weight-bolder mb-25">Presencial</span>
+                                                            {% elif c.virtual %}
+                                                                <span class="font-weight-bolder mb-25">Virtual</span>
                                                             {% else %}
                                                                 <span class="font-weight-bolder mb-25">-</span>
                                                             {% endif %}
