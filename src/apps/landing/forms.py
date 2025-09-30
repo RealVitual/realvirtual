@@ -253,7 +253,7 @@ class RegisterForm(forms.ModelForm):
             )
             if found_valid_email:
                 # message = self.company.message_filter_found_domain_user
-                self.in_person = True
+                self.in_person = False
                 self.virtual = True
                 self.validate_assistance_type = True
                 self.custom_confirmation = False

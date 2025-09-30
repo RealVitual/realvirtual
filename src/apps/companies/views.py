@@ -10,8 +10,6 @@ from .models import UserCompany
 from src.apps.customers.models import Customer
 import pytz
 from src.apps.landing.models import UserAnswer
-from itertools import groupby
-from operator import itemgetter
 from src.apps.events.models import (
     CustomerEvent, ScheduleCustomerWorkshop
 )
@@ -128,8 +126,8 @@ class AdminCustomerViewSet(ModelViewSet):
             else:
                 row.write(4, o.job_company)
             row.write(5, o.company_position)
-            if o.virtual and o.in_person and o.confirmed:
-                row.write(6, "Virtual / Presencial")
+            if o.virtual and o.in_person:
+                row.write(6, "Presencial")
             elif o.in_person and o.confirmed:
                 row.write(6, "Presencial")
             elif o.virtual:
@@ -185,9 +183,9 @@ class AdminCustomerViewSet(ModelViewSet):
             else:
                 row.write(4, o.job_company)
             row.write(5, o.company_position)
-            if o.virtual and o.in_person and o.confirmed:
-                row.write(6, "Virtual / Presencial")
-            elif o.in_person and o.confirmed:
+            if o.virtual and o.in_person:
+                row.write(6, "Presencial")
+            elif o.in_person:
                 row.write(6, "Presencial")
             elif o.virtual:
                 row.write(6, "Virtual")

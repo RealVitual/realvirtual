@@ -9,29 +9,52 @@ from .models import Community, UserCommunityPreference
 from django.template import Context, Template
 from django.core.mail import EmailMessage
 import threading
-from django.conf import settings
 from django.core.mail import get_connection
+from src.apps.tickets.utils import generate_ticket_code
+from .utils import record_to_pdf
 
 
-def send_html_mail(subject, html_content, e_mail, receptors,
-                   customer, company):
+def send_html_mail(subject, context, html_code, e_mail, receptors,
+                   customer, company, create_ticket, domain_pdf):
     EmailThread(
-        subject, html_content, e_mail, receptors,
-        customer, company).start()
+        subject, context, html_code, e_mail, receptors,
+        customer, company, create_ticket, domain_pdf).start()
 
 
 class EmailThread(threading.Thread):
-    def __init__(self, subject, html_content,
-                 e_mail, receptors, customer, company):
+    def __init__(self, subject, context, html_code,
+                 e_mail, receptors, customer, company,
+                 create_ticket, domain_pdf):
         self.subject = subject
         self.e_mail = e_mail
-        self.html_content = html_content
+        self.context = context
+        self.html_code = html_code
         self.receptors = receptors
         self.customer = customer
         self.company = company
+        self.create_ticket = create_ticket
+        self.domain_pdf = domain_pdf
         threading.Thread.__init__(self)
 
     def run(self):
+        if self.create_ticket:
+            generate_ticket_code(self.customer.user, self.company)
+            record_to_pdf(
+                self.customer.user, domain=self.domain_pdf,
+                company=self.company
+            )
+        tickets = self.customer.user.user_tickets.filter(company=self.company)
+        url_ticket = ""
+        if tickets:
+            ticket = tickets.last()
+            url_ticket = "%s/download_ticket/%s" % (
+                self.domain_pdf, ticket.hash_id
+            )
+            self.context['url_ticket'] = url_ticket
+
+        template = Template(self.html_code)
+        html_content = template.render(Context(self.context))
+
         rules_email, created = EmailSettings.objects.get_or_create(
             company=self.company)
         connection = get_connection(
@@ -44,7 +67,7 @@ class EmailThread(threading.Thread):
         # connection.open()
         msg = EmailMessage(
             subject=self.subject,
-            body=self.html_content,
+            body=html_content,
             from_email=rules_email.username,
             to=self.receptors,
             connection=connection)
@@ -66,7 +89,9 @@ class ValidateInPersonCompanyUserSerializer(serializers.Serializer):
             company=company, user=user
         )
         message = ""
+        create_ticket = False
         if status:
+            create_ticket = True
             message = company.message_filter_found_domain_user
             user_company.in_person = True
             user_company.save()
@@ -81,35 +106,21 @@ class ValidateInPersonCompanyUserSerializer(serializers.Serializer):
             domain_pdf, user_company.hash_id
         )
         user = User.objects.get(email=user_company.email)
-        tickets = user.user_tickets.filter(company=company)
-        url_ticket = ""
-        if tickets:
-            ticket = tickets.last()
-            url_ticket = "%s/download_ticket/%s" % (
-                domain_pdf, ticket.hash_id
-            )
         # Send Email
-        print(company, 'COMPANY')
         if mailing and mailing.from_email:
             context = dict()
             context["names"] = user_company.names
             context["first_name"] = user_company.names.split(" ")[0]
             context["email"] = user_company.email
             context["company"] = company
-            context['url_ticket'] = url_ticket
             context['confirmation_url'] = confirmation_url
 
-            template = Template(mailing.html_code)
-            html_content = template.render(Context(context))
             subject = mailing.subject
             e_mail = u'{0}<{1}>'.format(
                 mailing.from_name, mailing.from_email)
-            # msg = EmailMessage(
-            #     subject, html_content, e_mail, [user_company.email, ])
-            # msg.content_subtype = "html"
             send_html_mail(
-                subject, html_content, e_mail, [user_company.email, ],
-                user_company, company)
+                subject, context, mailing.html_code, e_mail, [user_company.email, ],
+                user_company, company, create_ticket, domain_pdf)
 
         return dict(success=True, message=message, confirm=status)
 
