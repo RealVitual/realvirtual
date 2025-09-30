@@ -163,14 +163,15 @@ class RegisterForm(forms.ModelForm):
         # Usa filtro con dominios
         mailing = None
         if self.company.filter_domain_user:
-            if user_company.in_person:
-                create_ticket_pdf = True
-                if not self.validate_assistance_type:
-                    mailing, created = EmailTemplate.objects.get_or_create(
-                        company=self.company, email_type="TO_CONFIRM_USER")
-            else:
-                mailing, created = EmailTemplate.objects.get_or_create(
-                    company=self.company, email_type="REGISTER")
+            pass
+            # if user_company.in_person:
+            #     create_ticket_pdf = True
+            #     if not self.validate_assistance_type:
+            #         mailing, created = EmailTemplate.objects.get_or_create(
+            #             company=self.company, email_type="TO_CONFIRM_USER")
+            # else:
+            #     mailing, created = EmailTemplate.objects.get_or_create(
+            #         company=self.company, email_type="REGISTER")
         # Privado con opción a ser confirmados
         elif self.company.is_private_with_confirmation:
             if user_company.in_person and user_company.confirmed:
