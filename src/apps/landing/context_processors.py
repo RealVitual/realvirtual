@@ -6,7 +6,9 @@ from src.apps.companies.models import Footer, Header
 from django.urls import reverse
 from datetime import datetime
 import pytz
-from src.apps.companies.models import UserCompany, JobCompany, Occupation
+from src.apps.companies.models import (
+    UserCompany, JobCompany, Occupation,
+    FilterEmailDomain)
 from src.apps.conf.models import Speciality
 
 
@@ -53,15 +55,26 @@ def main_info(request, **kwargs):
             'countries': Country.objects.all(),
             'job_companies': JobCompany.objects.filter(company=company),
             'occupations': Occupation.objects.filter(company=company),
-            'specialities': Speciality.objects.filter(is_active=True).order_by('position')
+            'specialities': Speciality.objects.filter(is_active=True).order_by('position'),
+            'access_workshop': False,
         }
         if user.is_authenticated:
             ticket_url = ""
             credential_url = ""
             company_user = None
+            access_workshop = False
+            domains = FilterEmailDomain.objects.filter(company=company).values_list(
+                'name', flat=True
+            )
+            print(list(domains))
             if (UserCompany.objects.filter(user=user, company=company)):
                 company_user = UserCompany.objects.get(
                     user=user, company=company)
+                print(company_user.email, 'csompany_user.email')
+                for domain in domains:
+                    print(domain, 'domain')
+                    if domain in company_user.email:
+                        access_workshop = True
                 if company_user.in_person:
                     ticket_url = reverse(
                         'landing:select_preferences')
@@ -89,6 +102,7 @@ def main_info(request, **kwargs):
             data['user_schedules'] = list(user_schedules)
             data['user_schedules_quantity'] = len(user_schedules)
             data['company_user'] = company_user
+            data['access_workshop'] = access_workshop
         return data
     return {
         'STATIC_VERSION': settings.STATIC_VERSION,
