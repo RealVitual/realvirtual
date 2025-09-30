@@ -75,6 +75,7 @@ def main_info(request, **kwargs):
                     print(domain, 'domain')
                     if domain in company_user.email:
                         access_workshop = True
+                        break
                 if company_user.in_person:
                     ticket_url = reverse(
                         'landing:select_preferences')
