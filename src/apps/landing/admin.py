@@ -178,5 +178,11 @@ class BlogPostItemAdmin(admin.ModelAdmin):
     list_filter = ('blog_post', )
 
 
+@admin.register(VoteCategory)
+class VoteCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'company')
+    list_filter = ('company', )
+
+
 admin.site.register(CerficateSettings)
 admin.site.register(CustomerInvitedLanding)
