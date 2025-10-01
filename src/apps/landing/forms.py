@@ -157,8 +157,6 @@ class RegisterForm(forms.ModelForm):
             url_ticket = "%s/download_ticket/%s" % (
                 self.domain_pdf, ticket.hash_id
             )
-        print(url_ticket, 'url_ticket')
-        print(confirmed, 'CONFIRMED!!!!!!!!!!!!!!!!!')
         create_ticket_pdf = False
         # Usa filtro con dominios
         mailing = None
@@ -197,6 +195,15 @@ class RegisterForm(forms.ModelForm):
             record_to_pdf(
                 user, domain=self.domain_pdf,
                 company=self.company
+            )
+
+        user = User.objects.get(email=customer.email)
+        tickets = user.user_tickets.filter(company=self.company)
+        url_ticket = ""
+        if tickets:
+            ticket = tickets.last()
+            url_ticket = "%s/download_ticket/%s" % (
+                self.domain_pdf, ticket.hash_id
             )
 
         confirmation_url = "%s/confirmation_user/%s" % (
