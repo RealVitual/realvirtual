@@ -586,6 +586,16 @@ class VoteCategory(BaseModel):
         _('Url'),
         max_length=450,
         blank=True, editable=True)
+    start_datetime = models.DateTimeField(
+        _('Start Datetime'),
+        null=True,
+        blank=True
+    )
+    end_datetime = models.DateTimeField(
+        _('End Datetime'),
+        null=True,
+        blank=True
+    )
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -593,11 +603,96 @@ class VoteCategory(BaseModel):
         super(VoteCategory, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = _('Categoria para votación')
-        verbose_name_plural = _('Categorias para votación')
+        verbose_name = _('Votación - Categoria')
+        verbose_name_plural = _('Votación - Categorias')
 
     def __str__(self):
         return str(self.name)
+
+
+class VoteQuestion(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_vote_questions",
+        on_delete=models.CASCADE, null=True)
+    vote_category = models.ForeignKey(
+        VoteCategory, related_name="company_vote_questions",
+        on_delete=models.CASCADE, null=True)
+    position = models.SmallIntegerField(_('Posición'), default=1)
+    name = models.CharField(_('Nombre'), max_length=255)
+    title = models.CharField(_('Titulo'), max_length=255,
+                             default="Elige un regalo")
+    image = models.FileField(
+        _('Imagen icon'),
+        upload_to=get_upload_path('icons'),
+        null=True,
+        blank=True)
+
+    class Meta:
+        verbose_name = _('Votación - Pregunta')
+        verbose_name_plural = _('Votación -Preguntas')
+        ordering = ['company', 'position']
+
+    def __str__(self):
+        return self.name
+
+    def get_choices(self):
+        return self.vote_choice_questions.order_by('position')
+
+
+class VoteChoiceQuestion(BaseModel):
+    question = models.ForeignKey(
+        VoteQuestion,
+        related_name='vote_choice_questions',
+        on_delete=models.CASCADE)
+    position = models.SmallIntegerField(_('Posición'), default=1)
+    name = models.CharField(
+        _('Nombre'),
+        max_length=255,
+        blank=True,
+        null=True)
+
+    class Meta:
+        verbose_name = _('Votación - Opción')
+        verbose_name_plural = _('Votación - Opciones')
+        ordering = ['position', '-modified']
+
+    def __str__(self):
+        if self.name:
+            return self.name
+        return ""
+
+
+class VoteUserAnswer(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="company_vote_answers",
+        on_delete=models.CASCADE, null=True)
+    vote_category = models.ForeignKey(
+        VoteCategory, related_name="vote_category_answers",
+        on_delete=models.CASCADE, null=True)
+    question = models.ForeignKey(
+        VoteQuestion,
+        related_name='answer_vote_questions',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True)
+    choice_question = models.ForeignKey(
+        VoteChoiceQuestion,
+        related_name='answer_vote_choice_questions',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True)
+    user = models.ForeignKey(
+        User,
+        related_name='user_vote_answers',
+        on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Votación - Respuesta de Usuario')
+        verbose_name_plural = _('Votación - Respuestas de Usuario')
+        ordering = ['-modified']
+
+    def __str__(self):
+        return self.user.email
 
 
 class Community(BaseModel):

@@ -8,7 +8,8 @@ from .models import (Video, Sponsor, CredentialCustomer,
                      BlogPost, BlogPostItem, BlogPostItemContent,
                      FrequentlyQuestion,
                      CustomerInvitedLanding, VoteCategory,
-                     Community, UserCommunityPreference)
+                     Community, UserCommunityPreference,
+                     VoteQuestion, VoteChoiceQuestion, VoteUserAnswer)
 from django.utils.html import format_html
 import os
 
@@ -182,6 +183,25 @@ class BlogPostItemAdmin(admin.ModelAdmin):
 class VoteCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'company')
     list_filter = ('company', )
+
+
+@admin.register(VoteUserAnswer)
+class VoteUserAnswerAdmin(admin.ModelAdmin):
+    list_display = ('user', 'company', 'vote_category')
+    list_filter = ('company', 'vote_category')
+
+
+class VoteChoiceQuestionTabular(admin.TabularInline):
+    model = VoteChoiceQuestion
+    list_display = ('user', 'company')
+    extra = 0
+
+
+@admin.register(VoteQuestion)
+class VoteQuestionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'company', 'vote_category')
+    list_filter = ('company', 'vote_category')
+    inlines = [VoteChoiceQuestionTabular]
 
 
 admin.site.register(CerficateSettings)
