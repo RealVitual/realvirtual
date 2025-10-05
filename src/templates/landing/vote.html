@@ -1,0 +1,88 @@
+{% extends "landing/common/_base.html" %}
+
+{% block cssadicional %}
+{% endblock %}
+
+{% block classbody %}{% endblock %}
+
+{% block content %}
+
+<section class="b11 pageEncuesta">
+    <div class="b11Left">
+        <div class="b11LeftContent">
+            <a href="##" onClick="history.go(-1); return false;" class="gReturn">Regresar</a>
+            <h1 class="gTitle">{{vote_category.name}}</h1>
+        </div>
+    </div>
+    <div class="b11Right">
+        <form action="" class="b11FormEncuesta g8Form" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="vote_category" value="{{vote_category.id}}">
+            {% for question in questions %}
+                <div class="b11Item">
+                    <label class="b11NameOptions">
+                        {{question.position}}. {{question.name}}
+                    </label>
+                    <div class="b11ListOption">
+                        {% for choice in question.get_choices %}
+                            <div class="b11ItemOption pr">
+                                <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
+                                </div>
+                                <input id="{{choice.id}}" type="radio" name="{{question.id}}"  class="validate[required]" value="{{choice.id}}">
+                                <img src="{{choice.image.url}}" alt="">
+                                <h3>{{choice.name}}</h3>
+                                <label for="{{choice.id}}"></label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            <button class="gButton b11Enviar">Enviar</button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block jsfinal %}
+<script type="text/javascript">
+
+    eventGrilla("b11Left","left")
+    eventGrilla("b11Right","right")
+
+    let elb11ItemOption = document.getElementsByClassName("b11ItemOption");
+    for(const b11ItemOption of elb11ItemOption){
+        b11ItemOption.addEventListener("click",function(){
+            let elchildrenOptions = this.parentNode.children
+            let getColorCheckRadio = this.children[0].dataset.colorActive
+            for(const childrenOptions of elchildrenOptions){
+                childrenOptions.classList.remove('active')
+            }
+            this.children[0].style.border = `1px solid ${getColorCheckRadio}`;
+            this.classList.add('active')
+        });
+    }
+
+    $('.b11Enviar').click(function(e){
+        e.preventDefault();
+        var item = $(this);
+        var valid = item.closest('.b11FormEncuesta').validationEngine('validate');
+        var form = $(this).closest('form');
+        if (!valid) {
+            console.log('form invalid')
+        } else {
+            data = form.serialize()
+            console.log(data)
+            $.ajax({
+                url : "/save_vote_answers/",
+                type : "post",
+                data: data,
+            }).done(function(data) {
+                if(data.success){
+                    window.location.href = data.redirect_url
+                }
+            });
+    }
+    });
+</script>
+{% endblock %}

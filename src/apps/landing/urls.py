@@ -9,7 +9,8 @@ from .views import (
     ScheduledEventsView, TicketViewPDF, ResetPasswordView, CertificateView,
     CloseLandingView, GenerateCertificateView, BlogListView, BlogDetailView,
     DownloadCustomerTicket, ConfirmUser, ValidateInPersonCompanyUser,
-    CommunityView, GenerateUserCommunityPreference, WhiteView
+    CommunityView, GenerateUserCommunityPreference, WhiteView,
+    GenerateInvitedEmail, GetVoteCategoryStatus, VoteView, save_vote_answers
 )
 from rest_framework.routers import DefaultRouter
 
@@ -81,6 +82,18 @@ urlpatterns = [
           ValidateInPersonCompanyUser.as_view(), name='validate_in_person'),
      path('generate_cummunity_preference/',
           GenerateUserCommunityPreference.as_view(),
-          name='generate_cummunity_preference')
+          name='generate_cummunity_preference'),
+     path(
+          'generate_invited/', GenerateInvitedEmail.as_view(),
+          name='generate_invited'),
+     path(
+          'api/vote_category/get_vote_category/',
+          GetVoteCategoryStatus.as_view(),
+          name='get_vote_category'),
+     path(
+          'vote_category/<slug>/',
+          VoteView.as_view(), name='vote_category'),
+     path('save_vote_answers/', save_vote_answers,
+          name='save_vote_answers'),
 ]
 urlpatterns += router.urls

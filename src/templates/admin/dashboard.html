@@ -173,6 +173,55 @@
                                             <button type="button" class="btn btn-primary">Actualizar</button>
                                         </a>
                                     </div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    {% comment %} <div class="row">
+                                        <div class="col-md-6 col-sm-15 mb-2 mb-md-0">
+                                            <h5 class="mb-1">{{customers_number}}</h5>
+                                            <button type="button" class="btn btn-outline-primary waves-effect" id="confirm-text">Inscritos</button>
+                                        </div>
+                                        <div class="col-md-6 col-sm-15">
+                                            <h5 class="mb-1">{{scheduled_events_number}}</h5>
+                                            <button type="button" class="btn btn-outline-primary waves-effect" id="confirm-color">Agendados</button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12 mb-2 mb-md-0">
+                                            <h5 class="mb-1">{{customers_number}}</h5>
+                                            <button type="button" class="btn btn-outline-primary waves-effect" id="confirm-text">Inscritos</button>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <h5 class="mb-1">{{scheduled_events_number}}</h5>
+                                            <button type="button" class="btn btn-outline-primary waves-effect" id="confirm-color">Agendados</button>
+                                        </div>
+                                    </div> {% endcomment %}
+                                    <div class="dt-buttons">
+                                        <a id="export_customers">
+                                            <button class="dt-button btn btn-warning btn-add-record ml-2" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+                                                <span>Inscritos: {{customers_number}}</span>
+                                            </button>
+                                        </a>
+                                        <a id="export_scheduled_events">
+                                        <button class="dt-button btn btn-warning btn-add-record ml-2" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+                                            <span>Agendados: {{scheduled_events_number}}</span>
+                                        </button>
+                                        </a>
+                                    </div>
+                                    <br>
+                                    <div class="dt-buttons">
+                                        <a id="export_workshop_schedules">
+                                            <button class="dt-button btn btn-warning btn-add-record ml-2" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+                                                <span>Inscritos talleres: {{workshop_schedules_number}}</span>
+                                        </button>
+                                        </a>
+                                        <a id="export_asistants">
+                                        <button class="dt-button btn btn-warning btn-add-record ml-2" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+                                            <span>Asistencias: {{asistants}}</span>
+                                        </button>
+                                        </a>
+                                    </div>
                                     {% comment %} <br>
                                     <div class="card-body p-0">
                                         <div class="row border-top text-center mx-0">
@@ -196,28 +245,35 @@
                                             </div>
                                         </div>
                                     </div> {% endcomment %}
-                                    <br>
+                                    {% comment %} <br>
                                     <p class="card-text text-muted mb-0">Inscritos</p>
                                     <h3 class="font-weight-bolder mb-0">{{customers_number}}</h3>
                                     <div class="center col-12 budget-wrapper">
                                         <a id="export_customers">
                                             <button type="button" class="btn btn-warning">Descargar</button>
                                         </a>
-                                    </div>
+                                    </div> {% endcomment %}
                                     {% comment %} <p class="card-text text-muted mb-0">Preferencias</p>
                                     <div class="center col-12 budget-wrapper">
                                         <a id="export_preferences">
                                             <button type="button" class="btn btn-warning">Descargar</button>
                                         </a>
                                     </div> {% endcomment %}
-                                    <br>
-                                        <p class="card-text text-muted mb-0">Inscritos Talleres</p>
-                                        <h3 class="font-weight-bolder mb-0">{{workshop_schedules_number}}</h3>
-                                        <div class="center col-12 budget-wrapper">
-                                            <a id="export_workshop_schedules">
-                                                <button type="button" class="btn btn-warning">Descargar</button>
-                                            </a>
-                                        </div>
+                                    {% comment %} <p class="card-text text-muted mb-0">Agendados</p>
+                                    <h3 class="font-weight-bolder mb-0">{{scheduled_events_number}}</h3>
+                                    <div class="center col-12 budget-wrapper">
+                                        <a id="export_scheduled_events">
+                                            <button type="button" class="btn btn-warning">Descargar</button>
+                                        </a>
+                                    </div> {% endcomment %}
+                                    {% comment %} <br>
+                                    <p class="card-text text-muted mb-0">Inscritos Talleres</p>
+                                    <h3 class="font-weight-bolder mb-0">{{workshop_schedules_number}}</h3>
+                                    <div class="center col-12 budget-wrapper">
+                                        <a id="export_workshop_schedules">
+                                            <button type="button" class="btn btn-warning">Descargar</button>
+                                        </a>
+                                    </div>
                                     <br>
                                     <p class="card-text text-muted mb-0">Asistencias</p>
                                     <h3 class="font-weight-bolder mb-0">{{asistants}}</h3>
@@ -225,7 +281,7 @@
                                         <a id="export_asistants">
                                             <button type="button" class="btn btn-warning">Descargar</button>
                                         </a>
-                                    </div>
+                                    </div> {% endcomment %}
 
                                     {% comment %} <p class="card-text text-muted mb-0">Asistentes</p>
                                     <h3 class="font-weight-bolder mb-0">{{asistants}}</h3>
@@ -275,6 +331,10 @@
         $('#export_workshop_schedules').click(function(e) {
             e.preventDefault();
             window.location = "/api/companies/customers_list/download-workshop_customers/"
+        });
+        $('#export_scheduled_events').click(function(e) {
+            e.preventDefault();
+            window.location = "/api/companies/customers_list/download-scheduled-events/"
         });
         {% comment %} $('#export_schedules').click(function(e) {
                 e.preventDefault();

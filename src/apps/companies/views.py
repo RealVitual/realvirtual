@@ -11,7 +11,8 @@ from src.apps.customers.models import Customer
 import pytz
 from src.apps.landing.models import UserAnswer
 from src.apps.events.models import (
-    CustomerEvent, ScheduleCustomerWorkshop
+    CustomerEvent, ScheduleCustomerWorkshop,
+    ScheduleCustomerEvent
 )
 
 
@@ -84,6 +85,16 @@ class AdminCustomerViewSet(ModelViewSet):
         queryset = ScheduleCustomerWorkshop.objects.filter(
             workshop__in=workshops).order_by('-created')
         return self.download_workshop_customers_xlsx(queryset)
+
+    @action(
+        detail=False,
+        methods=['get'],
+        url_path='download-scheduled-events',
+        url_name='download-scheduled-events-list')
+    def download_scheduled_events_list(self, request, pk=None):
+        queryset = ScheduleCustomerEvent.objects.filter(
+            company=request.company).order_by('-created')
+        return self.download_scheduled_events_xlsx(queryset)
 
     def download_xlsx(self, queryset):
         response = HttpResponse(content_type='application/ms-excel')
@@ -317,5 +328,46 @@ class AdminCustomerViewSet(ModelViewSet):
             value = o.created.astimezone(tz).strftime(
                 "%d/%m/%Y, %H:%M:%S")
             row.write(4, value)
+        wb.save(response)
+        return response
+
+    def download_scheduled_events_xlsx(self, queryset):
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="scheduled_events_customers.xls"'  # noqa
+
+        wb = xlwt.Workbook(encoding='utf-8')
+
+        # Sheet for attributes
+        ws = wb.add_sheet('AGENDADOS')
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        columns = ['Email', 'Nombres y Apellidos', 'Horario', 'Evento', 'Landing' , 'creado']
+        row_index = 0
+        # Header
+        for column_index, value in enumerate(columns):
+            ws.write(row_index, column_index, value, font_style)
+
+        for column_index in range(0, len(columns)):
+            ws.col(column_index).width = 2962*3
+
+        font_style = xlwt.XFStyle()
+        c = 0
+        for idx, o in enumerate(queryset):
+            c += 1
+            row = ws.row(c)
+            value = o.company_user.email
+            row.write(0, value)
+            value = o.company_user.full_name
+            row.write(1, value)
+            value = o.schedule.name
+            row.write(2, value)
+            value = o.event.name
+            row.write(3, value)
+            value = o.company.name
+            row.write(4, value)
+            tz = pytz.timezone("America/Lima")
+            value = o.created.astimezone(tz).strftime(
+                "%d/%m/%Y, %H:%M:%S")
+            row.write(5, value)
         wb.save(response)
         return response

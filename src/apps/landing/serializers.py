@@ -1,17 +1,15 @@
 from rest_framework import serializers
 from src.apps.users.models import User
-from src.apps.events.models import (
-    Schedule, ScheduleCustomerEvent,
-    Workshop, ScheduleCustomerWorkshop)
 from src.apps.companies.models import (
-    EmailTemplate, EmailSettings, UserCompany, Company)
-from .models import Community, UserCommunityPreference
+    EmailTemplate, EmailSettings, UserCompany)
+from .models import Community, UserCommunityPreference, CustomerInvitedLanding
 from django.template import Context, Template
 from django.core.mail import EmailMessage
 import threading
 from django.core.mail import get_connection
 from src.apps.tickets.utils import generate_ticket_code
 from .utils import record_to_pdf
+import xlrd
 
 
 def send_html_mail(subject, context, html_code, e_mail, receptors,
@@ -149,3 +147,27 @@ class GenerateUserCommunityPreferenceSerializer(serializers.Serializer):
                     company=company,
                 )
         return dict(success=True)
+
+
+class CustomerInvitedListSerializer(serializers.Serializer):
+    excel = serializers.FileField()
+
+    def create(self, validated_data):
+        file = validated_data.pop('excel')
+        book = xlrd.open_workbook(file_contents=file.read())
+        sh = book.sheet_by_index(0)
+        for rx in range(1, sh.nrows):
+            email = sh.cell_value(rowx=rx, colx=0).lower()
+            name = sh.cell_value(rowx=rx, colx=1).title()
+            first_surname = sh.cell_value(rowx=rx, colx=2).title()
+            last_surname = sh.cell_value(rowx=rx, colx=3).title()
+            names = f"{name} {first_surname} {last_surname}"
+            company_id = sh.cell_value(rowx=rx, colx=4)
+            custom_image_url = sh.cell_value(rowx=rx, colx=5)
+            CustomerInvitedLanding.objects.get_or_create(
+                email=email, name=name,
+                first_surname=first_surname, last_surname=last_surname,
+                custom_image_url=custom_image_url,
+                company_id=company_id, names=names)
+
+        return {"message": "SUCCESS"}

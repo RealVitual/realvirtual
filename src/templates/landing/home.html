@@ -482,8 +482,18 @@
                         {{cat.description|safe}}
                     </div>
                     <div class="b23Bottom f aic jcfs">
-                        <a href="#" class="button button_vote" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};" data-id="{{cat.id}}">Votar</a>
-                        <p class="message_vote" id="msg_{{cat.id}}">Aún no están abiertas las votaciones</p>
+                        {% if cat.already_voted %}
+                            <a class="button" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};" data-id="{{cat.id}}">Gracias por votar</a>
+                            <p class="message_vote" id="msg_{{cat.id}}"></p>
+                        {% else %}
+                            {% if cat.get_current_status == "past" %}
+                                <a class="button" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};" data-id="{{cat.id}}">Terminado</a>
+                                <p class="message_vote" id="msg_{{cat.id}}"></p>
+                                {% else %}
+                                <a href="#" class="button button_vote" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};" data-id="{{cat.id}}">Votar</a>
+                                <p class="message_vote" id="msg_{{cat.id}}"></p>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
@@ -1082,14 +1092,37 @@
             item.addEventListener("click", (e) => {
                 e.preventDefault();
                 const data_id = item.getAttribute("data-id");
-                $('#msg_'+data_id).fadeIn('slow')
-                setTimeout(()=>{
-                    $('#msg_'+data_id).fadeOut('slow')
-                }, 2000)
+                voteManager(parseInt(data_id), item)
             });
         });
-
-
-});
+    });
+    function voteManager(data_id, item){
+        $.ajax({
+            url: '{% url "landing:get_vote_category" %}',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                data_id: data_id,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data){
+                console.log(data, 'DATA')
+                if (data.success) {
+                    if(data.access){
+                        window.location.href = data.url;
+                    }else{
+                        $('#msg_'+data_id).html(data.message)
+                        $('#msg_'+data_id).fadeIn('slow')
+                        setTimeout(()=>{
+                            $('#msg_'+data_id).fadeOut('slow')
+                        }, 2000)
+                    }
+                } else {
+                }
+            },
+            error: function(xhr, status){
+            }
+        });
+    }
 </script>
 {% endblock %}

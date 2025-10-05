@@ -8,6 +8,8 @@ from src.apps.companies.models import Company, UserCompany
 from src.apps.users.models import User
 from ckeditor.fields import RichTextField
 from django.template.defaultfilters import slugify
+import pytz
+from datetime import datetime
 
 
 def get_upload_path(internal_folder):
@@ -609,6 +611,27 @@ class VoteCategory(BaseModel):
     def __str__(self):
         return str(self.name)
 
+    def get_current_status(self):
+        start_datetime = self.start_datetime.astimezone(
+            pytz.timezone(settings.TIME_ZONE))
+        end_datetime = self.end_datetime.astimezone(
+            pytz.timezone(settings.TIME_ZONE))
+        now = datetime.now().replace(microsecond=0)
+        now = now.astimezone(
+            pytz.timezone(settings.TIME_ZONE))
+        if now >= start_datetime and end_datetime > now:
+            status = 'active'
+        if end_datetime < now:
+            status = 'past'
+        if start_datetime > now:
+            status = 'upcoming'
+        return status
+
+    def already_voted(self):
+        if self.vote_category_answers.all():
+            return True
+        return False
+
 
 class VoteQuestion(BaseModel):
     company = models.ForeignKey(
@@ -650,6 +673,11 @@ class VoteChoiceQuestion(BaseModel):
         max_length=255,
         blank=True,
         null=True)
+    image = models.FileField(
+        _('Imagen icon'),
+        upload_to=get_upload_path('icons'),
+        null=True,
+        blank=True)
 
     class Meta:
         verbose_name = _('Votación - Opción')

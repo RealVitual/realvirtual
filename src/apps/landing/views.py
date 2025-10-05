@@ -14,7 +14,7 @@ from .models import (
     UserAnswer, TicketSettings, SurveryQuestion, UserSurveyAnswer,
     NetworkingOption, UserNetworkingPreference, BlogPost,
     FrequentlyQuestion, VoteCategory, Community,
-    UserCommunityPreference)
+    UserCommunityPreference, VoteQuestion, VoteUserAnswer)
 from .forms import (
     RegisterForm, CredentialCustomerForm, LoginForm, EmailPasswordForm,
     ResetPasswordForm, CertificateForm)
@@ -34,7 +34,8 @@ from django.db.models import Q
 from src.apps.tickets.models import Ticket
 from .serializers import (
     ValidateInPersonCompanyUserSerializer,
-    GenerateUserCommunityPreferenceSerializer
+    GenerateUserCommunityPreferenceSerializer,
+    CustomerInvitedListSerializer
 )
 from rest_framework.response import Response
 from rest_framework import status
@@ -1515,3 +1516,114 @@ class WhiteView(View):
         context = {
         }
         return render(request, self.template_name, context)
+
+
+class GenerateInvitedEmail(APIView):
+    serializer_class = CustomerInvitedListSerializer
+    permission_classes = [AuthenticatedPermission]
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return redirect(reverse(
+                'landing:generate_invited'))
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class VoteView(View):
+    template_name = "landing/vote.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        company = self.request.company
+        if not request.user.is_authenticated:
+            return redirect(reverse('landing:home'))
+        self.user_company = UserCompany.objects.get(
+            company=company, user=request.user
+        )
+        if not self.user_company.confirmed:
+            return redirect(reverse('landing:home'))
+        slug = self.kwargs['slug']
+        self.vote_category = VoteCategory.objects.get(
+            slug=slug, company=company)
+        status = self.vote_category.get_current_status()
+        already_voted = self.vote_category.already_voted()
+        if not status == "active" or already_voted:
+            return redirect(reverse('landing:home'))
+        return super(VoteView, self).dispatch(request, *args, **kwargs) # noqa
+
+    def get(self, request, **kwargs):
+        questions = VoteQuestion.objects.filter(
+            company=request.company, is_active=True).order_by('position')
+        context = {
+            'vote_category': self.vote_category,
+            'questions': questions,
+        }
+        return render(request, self.template_name, context)
+
+
+class GetVoteCategoryStatus(APIView):
+    permission_classes = [AuthenticatedPermission]
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(GetVoteCategoryStatus, self).dispatch(
+            request, *args, **kwargs)
+
+    def get(self, request):
+        data_id = request.query_params.get('data_id')
+        vote_categories = VoteCategory.objects.filter(
+            id=data_id
+        )
+        if not vote_categories:
+            return Response(dict(
+                success=False), status=404)
+        vote_category = vote_categories.last()
+        url = None
+        message = None
+        status = vote_category.get_current_status()
+        access = False
+        if status == "active":
+            access = True
+            url = reverse(
+                'landing:vote_category',
+                kwargs=dict(slug=vote_category.slug)
+            )
+        elif status == "upcoming":
+            message = "Aún no están abiertas las votaciones"
+        else:
+            message = "Esta votación ya culminó"
+        return Response(
+            dict(success=True, access=access, url=url, message=message),
+            status=200
+        )
+
+
+@login_required
+def save_vote_answers(request):
+    if request.method == 'POST' and is_ajax(request=request):
+        data = request.POST.dict()
+        data.pop('csrfmiddlewaretoken', None)
+        vote_category_id = data.pop('vote_category', None)
+        if VoteUserAnswer.objects.filter(
+            vote_category_id=vote_category_id,
+            company=request.company
+        ):
+            response_data = {}
+            response_data['redirect_url'] = reverse('landing:home')
+            response_data['success'] = 1
+            return HttpResponse(
+                json.dumps(response_data), content_type="application/json")
+        user = request.user
+        response_data = {}
+        for key, value in data.items():
+            answer = VoteUserAnswer(
+                user=user, company=request.company)
+            answer.vote_category_id = vote_category_id
+            answer.question_id = int(key)
+            answer.choice_question_id = int(value)
+            answer.save()
+        url = "home"
+        response_data['redirect_url'] = reverse('landing:%s' % url)
+        response_data['success'] = 1
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/json")

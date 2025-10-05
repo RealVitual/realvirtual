@@ -51,6 +51,9 @@ class DashboardView(View):
         workshop_schedules = ScheduleCustomerWorkshop.objects.filter(
             company=request.company
         )
+        scheduled_events = ScheduleCustomerEvent.objects.filter(
+            company=request.company
+        )
         context = {
             "events": events,
             "customers": customers[:10] if customers.count() >= 10 else customers,
@@ -62,7 +65,9 @@ class DashboardView(View):
             'current': now.strftime("%I:%M %p"),
             'header': header,
             'workshop_schedules': workshop_schedules,
-            'workshop_schedules_number': workshop_schedules.count()
+            'workshop_schedules_number': workshop_schedules.count(),
+            'scheduled_events': scheduled_events,
+            'scheduled_events_number': scheduled_events.count()
            }
         return render(request, self.template_name, context)
 
