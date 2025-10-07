@@ -14,6 +14,8 @@ from src.apps.events.models import (
     CustomerEvent, ScheduleCustomerWorkshop,
     ScheduleCustomerEvent
 )
+from django.conf import settings
+from datetime import datetime
 
 
 class AdminCustomerViewSet(ModelViewSet):
@@ -341,7 +343,7 @@ class AdminCustomerViewSet(ModelViewSet):
         ws = wb.add_sheet('AGENDADOS')
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
-        columns = ['Email', 'Nombres y Apellidos', 'Horario', 'Evento', 'Landing' , 'creado']
+        columns = ['Email', 'Nombres y Apellidos', 'Horario', 'Fecha y Hora', 'Evento', 'Landing' , 'creado']
         row_index = 0
         # Header
         for column_index, value in enumerate(columns):
@@ -361,13 +363,31 @@ class AdminCustomerViewSet(ModelViewSet):
             row.write(1, value)
             value = o.schedule.name
             row.write(2, value)
-            value = o.event.name
+            start_date = o.event.start_datetime.astimezone(
+                pytz.timezone(settings.TIME_ZONE)).date()
+            end_date = o.event.end_datetime.astimezone(
+                pytz.timezone(settings.TIME_ZONE)).date()
+            start_time = o.schedule.start_time
+            end_time = o.schedule.end_time
+            start_datetime = datetime.combine(
+                start_date, start_time).astimezone(
+                    pytz.timezone(settings.TIME_ZONE))
+            end_datetime = datetime.combine(
+                end_date, end_time).astimezone(
+                    pytz.timezone(settings.TIME_ZONE))
+            start_datetime_str = start_datetime.strftime(
+                "%d/%m/%Y, %H:%M:%S")
+            end_datetime_str = end_datetime.strftime(
+                "%d/%m/%Y, %H:%M:%S")
+            value = f"{start_datetime_str} - {end_datetime_str}"
             row.write(3, value)
-            value = o.company.name
+            value = o.event.name
             row.write(4, value)
+            value = o.company.name
+            row.write(5, value)
             tz = pytz.timezone("America/Lima")
             value = o.created.astimezone(tz).strftime(
                 "%d/%m/%Y, %H:%M:%S")
-            row.write(5, value)
+            row.write(6, value)
         wb.save(response)
         return response
