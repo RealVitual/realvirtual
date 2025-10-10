@@ -160,6 +160,11 @@ class HomeView(CreateView):
             workshops = Workshop.objects.filter(
                 company=company, is_active=True
             ).order_by("position")
+            exhibitors = Exhibitor.objects.filter(
+                    company=company, is_active=True)
+            vote_categories = VoteCategory.objects.filter(
+                company=request.company
+            ).order_by('position')
             if request.user.is_authenticated:
                 company_user = UserCompany.objects.get(
                     company=company, user=request.user)
@@ -175,20 +180,13 @@ class HomeView(CreateView):
                     s.scheduled = s.schedule_company_users.filter(
                         company=s.event.company, company_user=company_user
                     )
-            exhibitors = Exhibitor.objects.filter(
-                    company=company, is_active=True)
-            vote_categories = VoteCategory.objects.filter(
-                company=request.company
-            ).order_by('position')
-
-            for v in vote_categories:
-                voted = v.vote_category_answers.filter(
-                    company=v.company, is_active=True,
-                    user=company_user.user
-                )
-                if voted:
-                    v.already_voted = voted[0]
-                    # w.confirm_scheduled = scheduled[0].confirmed
+                for v in vote_categories:
+                    voted = v.vote_category_answers.filter(
+                        company=v.company, is_active=True,
+                        user=company_user.user
+                    )
+                    if voted:
+                        v.already_voted = voted[0]
             context = {
                 'company': company,
                 'header': True,
@@ -462,6 +460,11 @@ class EventsView(CreateView):
             workshops = Workshop.objects.filter(
                 company=company, is_active=True
             ).order_by("position")
+            exhibitors = Exhibitor.objects.filter(
+                    company=company, is_active=True)
+            vote_categories = VoteCategory.objects.filter(
+                company=request.company
+            ).order_by('position')
             if request.user.is_authenticated:
                 company_user = UserCompany.objects.get(
                     company=company, user=request.user)
@@ -477,19 +480,13 @@ class EventsView(CreateView):
                     s.scheduled = s.schedule_company_users.filter(
                         company=s.event.company, company_user=company_user
                     )
-            exhibitors = Exhibitor.objects.filter(
-                    company=company, is_active=True)
-            vote_categories = VoteCategory.objects.filter(
-                company=request.company
-            ).order_by('position')
-
-            for v in vote_categories:
-                voted = v.vote_category_answers.filter(
-                    company=v.company, is_active=True,
-                    user=company_user.user
-                )
-                if voted:
-                    v.already_voted = voted[0]
+                for v in vote_categories:
+                    voted = v.vote_category_answers.filter(
+                        company=v.company, is_active=True,
+                        user=company_user.user
+                    )
+                    if voted:
+                        v.already_voted = voted[0]
             context = {
                 'company': company,
                 'header': True,
