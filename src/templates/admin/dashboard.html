@@ -222,6 +222,14 @@
                                         </button>
                                         </a>
                                     </div>
+                                    <br>
+                                    <div class="dt-buttons">
+                                        <a id="export_votes">
+                                            <button class="dt-button btn btn-warning btn-add-record ml-2" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+                                                <span>Votaciones: {{votes_number}}</span>
+                                        </button>
+                                        </a>
+                                    </div>
                                     {% comment %} <br>
                                     <div class="card-body p-0">
                                         <div class="row border-top text-center mx-0">
@@ -335,6 +343,10 @@
         $('#export_scheduled_events').click(function(e) {
             e.preventDefault();
             window.location = "/api/companies/customers_list/download-scheduled-events/"
+        });
+        $('#export_votes').click(function(e) {
+            e.preventDefault();
+            window.location = "/api/companies/customers_list/download-votes/"
         });
         {% comment %} $('#export_schedules').click(function(e) {
                 e.preventDefault();

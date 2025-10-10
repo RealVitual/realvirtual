@@ -9,7 +9,7 @@ import xlwt
 from .models import UserCompany
 from src.apps.customers.models import Customer
 import pytz
-from src.apps.landing.models import UserAnswer
+from src.apps.landing.models import UserAnswer, VoteUserAnswer
 from src.apps.events.models import (
     CustomerEvent, ScheduleCustomerWorkshop,
     ScheduleCustomerEvent
@@ -97,6 +97,16 @@ class AdminCustomerViewSet(ModelViewSet):
         queryset = ScheduleCustomerEvent.objects.filter(
             company=request.company).order_by('-created')
         return self.download_scheduled_events_xlsx(queryset)
+
+    @action(
+        detail=False,
+        methods=['get'],
+        url_path='download-votes',
+        url_name='download-votes-list')
+    def download_votes_list(self, request, pk=None):
+        queryset = VoteUserAnswer.objects.filter(
+            company=request.company).order_by('-created')
+        return self.download_votes_xlsx(queryset)
 
     def download_xlsx(self, queryset):
         response = HttpResponse(content_type='application/ms-excel')
@@ -384,6 +394,50 @@ class AdminCustomerViewSet(ModelViewSet):
             value = o.event.name
             row.write(4, value)
             value = o.company.name
+            row.write(5, value)
+            tz = pytz.timezone("America/Lima")
+            value = o.created.astimezone(tz).strftime(
+                "%d/%m/%Y, %H:%M:%S")
+            row.write(6, value)
+        wb.save(response)
+        return response
+
+    def download_votes_xlsx(self, queryset):
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = f'attachment; filename="{self.request.company.name}_votes_customers.xls"'  # noqa
+
+        wb = xlwt.Workbook(encoding='utf-8')
+
+        # Sheet for attributes
+        ws = wb.add_sheet('VOTOS')
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        columns = ['Email', 'Nombres y Apellidos', 'Empresa', 'Grupo de Votación', 'Pregunta', 'Respuesta', 'Fecha de Votación']
+        row_index = 0
+        # Header
+        for column_index, value in enumerate(columns):
+            ws.write(row_index, column_index, value, font_style)
+
+        for column_index in range(0, len(columns)):
+            ws.col(column_index).width = 2962*3
+
+        font_style = xlwt.XFStyle()
+        c = 0
+        for idx, o in enumerate(queryset):
+            cu = UserCompany.objects.get(company=o.company, email=o.user.email)
+            c += 1
+            row = ws.row(c)
+            value = cu.email
+            row.write(0, value)
+            value = cu.full_name
+            row.write(1, value)
+            value = cu.job_company_select.name
+            row.write(2, value)
+            value = o.vote_category.name
+            row.write(3, value)
+            value = o.question.name
+            row.write(4, value)
+            value = o.choice_question.name
             row.write(5, value)
             tz = pytz.timezone("America/Lima")
             value = o.created.astimezone(tz).strftime(

@@ -14,6 +14,7 @@ from django.db.models import Count
 from datetime import datetime
 from src.apps.users.models import User
 from src.apps.companies.models import UserCompany, Header
+from src.apps.landing.models import VoteUserAnswer
 
 
 class DashboardView(View):
@@ -54,6 +55,9 @@ class DashboardView(View):
         scheduled_events = ScheduleCustomerEvent.objects.filter(
             company=request.company
         )
+        votes = VoteUserAnswer.objects.filter(
+            company=request.company
+        )
         context = {
             "events": events,
             "customers": customers[:10] if customers.count() >= 10 else customers,
@@ -67,7 +71,9 @@ class DashboardView(View):
             'workshop_schedules': workshop_schedules,
             'workshop_schedules_number': workshop_schedules.count(),
             'scheduled_events': scheduled_events,
-            'scheduled_events_number': scheduled_events.count()
+            'scheduled_events_number': scheduled_events.count(),
+            'votes': votes,
+            'votes_number': votes.count()
            }
         return render(request, self.template_name, context)
 
