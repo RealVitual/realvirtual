@@ -1554,7 +1554,8 @@ class VoteView(View):
 
     def get(self, request, **kwargs):
         questions = VoteQuestion.objects.filter(
-            company=request.company, is_active=True).order_by('position')
+            company=request.company, is_active=True,
+            vote_category=self.vote_category).order_by('position')
         context = {
             'vote_category': self.vote_category,
             'questions': questions,
