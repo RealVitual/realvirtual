@@ -1622,16 +1622,17 @@ def save_vote_answers(request):
         data = request.POST.dict()
         data.pop('csrfmiddlewaretoken', None)
         vote_category_id = data.pop('vote_category', None)
+        user = request.user
         if VoteUserAnswer.objects.filter(
             vote_category_id=vote_category_id,
-            company=request.company
+            company=request.company,
+            user=user
         ):
             response_data = {}
             response_data['redirect_url'] = reverse('landing:home')
             response_data['success'] = 1
             return HttpResponse(
                 json.dumps(response_data), content_type="application/json")
-        user = request.user
         response_data = {}
         for key, value in data.items():
             answer = VoteUserAnswer(
