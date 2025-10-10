@@ -180,6 +180,15 @@ class HomeView(CreateView):
             vote_categories = VoteCategory.objects.filter(
                 company=request.company
             ).order_by('position')
+
+            for v in vote_categories:
+                voted = v.vote_category_answers.filter(
+                    company=v.company, is_active=True,
+                    user=company_user.user
+                )
+                if voted:
+                    v.already_voted = voted[0]
+                    # w.confirm_scheduled = scheduled[0].confirmed
             context = {
                 'company': company,
                 'header': True,
@@ -473,6 +482,14 @@ class EventsView(CreateView):
             vote_categories = VoteCategory.objects.filter(
                 company=request.company
             ).order_by('position')
+
+            for v in vote_categories:
+                voted = v.vote_category_answers.filter(
+                    company=v.company, is_active=True,
+                    user=company_user.user
+                )
+                if voted:
+                    v.already_voted = voted[0]
             context = {
                 'company': company,
                 'header': True,
@@ -1547,7 +1564,10 @@ class VoteView(View):
         self.vote_category = VoteCategory.objects.get(
             slug=slug, company=company)
         status = self.vote_category.get_current_status()
-        already_voted = self.vote_category.already_voted()
+        already_voted = VoteUserAnswer.objects.filter(
+            vote_category=self.vote_category,
+            user=request.user
+        )
         if not status == "active" or already_voted:
             return redirect(reverse('landing:home'))
         return super(VoteView, self).dispatch(request, *args, **kwargs) # noqa

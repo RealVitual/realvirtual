@@ -627,10 +627,10 @@ class VoteCategory(BaseModel):
             status = 'upcoming'
         return status
 
-    def already_voted(self):
-        if self.vote_category_answers.all():
-            return True
-        return False
+    # def already_voted(self):
+    #     if self.vote_category_answers.all():
+    #         return True
+    #     return False
 
 
 class VoteQuestion(BaseModel):
