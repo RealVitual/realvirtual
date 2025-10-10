@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<section class="b11 pageEncuesta">
+<section class="b11">
     <div class="b11Left">
         <div class="b11LeftContent">
             <a href="##" onClick="history.go(-1); return false;" class="gReturn">Regresar</a>
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="b11Right">
-        <form action="" class="b11FormEncuesta g8Form" method="POST">
+        <form action="" class="g8Form" method="POST">
             {% csrf_token %}
             <input type="hidden" name="vote_category" value="{{vote_category.id}}">
             {% for question in questions %}
@@ -25,14 +25,16 @@
                     </label>
                     <div class="b11ListOption">
                         {% for choice in question.get_choices %}
-                            <div class="b11ItemOption pr">
-                                <div class="divBorderCheckActive pr" style="border: 1px solid #008AC9">
-                                </div>
-                                <input id="{{choice.id}}" type="radio" name="{{question.id}}"  class="validate[required]" value="{{choice.id}}">
-                                <img src="{{choice.image.url}}" alt="">
-                                <h3>{{choice.name}}</h3>
-                                <label for="{{choice.id}}"></label>
+                        <div class="b11ItemOption">
+                            <!-- El data-color-default serà siempre el mismo , no será administrable,
+                                solo que se usara para el caso cuando se deschekee -->
+                            <!-- Solos serà admisnitrable data-color-active y en la clase "checkRadio" el backbround tambien" -->
+                            <div class="divCircleRadio pr" data-color-active="red" data-color-default="#262626" style="border: 1px solid #262626">
+                                <div class="checKRadio" style="background:red"></div>
                             </div>
+                            <input id="{{choice.id}}" type="radio" name="{{question.id}}" class="validate[required]" value="{{choice.id}}">
+                            <label for="{{choice.id}}">{{choice.name}}</label>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
