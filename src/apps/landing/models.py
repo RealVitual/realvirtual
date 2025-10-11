@@ -99,15 +99,15 @@ class CustomerInvitedLanding(BaseModel):
         Company, related_name="invited_customers",
         on_delete=models.CASCADE, null=True)
     names = models.CharField(
-        _('names'), null=True, max_length=30, blank=True)
+        _('names'), null=True, max_length=255, blank=True)
     email = models.EmailField(
             _('email address'), null=True)
     first_name = models.CharField(
-        _('first name'), null=True, max_length=30, blank=True)
+        _('first name'), null=True, max_length=100, blank=True)
     first_surname = models.CharField(
-        _('first surname'), max_length=30, null=True, blank=True)
+        _('first surname'), max_length=100, null=True, blank=True)
     last_surname = models.CharField(
-        _('last surname'), max_length=30, null=True, blank=True)
+        _('last surname'), max_length=100, null=True, blank=True)
     custom_url = models.CharField(
         _('custom url'), max_length=255, blank=True, null=True
     )

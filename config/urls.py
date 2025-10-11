@@ -26,6 +26,8 @@ urlpatterns = [
     path('api/events/', include('src.apps.events.urls', namespace='events')),
     path('api/companies/', include(
         'src.apps.companies.urls', namespace='companies')),
+    path('api/customers/', include(
+        'src.apps.customers.urls', namespace='customers')),
     path('dashboard/', include('src.apps.dashboard.urls',
                                namespace='dashboard')),
 ]

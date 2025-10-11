@@ -204,5 +204,11 @@ class VoteQuestionAdmin(admin.ModelAdmin):
     inlines = [VoteChoiceQuestionTabular]
 
 
+@admin.register(CustomerInvitedLanding)
+class CustomerInvitedLandingAdmin(admin.ModelAdmin):
+    list_display = ('email', 'names', 'company')
+    list_filter = ('company', )
+    search_fields = ('email', 'names')
+
+
 admin.site.register(CerficateSettings)
-admin.site.register(CustomerInvitedLanding)
