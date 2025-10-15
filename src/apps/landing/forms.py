@@ -274,8 +274,9 @@ class RegisterForm(forms.ModelForm):
         elif self.company.is_private_with_confirmation:
             self.is_custom_confirmation = True
             self.custom_confirmation = False
+            _email = data.get('email').lower()
             found_invited_customer = CustomerInvitedLanding.objects.filter(
-                company=self.company, email=data.get('email'))
+                company=self.company, email=_email)
             if found_invited_customer:
                 invited = found_invited_customer[0]
                 self.in_person = invited.in_person
@@ -288,8 +289,9 @@ class RegisterForm(forms.ModelForm):
                 self.virtual = False
                 return True, message, True
         elif self.company.is_private:
+            _email = data.get('email').lower()
             found_invited_customer = CustomerInvitedLanding.objects.filter(
-                company=self.company, email=data.get('email'))
+                company=self.company, email=_email)
             if found_invited_customer:
                 self.in_person = found_invited_customer.in_person
                 self.virtual = found_invited_customer.virtual
