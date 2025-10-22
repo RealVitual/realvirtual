@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {{company.code_header|safe}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -33,15 +34,17 @@
     <link rel="stylesheet" type="text/css" href="/static/web_2/css/styles.css?v=1{{ BUILD_ID }}"/>
     <link rel="stylesheet" href="/static/web_2/js/validationform/validationEngine.jquery.css">
     <!-- <link rel="stylesheet" type="text/css" href="/static/web_2/css/blocks_styl.css?v=2{{ BUILD_ID }}"/> -->
-{{company.code_header|safe}}
 </head>
-
 
 <div class="overlay"></div>
 <div class="videoPopupContent">
     <!-- mp4 - youtube - vimeo -->
 </div>
 <body class="{% block classbody %}{% endblock %}">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLK5F7F3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
     <div class="contentWrapper">
         {% include "landing_2/common/_header.html" %}
         <div class="wrapper">
