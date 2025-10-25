@@ -70,5 +70,5 @@ def generate_workshop_ics_file(workshop):
             temp_file = files.File(f, name='{}.ics'.format(
                 workshop.name.replace(' ', '_')))
             workshop.ics_file = temp_file
-            workshop.save(update_fields=['ics_file'])
+            workshop.save()
         fp.close()
