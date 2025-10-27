@@ -409,17 +409,17 @@ class CompanyAdmin(admin.ModelAdmin):
         return "No File"
 
 
-class ItemMainEventTabular(admin.TabularInline):
+class ItemMainEventTabular(admin.StackedInline):
     model = ItemMainEvent
     extra = 0
 
 
-class ItemModuleTabular(admin.TabularInline):
+class ItemModuleTabular(admin.StackedInline):
     model = ItemModule
     extra = 0
 
 
-class IndicatorsMainEventTabular(admin.TabularInline):
+class IndicatorsMainEventTabular(admin.StackedInline):
     model = IndicatorsMainEvent
     extra = 0
 

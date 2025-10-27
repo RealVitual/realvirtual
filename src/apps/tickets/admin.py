@@ -3,7 +3,7 @@ from .models import Ticket, TicketUse
 # from .actions import export_as_excel_action
 
 
-class TicketUseInline(admin.TabularInline):
+class TicketUseInline(admin.StackedInline):
     model = TicketUse
     fields = ('used_date', 'date_created')
     readonly_fields = ('date_created', )

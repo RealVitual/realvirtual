@@ -93,7 +93,7 @@ class UserAnswerAdmin(admin.ModelAdmin):
     list_filter = ('company', )
 
 
-class ChoiceQuestionTabular(admin.TabularInline):
+class ChoiceQuestionTabular(admin.StackedInline):
     model = ChoiceQuestion
     list_display = ('user', 'company')
     extra = 0
@@ -112,7 +112,7 @@ class TicketSettingsAdmin(admin.ModelAdmin):
     list_filter = ('company', )
 
 
-class SurveyChoiceQuestionTabular(admin.TabularInline):
+class SurveyChoiceQuestionTabular(admin.StackedInline):
     model = SurveryChoiceQuestion
     list_display = ('user', 'company')
     extra = 0
@@ -125,12 +125,12 @@ class SurveyQuestionAdmin(admin.ModelAdmin):
     inlines = [SurveyChoiceQuestionTabular]
 
 
-class BlogPostItemTabular(admin.TabularInline):
+class BlogPostItemTabular(admin.StackedInline):
     model = BlogPostItem
     extra = 0
 
 
-class BlogPostItemContentTabular(admin.TabularInline):
+class BlogPostItemContentTabular(admin.StackedInline):
     model = BlogPostItemContent
     extra = 0
 
@@ -191,7 +191,7 @@ class VoteUserAnswerAdmin(admin.ModelAdmin):
     list_filter = ('company', 'vote_category')
 
 
-class VoteChoiceQuestionTabular(admin.TabularInline):
+class VoteChoiceQuestionTabular(admin.StackedInline):
     model = VoteChoiceQuestion
     list_display = ('user', 'company')
     extra = 0

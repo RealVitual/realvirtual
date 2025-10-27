@@ -8,7 +8,7 @@ from django.utils.html import format_html
 import os
 
 
-class ScheduleTabular(admin.TabularInline):
+class ScheduleTabular(admin.StackedInline):
     model = Schedule
     extra = 0
 
