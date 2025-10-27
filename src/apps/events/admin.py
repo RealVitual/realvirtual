@@ -157,7 +157,7 @@ class WorkshopAdmin(admin.ModelAdmin):
                 ('Taller', {
                     'fields': (
                         'is_active', 'company', 'position', 'title', 'name',
-                        'image', 'image_preview', 'description',
+                        'image', 'image_preview', 'exhibitor', 'description',
                     ),
                 }),
                 ('Ubicación y fecha', {
