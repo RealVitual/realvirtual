@@ -48,16 +48,23 @@ class ExhibitorAdmin(admin.ModelAdmin):
     readonly_fields = ('image_preview', )
 
     fieldsets = (
-        (None, {
+        ("Expositor", {
             'fields': (
-                'image_preview',
+                'company',   'name', 'title', 'name_on_list',
+                'organization', 'image', 'image_preview', 'description',
+                'flag_image'
+
             )
         }),
-        (None, {
+        ("Activación", {
             'fields': (
-                'company', 'position', 'name', 'title', 'name_on_list',
-                'image', 'description', 'flag_image', 'link', 'link_title',
-                'organization', 'is_principal', 'text_is_principal'
+                'position',
+                'is_active', 'is_principal', 'text_is_principal'
+            )
+        }),
+        ("Link", {
+            'fields': (
+                'link', 'link_title',
             )
         }),
     )
@@ -126,31 +133,45 @@ class WorkshopAdmin(admin.ModelAdmin):
         fielsets_version = []
         if obj is None:
             return [
-                (None, {
+                ('Taller', {
                     "fields": (
                         'is_active', 'company', 'position', 'title', 'name',
-                        'address', 'description', 'start_datetime', 'end_datetime',
-                        'image', 'ics_file', 'capacity', 'enrolled',
-                        'waiting_list_capacity', 'waiting_list_enrolled'
+                        'image', 'description',
                     ),
                 }),
-            ]
-        else:
-            fieldsets = [
-                (None, {
-                    'fields': (
-                        'image_preview',
-                    )
-                }),
-                (None, {
-                    'fields': (
-                        'is_active', 'company', 'position', 'title', 'name',
+                ('Ubicación y fecha', {
+                    "fields": (
                         'address', 'start_datetime', 'end_datetime',
-                        'description', 'image', 'exhibitor', 'ics_file',
+                        'ics_file',
+                    ),
+                }),
+                ('Capacidad', {
+                    'fields': (
                         'capacity', 'enrolled',
                         'waiting_list_capacity', 'waiting_list_enrolled'
                     )
+                })
+            ]
+        else:
+            fieldsets = [
+                ('Taller', {
+                    'fields': (
+                        'is_active', 'company', 'position', 'title', 'name',
+                        'image', 'image_preview', 'description',
+                    ),
                 }),
+                ('Ubicación y fecha', {
+                    "fields": (
+                        'address', 'start_datetime', 'end_datetime',
+                        'ics_file',
+                    ),
+                }),
+                ('Capacidad', {
+                    'fields': (
+                        'capacity', 'enrolled',
+                        'waiting_list_capacity', 'waiting_list_enrolled'
+                    )
+                })
             ]
         for fieldset in fielsets_version:
             fieldsets.append(fieldset)
