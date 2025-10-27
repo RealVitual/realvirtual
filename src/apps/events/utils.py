@@ -49,6 +49,7 @@ def generate_workshop_ics_file(workshop):
     mail = EmailTemplate.objects.filter(
         company=company, email_type="WORKSHOP"
     ).last()
+    print(mail, 'MAIL')
     if mail:
         c = Calendar()
         e = Event()

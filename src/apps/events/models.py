@@ -458,6 +458,13 @@ class Workshop(BaseModel):
         verbose_name_plural = _('Talleres')
         ordering = ['position', 'name']
 
+    def save(self, *args, **kwargs):
+        from .utils import generate_workshop_ics_file
+        if not self.ics_file:
+            print("GENERATE ICS")
+            generate_workshop_ics_file(self)
+        super(Workshop, self).save(*args, **kwargs)
+
     def __str__(self):
         return '{} | {} | {}'.format(
             self.title, self.name, self.company.name)
