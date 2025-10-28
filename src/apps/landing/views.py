@@ -84,36 +84,35 @@ class HomeView(CreateView):
             company_filters = Filter.objects.filter(
                     company=company
             ).values_list('filter_name', flat=True)
-            print(company_filters, 'company_filterscompany_filters')
             company_filters = list(company_filters)
             company_filters.append('date')
             company_filters.append('shift')
-            if company.use_filters:
-                filters = Filter.objects.filter(
-                    company=request.company, is_active=True
-                ).order_by('position')
-                for filter, value in query_filters.items():
-                    if filter in company_filters:
-                        if filter == "date":
-                            filtered_date = value[0]
-                        elif filter == "shift":
-                            filtered_shift = value[0]
-                        else:
-                            filtered_filters.append(filter)
-                            filtered_categories.append(value[0])
-                            category_filter_name = Category.objects.get(
-                                filter__in=filters, filter_name=value[0]
-                            ).name
-                            filtered.append(
-                                dict(
-                                    filter=(
-                                        filters.filter(filter_name=filter)[0].name
-                                    ),
-                                    filter_name=filter,
-                                    category=category_filter_name,
-                                    category_filter_name=value[0],
-                                    )
-                            )
+            print(company_filters, 'company_filterscompany_filters')
+            filters = Filter.objects.filter(
+                company=request.company, is_active=True
+            ).order_by('position')
+            for filter, value in query_filters.items():
+                if filter in company_filters:
+                    if filter == "date":
+                        filtered_date = value[0]
+                    elif filter == "shift":
+                        filtered_shift = value[0]
+                    else:
+                        filtered_filters.append(filter)
+                        filtered_categories.append(value[0])
+                        category_filter_name = Category.objects.get(
+                            filter__in=filters, filter_name=value[0]
+                        ).name
+                        filtered.append(
+                            dict(
+                                filter=(
+                                    filters.filter(filter_name=filter)[0].name
+                                ),
+                                filter_name=filter,
+                                category=category_filter_name,
+                                category_filter_name=value[0],
+                                )
+                        )
             schedules_query = Schedule.objects.filter(
                 event__is_active=True,
                 event__company=company,
@@ -127,6 +126,7 @@ class HomeView(CreateView):
 
             events_list = list(dict.fromkeys(
                 [schedule.event for schedule in schedules_query]))
+            print(filtered_date, 'filtered_date')
             if filtered_date:
                 events_list = [event for event in events_list if event.get_date() == filtered_date] # noqa
                 schedules_query = schedules_query.filter(event__in=events_list)
@@ -393,32 +393,31 @@ class EventsView(CreateView):
             company_filters = list(company_filters)
             company_filters.append('date')
             company_filters.append('shift')
-            if company.use_filters:
-                filters = Filter.objects.filter(
-                    company=request.company, is_active=True
-                ).order_by('position')
-                for filter, value in query_filters.items():
-                    if filter in company_filters:
-                        if filter == "date":
-                            filtered_date = value[0]
-                        elif filter == "shift":
-                            filtered_shift = value[0]
-                        else:
-                            filtered_filters.append(filter)
-                            filtered_categories.append(value[0])
-                            category_filter_name = Category.objects.get(
-                                filter__in=filters, filter_name=value[0]
-                            ).name
-                            filtered.append(
-                                dict(
-                                    filter=(
-                                        filters.filter(filter_name=filter)[0].name
-                                    ),
-                                    filter_name=filter,
-                                    category=category_filter_name,
-                                    category_filter_name=value[0],
-                                    )
-                            )
+            filters = Filter.objects.filter(
+                company=request.company, is_active=True
+            ).order_by('position')
+            for filter, value in query_filters.items():
+                if filter in company_filters:
+                    if filter == "date":
+                        filtered_date = value[0]
+                    elif filter == "shift":
+                        filtered_shift = value[0]
+                    else:
+                        filtered_filters.append(filter)
+                        filtered_categories.append(value[0])
+                        category_filter_name = Category.objects.get(
+                            filter__in=filters, filter_name=value[0]
+                        ).name
+                        filtered.append(
+                            dict(
+                                filter=(
+                                    filters.filter(filter_name=filter)[0].name
+                                ),
+                                filter_name=filter,
+                                category=category_filter_name,
+                                category_filter_name=value[0],
+                                )
+                        )
             schedules_query = Schedule.objects.filter(
                 event__is_active=True,
                 event__company=company,
