@@ -84,6 +84,10 @@ class HomeView(CreateView):
             company_filters = Filter.objects.filter(
                     company=company
             ).values_list('filter_name', flat=True)
+            print(company_filters, 'company_filterscompany_filters')
+            company_filters = list(company_filters)
+            company_filters.append('date')
+            company_filters.append('shift')
             if company.use_filters:
                 filters = Filter.objects.filter(
                     company=request.company, is_active=True
@@ -386,6 +390,9 @@ class EventsView(CreateView):
             company_filters = Filter.objects.filter(
                     company=company
             ).values_list('filter_name', flat=True)
+            company_filters = list(company_filters)
+            company_filters.append('date')
+            company_filters.append('shift')
             if company.use_filters:
                 filters = Filter.objects.filter(
                     company=request.company, is_active=True
