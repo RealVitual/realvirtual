@@ -75,7 +75,8 @@ LOCAL_APPS = [
     'src.apps.landing',
     'src.apps.events',
     'src.apps.tickets',
-    'src.apps.chat'
+    'src.apps.chat',
+    'src.apps.custom_companies'
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
@@ -206,6 +207,12 @@ CHANNEL_LAYERS = {
 }
 
 JAZZMIN_SETTINGS = {
+    "app_list_include": [
+        "auth",
+        "events",
+        "custom_companies",
+        "conf",
+    ],
     # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "RealVirtual",
 
@@ -238,8 +245,22 @@ JAZZMIN_SETTINGS = {
 
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string 
-    "search_model": ["auth.User", "auth.Group"],
+    "search_model": ["events.Event", "events.Workshop"],
 
     # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
     "user_avatar": None,
+    "order_with_respect_to": ["companies", "customers", "landing", "tickets", "events", "users", "conf", "chat"],
+    "custom_links": {
+        "customers": [
+            {
+                "name": "Generar Invitados",
+                "url": "/api/customers/generate_landing_invited/",
+            }
+        ],
+    },
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",
+    "dark_mode_theme": "darkly",
 }
