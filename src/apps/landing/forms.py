@@ -133,6 +133,7 @@ class RegisterForm(forms.ModelForm):
         confirmed = True
         if self.company.confirm_user:
             confirmed = False
+            message = self.company.message_confirm_user
         if is_custom_confirmation:
             confirmed = custom_confirmation
         data['confirmed'] = confirmed
