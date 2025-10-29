@@ -47,14 +47,9 @@ class SponsorAdmin(admin.ModelAdmin):
     readonly_fields = ('image_preview', )
 
     fieldsets = (
-        (None, {
+        ("Sponsor", {
             'fields': (
-                'image_preview',
-            )
-        }),
-        (None, {
-            'fields': (
-                'company', 'position', 'name', 'image',
+                'company', 'position', 'name', 'image_preview', 'image',
             )
         }),
     )
