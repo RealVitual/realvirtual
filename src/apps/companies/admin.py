@@ -7,7 +7,8 @@ from .models import (
     Footer, EmailSettings, EmailTemplate,
     UserCompany, Font, Enterprise, JobCompany,
     Occupation, TemplateVersion, ItemModule,
-    IndicatorsMainEvent, FilterEmailDomain)
+    IndicatorsMainEvent, FilterEmailDomain,
+    Headquarter)
 from prettyjson import PrettyJSONWidget
 from django.utils.safestring import mark_safe
 from django.utils.html import format_html
@@ -136,6 +137,8 @@ class CompanyAdmin(admin.ModelAdmin):
                         'phone',
                         'country',
                         'country_names_field_title',
+                        'headquarter',
+                        'headquarter_names_field_title',
                         'occupation',
                         'occupation_select',
                         'occupation_names_field_title',
@@ -1011,6 +1014,13 @@ class JobCompanyAdmin(admin.ModelAdmin):
 
 @admin.register(Occupation)
 class OccupationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'company', )
+    list_filter = ('company', )
+    search_fields = ('company__name', 'name')
+
+
+@admin.register(Headquarter)
+class HeadquarterAdmin(admin.ModelAdmin):
     list_display = ('name', 'company', )
     list_filter = ('company', )
     search_fields = ('company__name', 'name')

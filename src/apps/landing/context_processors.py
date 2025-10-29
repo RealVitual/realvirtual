@@ -8,7 +8,7 @@ from datetime import datetime
 import pytz
 from src.apps.companies.models import (
     UserCompany, JobCompany, Occupation,
-    FilterEmailDomain)
+    FilterEmailDomain, Headquarter)
 from src.apps.conf.models import Speciality
 
 
@@ -56,6 +56,7 @@ def main_info(request, **kwargs):
             'job_companies': JobCompany.objects.filter(company=company),
             'occupations': Occupation.objects.filter(company=company),
             'specialities': Speciality.objects.filter(is_active=True).order_by('position'),
+            'headquarters': Headquarter.objects.filter(is_active=True).order_by('position'),
             'access_workshop': False,
         }
         if user.is_authenticated:

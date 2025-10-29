@@ -223,6 +223,17 @@
                     </select>
                 </div>
                 {% endif %}
+                {% if company.headquarter %}
+                <div class="g8Input select">
+                    <span>{{company.headquarter_names_field_title}} *</span>
+                    <select name="{{form_register.headquarter.html_name}}" id="" class="g8Box validate[required]">
+                        <option value=""></option>
+                        {% for h in headquarters %}
+                            <option value="{{h.id}}">{{h.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
                 {% if company.occupation %}
                     <div class="g8Input">
                         <span>{{company.occupation_names_field_title}} *</span>

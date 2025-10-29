@@ -121,6 +121,7 @@ class RegisterForm(forms.ModelForm):
         data['email'] = data['email'].lower()
         job_company_select = data.pop('job_company_select', None)
         occupation_select = data.pop('occupation_select', None)
+        headquarter = data.pop('headquarter', None)
         password = data.pop('password', None)
         customers = Customer.objects.filter(email=data.get('email').lower())
         if customers:
@@ -139,6 +140,7 @@ class RegisterForm(forms.ModelForm):
         data['company'] = self.company
         data['job_company_select'] = job_company_select
         data['occupation_select'] = occupation_select
+        data['headquarter'] = headquarter
         user_company = UserCompany.objects.create(
             **data
         )

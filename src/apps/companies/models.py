@@ -274,7 +274,10 @@ class Company(BaseModel):
     speciality_names_field_title = models.CharField(
         _('Título Especialidad en Formulario'), max_length=100, default="Email"
     )
-
+    headquarter_names_field_title = models.CharField(
+        _('Título Sede en Formulario'), max_length=100,
+        default="Sede"
+    )
     # codigos seguimiento
     code_header = models.TextField(
         _('Código seguimiento HEAD'), blank=True, null=True
@@ -301,8 +304,8 @@ class Company(BaseModel):
         _('Teléfono'), default=False)
     country = models.BooleanField(
         _('País'), default=True)
-    headquarters = models.BooleanField(
-        _('País'), default=True)
+    headquarter = models.BooleanField(
+        _('Sede'), default=True)
     occupation = models.BooleanField(
         _('Profesión'), default=True)
     occupation_select = models.BooleanField(
@@ -345,6 +348,8 @@ class Company(BaseModel):
             fields_list.append('occupation_select')
         if self.speciality:
             fields_list.append('speciality')
+        if self.headquarter:
+            fields_list.append('headquarter')
         return fields_list
 
     def set_counter_time(self):
@@ -904,6 +909,24 @@ class Occupation(BaseModel):
         return self.name
 
 
+class Headquarter(BaseModel):
+    company = models.ForeignKey(
+        Company, related_name="headquarters",
+        on_delete=models.CASCADE)
+    position = models.PositiveIntegerField(
+        _('Posición'),
+        default=0)
+    name = models.CharField(_('name'), max_length=255)
+
+    class Meta:
+        verbose_name = _("Sede")
+        verbose_name_plural = _("Sedes")
+        ordering = ['position']
+
+    def __str__(self):
+        return self.name
+
+
 class UserCompany(BaseModel):
     hash_id = models.CharField(
         _('Hash id'), max_length=255, blank=True, null=True
@@ -962,6 +985,9 @@ class UserCompany(BaseModel):
         on_delete=models.DO_NOTHING, null=True, blank=True)
     country = models.ForeignKey(
         Country, related_name="country_company_users",
+        on_delete=models.SET_NULL, null=True, blank=True)
+    headquarter = models.ForeignKey(
+        Headquarter, related_name="headquarter_company_users",
         on_delete=models.SET_NULL, null=True, blank=True)
     allow_certificate = models.BooleanField(_('Permitir certificado'), default=False)
     certificate = models.FileField(
