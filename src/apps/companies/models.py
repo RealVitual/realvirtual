@@ -301,6 +301,8 @@ class Company(BaseModel):
         _('Teléfono'), default=False)
     country = models.BooleanField(
         _('País'), default=True)
+    headquarters = models.BooleanField(
+        _('País'), default=True)
     occupation = models.BooleanField(
         _('Profesión'), default=True)
     occupation_select = models.BooleanField(

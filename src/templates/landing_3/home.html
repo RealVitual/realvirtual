@@ -26,7 +26,9 @@
                     {% endif %} {% endcomment %}
                 </div>
                 <div class="b1InfoTopRight">
+                    {% if home_page.banner_second_section_image %}
                     <img src="{{home_page.banner_second_section_image.url}}" alt="">
+                    {% endif %}
                 </div>
             </div>
             <div class="b1Bottom">
@@ -37,7 +39,9 @@
             </div>
         </div>
     </div>
+    {% if home_page.banner_footer_section_image %}
     <img src="{{home_page.banner_footer_section_image.url}}" alt="" class="imgAbsolute">
+    {% endif %}
 </section>
 {% if company.use_counter%}
     <section class="b22">
