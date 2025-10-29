@@ -255,7 +255,7 @@
             {% if company.phone %}
                 <div class="g8GroupInput two">
                     <div class="g8Input">
-                        <span>Teléfono *</span>
+                        <span>{{company.phone_names_field_title}} *</span>
                         <input type="text" data-type="number" maxlength="30" class="g8Box validKeypress validate[required]" name="{{form_register.phone.html_name}}">
                     </div>
                 </div>

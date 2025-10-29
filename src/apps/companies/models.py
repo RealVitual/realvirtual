@@ -274,6 +274,9 @@ class Company(BaseModel):
     speciality_names_field_title = models.CharField(
         _('Título Especialidad en Formulario'), max_length=100, default="Email"
     )
+    phone_names_field_title = models.CharField(
+        _('Título Teléfono en Formulario'), max_length=100, default="Teléfono"
+    )
     headquarter_names_field_title = models.CharField(
         _('Título Sede en Formulario'), max_length=100,
         default="Sede"
