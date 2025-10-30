@@ -261,14 +261,14 @@ def validate_register(request):
                 if user:
                     login(request, user)
                     url = 'event'
-                    if user_company.in_person and user_company.confirmed:
+                    if request.company.enable_preferences:
+                        url = "select_preferences"
+                    elif user_company.in_person and user_company.confirmed:
                         company = request.company
                         company.current_quantity += 1
                         company.save()
                         company.refresh_from_db()
-                        url = "select_preferences"
-                        if not request.company.enable_preferences:
-                            url = "ticket_view"
+                        url = "ticket_view"
                     elif request.company.filter_domain_user and user_company.in_person:
                         url = "home"
                     elif request.company.enable_credentials:
@@ -314,14 +314,14 @@ def confirm_register(request):
             if user:
                 login(request, user)
                 url = 'event'
-                if user_company.in_person and user_company.confirmed:
+                if request.company.enable_preferences:
+                    url = "select_preferences"
+                elif user_company.in_person and user_company.confirmed:
                     company = request.company
                     company.current_quantity += 1
                     company.save()
                     company.refresh_from_db()
-                    url = "select_preferences"
-                    if not request.company.enable_preferences:
-                        url = "ticket_view"
+                    url = "ticket_view"
                 elif request.company.enable_credentials:
                     url = "generate_credential"
                 else:
@@ -533,10 +533,10 @@ class SelectPreferencesView(View):
         company = self.request.company
         if not request.user.is_authenticated:
             return redirect(reverse('landing:home'))
-        user_company = UserCompany.objects.get(company=company,
-                                               user=request.user)
-        if not user_company.confirmed:
-            return redirect(reverse('landing:home'))
+        # user_company = UserCompany.objects.get(company=company,
+        #                                        user=request.user)
+        # if not user_company.confirmed:
+        #     return redirect(reverse('landing:home'))
         return super(SelectPreferencesView, self).dispatch(
             request, *args, **kwargs)
 
@@ -561,14 +561,19 @@ def save_preferences_answers(request):
         for key, value in data.items():
             answer = UserAnswer(user=user, company=request.company)
             answer.question_id = int(key)
-            answer.choice_question_id = int(value)
+            question = Question.objects.get(id=int(key))
+            if question.open_question:
+                answer.open_answer = value
+            else:
+                answer.choice_question_id = int(value)
             answer.save()
-        url = "ticket_view"
-        response_data['redirect_url'] = reverse('landing:%s' % url)
-        generate_ticket_code(user, request.company)
-        record_to_pdf(
-            user, domain=request.build_absolute_uri('/')[:-1],
-            company=request.company)
+        # url = "ticket_view"
+        # response_data['redirect_url'] = reverse('landing:%s' % url)
+        # generate_ticket_code(user, request.company)
+        # record_to_pdf(
+        #     user, domain=request.build_absolute_uri('/')[:-1],
+        #     company=request.company)
+        response_data['redirect_url'] = reverse('landing:home')
         response_data['success'] = 1
         return HttpResponse(
             json.dumps(response_data), content_type="application/json")

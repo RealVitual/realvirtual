@@ -205,6 +205,9 @@ class Question(BaseModel):
     name = models.CharField(_('Nombre'), max_length=255)
     title = models.CharField(_('Titulo'), max_length=255,
                              default="Elige un regalo")
+    open_question = models.BooleanField(
+        "Es pregunta Abierta", default=False
+    )
     image = models.FileField(
         _('Imagen icon'),
         upload_to=get_upload_path('icons'),
@@ -262,6 +265,9 @@ class UserAnswer(BaseModel):
         on_delete=models.CASCADE,
         blank=True,
         null=True)
+    open_answer = models.CharField(
+        'Respuesta Abierta', max_length=500, blank=True, null=True
+    )
     user = models.ForeignKey(
         User,
         related_name='user_answers',

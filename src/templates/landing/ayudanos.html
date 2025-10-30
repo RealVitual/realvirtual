@@ -17,6 +17,11 @@
             {% for question in questions %}
             <div class="b11Item">
                 <label class="b11NameOptions"><img src="{{question.image.url}}" alt="" width="20">{{question.title}}</label>
+                {% if question.open_question %}
+                <div class="g8Input">
+                    <input type="text" class="g8Box validate[required]" name="{{question.id}}">
+                </div>
+                {% else %}
                 <div class="b11ListOption">
                     {% for choice in question.get_choices %}
                         <div class="b11ItemOption">
@@ -28,6 +33,7 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% endif %}
             </div>
             {% endfor %}
             <button class="gButton b11Enviar">Enviar</button>

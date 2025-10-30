@@ -83,7 +83,7 @@ class CredentialSettingsAdmin(admin.ModelAdmin):
 
 @admin.register(UserAnswer)
 class UserAnswerAdmin(admin.ModelAdmin):
-    list_display = ('user', 'company')
+    list_display = ('user', 'question', 'choice_question', 'company')
     # list_editable = ('name', 'company')
     list_filter = ('company', )
 
