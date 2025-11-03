@@ -324,7 +324,9 @@
                         </label>
 				    </div>
                 {% endif %}
-				<button class="g8SumitRegistro save-register" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">Enviar</button>
+				<button class="g8SumitRegistro save-register" style="background: {{company.button_color}} !important;color: {{company.button_text_color}};">
+                    {{header_section.register_button_title}}
+                </button>
                 <h4>Ya tengo una cuenta <a href="#" id="openIniciaSesion" style="color: {{company.button_color}};">Iniciar sesión</a></h4>
 			</div>
         </form>

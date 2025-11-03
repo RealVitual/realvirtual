@@ -9,7 +9,10 @@
 
 <section class="b11">
     <div class="b11Left">
-        <h1 class="gTitle">Ayúdanos a atenderte mejor</h1>
+        <h1 class="gTitle">{{company.preferences_title}}</h1>
+        <div class="gParrafo">
+            {{company.preferences_text|safe}}
+        </div>
     </div>
     <div class="b11Right">
         <form action="" class="g8Form" method="POST">
@@ -36,7 +39,7 @@
                 {% endif %}
             </div>
             {% endfor %}
-            <button class="gButton b11Enviar">Enviar</button>
+            <button class="gButton b11Enviar">Finalizar</button>
         </form>
     </div>
 </section>

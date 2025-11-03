@@ -147,6 +147,12 @@ class CompanyAdmin(admin.ModelAdmin):
                         'confirm_email_names_field_title'
                     )
                 }),
+                (_('Preferencias'), {
+                    'fields': (
+                        'preferences_title',
+                        'preferences_text',
+                    )
+                }),
                 (_('Codigos'), {
                     'fields': (
                         'code_header',
@@ -239,6 +245,12 @@ class CompanyAdmin(admin.ModelAdmin):
                         'occupation_names_field_title',
                         'email_names_field_title',
                         'confirm_email_names_field_title'
+                    )
+                }),
+                (_('Preferencias'), {
+                    'fields': (
+                        'preferences_title',
+                        'preferences_text',
                     )
                 }),
                 (_('Codigos'), {
@@ -338,6 +350,12 @@ class CompanyAdmin(admin.ModelAdmin):
                         'confirm_email_names_field_title',
                         'speciality',
                         'speciality_names_field_title',
+                    )
+                }),
+                (_('Preferencias'), {
+                    'fields': (
+                        'preferences_title',
+                        'preferences_text',
                     )
                 }),
                 (_('Codigos'), {
@@ -786,7 +804,8 @@ class HeaderAdmin(admin.ModelAdmin):
                             'register_title',
                             'register_form_title',
                             'register_form_text',
-                            'login_title'
+                            'login_title',
+                            'register_button_title',
                         ),
                     }
                 ),

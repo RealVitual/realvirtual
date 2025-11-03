@@ -166,6 +166,15 @@ class Company(BaseModel):
         null=True, blank=True
     )
 
+    preferences_title = models.CharField(
+        _('Título Preferencias'), max_length=255, blank=True,
+        null=True, default="Ayúdanos a atenderte mejor"
+    )
+    preferences_text = models.TextField(
+        _('Texto Preferencias'), blank=True,
+        null=True
+    )
+
     main_event_datetime = models.DateTimeField(_('Main event datetime'),
                                                null=True, blank=True)
     main_event_end_datetime = models.DateTimeField(_('Main event datetime'),
@@ -489,6 +498,9 @@ class Header(TimeStampedModel):
     )
     register_form_text = RichTextField(
         _('Mensaje Registro'), null=True, blank=True)
+    register_button_title = models.CharField(
+        _('Registro título botón'), max_length=100, default="Enviar"
+    )
 
     login_title = models.CharField(
         _('Título Login'), max_length=20, default="Inicia Sesión"
