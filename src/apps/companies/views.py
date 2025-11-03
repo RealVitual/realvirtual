@@ -119,7 +119,7 @@ class AdminCustomerViewSet(ModelViewSet):
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
         columns = ['Nombre y Apellido', 'Email', 'País',
-                   'Profesión', 'Empresa', 'Cargo', 'Tipo', 'Telefono', 'Creado']
+                   'Profesión', 'Empresa', 'Sede', 'Cargo', 'Tipo', 'Telefono', 'Creado']
         row_index = 0
         # Header
         for column_index, value in enumerate(columns):
@@ -148,20 +148,24 @@ class AdminCustomerViewSet(ModelViewSet):
                 row.write(4, o.job_company_select.name)
             else:
                 row.write(4, o.job_company)
-            row.write(5, o.company_position)
-            if o.virtual and o.in_person:
-                row.write(6, "Presencial")
-            elif o.in_person and o.confirmed:
-                row.write(6, "Presencial")
-            elif o.virtual:
-                row.write(6, "Virtual")
+            if o.headquarter:
+                row.write(5, o.headquarter.name)
             else:
-                row.write(6, "-")
+                row.write(5, '')
+            row.write(6, o.company_position)
+            if o.virtual and o.in_person:
+                row.write(7, "Presencial")
+            elif o.in_person and o.confirmed:
+                row.write(7, "Presencial")
+            elif o.virtual:
+                row.write(7, "Virtual")
+            else:
+                row.write(7, "-")
             tz = pytz.timezone("America/Lima")
-            row.write(7, o.phone)
+            row.write(8, o.phone)
             value = o.created.astimezone(tz).strftime(
                 "%d/%m/%Y, %H:%M:%S")
-            row.write(8, value)
+            row.write(9, value)
         wb.save(response)
         return response
 
