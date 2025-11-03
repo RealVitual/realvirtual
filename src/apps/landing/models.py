@@ -208,11 +208,16 @@ class Question(BaseModel):
     open_question = models.BooleanField(
         "Es pregunta Abierta", default=False
     )
+    required_open_question = models.BooleanField(
+        "Es pregunta abierta requerida",
+        default=True
+    )
     image = models.FileField(
         _('Imagen icon'),
         upload_to=get_upload_path('icons'),
         null=True,
-        blank=True)
+        blank=True
+    )
 
     class Meta:
         verbose_name = _('Pregunta')

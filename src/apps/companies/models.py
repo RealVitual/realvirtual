@@ -494,7 +494,8 @@ class Header(TimeStampedModel):
         _('Título Registro'), max_length=50, default="Regístrate"
     )
     register_form_title = models.CharField(
-        _('Título Registro Formulario'), max_length=255, default="Crear cuenta"
+        _('Título Registro Formulario'),
+        max_length=255, default="Crear cuenta"
     )
     register_form_text = RichTextField(
         _('Mensaje Registro'), null=True, blank=True)

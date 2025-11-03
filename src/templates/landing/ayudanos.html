@@ -19,11 +19,15 @@
             {% csrf_token %}
             {% for question in questions %}
             <div class="b11Item">
-                <label class="b11NameOptions"><img src="{{question.image.url}}" alt="" width="20">{{question.title}}</label>
+                <label class="b11NameOptions"><img src="{{question.image.url}}" alt="" width="20">{{question.title}} {% if question.required_open_question %}*{% endif %}</label>
                 {% if question.open_question %}
-                <div class="g8Input">
-                    <input type="text" class="g8Box validate[required]" name="{{question.id}}">
-                </div>
+                    <div class="g8Input">
+                        {% if question.required_open_question %}
+                            <input type="text" class="g8Box validate[required]" name="{{question.id}}">
+                        {% else %}
+                            <input type="text" class="g8Box" name="{{question.id}}">
+                        {% endif %}
+                    </div>
                 {% else %}
                 <div class="b11ListOption">
                     {% for choice in question.get_choices %}
