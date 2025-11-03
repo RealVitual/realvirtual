@@ -74,7 +74,7 @@ class AdminCustomerViewSet(ModelViewSet):
         questions = request.company.company_questions.filter(
             is_active=True).order_by('position')
         user_answers = UserAnswer.objects.filter(question__in=questions).order_by('question__position')
-        return self.download_preferences_xlsx(user_answers, questions, request.company)
+        return self.download_preferences_xlsx(user_answers, request.company)
 
     @action(
         detail=False,
@@ -165,18 +165,20 @@ class AdminCustomerViewSet(ModelViewSet):
         wb.save(response)
         return response
 
-    def download_preferences_xlsx(self, queryset):
+    def download_preferences_xlsx(self, queryset, company):
         response = HttpResponse(content_type='application/ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="customers.xls"'  # noqa
+        response['Content-Disposition'] = f'attachment; filename="preferencias_{company.name}.xls"'  # noqa
 
         wb = xlwt.Workbook(encoding='utf-8')
 
         # Sheet for attributes
-        ws = wb.add_sheet('CUSTOMERS')
+        ws = wb.add_sheet('preferencias')
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
-        columns = ['Nombre y Apellido', 'Email', 'País',
-                   'Profesión', 'Empresa', 'Cargo', 'Tipo', 'Telefono', 'Creado']
+        columns = [
+            'Email', 'Nombre y Apellido',
+            'Pregunta', 'Respuesta', 'Tipo', 'Creado'
+        ]
         row_index = 0
         # Header
         for column_index, value in enumerate(columns):
@@ -188,37 +190,23 @@ class AdminCustomerViewSet(ModelViewSet):
         font_style = xlwt.XFStyle()
         c = 0
         for idx, o in enumerate(queryset):
-            c += 1
-            row = ws.row(c)
-            value = o.full_name
-            row.write(0, value)
-            value = o.email
-            row.write(1, value)
-            value = o.country.name if o.country else ""
-            row.write(2, value)
-            if o.occupation_select:
-                value = o.occupation_select.name
-            else:
-                value = o.occupation
-            row.write(3, value)
-            if o.job_company_select:
-                row.write(4, o.job_company_select.name)
-            else:
-                row.write(4, o.job_company)
-            row.write(5, o.company_position)
-            if o.virtual and o.in_person:
-                row.write(6, "Presencial")
-            elif o.in_person:
-                row.write(6, "Presencial")
-            elif o.virtual:
-                row.write(6, "Virtual")
-            else:
-                row.write(6, "-")
-            tz = pytz.timezone("America/Lima")
-            row.write(7, o.phone)
-            value = o.created.astimezone(tz).strftime(
-                "%d/%m/%Y, %H:%M:%S")
-            row.write(8, value)
+            c_user = o.user.user_companies.filter(company=company).last()
+            if c_user:
+                c += 1
+                row = ws.row(c)
+                row.write(0, c_user.email)
+                row.write(1, c_user.full_name)
+                row.write(2, o.question.name)
+                if o.question.open_question:
+                    row.write(3, o.open_answer)
+                    row.write(4, "Abierta")
+                else:
+                    row.write(3, o.choice_question.name)
+                    row.write(4, "Cerrada")
+                tz = pytz.timezone("America/Lima")
+                value = o.created.astimezone(tz).strftime(
+                    "%d/%m/%Y, %H:%M:%S")
+                row.write(5, value)
         wb.save(response)
         return response
 
