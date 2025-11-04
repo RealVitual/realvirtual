@@ -910,6 +910,7 @@ class ConfirmUser(APIView):
             return redirect(reverse('landing:home'))
         user_company = users_company.last()
         user_company.confirmed = True
+        user_company.in_person = True
         user_company.save()
         return redirect(reverse('landing:home'))
 
