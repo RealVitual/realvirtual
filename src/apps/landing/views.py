@@ -839,6 +839,11 @@ class EventTransmissionView(View):
         slug = self.kwargs['slug']
         if request.company:
             company = request.company
+            if company.version and company.version.version != 1:
+                internal_view = self.template_name.split('/')[-1]
+                self.template_name = (
+                    f"landing_{company.version}/{internal_view}"
+                )
             event = Event.objects.get(
                 slug=slug, company=company)
             date = event.start_datetime.astimezone(pytz.timezone(settings.TIME_ZONE)) # noqa

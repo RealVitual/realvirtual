@@ -9,7 +9,7 @@
 
 <section class="b14 mY scrollWrap">
     <div class="grilla scrollItem">
-        <h1 class="gTitle tac">Agility Summit Credicorp 2025</h1>
+        <h1 class="gTitle tac">{{event.name}}</h1>
         <div class="b14Wrap">
             <div class="b14Left">
                 <!-- CONDICIONAR SI ES IMAGEN O VIDEO -->
@@ -23,7 +23,7 @@
                     <img src="/static/web_3/img/img-banner-chat.png" width="1920" height="713"  alt="Myimage">
                 </picture>
                 <!-- OPCIÒN CAMPO VIDEO -->
-                <iframe src="https://player.vimeo.com/video/385145267?autoplay=1&muted=1" allow="fullscreen" allowfullscreen frameborder="0"></iframe>
+                <iframe src="{{event.video_url}}" allow="fullscreen" allowfullscreen frameborder="0"></iframe>
             </div>
             <div class="b14Right">
                 <h3>Chat</h3>
@@ -32,7 +32,7 @@
                         <ul id="listmessages">
                             <!-- posRight: es para el emisor -->
                             <!-- posLeft: es para el remitente -->
-                            <li class="posRight">
+                            {% comment %} <li class="posRight">
                                 <h4 class="textMessage">Hello, how are you doing?</h4>
                                 <span class="timeMessage">08:15 AM</span>
                             </li>
@@ -40,7 +40,7 @@
                                 <h5 class="otherPersonMessage">Asistant</h5>
                                 <h4 class="textMessage">I'm doing wellI help you today?</h4>
                                 <span class="timeMessage">09:14 AM</span>
-                            </li>
+                            </li> {% endcomment %}
                         </ul>
                     </div>
                     <form action="">
