@@ -324,6 +324,28 @@
                 });
         }
     });
+    {% if show_additional_terms_pop_up %}
+        OVERLAY.classList.add('active')
+    {% endif %}
+
+    $('.validateAcceptTerms').click(function(e){
+        e.preventDefault();
+        var item = $(this);
+        var status = item.attr('data-status')
+        $.ajax({
+            url : "/save_accepted_additional_terms/",
+            type : "post",
+            data: {
+                status: status,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+        }).done(function(data) {
+            if(data.success){
+                $('.confirmAdditional').removeClass('active')
+            }else{
+            }
+        });
+    });
 
     </script>
 

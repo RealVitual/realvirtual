@@ -283,7 +283,7 @@
                 </div>
             </div>
             <div class="g8Confirm fdc aifs">
-                <p>(*) Campos obligatorios</p>
+                {% comment %} <p>(*) Campos obligatorios</p> {% endcomment %}
                 {% if company.privacy_policy or company.protection_data_policy or company.terms_and_conditions %}
                     <div class="g8Checkbox">
                         <input id="check1" type="checkbox" checked class="validate[required]" name="checkbox1" value="checkbox1">
@@ -323,6 +323,15 @@
                             {% endif %}
                         </label>
                     </div>
+                {% endif %}
+                {% if company.additional_terms %}
+                <div class="g8Checkbox">
+                    <input id="check2" type="checkbox" name="{{form_register.additional_terms.html_name}}">
+                    <label for="check2">
+                        Acepto el Consentimiento para
+                        <a target="_blank" href="{{company.additional_terms.url}}">usos adicionales y Transferencia de Información</a>
+                    </label>
+                </div>
                 {% endif %}
                 <button class="g8SumitRegistro save-register">Enviar</button>
                 <h4>¿Ya tienes cuenta? <a href="#" id="openIniciaSesion">Inicia sesión</a></h4>
@@ -373,3 +382,17 @@
         </div>
     </div>
 </div>
+{% if show_additional_terms_pop_up %}
+    <div class="g8PopupForm b2PopupConfirm confirmAdditional pr active">
+        <div class="g8PopupContent">
+            {% comment %} <h3>Confirmar Asistencia</h3> {% endcomment %}
+            <div class="gParrafo confirmAdditionalMsg">
+                Acepto el Consentimiento para<a target="_blank" href="{{company.additional_terms.url}}"> usos adicionales y Transferencia de Información</a>
+            </div>
+            <div class="b2Buttons g8Buttons f aic jcc">
+                <a href="#" data-status="1" class="gButton b2accept validateAcceptTerms">Sí</a>
+                <a href="#" data-status="0" class="gButton b2cancel validateAcceptTerms">No</a>
+            </div>
+        </div>
+    </div>
+{% endif %}

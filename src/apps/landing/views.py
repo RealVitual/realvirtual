@@ -789,6 +789,10 @@ def login_access(request):
                 response_data['redirect_url'] = reverse('landing:%s' % url)
                 response_data['success'] = 1
                 response_data['message'] = 'Acceso exitoso'
+                if request.company.additional_terms:
+                    uc = UserCompany.objects.get(user=user, company=request.company)
+                    if not uc.additional_terms:
+                        request.session['show_additional_terms_pop_up'] = True
                 del request.session['used_recaptcha']
             else:
                 response_data['success'] = 0
@@ -1664,6 +1668,27 @@ def save_vote_answers(request):
             answer.save()
         url = "home"
         response_data['redirect_url'] = reverse('landing:%s' % url)
+        response_data['success'] = 1
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/json")
+
+
+@login_required
+def save_accepted_additional_terms(request):
+    if request.method == 'POST' and is_ajax(request=request):
+        data = request.POST.dict()
+        data.pop('csrfmiddlewaretoken', None)
+        status = data.pop('status', None)
+        if not status:
+            return None
+        user = request.user
+        print(int(status), 'save_accepted_additional_terms')
+        uc = UserCompany.objects.get(
+            user=user, company=request.company
+        )
+        uc.additional_terms = int(status)
+        uc.save()
+        response_data = {}
         response_data['success'] = 1
         return HttpResponse(
             json.dumps(response_data), content_type="application/json")

@@ -325,7 +325,8 @@ class CompanyAdmin(admin.ModelAdmin):
                         'privacy_policy',
                         'protection_data_policy',
                         'cookies_policy',
-                        'terms_and_conditions'
+                        'terms_and_conditions',
+                        'additional_terms'
                     )
                 }),
                 (_('Formulario'), {

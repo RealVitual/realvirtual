@@ -231,6 +231,10 @@ class Company(BaseModel):
             _('Términos y condiciones'),
             upload_to=get_upload_path('documents'),
             null=True, blank=True)
+    additional_terms = models.FileField(
+            _('Términos Adicionales'),
+            upload_to=get_upload_path('documents'),
+            null=True, blank=True)
 
     is_virtual = models.BooleanField(_('Is virtual'), default=True)
     in_person = models.BooleanField(_('In Person'), default=False)
@@ -362,6 +366,7 @@ class Company(BaseModel):
             fields_list.append('speciality')
         if self.headquarter:
             fields_list.append('headquarter')
+        fields_list.append('additional_terms')
         return fields_list
 
     def set_counter_time(self):
@@ -1010,7 +1015,9 @@ class UserCompany(BaseModel):
         _('certificate'),
         upload_to=get_upload_path('certificates'),
         null=True, blank=True)
-
+    additional_terms = models.BooleanField(
+        "Acepta condiciones adicionales", default=False
+    )
     uuid_hash = models.CharField(
         'UUID',
         max_length=36,

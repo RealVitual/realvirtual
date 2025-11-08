@@ -88,6 +88,7 @@ class RegisterForm(forms.ModelForm):
 
     def clean(self):
         data = self.cleaned_data
+        print(data, 'DATA')
         email = data.get('email')
         allow_register, message, can_confirm = self.allow_register(data)
         data['is_custom_confirmation'] = self.is_custom_confirmation

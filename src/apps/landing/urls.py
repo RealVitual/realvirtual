@@ -10,7 +10,8 @@ from .views import (
     CloseLandingView, GenerateCertificateView, BlogListView, BlogDetailView,
     DownloadCustomerTicket, ConfirmUser, ValidateInPersonCompanyUser,
     CommunityView, GenerateUserCommunityPreference, WhiteView,
-    GenerateInvitedEmail, GetVoteCategoryStatus, VoteView, save_vote_answers
+    GenerateInvitedEmail, GetVoteCategoryStatus, VoteView, save_vote_answers,
+    save_accepted_additional_terms
 )
 from rest_framework.routers import DefaultRouter
 
@@ -95,5 +96,7 @@ urlpatterns = [
           VoteView.as_view(), name='vote_category'),
      path('save_vote_answers/', save_vote_answers,
           name='save_vote_answers'),
+     path('save_accepted_additional_terms/', save_accepted_additional_terms,
+          name='save_accepted_additional_terms'),
 ]
 urlpatterns += router.urls

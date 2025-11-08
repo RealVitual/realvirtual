@@ -60,6 +60,9 @@ def main_info(request, **kwargs):
             'access_workshop': False,
         }
         if user.is_authenticated:
+            if request.session.get('show_additional_terms_pop_up', False):
+                data['show_additional_terms_pop_up'] = True
+                del request.session['show_additional_terms_pop_up']
             ticket_url = ""
             credential_url = ""
             company_user = None
