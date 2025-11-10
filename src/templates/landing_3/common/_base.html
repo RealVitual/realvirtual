@@ -325,7 +325,12 @@
         }
     });
     {% if show_additional_terms_pop_up %}
+        OVERLAY.style.zIndex = 100
         OVERLAY.classList.add('active')
+        $('.confirmAdditional').addClass('active')
+        $('.overlay').click(function(e){
+            $('.confirmAdditional').removeClass('active')
+        });
     {% endif %}
 
     $('.validateAcceptTerms').click(function(e){
