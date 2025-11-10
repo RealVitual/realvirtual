@@ -347,6 +347,7 @@
         }).done(function(data) {
             if(data.success){
                 $('.confirmAdditional').removeClass('active')
+                OVERLAY.classList.remove('active')
             }else{
             }
         });

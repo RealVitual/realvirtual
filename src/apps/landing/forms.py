@@ -120,6 +120,12 @@ class RegisterForm(forms.ModelForm):
         data['in_person'] = self.in_person
         data['virtual'] = self.virtual
         data['email'] = data['email'].lower()
+        additonal_terms = data.get('additional_terms', False)
+        if self.company.additional_terms:
+            if additonal_terms:
+                data['accepted_additional_terms'] = "ACCEPTED"
+            else:
+                data['accepted_additional_terms'] = "REJECTED"
         job_company_select = data.pop('job_company_select', None)
         occupation_select = data.pop('occupation_select', None)
         headquarter = data.pop('headquarter', None)

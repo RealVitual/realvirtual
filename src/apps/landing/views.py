@@ -1686,6 +1686,10 @@ def save_accepted_additional_terms(request):
         uc = UserCompany.objects.get(
             user=user, company=request.company
         )
+        if int(status) == 1:
+            uc.accepted_additional_terms = "ACCEPTED"
+        else:
+            uc.accepted_additional_terms = "REJECTED"
         uc.additional_terms = int(status)
         uc.save()
         response_data = {}

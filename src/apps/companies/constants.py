@@ -32,3 +32,13 @@ class FontType(Enum):
     @classmethod
     def choices(cls):
         return [(choice.name, choice.value) for choice in cls]
+
+
+class Status(str, Enum):
+    BLANK = 'Not decided'
+    ACCEPTED = 'Accepted'
+    REJECTED = 'Rejected'
+
+    @classmethod
+    def choices(cls):
+        return [(choice.name, choice.value) for choice in cls]

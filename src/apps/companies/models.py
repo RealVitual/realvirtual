@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
 from ckeditor.fields import RichTextField
 import os
-from .constants import AccessType
+from .constants import AccessType, Status
 from django.conf import settings
 from .constants import (
     EmailType, )
@@ -1024,6 +1024,12 @@ class UserCompany(BaseModel):
         default='',
         blank=True,
         help_text=_('Random UUID hash to recover password.'))
+    accepted_additional_terms = models.CharField(
+        "Acepta condiciones adicionales",
+        choices=Status.choices(),
+        max_length=30,
+        default=Status.BLANK
+    )
 
     class Meta:
         unique_together = ('company', 'email')
