@@ -33,6 +33,9 @@
         <div class="headerRight f aic jcfe">
             <div class="headerOptionsSessions">
                 <!-- OPCIÒN CUANDO NO ESTA LOGEADO -->
+                {% if is_live and logged_user %}
+                    <a href="{% url 'landing:transmission' is_live.slug %}" class="gButton headerEnvivo">En vivo <img src="/static/web_3/img/credicorp/live.svg" alt=""></a>
+                {% endif %}
                 <div class="headerOptionLogout f aic jcfe">
                     <a href="" class="headerButtonLogin login" style="font-size: 16px;">{{header_section.login_title}}</a>
                     <a href="" class="headerButtonRegistrate">{{header_section.register_title}}</a>
@@ -41,7 +44,8 @@
                 <!-- download-user -->
                 <!-- user-icon -->
                 <div class="headerOptionLogin f aic jcfe">
-                    <a href="#" class="headerNameUser arrowClick">Hola {{company_user.names}}</a>
+                    {% comment %} <a href="#" class="headerNameUser arrowClick">{{company_user.names}}</a> {% endcomment %}
+                    <a href="#" class="headerNameUser arrowClick"></a>
                     <ul>
                         {% if company_user.in_person and company_user.confirmed %}
                             <li><a class="link" href="{{ticket_url}}">Mi Ticket</a></li>

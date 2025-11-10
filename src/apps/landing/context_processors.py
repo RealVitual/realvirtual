@@ -70,11 +70,9 @@ def main_info(request, **kwargs):
             domains = FilterEmailDomain.objects.filter(company=company).values_list(
                 'name', flat=True
             )
-            print(list(domains))
             if (UserCompany.objects.filter(user=user, company=company)):
                 company_user = UserCompany.objects.get(
                     user=user, company=company)
-                print(company_user.email, 'csompany_user.email')
                 for domain in domains:
                     print(domain, 'domain')
                     if domain in company_user.email:
@@ -93,7 +91,6 @@ def main_info(request, **kwargs):
                     if user.credentials.filter(company=company):
                         cred = user.credentials.filter(
                             company=company).order_by('-created').first()
-                        print(cred, 'CRED')
                         credential_url = reverse(
                             'landing:credential_generated',
                             kwargs=dict(uid=cred.code))
