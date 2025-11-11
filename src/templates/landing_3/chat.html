@@ -141,16 +141,21 @@
             if(email == email_user){
                 li.className = "posRight";
                 set_class = ""
+                var htmlString = `
+                            <h5 class="${set_class}" >${author}</h5>
+                            <h4 class="textMessage">${data.content}</h4>
+                            <span class="timeMessage">-</span>
+                        `;
             }else{
                 li.className = "posLeft";
                 set_class = "otherPersonMessage"
-            }
+                var htmlString = `
+                            <h5 class="${set_class}" style="color: #fff;">${author}</h5>
+                            <h4 class="textMessage">${data.content}</h4>
+                            <span class="timeMessage">-</span>
+                        `;
+                }
             let ellistmessages = document.getElementById("listmessages");
-            var htmlString = `
-                        <h5 class="${set_class}" >${author}</h5>
-                        <h4 class="textMessage">${data.content}</h4>
-                        <span class="timeMessage">-</span>
-                    `;
             li.innerHTML = htmlString
             ellistmessages.appendChild(li);
         }
