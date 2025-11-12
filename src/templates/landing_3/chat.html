@@ -55,6 +55,7 @@
 
 {% endblock %}
 {% block jsfinal %}
+{% if event.open_transmission %}
 <script src="/static/chat/reconnecting-websocket.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -221,5 +222,6 @@
     // });
 
 
-</script>   
+</script>
+{% endif %}
 {% endblock %}
