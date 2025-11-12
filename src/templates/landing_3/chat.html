@@ -25,6 +25,7 @@
                 <!-- OPCIÒN CAMPO VIDEO -->
                 <iframe src="{{event.video_url}}" allow="fullscreen" allowfullscreen frameborder="0"></iframe>
             </div>
+            {% if event.open_transmission %}
             <div class="b14Right" style="background: #000;">
                 <h3>Chat</h3>
                 <div class="b14ContentChat">
@@ -49,6 +50,7 @@
                     </form>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </section>

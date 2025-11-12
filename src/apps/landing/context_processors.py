@@ -18,6 +18,7 @@ def main_info(request, **kwargs):
     if company_exists:
         company = request.company
         is_live = False
+        is_past = False
         now = datetime.now().replace(microsecond=0)
         now = now.astimezone(pytz.utc)
         events = Event.objects.filter(is_active=True,
@@ -32,6 +33,8 @@ def main_info(request, **kwargs):
             if now >= start_date and end_date > now:
                 is_live = event
                 break
+            if now > end_date:
+                is_past = event
         choose_access_type = False
         allow_register = True
         if company.access_type == "HYBRID" and (
@@ -100,6 +103,7 @@ def main_info(request, **kwargs):
             data['ticket_url'] = ticket_url
             data['credential_url'] = credential_url
             data['is_live'] = is_live
+            data['is_past'] = is_past
             data['logged_user'] = user
             data['user_schedules'] = list(user_schedules)
             data['user_schedules_quantity'] = len(user_schedules)

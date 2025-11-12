@@ -36,6 +36,9 @@
                 {% if is_live and logged_user %}
                     <a href="{% url 'landing:transmission' is_live.slug %}" class="gButton headerEnvivo">En vivo <img src="/static/web_3/img/credicorp/live.svg" alt=""></a>
                 {% endif %}
+                {% if is_past and logged_user %}
+                    <a href="{% url 'landing:transmission' is_past.slug %}" class="gButton headerEnvivo">Volver a ver <img src="/static/web_3/img/credicorp/live.svg" alt=""></a>
+                {% endif %}
                 <div class="headerOptionLogout f aic jcfe">
                     <a href="" class="headerButtonLogin login" style="font-size: 16px;">{{header_section.login_title}}</a>
                     <a href="" class="headerButtonRegistrate">{{header_section.register_title}}</a>
