@@ -720,6 +720,10 @@ class HomePage(TimeStampedModel):
     community_description_text = models.CharField(
         _('commuComunidadesnity descripción texto'), max_length=255,
         blank=True, default="Conéctate con los demás usuarios.")
+    communities_text = models.TextField(
+        _('Texto interno Comunidades'),
+        default="Selecciona una comunidad de tu interés"
+    )
 
     survey_section_name = models.CharField(
         _('Encuesta nombre Sección'), max_length=255,

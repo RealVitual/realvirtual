@@ -440,7 +440,6 @@
 </section>
 {% endif %}
 {% if header_section.show_communities_section %}
-    {% if logged_user %}
         <section class="b16 anclaBlock" id="community">
             <div class="grilla" style="background: {{company.section_color}} !important;">
                 <h3 class="gTitle">{{home_page.community_section_name}}</h3>
@@ -454,16 +453,14 @@
                     </a>
             </div>
         </section>
-    {% else %}
-        <section class="b16 anclaBlock" id="community">
+        {% comment %} <section class="b16 anclaBlock" id="community">
             <div class="grilla" style="background: {{company.section_color}} !important;" id="networking">
                 <h3 class="gTitle">{{home_page.community_section_name}}</h3>
                 <div class="gParrafo">
                     <p>Para ir a Comunidades, primero debes registrarte</p>
                 </div>
             </div>
-        </section>
-    {% endif %}
+        </section> {% endcomment %}
 {% endif %}
 {% if header_section.show_vote_section %}
 <section class="b23 marginY scrollWrap anclaBlock" id="votacion">

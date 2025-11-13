@@ -581,7 +581,8 @@ class HomePageAdmin(admin.ModelAdmin):
                     "Sección Comunidades", {
                         "fields": (
                             'community_section_name',
-                            'community_description_text'
+                            'community_description_text',
+                            'communities_text'
                         ),
                         "description": "Recuerde activar esta sección en configuración Header."
                     }
@@ -835,7 +836,7 @@ class HeaderAdmin(admin.ModelAdmin):
                     }
                 ),
                 (
-                    "Votación", {
+                    "Comunidades", {
                         "fields": (
                             'show_communities_section',
                             'communities_header_name'

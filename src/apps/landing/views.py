@@ -1025,27 +1025,27 @@ class CommunityView(View):
     template_name = "landing/community.html"
 
     def dispatch(self, request, *args, **kwargs):
-        company = self.request.company
-        if not request.user.is_authenticated:
-            return redirect(reverse('landing:home'))
-        self.user_company = UserCompany.objects.get(
-            company=company, user=request.user
-        )
-        if not self.user_company.confirmed:
-            return redirect(reverse('landing:home'))
+        # company = self.request.company
+        # if not request.user.is_authenticated:
+        #     return redirect(reverse('landing:home'))
+        # self.user_company = UserCompany.objects.get(
+        #     company=company, user=request.user
+        # )
+        # if not self.user_company.confirmed:
+        #     return redirect(reverse('landing:home'))
         return super(CommunityView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, **kwargs):
         options = Community.objects.filter(
             company=request.company, is_active=True).order_by('name')
-        preferences = UserCommunityPreference.objects.filter(
-            user_company=self.user_company, company=request.company
-        ).values_list('community__id', flat=True)
+        # preferences = UserCommunityPreference.objects.filter(
+        #     user_company=self.user_company, company=request.company
+        # ).values_list('community__id', flat=True)
         home_page = HomePage.objects.get(company=request.company)
         context = {
             "options": options,
             'header': False,
-            'preferences': preferences,
+            # 'preferences': preferences,
             "home_page": home_page
         }
         return render(request, self.template_name, context)

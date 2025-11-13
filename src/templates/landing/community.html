@@ -11,7 +11,7 @@
     <div class="b11Left scrollItem">
         <div class="b11LeftContent">
             <a href="{% url 'landing:home' %}"class="gReturn">Regresar</a>
-            <h1 class="gTitle">Comunidades</h1>
+            <h1 class="gTitle">{{home_page.community_section_name}}</h1>
              <div class="gParrafo">
                 <p>{{home_page.main_title|default:""}}</p>
             </div>
@@ -20,7 +20,7 @@
     <div class="b11Right scrollItem">
         <div class="b17Content">
             <div class="gParrafo">
-                <p>Selecciona una comunidad de tu interés</p>
+                {{home_page.communities_text|safe}}
             </div>
             <form action="" method="POST">
                 {% csrf_token %}
@@ -86,7 +86,7 @@
                 this.classList.add('activetab')
                 this.style.background = getColorActive
                 this.children[0].style.color = "{{company.button_text_color}}"
-                $.ajax({
+                {% comment %} $.ajax({
                     url : "{% url 'landing:generate_cummunity_preference' %}",
                     type : "post",
                     data: {
@@ -99,7 +99,7 @@
                     if (data.success) {
                     }else{
                     }
-                });
+                }); {% endcomment %}
             }else{
             }
             window.open(getUrl, "_blank");
