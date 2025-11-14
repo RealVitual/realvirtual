@@ -864,6 +864,20 @@ class EventTransmissionView(View):
             CustomerEvent.objects.get_or_create(
                 event=event, company_user=self.user_company
             )
+            other_live = None
+            other_events = Event.objects.filter(
+                is_active=True,
+                company=company).exclude(id=event.id).order_by(
+                    'start_datetime'
+                )
+            now = datetime.now().replace(microsecond=0)
+            now = now.astimezone(pytz.utc)
+            for other_event in other_events:
+                start_date = other_event.start_datetime
+                end_date = other_event.end_datetime
+                if now >= start_date and end_date > now:
+                    other_live = other_event
+                    break
             context = {
                 'start_date': start_date,
                 'start_time': start_time,
@@ -874,6 +888,7 @@ class EventTransmissionView(View):
                 'room_name_json': mark_safe(json.dumps(
                     event.chat_code)),
                 'room_id': mark_safe(json.dumps(event.chat_id)),
+                'other_live': other_live
             }
         return render(request, self.template_name, context)
 

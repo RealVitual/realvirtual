@@ -16,6 +16,10 @@
                 <h2>{{event.subtitle}}</h2>
             </div>
             <div class="b14TopRight">
+                {% if other_live %}
+                    <a href="{% url 'landing:transmission' other_live.slug %}" class="b4Envivo b4ButtonRelative">{{other_live.name}} <img src="/static/web/img/live.svg" alt=""></a>
+                    <br>
+                {% endif %}
                 <h3><img src="/static/web/img/calendar-chat.svg" alt="" width="20">{{start_date}}</h3>
                 <h3>{{start_time}} a {{end_time}}</h3>
             </div>

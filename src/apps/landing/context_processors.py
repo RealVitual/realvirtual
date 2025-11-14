@@ -22,7 +22,9 @@ def main_info(request, **kwargs):
         now = datetime.now().replace(microsecond=0)
         now = now.astimezone(pytz.utc)
         events = Event.objects.filter(is_active=True,
-                                      company=company)
+                                      company=company).order_by(
+                                          'start_datetime'
+                                      )
         footer, f_created = Footer.objects.get_or_create(
             company=company)
         header_section, h_created = Header.objects.get_or_create(
@@ -33,7 +35,10 @@ def main_info(request, **kwargs):
             if now >= start_date and end_date > now:
                 is_live = event
                 break
-            if now > end_date:
+        for event in events:
+            start_date = event.start_datetime
+            end_date = event.end_datetime
+            if not is_live and now > end_date:
                 is_past = event
         choose_access_type = False
         allow_register = True
