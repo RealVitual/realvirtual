@@ -465,6 +465,9 @@ class CerficateSettings(BaseModel):
     letter_color = models.CharField(
         'Color de letra', default="#fff"
     )
+    padding_top = models.CharField(
+        'Padding top', default="1200px"
+    )
 
     class Meta:
         verbose_name = _('Configuración de Certificado')
