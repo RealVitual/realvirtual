@@ -462,6 +462,9 @@ class CerficateSettings(BaseModel):
         _('Tipo Fuente'),
         upload_to=get_upload_path('certificate_fonts'),
         null=True, blank=True)
+    letter_color = models.CharField(
+        'Color de letra', default="#fff"
+    )
 
     class Meta:
         verbose_name = _('Configuración de Certificado')

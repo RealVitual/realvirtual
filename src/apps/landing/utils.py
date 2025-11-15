@@ -153,6 +153,7 @@ def generate_certificate_pdf(user_company, names=None):
         'landing/certificate.html',
         {'user': user_company, 'c_settings': c_settings}
         )
+    print(certificate_pdf, 'CERTIFICATE PDF')
     font_config = FontConfiguration()
     html = HTML(string=certificate_pdf)
     css = CSS(string='''
@@ -167,5 +168,3 @@ def generate_certificate_pdf(user_company, names=None):
     user_company.certificate.save(filename, file_data)
     user_company.save()
     return user_company
-
-
