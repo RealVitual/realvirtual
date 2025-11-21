@@ -1697,7 +1697,6 @@ def save_accepted_additional_terms(request):
         if not status:
             return None
         user = request.user
-        print(int(status), 'save_accepted_additional_terms')
         uc = UserCompany.objects.get(
             user=user, company=request.company
         )
@@ -1709,5 +1708,56 @@ def save_accepted_additional_terms(request):
         uc.save()
         response_data = {}
         response_data['success'] = 1
+        return HttpResponse(
+            json.dumps(response_data), content_type="application/json")
+
+
+@login_required
+def check_live(request):
+    if request.method == 'POST' and is_ajax(request=request):
+        data = request.POST.dict()
+        data.pop('csrfmiddlewaretoken', None)
+        now = datetime.now().replace(microsecond=0)
+        now = now.astimezone(pytz.utc)
+        company = request.company
+        is_live = False
+        not_started = False
+        events = Event.objects.filter(is_active=True,
+                                      company=company).order_by(
+                                          'start_datetime'
+                                      )
+        redirect_url = None
+        message = ""
+        for event in events:
+            start_date = event.start_datetime
+            end_date = event.end_datetime
+            if now >= start_date and end_date > now:
+                is_live = True
+                redirect_url = reverse(
+                    'landing:transmission', kwargs=dict(slug=event.slug))
+                break
+        if not is_live:
+            events = Event.objects.filter(
+                is_active=True,
+                company=company,
+                start_datetime__gt=now).order_by(
+                    'start_datetime')
+            if events:
+                not_started = True
+                event = events[0]
+                start_datetime = event.start_datetime.astimezone(
+                    pytz.timezone(settings.TIME_ZONE)
+                )
+                start_datetime = start_datetime.strftime(
+                    "%H:%M:%S del %d-%m-%Y"
+                )
+                message = f"Evento programado para {start_datetime}"
+
+        response_data = {}
+        response_data['success'] = 1
+        response_data['is_live'] = is_live
+        response_data['not_started'] = not_started
+        response_data['redirect_url'] = redirect_url
+        response_data['message'] = message
         return HttpResponse(
             json.dumps(response_data), content_type="application/json")

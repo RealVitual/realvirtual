@@ -39,11 +39,18 @@
                 {% if header_section.show_contact %}
                     <a href="#contact" class="headerAnclaBlock" style="color:{{header_section.header_text_color}};">{{header_section.contact_header_name}} <span class="lineActive" style="background:{{header_section.button_color}};"></span></a>
                 {% endif %}
-                {% if logged_user and is_live and company_user.confirmed %}
+                {% comment %} {% if logged_user and is_live and company_user.confirmed %}
                     {% if company.access_type == "IN_PERSON" %}
                         <a class="headerEnVivo" style="background: #eb5757;">En vivo<img src="/static/web/img/live.svg" alt=""></a>
                     {% else %}
                         <a href="{% url 'landing:transmission' is_live.slug %}" class="headerEnVivo" style="background: #eb5757;">En vivo<img src="/static/web/img/live.svg" alt=""></a>
+                    {% endif %}
+                {% endif %} {% endcomment %}
+                {% if logged_user and company_user.confirmed %}
+                    {% if company.access_type == "IN_PERSON" %}
+                        <a class="headerEnVivo" style="background: #eb5757;">En vivo<img src="/static/web/img/live.svg" alt=""></a>
+                    {% else %}
+                        <a href="#" class="headerEnVivo check_live" style="background: #eb5757;">En vivo<img src="/static/web/img/live.svg" alt=""></a>
                     {% endif %}
                 {% endif %}
             {% endif %}
@@ -337,4 +344,10 @@
         {{company.message_closed_in_person_register|safe}}
     </div>
     {% endif %}
+</div>
+<div class="g8PopupForm pr eventNotReady">
+    <a href="#" class="g8ClosePopup icon-close pa closeIniciaSesion"></a>
+    <h3>Evento aún no iniciado</h3>
+    <h3 class="message_not_started">Evento aún no iniciado</h3>
+    </div>
 </div>

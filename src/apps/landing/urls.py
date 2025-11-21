@@ -11,7 +11,7 @@ from .views import (
     DownloadCustomerTicket, ConfirmUser, ValidateInPersonCompanyUser,
     CommunityView, GenerateUserCommunityPreference, WhiteView,
     GenerateInvitedEmail, GetVoteCategoryStatus, VoteView, save_vote_answers,
-    save_accepted_additional_terms
+    save_accepted_additional_terms, check_live
 )
 from rest_framework.routers import DefaultRouter
 
@@ -98,5 +98,7 @@ urlpatterns = [
           name='save_vote_answers'),
      path('save_accepted_additional_terms/', save_accepted_additional_terms,
           name='save_accepted_additional_terms'),
+     path('check_live/', check_live,
+          name='check_live'),
 ]
 urlpatterns += router.urls

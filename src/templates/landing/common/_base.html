@@ -239,6 +239,29 @@
 
             });
         });
+        $('.check_live').on('click', function (e) {
+            $.ajax({
+                url : "{% url 'landing:check_live' %}",
+                type : "post",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+            }).done(function(data) {
+                console.log(data, 'DATA')
+                if(data.is_live){
+                    window.location.href = data.redirect_url
+                }if(data.not_started){
+                    OVERLAY.style.zIndex = 500
+                    OVERLAY.classList.add("active");
+                    $('.message_not_started').html(data.message)
+                    $('.eventNotReady').addClass('active');
+                }
+
+            });
+            $('.overlay').on('click', function (e){
+                $('.eventNotReady').removeClass('active');
+            })
+        });
         let elkeypress = document.getElementsByClassName('validKeypress')
         for(const keypress of elkeypress) {
             keypress.addEventListener('keypress',function(e){
